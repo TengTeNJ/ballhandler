@@ -43,7 +43,8 @@ class _RootPageControllerState extends State<RootPageController> {
     return Scaffold(
       bottomNavigationBar: CustomBottomNavigationBar(onTap: (index){
         if(index == 1){
-          NavigatorUtil.push('login');
+         // NavigatorUtil.push('login');
+          NavigatorUtil.present(LoginPageController());
         }
       },),
       body: _pageViews[_currentIndex],

@@ -73,7 +73,7 @@ class _OverAllDataViewState extends State<OverAllDataView> {
                         ],
                       ),
                     ),
-                    index == (user.overDataList.length-1) ? Container(
+                    index != (user.overDataList.length-1) ? Container(
                       height: 30,
                       width: 0.5,
                       color: Color.fromRGBO(86, 86, 116, 1.0),

@@ -9,6 +9,7 @@ class Constants {
 
   //  屏幕高度
   static double screenHeight(BuildContext context) {
+    print('MediaQuery.of(context).size.height=${MediaQuery.of(context).size.height}');
     return MediaQuery.of(context).size.height;
   }
 
@@ -32,6 +33,7 @@ class Constants {
   static Color darkThemeOpacityColor = Color.fromRGBO(41, 41, 54, 0.24);
   static Color baseStyleColor = Color.fromRGBO(248, 133, 11, 1);
   static Color baseGreyStyleColor = Color.fromRGBO(177, 177, 177, 1);
+  static Color darkControllerColor = Color.fromRGBO(57, 57, 75, 1);
 
   static Text regularBaseTextWidget(String text, double fontSize) {
     return Text(
@@ -100,7 +102,8 @@ class Constants {
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.bold,
           color: Colors.white,
-          fontSize: fontSize),
+          fontSize: fontSize,
+      ),
     );
   }
   static Text boldBlackTextWidget(String text, double fontSize) {
