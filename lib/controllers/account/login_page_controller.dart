@@ -23,7 +23,8 @@ class _LoginPageControllerState extends State<LoginPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Constants.darkControllerColor,
+        resizeToAvoidBottomInset: false, // 在email页面弹出键盘时总是会弹出溢出的错误，以为是那个页面除了错误，最终发现原来是这个页面的Column溢出了，也是点击控制台日志发现的，于是使用这个方式解决
+        backgroundColor: Colors.transparent,
         body: ClipRRect(
           borderRadius: BorderRadius.circular(26),
           child: Container(

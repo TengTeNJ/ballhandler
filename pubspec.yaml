@@ -39,6 +39,7 @@ dependencies:
   provider: ^6.1.2
   tt_indicator: ^0.0.2
   flutter_screenutil: ^5.8.3
+  avoid_keyboard: ^0.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

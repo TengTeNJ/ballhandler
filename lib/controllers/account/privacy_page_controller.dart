@@ -1,3 +1,5 @@
+import 'package:code/controllers/account/email_page_controller.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
@@ -13,12 +15,13 @@ class PrivacyPageController extends StatefulWidget {
 class _PrivacyPageControllerState extends State<PrivacyPageController> {
   bool isChecked = false;
   final _onTap = (){
-    print('continue');
+    NavigatorUtil.present(EmailPageController());
   };
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Constants.darkControllerColor,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
         body: ClipRRect(
           borderRadius: BorderRadius.circular(26),
           child: Container(
