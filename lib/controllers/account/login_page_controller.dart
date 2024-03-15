@@ -1,5 +1,7 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/account/privacy_page_controller.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/widgets/account/cancel_button.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +13,7 @@ class LoginPageController extends StatefulWidget {
 }
 
 class _LoginPageControllerState extends State<LoginPageController> {
+  //  第三方登录图标和图片
   final List<Map> _thirdMaps = [
     {'icon': 'images/account/apple.png', 'label': 'Continue with Apple'},
     {'icon': 'images/account/apple.png', 'label': 'Continue with Google'},
@@ -20,7 +23,7 @@ class _LoginPageControllerState extends State<LoginPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Constants.darkControllerColor,
         body: ClipRRect(
           borderRadius: BorderRadius.circular(26),
           child: Container(
@@ -34,7 +37,7 @@ class _LoginPageControllerState extends State<LoginPageController> {
                   child: Stack(
                     children: [
                       Positioned(
-                        child: cancelButton(),
+                        child: CancelButton(),
                         right: 0,
                       )
                     ],
@@ -66,8 +69,8 @@ class _LoginPageControllerState extends State<LoginPageController> {
                       child: Constants.boldWhiteTextWidget(
                           ' to access your profile', 22),
                     )),
-                Container(),
                 Container(
+                  // color: Colors.red,
                   margin: EdgeInsets.only(top: 48),
                   child: Column(
                     children: List.generate(_thirdMaps.length, (index) {
@@ -103,7 +106,7 @@ class _LoginPageControllerState extends State<LoginPageController> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 13, left: 16, right: 16),
+                  margin: EdgeInsets.only(top: 8, left: 16, right: 16),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -112,11 +115,13 @@ class _LoginPageControllerState extends State<LoginPageController> {
                         color: Color.fromRGBO(177, 177, 177, 1.0),
                         width: (Constants.screenWidth(context) - 32 - 18) / 2.0,
                       ),
-                      Text(
-                        'or',
-                        style: TextStyle(
-                            color: Color.fromRGBO(177, 177, 177, 1.0),
-                            fontSize: 14),
+                      Center(
+                        child: Text(
+                          'or',
+                          style: TextStyle(
+                              color: Color.fromRGBO(177, 177, 177, 1.0),
+                              fontSize: 12),
+                        ),
                       ),
                       Container(
                         height: 1,
@@ -126,48 +131,25 @@ class _LoginPageControllerState extends State<LoginPageController> {
                     ],
                   ),
                 ),
-                Container(
-                  height: 56,
-                  margin: EdgeInsets.only(top: 22,left: 16,right: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color:Constants.baseStyleColor
+                GestureDetector(
+                  onTap: () {
+                    NavigatorUtil.present(PrivacyPageController());
+                  },
+                  child: Container(
+                    height: 56,
+                    margin: EdgeInsets.only(top: 22, left: 16, right: 16),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Constants.baseStyleColor),
+                    child: Center(
+                      child: Constants.regularWhiteTextWidget(
+                          'Continue with email', 16),
+                    ),
                   ),
-                  child: Center(child: Constants.regularWhiteTextWidget('Continue with email', 16),),
                 ),
               ],
             ),
           ),
         ));
   }
-}
-
-Widget cancelButton() {
-  return GestureDetector(
-    onTap: (){
-      NavigatorUtil.pop();
-    },
-    child: Container(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(18),
-        child: Container(
-          width: 36,
-          height: 36,
-          color: Color.fromRGBO(135, 135, 151, 1.0),
-          child: Container(
-            width: 14,
-            height: 14,
-            child: Center(
-              child: Image(
-                fit: BoxFit.fitWidth,
-                image: AssetImage('images/account/cancel.png'),
-                width: 14,
-                height: 14,
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
 }

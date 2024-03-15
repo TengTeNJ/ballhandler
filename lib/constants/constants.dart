@@ -9,7 +9,8 @@ class Constants {
 
   //  屏幕高度
   static double screenHeight(BuildContext context) {
-    print('MediaQuery.of(context).size.height=${MediaQuery.of(context).size.height}');
+    print(
+        'MediaQuery.of(context).size.height=${MediaQuery.of(context).size.height}');
     return MediaQuery.of(context).size.height;
   }
 
@@ -29,6 +30,8 @@ class Constants {
   // 底部导航栏高度 默认为56像素
   static double tabBarHeight = kBottomNavigationBarHeight;
 
+  static String privacyText = 'To ensure that personal information of players are respected and protected.  I give explicit authorization and consent for their use in commercial promotion or publication on social media. Such materials can only be legally used after obtaining explicit written consent.';
+
   static Color darkThemeColor = Color.fromRGBO(41, 41, 54, 1);
   static Color darkThemeOpacityColor = Color.fromRGBO(41, 41, 54, 0.24);
   static Color baseStyleColor = Color.fromRGBO(248, 133, 11, 1);
@@ -45,6 +48,7 @@ class Constants {
           fontSize: fontSize),
     );
   }
+
   static Text regularGreyTextWidget(String text, double fontSize) {
     return Text(
       text,
@@ -55,6 +59,7 @@ class Constants {
           fontSize: fontSize),
     );
   }
+
   static Text regularWhiteTextWidget(String text, double fontSize) {
     return Text(
       text,
@@ -65,6 +70,7 @@ class Constants {
           fontSize: fontSize),
     );
   }
+
   static Text mediumBaseTextWidget(String text, double fontSize) {
     return Text(
       text,
@@ -75,6 +81,7 @@ class Constants {
           fontSize: fontSize),
     );
   }
+
   static Text mediumGreyTextWidget(String text, double fontSize) {
     return Text(
       text,
@@ -85,6 +92,7 @@ class Constants {
           fontSize: fontSize),
     );
   }
+
   static Text mediumWhiteTextWidget(String text, double fontSize) {
     return Text(
       text,
@@ -95,17 +103,19 @@ class Constants {
           fontSize: fontSize),
     );
   }
+
   static Text boldWhiteTextWidget(String text, double fontSize) {
     return Text(
       text,
       style: TextStyle(
-          fontFamily: 'SanFranciscoDisplay',
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          fontSize: fontSize,
+        fontFamily: 'SanFranciscoDisplay',
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+        fontSize: fontSize,
       ),
     );
   }
+
   static Text boldBlackTextWidget(String text, double fontSize) {
     return Text(
       text,
@@ -117,5 +127,15 @@ class Constants {
     );
   }
 
-}
+  static Text boldBaseTextWidget(String text, double fontSize) {
+    return Text(
+      text,
+      style: TextStyle(
+          fontFamily: 'SanFranciscoDisplay4',
+          fontWeight: FontWeight.bold,
+          color: Constants.baseStyleColor,
+          fontSize: fontSize),
+    );
+  }
 
+}
