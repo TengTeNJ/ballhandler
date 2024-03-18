@@ -20,7 +20,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           fit: BoxFit.fill,
         ),
       ),
-      child: SingleChildScrollView(child: Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
@@ -77,7 +77,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
             ),
           )
         ],
-      ),),
+      ),
     );
   }
 }

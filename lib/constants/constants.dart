@@ -9,8 +9,6 @@ class Constants {
 
   //  屏幕高度
   static double screenHeight(BuildContext context) {
-    print(
-        'MediaQuery.of(context).size.height=${MediaQuery.of(context).size.height}');
     return MediaQuery.of(context).size.height;
   }
 

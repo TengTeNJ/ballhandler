@@ -1,4 +1,5 @@
 import 'package:code/controllers/account/email_page_controller.dart';
+import 'package:code/controllers/account/password_page_controller.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,16 @@ class _PrivacyPageControllerState extends State<PrivacyPageController> {
   bool isChecked = false;
   final _onTap = (){
     NavigatorUtil.present(EmailPageController());
+   // NavigatorUtil.present(PasswordPageController());
+
   };
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

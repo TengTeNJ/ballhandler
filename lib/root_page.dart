@@ -1,11 +1,8 @@
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/utils/navigator_util.dart';
-import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
-
-import 'constants/constants.dart';
 
 class RootPageController extends StatefulWidget {
   const RootPageController({super.key});
@@ -41,10 +38,12 @@ class _RootPageControllerState extends State<RootPageController> {
   Widget build(BuildContext context) {
     NavigatorUtil.init(context);
     return Scaffold(
+      resizeToAvoidBottomInset:false,
       bottomNavigationBar: CustomBottomNavigationBar(onTap: (index){
         if(index == 1){
          // NavigatorUtil.push('login');
           NavigatorUtil.present(LoginPageController());
+         // NavigatorUtil.present(TestController());
         }
       },),
       body: _pageViews[_currentIndex],

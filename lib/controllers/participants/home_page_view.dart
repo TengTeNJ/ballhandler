@@ -39,6 +39,7 @@ class _HomePageViewState extends State<HomePageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset:false,
       backgroundColor: Constants.darkThemeColor,
       appBar: CustomAppBar(
         title: '',
