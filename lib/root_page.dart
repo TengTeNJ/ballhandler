@@ -1,4 +1,5 @@
 import 'package:code/controllers/account/login_page_controller.dart';
+import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
@@ -42,8 +43,9 @@ class _RootPageControllerState extends State<RootPageController> {
       bottomNavigationBar: CustomBottomNavigationBar(onTap: (index){
         if(index == 1){
          // NavigatorUtil.push('login');
-          NavigatorUtil.present(LoginPageController());
+         // NavigatorUtil.present(LoginPageController());
          // NavigatorUtil.present(TestController());
+          NavigatorUtil.present(SendEmailController());
         }
       },),
       body: _pageViews[_currentIndex],

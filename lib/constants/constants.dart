@@ -28,7 +28,8 @@ class Constants {
   // 底部导航栏高度 默认为56像素
   static double tabBarHeight = kBottomNavigationBarHeight;
 
-  static String privacyText = 'To ensure that personal information of players are respected and protected.  I give explicit authorization and consent for their use in commercial promotion or publication on social media. Such materials can only be legally used after obtaining explicit written consent.';
+  static String privacyText =
+      'To ensure that personal information of players are respected and protected.  I give explicit authorization and consent for their use in commercial promotion or publication on social media. Such materials can only be legally used after obtaining explicit written consent.';
 
   static Color darkThemeColor = Color.fromRGBO(41, 41, 54, 1);
   static Color darkThemeOpacityColor = Color.fromRGBO(41, 41, 54, 0.24);
@@ -136,4 +137,11 @@ class Constants {
     );
   }
 
+  static TextStyle placeHolderStyle() {
+    return TextStyle(
+        color: Color.fromRGBO(132, 132, 132, 1.0),
+        fontFamily: 'SemiBold',
+        fontSize: 16,
+        fontWeight: FontWeight.w600);
+  }
 }

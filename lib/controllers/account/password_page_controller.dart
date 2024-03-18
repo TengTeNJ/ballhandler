@@ -1,3 +1,4 @@
+import 'package:code/controllers/account/password_login_controller.dart';
 import 'package:code/widgets/account/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
@@ -131,7 +132,7 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // NavigatorUtil.present(PasswordPageController());
+                    NavigatorUtil.present(PassWordLoginController());
                   },
                   child: Container(
                     child: Center(
