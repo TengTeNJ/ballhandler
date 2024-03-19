@@ -8,13 +8,22 @@ class UserModel extends ChangeNotifier {
   String _totalScore = '1000'; // 总得分
   String _totalTime = '4500'; // 总时常
   String _totalTimes = '100'; // 总次数
+  bool _hasLogin = false; // 登录标识
   List<String> _overDataList = [];
+
   // get方法
   String get userName => _userName;
+
   String get avgPace => _avgPace;
+
   String get totalScore => _totalScore;
+
   String get totalTime => _totalTime;
+
   String get totalTimes => _totalTimes;
+
+  bool get hasLogin => _hasLogin;
+
   List<String> get overDataList {
     _overDataList.clear();
     _overDataList.add(this.avgPace);
@@ -32,6 +41,11 @@ class UserModel extends ChangeNotifier {
 
   set totalScore(String totalScore) {
     _totalScore = totalScore;
+    notifyListeners();
+  }
+
+  set hasLogin(bool hasLogin) {
+    _hasLogin = hasLogin;
     notifyListeners();
   }
 }

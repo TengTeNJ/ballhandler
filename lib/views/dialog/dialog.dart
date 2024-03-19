@@ -1,7 +1,9 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/views/ble/ble_list_view.dart';
 import 'package:flutter/material.dart';
 
+/**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
   const SendEmailDiaog({super.key});
 
@@ -53,6 +55,68 @@ class _SendEmailDiaogState extends State<SendEmailDiaog> {
             ),
             top: 118,
           ),
+          Positioned(
+            child: GestureDetector(
+              onTap: () {
+                NavigatorUtil.pop();
+              },
+              child: Container(
+                child: Center(
+                  child: Constants.regularWhiteTextWidget('Cancel', 16),
+                ),
+                decoration: BoxDecoration(
+                    color: Constants.baseStyleColor,
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+            ),
+            left: 83,
+            right: 83,
+            bottom: 42,
+            height: 40,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+/**蓝牙列表弹窗**/
+class BLEListDialog extends StatefulWidget {
+  const BLEListDialog({super.key});
+
+  @override
+  State<BLEListDialog> createState() => _BLEListDialogState();
+}
+
+class _BLEListDialogState extends State<BLEListDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(26),
+          color: Constants.darkControllerColor),
+      child: Stack(
+        children: [
+          Positioned(
+              top: 8,
+              left: (Constants.screenWidth(context) - 80) / 2.0,
+              child: Container(
+                  width: 80,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Color.fromRGBO(89, 105, 138, 0.4),
+                  ))),
+          Positioned(
+              top: 16,
+              right: 16,
+              child: GestureDetector(
+                onTap: (){
+                  print('Begain Scan');
+                },
+                child: Constants.regularBaseTextWidget('Scan', 16),
+              )),
+          Positioned(child: BLEListView(),top: 45,bottom: 99,),
           Positioned(
             child: GestureDetector(
               onTap: () {

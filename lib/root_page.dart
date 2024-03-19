@@ -43,9 +43,9 @@ class _RootPageControllerState extends State<RootPageController> {
       bottomNavigationBar: CustomBottomNavigationBar(onTap: (index){
         if(index == 1){
          // NavigatorUtil.push('login');
-         // NavigatorUtil.present(LoginPageController());
+         NavigatorUtil.present(LoginPageController());
          // NavigatorUtil.present(TestController());
-          NavigatorUtil.present(SendEmailController());
+         // NavigatorUtil.present(SendEmailController());
         }
       },),
       body: _pageViews[_currentIndex],

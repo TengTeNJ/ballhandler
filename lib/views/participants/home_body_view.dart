@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
 class HomeBodyView extends StatefulWidget {
@@ -45,7 +46,11 @@ class _HomeBodyViewState extends State<HomeBodyView> {
               ],
             ),
           ),
-          Container(
+          GestureDetector(
+            onTap: (){
+              NavigatorUtil.push('trainingMode');
+            },
+            child: Container(
             margin: EdgeInsets.only(bottom: 16, left: 56, right: 56),
             height: 43,
             decoration: BoxDecoration(
@@ -75,7 +80,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                     ))
               ],
             ),
-          )
+          ),),
         ],
       ),
     );
