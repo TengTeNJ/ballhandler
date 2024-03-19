@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utils/blue_tooth_manager.dart';
+
 class HomePageController extends StatefulWidget {
   const HomePageController({super.key});
 

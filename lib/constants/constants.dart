@@ -145,3 +145,12 @@ class Constants {
         fontWeight: FontWeight.w600);
   }
 }
+
+/**蓝牙设备相关的信息**/
+const kBLEDevice_Name = 'Myspeedz';
+const kBLEDevice_NewName = 'StarShots';
+const kBLEDevice_OldName = 'Tv511u-E4247823';
+const kBLE_SERVICE_NOTIFY_UUID = "ffe0";
+const kBLE_SERVICE_WRITER_UUID = "ffe5";
+const kBLE_CHARACTERISTIC_NOTIFY_UUID = "ffe4";
+const kBLE_CHARACTERISTIC_WRITER_UUID = "ffe9";

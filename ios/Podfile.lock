@@ -1,3 +1,33 @@
-PODFILE CHECKSUM: 98df3a8795cb12ce27cafaf86e97875283cf04f6
+PODS:
+  - Flutter (1.0.0)
+  - Protobuf (3.25.3)
+  - reactive_ble_mobile (0.0.1):
+    - Flutter
+    - Protobuf (~> 3.5)
+    - SwiftProtobuf (~> 1.0)
+  - SwiftProtobuf (1.25.2)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - reactive_ble_mobile (from `.symlinks/plugins/reactive_ble_mobile/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Protobuf
+    - SwiftProtobuf
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  reactive_ble_mobile:
+    :path: ".symlinks/plugins/reactive_ble_mobile/ios"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  Protobuf: 8e9074797a13c484a79959fdb819ef4ae6da7dbe
+  reactive_ble_mobile: 9ce6723d37ccf701dbffd202d487f23f5de03b4c
+  SwiftProtobuf: 407a385e97fd206c4fbe880cc84123989167e0d1
+
+PODFILE CHECKSUM: 13d1aa11eda7a328a537dbb7aca3607ee3ac026b
 
 COCOAPODS: 1.15.2

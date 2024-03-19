@@ -1,5 +1,4 @@
 import 'package:code/controllers/account/login_page_controller.dart';
-import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
