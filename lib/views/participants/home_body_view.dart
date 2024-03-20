@@ -38,49 +38,59 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 SizedBox(
                   height: 8,
                 ),
-                Constants.boldWhiteTextWidget('DigitalSDigitalS', 30),
+                Constants.boldWhiteTextWidget(
+                  'Digital Stickhandling Trainer',
+                  26,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(
                   height: 8,
                 ),
-                Constants.regularGreyTextWidget('Challenge deiption', 14)
+                Container(
+                  // color: Colors.red,
+                  child: Constants.regularGreyTextWidget('Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials,and push your limits.', 10,maxLines: 5)
+                  ,
+                ),
               ],
             ),
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               NavigatorUtil.push('trainingMode');
             },
             child: Container(
-            margin: EdgeInsets.only(bottom: 16, left: 56, right: 56),
-            height: 43,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color.fromRGBO(182, 246, 29, 1.0),
-                  Color.fromRGBO(219, 219, 20, 1.0)
+              margin: EdgeInsets.only(bottom: 16, left: 56, right: 56),
+              height: 43,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Color.fromRGBO(182, 246, 29, 1.0),
+                    Color.fromRGBO(219, 219, 20, 1.0)
+                  ],
+                ),
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Constants.boldBlackTextWidget('Play Now', 16),
+                  ),
+                  Positioned(
+                      top: 6,
+                      right: 6,
+                      child: Image(
+                        image: AssetImage('images/participants/next.png'),
+                        width: 31,
+                        height: 31,
+                      ))
                 ],
               ),
             ),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Constants.boldBlackTextWidget('Play Now', 16),
-                ),
-                Positioned(
-                    top: 6,
-                    right: 6,
-                    child: Image(
-                      image: AssetImage('images/participants/next.png'),
-                      width: 31,
-                      height: 31,
-                    ))
-              ],
-            ),
-          ),),
+          ),
         ],
       ),
     );

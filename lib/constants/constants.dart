@@ -48,10 +48,13 @@ class Constants {
     );
   }
 
-  static Text regularGreyTextWidget(String text, double fontSize) {
+  static Text regularGreyTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
     return Text(
+      maxLines: maxLines,
+      textAlign: textAlign,
       text,
       style: TextStyle(
+         height: 1.5,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w400,
           color: Constants.baseGreyStyleColor,
@@ -103,10 +106,13 @@ class Constants {
     );
   }
 
-  static Text boldWhiteTextWidget(String text, double fontSize) {
+  static Text boldWhiteTextWidget(String text, double fontSize, {int maxLines = 1,TextAlign textAlign = TextAlign.center} ) {
     return Text(
+      textAlign:textAlign,
+      maxLines: maxLines,
       text,
       style: TextStyle(
+        height: 1.2,
         fontFamily: 'SanFranciscoDisplay',
         fontWeight: FontWeight.bold,
         color: Colors.white,
