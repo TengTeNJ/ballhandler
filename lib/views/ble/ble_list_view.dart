@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:flutter/material.dart';
 
 class BLEListView extends StatefulWidget {
@@ -20,6 +21,18 @@ class _BLEListViewState extends State<BLEListView> {
     'Razor Dangler 2.0'
   ];
 
+  void listener() {
+    setState(() {
+
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BluetoothManager().deviceListLength.addListener(listener);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,32 +41,44 @@ class _BLEListViewState extends State<BLEListView> {
       height: Constants.screenHeight(context) * 0.42 - 99 - 44,
       child: ListView.separated(
           itemBuilder: (BuildContext context, int index) {
-            return index != (_imageNames.length)
-                ? Container(
-                    height: 60,
-                    width: Constants.screenWidth(context),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage(_imageNames[index]),
-                          width: 60,
-                          height: 30,
-                        ),
-                        SizedBox(
-                          width: 22,
-                        ),
-                        Constants.mediumWhiteTextWidget(_titles[index], 14),
-                      ],
-                    ),
-                  )
+            return index != (BluetoothManager().deviceList.length)
+                ? GestureDetector(child: Container(
+              height: 60,
+              width: Constants.screenWidth(context),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image(
+                    image: AssetImage(_imageNames[index]),
+                    width: 60,
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 22,
+                  ),
+                  Constants.mediumWhiteTextWidget(BluetoothManager().deviceList[index].device.name, 14),
+                ],
+              ),
+            ),onTap: (){
+                  print('连接蓝牙设备');
+                  BluetoothManager().conectToDevice(BluetoothManager().deviceList[index]);
+            },)
                 : SizedBox();
           },
           separatorBuilder: (BuildContext context, int index) => Divider(
                 thickness: 2,
                 color: Color.fromRGBO(86, 86, 116, 1.0),
               ),
-          itemCount: _imageNames.length + 1),
+          itemCount: BluetoothManager().deviceListLength.value + 1),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    // 移除监听
+    BluetoothManager().deviceListLength.removeListener(listener);
+    BluetoothManager().stopScan();
+    super.dispose();
   }
 }

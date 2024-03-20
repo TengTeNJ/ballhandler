@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/ble/ble_list_view.dart';
 import 'package:flutter/material.dart';
@@ -113,6 +114,7 @@ class _BLEListDialogState extends State<BLEListDialog> {
               child: GestureDetector(
                 onTap: (){
                   print('Begain Scan');
+                  BluetoothManager().startScan();
                 },
                 child: Constants.regularBaseTextWidget('Scan', 16),
               )),

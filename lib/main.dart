@@ -5,6 +5,7 @@ import 'package:code/route/route.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 
 void main() {
   runApp(UserProvider(child: const MyApp()) );
@@ -15,13 +16,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BluetoothManager().startScan();
-    return MaterialApp(
-      title: 'Flutter Demo',
-      // initialRoute: '/',
-      onGenerateRoute: Routes.onGenerateRoute,
-      home: RootPageController()
-    );
+    return OKToast(child: MaterialApp(
+        title: 'Flutter Demo',
+        // initialRoute: '/',
+        onGenerateRoute: Routes.onGenerateRoute,
+        home: RootPageController()
+    ));
   }
 }
 
