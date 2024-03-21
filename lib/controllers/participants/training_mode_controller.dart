@@ -1,9 +1,11 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/participants/training_mode_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
 
 class TrainingModeController extends StatefulWidget {
   const TrainingModeController({super.key});
@@ -16,8 +18,11 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
   // List View
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
-      child: TrainingModeListView(scanBleList: (){
+      child: TrainingModeListView(scanBleList: () async{
        print('去预览页面');
+       List<CameraDescription> cameras = await availableCameras();
+        NavigatorUtil.push('videoCheck',arguments: cameras[0]);
+        //NavigatorUtil.push('gameVideo',arguments: cameras[0]);
       },),
     );
   }

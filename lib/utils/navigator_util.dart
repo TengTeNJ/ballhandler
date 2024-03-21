@@ -9,13 +9,17 @@ class NavigatorUtil {
   }
 
   // 跳转到新页面（push）
-  static push(String routeName) {
-    return Navigator.pushNamed(NavigatorUtil._context, routeName);
+  static push(String routeName,{Object arguments = const Object()}) {
+    return Navigator.pushNamed(NavigatorUtil._context, routeName,arguments: arguments);
   }
 
   //  出栈（pop）
   static pop() {
     return Navigator.of(NavigatorUtil._context).pop();
+  }
+
+  static popAndThenPush(String routeName,{Object arguments = const Object()}){
+    return Navigator.of(NavigatorUtil._context).popAndPushNamed(routeName,arguments: arguments);
   }
 
   //  模态效果

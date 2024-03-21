@@ -58,6 +58,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           GestureDetector(
             onTap: () {
               NavigatorUtil.push('trainingMode');
+             //NavigatorUtil.push('trainingMode');
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 16, left: 56, right: 56),

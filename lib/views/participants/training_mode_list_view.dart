@@ -24,7 +24,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
       height: 205,
       width: Constants.screenWidth(context) - 32,
       decoration: BoxDecoration(
-        color: Colors.red,
+        // color: Colors.red,
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
           image: AssetImage('images/ble/ble_bg.png'),
@@ -101,12 +101,13 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
           ),
           Container(
             margin: EdgeInsets.only(left: 16, right: 16, top: 3),
-            height: 50,
+            height: 60,
             child: SingleChildScrollView(
               child: Text(
-                // maxLines: 2,
+                maxLines: 3,
                 'ChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallenge RulesChallenge RulesChallenge Rules Challenge RulesChallenge Rules',
                 style: TextStyle(
+                  height: 1.2,
                     color: Color.fromRGBO(203, 203, 203, 1.0), fontSize: 14),
               ),
             ),

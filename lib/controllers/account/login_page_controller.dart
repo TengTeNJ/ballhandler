@@ -16,7 +16,7 @@ class _LoginPageControllerState extends State<LoginPageController> {
   //  第三方登录图标和图片
   final List<Map> _thirdMaps = [
     {'icon': 'images/account/apple.png', 'label': 'Continue with Apple'},
-    {'icon': 'images/account/apple.png', 'label': 'Continue with Google'},
+    {'icon': 'images/account/google.png', 'label': 'Continue with Google'},
     {'icon': 'images/account/facebook.png', 'label': 'Continue with FaceBook'},
   ];
 
