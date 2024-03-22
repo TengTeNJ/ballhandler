@@ -1,5 +1,7 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/models/global/game_data.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,12 @@ class _GameVideoontrollerState extends State<GameVideoontroller> {
       ResolutionPreset.high,
     );
     _initializeControllerFuture = _controller.initialize();
+
+    BluetoothManager().dataChange = (){
+      print('刷新页面---');
+      setState(() {
+      });
+    };
   }
 
   @override
@@ -122,7 +130,7 @@ class _GameVideoontrollerState extends State<GameVideoontroller> {
                                           Constants.mediumWhiteTextWidget(
                                               'SCORE', 16),
                                           Constants.digiRegularWhiteTextWidget(
-                                              '125', 50),
+                                              BluetoothManager().gameData.score.toString(), 50),
                                         ],
                                       ),
                                       width: 100,
@@ -237,6 +245,7 @@ class _GameVideoontrollerState extends State<GameVideoontroller> {
   void dispose() {
     // TODO: implement dispose
     _controller.dispose();
+    BluetoothManager().dataChange = null;
     super.dispose();
   }
 }

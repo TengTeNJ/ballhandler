@@ -1,11 +1,13 @@
+import 'dart:async';
 import 'package:code/constants/constants.dart';
+import 'package:code/models/global/game_data.dart';
+import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:uuid/parsing.dart';
 
 import '../models/ble/ble_model.dart';
-//import 'package:uuid/uuid.dart';
 
 class BluetoothManager {
   static final BluetoothManager _instance = BluetoothManager._internal();
@@ -21,9 +23,16 @@ class BluetoothManager {
   // 蓝牙列表
   List<BLEModel> deviceList = [];
 
+  // 游戏数据
+  GameData gameData = GameData();
+
+  Function()? dataChange;
+
   final ValueNotifier<int> deviceListLength = ValueNotifier(-1);
 
   Stream<DiscoveredDevice>? _scanStream;
+
+  // final StreamController<GameData> controller = StreamController<GameData>();
 
   /*开始扫描*/
   Future<void> startScan() async {
@@ -37,7 +46,8 @@ class BluetoothManager {
     );
     _scanStream!.listen((DiscoveredDevice event) {
       // 处理扫描到的蓝牙设备
-      if (event.name == 'Myspeedz') {
+      //print('event.name=${event.name}');
+      if (event.name == kFiveBallHandler_Name) {
         // 如果设备列表数组中无，则添加
         if (!hasDevice(event.id)) {
           this.deviceList.add(BLEModel(device: event));
@@ -80,7 +90,8 @@ class BluetoothManager {
         TTToast.toast('sucess');
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((data) {
-          print("deviceId =${model.device.id}---上报来的数据data = $data");
+          //print("deviceId =${model.device.id}---上报来的数据data = $data");
+          BluetoothDataParse.parseData(data);
         });
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
@@ -119,5 +130,9 @@ class BluetoothManager {
   /*停止扫描*/
   stopScan(){
     //_scanStream = null;
+  }
+
+  triggerCallback(){
+    dataChange?.call();
   }
 }

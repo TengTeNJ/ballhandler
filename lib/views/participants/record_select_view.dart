@@ -32,7 +32,7 @@ class _RecordSelectViewState extends State<RecordSelectView> {
                 color: hexStringToColor('#7A829B'),
               ),
               borderRadius: BorderRadius.circular(9),
-              color:  _selectStatu == true ? Constants.baseStyleColor :  Color.fromRGBO(59, 74, 119, 1.0),
+              color:  _selectStatu == true ? hexStringToColor('#5BCC6A') :  Color.fromRGBO(59, 74, 119, 1.0),
             ),
           ),
           SizedBox(width: 6,),

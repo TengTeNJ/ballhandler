@@ -191,3 +191,6 @@ const kBLE_SERVICE_NOTIFY_UUID = "ffe0";
 const kBLE_SERVICE_WRITER_UUID = "ffe5";
 const kBLE_CHARACTERISTIC_NOTIFY_UUID = "ffe4";
 const kBLE_CHARACTERISTIC_WRITER_UUID = "ffe9";
+const kFiveBallHandler_Name = 'StarShots'; // 五节控球器的名称
+
+const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
