@@ -6,7 +6,7 @@ import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 void main() {
   runApp(UserProvider(child: const MyApp()) );
 }
@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         // initialRoute: '/',
         onGenerateRoute: Routes.onGenerateRoute,
-        home: RootPageController()
+        home: RootPageController(),
+      builder: EasyLoading.init(),
     ));
   }
 }

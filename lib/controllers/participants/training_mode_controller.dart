@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/participants/training_mode_list_view.dart';
@@ -28,6 +29,17 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // 连接的设备的数量
+    BluetoothManager().conectedDeviceCount.addListener(() {
+      setState(() {
+
+      });
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Constants.darkThemeColor,
@@ -53,14 +65,14 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                       child: Row(
                         children: [
                           Image(
-                            image: AssetImage('images/ble/ble_not.png'),
+                            image:  BluetoothManager().conectedDeviceCount.value>0 ? AssetImage('images/ble/ble_done.png') :AssetImage('images/ble/ble_not.png'),
                             width: 27,
                             height: 27,
                           ),
                           SizedBox(
                             width: 8,
                           ),
-                          Constants.regularWhiteTextWidget('0', 16),
+                          Constants.regularWhiteTextWidget( BluetoothManager().conectedDeviceCount.value.toString(), 16),
                         ],
                       ),
                     ),

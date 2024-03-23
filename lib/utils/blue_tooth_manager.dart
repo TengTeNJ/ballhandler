@@ -4,9 +4,8 @@ import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:uuid/parsing.dart';
-
 import '../models/ble/ble_model.dart';
 
 class BluetoothManager {
@@ -29,10 +28,11 @@ class BluetoothManager {
   Function()? dataChange;
 
   final ValueNotifier<int> deviceListLength = ValueNotifier(-1);
+  // 已连接的设备数量
+  final ValueNotifier<int> conectedDeviceCount = ValueNotifier(0);
 
   Stream<DiscoveredDevice>? _scanStream;
 
-  // final StreamController<GameData> controller = StreamController<GameData>();
 
   /*开始扫描*/
   Future<void> startScan() async {
@@ -65,13 +65,16 @@ class BluetoothManager {
       // 已连接状态直接返回
       return;
     }
+    EasyLoading.show();
     _ble
         .connectToDevice(
             id: model.device.id, connectionTimeout: Duration(seconds: 10))
         .listen((ConnectionStateUpdate connectionStateUpdate) {
       print('connectionStateUpdate = ${connectionStateUpdate.connectionState}');
+      EasyLoading.dismiss();
       if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.connected) {
+        conectedDeviceCount.value ++;
         // 已连接
         model.hasConected = true;
         // 保存读写特征值
@@ -87,7 +90,8 @@ class BluetoothManager {
         model.writerCharacteristic = writerCharacteristic;
 
         // Toast 成功提示
-        TTToast.toast('sucess');
+        //TTToast.toast('sucess');
+        EasyLoading.showSuccess('success');
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((data) {
           //print("deviceId =${model.device.id}---上报来的数据data = $data");
@@ -95,6 +99,8 @@ class BluetoothManager {
         });
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
+        EasyLoading.showError('disconected');
+        conectedDeviceCount.value --;
         // 失去连接
         model.hasConected = false;
         this.deviceList.remove(model);

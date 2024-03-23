@@ -21,7 +21,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
       },
       child: Container(
       margin: EdgeInsets.only(left: 16, right: 16),
-      height: 205,
+      height: 210,
       width: Constants.screenWidth(context) - 32,
       decoration: BoxDecoration(
         // color: Colors.red,
@@ -53,7 +53,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 24),
+                      fontSize: 22),
                 ),
                 SizedBox(
                   width: 2,
@@ -101,14 +101,14 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
           ),
           Container(
             margin: EdgeInsets.only(left: 16, right: 16, top: 3),
-            height: 60,
+            height: 44,
             child: SingleChildScrollView(
               child: Text(
-                maxLines: 3,
-                'ChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallengeRulesChallenge RulesChallenge RulesChallenge Rules Challenge RulesChallenge Rules',
+                maxLines: 2,
+                'ChallengeRulesChallengeRuleeRulesChallengeRulesChallenge RulesChallenge RulesChallenge Rules Challenge RulesChallenge Rules',
                 style: TextStyle(
                   height: 1.2,
-                    color: Color.fromRGBO(203, 203, 203, 1.0), fontSize: 14),
+                    color: Color.fromRGBO(203, 203, 203, 1.0), fontSize: 12),
               ),
             ),
           ),
@@ -139,8 +139,8 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Constants.regularWhiteTextWidget('00:45', 16),
-                                    Constants.regularWhiteTextWidget('Time', 16),
+                                    Constants.regularWhiteTextWidget('00:45', 14),
+                                    Constants.regularWhiteTextWidget('Time', 12),
                                   ],
                                 )
                               ],
@@ -168,9 +168,9 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                                   CrossAxisAlignment.start,
                                   children: [
                                     Constants.regularWhiteTextWidget(
-                                        '105', 16),
+                                        '105', 14),
                                     Constants.regularWhiteTextWidget(
-                                        'Participants', 16),
+                                        'Participants', 12),
                                   ],
                                 )
                               ],
@@ -184,6 +184,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                       image: AssetImage('images/participants/next_green.png'),
                       width: 50,
                       height: 50,
+                      fit: BoxFit.fill,
                     ),
                   ],
                 ),

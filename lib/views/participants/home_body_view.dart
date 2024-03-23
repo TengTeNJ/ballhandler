@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/models/game/game_over_model.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,9 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           ),
           GestureDetector(
             onTap: () {
-              NavigatorUtil.push('trainingMode');
+              GameOverModel model = GameOverModel();
+              NavigatorUtil.push('gameFinish',arguments: model);
+             // NavigatorUtil.push('trainingMode');
              //NavigatorUtil.push('trainingMode');
             },
             child: Container(
