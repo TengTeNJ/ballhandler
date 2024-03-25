@@ -38,7 +38,7 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constants.darkControllerColor,
+      backgroundColor: Constants.darkThemeColor,
       appBar: CustomAppBar(
         showBack: true,
       ),
@@ -129,23 +129,30 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      bool hasGranted = false;
-                      final PermissionStatus status = await Permission.storage.status;
-                      hasGranted = (status == PermissionStatus.granted);
-                      if(hasGranted == false){
-                        final requestStatus = await Permission.storage.request();
-                        hasGranted = (requestStatus == PermissionStatus.granted);
-                      }
-                      if(hasGranted == true){
-                        // 这里要及时释放_controller(虽然dispose里面进行了释放)，因为可能会跳转到下个界面时的新的controller生成时，这个controller还没释放，导致相机资源不正及时分配给新的页面，会白屏
-                        _controller.dispose();
-                        List<CameraDescription> cameras =
-                        await availableCameras();
-                        NavigatorUtil.popAndThenPush(
-                          'gameVideo',
-                          arguments: cameras[0],
-                        );
-                      }
+                      _controller.dispose();
+                      List<CameraDescription> cameras =
+                      await availableCameras();
+                      NavigatorUtil.popAndThenPush(
+                        'gameVideo',
+                        arguments: cameras[0],
+                      );
+                      // bool hasGranted = false;
+                      // final PermissionStatus status = await Permission.storage.status;
+                      // hasGranted = (status == PermissionStatus.granted);
+                      // if(hasGranted == false){
+                      //   final requestStatus = await Permission.storage.request();
+                      //   hasGranted = (requestStatus == PermissionStatus.granted);
+                      // }
+                      // if(hasGranted == true){
+                      //   // 这里要及时释放_controller(虽然dispose里面进行了释放)，因为可能会跳转到下个界面时的新的controller生成时，这个controller还没释放，导致相机资源不正及时分配给新的页面，会白屏
+                      //   _controller.dispose();
+                      //   List<CameraDescription> cameras =
+                      //   await availableCameras();
+                      //   NavigatorUtil.popAndThenPush(
+                      //     'gameVideo',
+                      //     arguments: cameras[0],
+                      //   );
+                      // }
                     },
                     child: Container(
                       width: Constants.screenWidth(context) * 0.813,

@@ -1,5 +1,6 @@
 import 'package:code/models/airbattle/activity_model.dart';
-import 'package:code/views/activity_view/activity_list_view.dart';
+import 'package:code/utils/navigator_util.dart';
+import 'package:code/views/airbattle/activity_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 
@@ -29,23 +30,29 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Constants.boldWhiteTextWidget('Air Battle', 30),
-                Container(
-                  width: 20,
-                  height: 24,
-                  child: Stack(
-                    children: [
-                      Image(image: AssetImage('images/airbattle/message.png')),
-                      Positioned(
-                          right: 0,
-                          top: 0,
-                          child: Container(
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(4)),
-                          ))
-                    ],
+                GestureDetector(
+                  onTap: (){
+                    NavigatorUtil.push('message');
+                  },
+                  child: Container(
+                    width: 20,
+                    height: 24,
+                    child: Stack(
+                      children: [
+                        Image(
+                            image: AssetImage('images/airbattle/message.png')),
+                        Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(4)),
+                            ))
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -178,14 +185,17 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
           ),
           Container(
             margin: EdgeInsets.only(left: 16),
-            child: Constants.mediumWhiteTextWidget('All Activity', 16),),
+            child: Constants.mediumWhiteTextWidget('All Activity', 16),
+          ),
           SizedBox(
             height: 16,
           ),
           Expanded(
               child: Container(
-                margin: EdgeInsets.only(left: 16,right: 16),
-            child: ActivityListView(datas: [ActivityModel(),ActivityModel()],),
+            margin: EdgeInsets.only(left: 16, right: 16),
+            child: ActivityListView(
+              datas: [ActivityModel(), ActivityModel()],
+            ),
           )),
         ],
       ),

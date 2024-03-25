@@ -8,7 +8,7 @@ class UserModel extends ChangeNotifier {
   String _totalScore = '1000'; // 总得分
   String _totalTime = '4500'; // 总时常
   String _totalTimes = '100'; // 总次数
-  bool _hasLogin = true; // 登录标识
+  bool _hasLogin = false; // 登录标识
   List<String> _overDataList = [];
 
   // get方法

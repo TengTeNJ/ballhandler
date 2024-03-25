@@ -80,11 +80,11 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                   height: 48,
                 ),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: Constants.screenWidth(context) - 32,
                       margin: EdgeInsets.only(left: 16),
-                      child: Constants.regularGreyTextWidget('Name', 14),
+                      child: Constants.regularGreyTextWidget('Name', 14,textAlign: TextAlign.left),
                     ),
                     Container(
                       height: 66,
@@ -98,7 +98,7 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                     Container(
                       width: Constants.screenWidth(context) - 32,
                       margin: EdgeInsets.only(left: 16),
-                      child: Constants.regularGreyTextWidget('Password', 14),
+                      child: Constants.regularGreyTextWidget('Password', 14,textAlign: TextAlign.left),
                     ),
                     Container(
                       height: 66,
@@ -115,7 +115,7 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                       width: Constants.screenWidth(context) - 32,
                       margin: EdgeInsets.only(left: 16),
                       child: Constants.regularGreyTextWidget(
-                          'Repeat Password', 14),
+                          'Repeat Password', 14,textAlign: TextAlign.left),
                     ),
                     Container(
                       height: 66,

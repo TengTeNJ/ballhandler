@@ -1,4 +1,4 @@
-import 'package:code/views/activity_view/activity_view.dart';
+import 'package:code/views/airbattle/activity_view.dart';
 import 'package:flutter/material.dart';
 import '../../models/airbattle/activity_model.dart';
 
