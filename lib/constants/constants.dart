@@ -37,13 +37,14 @@ class Constants {
   static Color baseGreyStyleColor = Color.fromRGBO(177, 177, 177, 1);
   static Color darkControllerColor = Color.fromRGBO(57, 57, 75, 1);
 
-  static Text regularBaseTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
+  static Text regularBaseTextWidget(String text, double fontSize,
+      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(
-         height: 1.2,
+          height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w400,
           color: Constants.baseStyleColor,
@@ -51,13 +52,14 @@ class Constants {
     );
   }
 
-  static Text regularGreyTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
+  static Text regularGreyTextWidget(String text, double fontSize,
+      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(
-         height: 1.5,
+          height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w400,
           color: Constants.baseGreyStyleColor,
@@ -65,12 +67,16 @@ class Constants {
     );
   }
 
-  static Text regularWhiteTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
+  static Text regularWhiteTextWidget(String text, double fontSize,
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(
+          height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w400,
           color: Colors.white,
@@ -78,12 +84,16 @@ class Constants {
     );
   }
 
-  static Text mediumBaseTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
+  static Text mediumBaseTextWidget(String text, double fontSize,
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(
+          height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w500,
           color: Constants.baseStyleColor,
@@ -91,12 +101,14 @@ class Constants {
     );
   }
 
-  static Text mediumGreyTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
+  static Text mediumGreyTextWidget(String text, double fontSize,
+      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(
+        height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w500,
           color: Constants.baseGreyStyleColor,
@@ -104,12 +116,18 @@ class Constants {
     );
   }
 
-  static Text mediumWhiteTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
+  static Text mediumWhiteTextWidget(
+    String text,
+    double fontSize, {
+    int maxLines = 1,
+    TextAlign textAlign = TextAlign.center, double height = 1.0
+  }) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(
+          height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w400,
           color: Colors.white,
@@ -117,13 +135,14 @@ class Constants {
     );
   }
 
-  static Text boldWhiteTextWidget(String text, double fontSize, {int maxLines = 1,TextAlign textAlign = TextAlign.center} ) {
+  static Text boldWhiteTextWidget(String text, double fontSize,
+      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
     return Text(
-      textAlign:textAlign,
+      textAlign: textAlign,
       maxLines: maxLines,
       text,
       style: TextStyle(
-        height: 1.2,
+        height: height,
         fontFamily: 'SanFranciscoDisplay',
         fontWeight: FontWeight.bold,
         color: Colors.white,
@@ -132,12 +151,14 @@ class Constants {
     );
   }
 
-  static Text boldBlackTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
+  static Text boldBlackTextWidget(String text, double fontSize,
+      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
     return Text(
-      textAlign:textAlign,
+      textAlign: textAlign,
       maxLines: maxLines,
       text,
       style: TextStyle(
+        height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.bold,
           color: Color.fromRGBO(28, 30, 33, 1.0),
@@ -145,12 +166,14 @@ class Constants {
     );
   }
 
-  static Text boldBaseTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
+  static Text boldBaseTextWidget(String text, double fontSize,
+      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
     return Text(
-      textAlign:textAlign,
+      textAlign: textAlign,
       maxLines: maxLines,
       text,
       style: TextStyle(
+        height: height,
           fontFamily: 'SanFranciscoDisplay4',
           fontWeight: FontWeight.bold,
           color: Constants.baseStyleColor,
@@ -159,20 +182,20 @@ class Constants {
   }
 
   // DS-DIGI
-  static Text digiRegularWhiteTextWidget(String text, double fontSize,{int maxLines = 1,TextAlign textAlign = TextAlign.center}) {
+  static Text digiRegularWhiteTextWidget(String text, double fontSize,
+      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
     return Text(
-      textAlign:textAlign,
+      textAlign: textAlign,
       maxLines: maxLines,
       text,
       style: TextStyle(
-        height: 1.2,
+          height: height,
           fontFamily: 'DS-DIGI',
           fontWeight: FontWeight.w400,
           color: Colors.white,
           fontSize: fontSize),
     );
   }
-
 
   static TextStyle placeHolderStyle() {
     return TextStyle(
