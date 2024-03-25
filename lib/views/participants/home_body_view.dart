@@ -1,7 +1,9 @@
+
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeBodyView extends StatefulWidget {
   const HomeBodyView({super.key});
@@ -11,6 +13,7 @@ class HomeBodyView extends StatefulWidget {
 }
 
 class _HomeBodyViewState extends State<HomeBodyView> {
+  bool _start = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,11 +60,33 @@ class _HomeBodyViewState extends State<HomeBodyView> {
             ),
           ),
           GestureDetector(
-            onTap: () {
+            onTap: () async{
+              //await startRecord();
               GameOverModel model = GameOverModel();
-              NavigatorUtil.push('gameFinish',arguments: model);
-             // NavigatorUtil.push('trainingMode');
-             //NavigatorUtil.push('trainingMode');
+
+              // if(_start){
+              //   String path = await stopRecord();
+              //   _start = false;
+              //   NavigatorUtil.push('videoPlay',arguments: path);
+              // }else{
+              //   _start = await startRecord();
+              // }
+              NavigatorUtil.push('trainingMode');
+
+            // NavigatorUtil.push('gameFinish',arguments: model);
+            //   PermissionStatus pp = await Permission.bluetooth.request();
+            //   print('Permission.bluetooth.status=${ pp}');
+            //   if(await Permission.bluetooth.status != PermissionStatus.granted){
+            //     print('123');
+            //     PermissionStatus s= await Permission.bluetooth.request();
+            //     print('s==${s}');
+            //   //  openAppSettings();
+            //   }else{
+            //     NavigatorUtil.push('trainingMode');
+            //   }
+              //NavigatorUtil.push('trainingMode');
+
+              //NavigatorUtil.push('trainingMode');
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 16, left: 56, right: 56),

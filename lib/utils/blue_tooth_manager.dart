@@ -25,7 +25,7 @@ class BluetoothManager {
   // 游戏数据
   GameData gameData = GameData();
 
-  Function()? dataChange;
+  Function(BLEDataType type)? dataChange;
 
   final ValueNotifier<int> deviceListLength = ValueNotifier(-1);
   // 已连接的设备数量
@@ -138,7 +138,7 @@ class BluetoothManager {
     //_scanStream = null;
   }
 
-  triggerCallback(){
-    dataChange?.call();
+  triggerCallback({BLEDataType type = BLEDataType.none}){
+    dataChange?.call(type);
   }
 }

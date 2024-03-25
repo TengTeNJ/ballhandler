@@ -22,6 +22,7 @@ class _BLEListViewState extends State<BLEListView> {
   ];
 
   void listener() {
+    print('蓝牙数据变化');
     setState(() {
 
     });

@@ -1,9 +1,11 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/record.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +22,7 @@ class GameVideoontroller extends StatefulWidget {
 class _GameVideoontrollerState extends State<GameVideoontroller> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  late String path;
 
   @override
   void initState() {
@@ -32,10 +35,20 @@ class _GameVideoontrollerState extends State<GameVideoontroller> {
     );
     _initializeControllerFuture = _controller.initialize();
 
-    BluetoothManager().dataChange = (){
-      print('刷新页面---');
-      setState(() {
-      });
+    BluetoothManager().dataChange = (BLEDataType type) async{
+      if(type == BLEDataType.gameStatu){
+        // 游戏开始
+        if(BluetoothManager().gameData.gameStart == true){
+          startRecord();
+        }else{
+          String videoPath =  await stopRecord();
+          path = videoPath;
+          NavigatorUtil.push('videoPlay',arguments: path);
+        }
+      }else{
+        setState(() {
+        });
+      }
     };
   }
 

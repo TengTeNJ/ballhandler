@@ -1,15 +1,18 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/record.dart';
 import 'package:code/views/participants/record_select_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class VideoCheckController extends StatefulWidget {
   CameraDescription camera;
+
   VideoCheckController({required this.camera});
 
   @override
@@ -110,7 +113,9 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                         'Please place the product in the center of the video',
                         12),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Container(
                     width: 120,
                     height: 40,
@@ -119,31 +124,48 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                         borderRadius: BorderRadius.circular(10)),
                     child: RecordSelectView(),
                   ),
-                 SizedBox(height: 32,),
-                 GestureDetector(
-                   onTap: () async{
-                     print('进入到游戏页面');
-                     // 这里要及时释放_controller(虽然dispose里面进行了释放)，因为可能会跳转到下个界面时的新的controller生成时，这个controller还没释放，导致相机资源不正及时分配给新的页面，会白屏
-                     _controller.dispose();
-                     List<CameraDescription> cameras = await availableCameras();
-                     NavigatorUtil.popAndThenPush('gameVideo',arguments: cameras[0],);
-                   },
-                   child: Container(
-                  width: Constants.screenWidth(context) * 0.813,
-                   height: 56,
-                   decoration: BoxDecoration(
-                     borderRadius: BorderRadius.circular(10),
-                     gradient: LinearGradient(
-                       begin: Alignment.topCenter,
-                       end: Alignment.bottomCenter,
-                       colors: [
-                         Color.fromRGBO(182, 246, 29, 1.0),
-                         Color.fromRGBO(219, 219, 20, 1.0)
-                       ],
-                     ),
-                   ),
-                   child: Center(child: Constants.boldBlackTextWidget('START', 16),),
-                 ),),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      bool hasGranted = false;
+                      final PermissionStatus status = await Permission.storage.status;
+                      hasGranted = (status == PermissionStatus.granted);
+                      if(hasGranted == false){
+                        final requestStatus = await Permission.storage.request();
+                        hasGranted = (requestStatus == PermissionStatus.granted);
+                      }
+                      if(hasGranted == true){
+                        // 这里要及时释放_controller(虽然dispose里面进行了释放)，因为可能会跳转到下个界面时的新的controller生成时，这个controller还没释放，导致相机资源不正及时分配给新的页面，会白屏
+                        _controller.dispose();
+                        List<CameraDescription> cameras =
+                        await availableCameras();
+                        NavigatorUtil.popAndThenPush(
+                          'gameVideo',
+                          arguments: cameras[0],
+                        );
+                      }
+                    },
+                    child: Container(
+                      width: Constants.screenWidth(context) * 0.813,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromRGBO(182, 246, 29, 1.0),
+                            Color.fromRGBO(219, 219, 20, 1.0)
+                          ],
+                        ),
+                      ),
+                      child: Center(
+                        child: Constants.boldBlackTextWidget('START', 16),
+                      ),
+                    ),
+                  ),
                 ],
               );
             } else {

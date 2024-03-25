@@ -6,6 +6,7 @@ import 'package:code/controllers/participants/game_video_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
 import 'package:code/controllers/participants/video_check_controller.dart';
+import 'package:code/controllers/participants/video_play_controller.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
@@ -18,9 +19,10 @@ class Routes {
   static const String trainingMode = 'trainingMode'; // 训练模式选择
   static const String videocheck = 'videoCheck'; // 视频校验页面
   static const String gamevideo = 'gameVideo'; //  游戏界面，选择视频录制
-  static const String gameFinish = 'gameFinish'; //  游戏完成界面，选择视频录制
+  static const String gamefinish = 'gameFinish'; //  游戏完成界面，选择视频录制
+  static const String videoplay = 'videoPlay'; //  视频播放页面
 
-  //GameFinishController
+  //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
       case home:
@@ -39,9 +41,14 @@ class Routes {
         final  CameraDescription camera = settings.arguments as CameraDescription;
         return MaterialPageRoute(builder: (_)=> GameVideoontroller(camera: camera,));
       }
-      case gameFinish:{
+      case gamefinish:{
         final  GameOverModel model = settings.arguments as GameOverModel;
         return MaterialPageRoute(builder: (_)=> GameFinishController(dataModel: model,));
+      }
+      case videoplay:{
+        final  String path = settings.arguments as String;
+        print('----path---${path}');
+        return MaterialPageRoute(builder: (_)=> VideoPlayController(videoPath: path,));
       }
         return _errorRoute();
     }

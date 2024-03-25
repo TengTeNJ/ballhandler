@@ -4,6 +4,13 @@ import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:provider/provider.dart';
 
+enum BLEDataType{
+  none,
+  dviceInfo,
+  targetResponse,
+  score,
+  gameStatu,
+}
 class ResponseCMDType {
   static const int deviceInfo = 0x20; // 设备信息，包含开机状态、电量等
   static const int targetResponse = 0x26; // 标靶响应
@@ -52,13 +59,14 @@ class BluetoothDataParse {
               BluetoothManager().gameData.score = data;
               // 通知
               print('BluetoothManager().dataChange=${BluetoothManager().dataChange}');
-              BluetoothManager().triggerCallback();
+              BluetoothManager().triggerCallback(type: BLEDataType.score);
               print('${data}:得分');
               break;
             case ResponseCMDType.gameStatu:
               int data = element[2];
               BluetoothManager().gameData.gameStart = (data == 0x01);
               print('游戏状态---${data}');
+              BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
               break;
           }
         }
