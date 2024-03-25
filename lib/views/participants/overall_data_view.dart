@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,6 +50,7 @@ class _OverAllDataViewState extends State<OverAllDataView> {
                 ),
                 onTap: (){
                   print('点击Today按钮');
+                  NavigatorUtil.push('todayData');
                   UserProvider.of(context).totalScore = '9000';
                 },
               )

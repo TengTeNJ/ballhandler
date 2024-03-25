@@ -1,3 +1,4 @@
+import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -177,6 +178,21 @@ class Constants {
           fontFamily: 'SanFranciscoDisplay4',
           fontWeight: FontWeight.bold,
           color: Constants.baseStyleColor,
+          fontSize: fontSize),
+    );
+  }
+
+  static Text customTextWidget(String text, double fontSize,String color,
+      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+    return Text(
+      textAlign: textAlign,
+      maxLines: maxLines,
+      text,
+      style: TextStyle(
+          height: height,
+          fontFamily: 'SanFranciscoDisplay4',
+          fontWeight: FontWeight.bold,
+          color: hexStringToColor(color),
           fontSize: fontSize),
     );
   }
