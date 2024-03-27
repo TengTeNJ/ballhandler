@@ -43,7 +43,7 @@ class _GameVideoontrollerState extends State<GameVideoontroller> {
         }else{
           String videoPath =  await stopRecord();
           path = videoPath;
-          NavigatorUtil.push('videoPlay',arguments: path);
+          //NavigatorUtil.push('videoPlay',arguments: path);
         }
       }else{
         setState(() {
@@ -121,7 +121,7 @@ class _GameVideoontrollerState extends State<GameVideoontroller> {
                                           Constants.mediumWhiteTextWidget(
                                               'TIME LEFT', 16),
                                           Constants.digiRegularWhiteTextWidget(
-                                              '00:30', 50),
+                                              BluetoothManager().gameData.showRemainTime, 50),
                                         ],
                                       ),
                                       width: 147,

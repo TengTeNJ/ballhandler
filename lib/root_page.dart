@@ -1,6 +1,7 @@
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
+import 'package:code/controllers/ranking/ranking_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
@@ -20,7 +21,7 @@ class _RootPageControllerState extends State<RootPageController> {
   final List<StatefulWidget> _pageViews = [
     HomePageController(),
     AirBattleHomeController(),
-    HomePageController(),
+    RankingController(),
     HomePageController(),
   ];
   @override

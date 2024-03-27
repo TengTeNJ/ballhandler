@@ -130,7 +130,7 @@ class Constants {
       style: TextStyle(
           height: height,
           fontFamily: 'SanFranciscoDisplay',
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w500,
           color: Colors.white,
           fontSize: fontSize),
     );
@@ -225,11 +225,13 @@ class Constants {
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';
 const kBLEDevice_NewName = 'StarShots';
+const kFiveBallHandler_Name = 'Stickhandling'; // 五节控球器的名称
 const kBLEDevice_OldName = 'Tv511u-E4247823';
 const kBLE_SERVICE_NOTIFY_UUID = "ffe0";
 const kBLE_SERVICE_WRITER_UUID = "ffe5";
 const kBLE_CHARACTERISTIC_NOTIFY_UUID = "ffe4";
 const kBLE_CHARACTERISTIC_WRITER_UUID = "ffe9";
-const kFiveBallHandler_Name = 'StarShots'; // 五节控球器的名称
+
+const kBLEDevice_Names = [kBLEDevice_Name,kBLEDevice_NewName,kFiveBallHandler_Name];
 
 const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头

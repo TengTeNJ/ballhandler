@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data_service.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -47,7 +48,7 @@ class BluetoothManager {
     _scanStream!.listen((DiscoveredDevice event) {
       // 处理扫描到的蓝牙设备
       //print('event.name=${event.name}');
-      if (event.name == kFiveBallHandler_Name) {
+      if (kBLEDevice_Names.indexOf(event.name)!=-1) {
         // 如果设备列表数组中无，则添加
         if (!hasDevice(event.id)) {
           this.deviceList.add(BLEModel(device: event));
@@ -74,6 +75,7 @@ class BluetoothManager {
       EasyLoading.dismiss();
       if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.connected) {
+        // 连接设备数量+1
         conectedDeviceCount.value ++;
         // 已连接
         model.hasConected = true;
@@ -97,6 +99,8 @@ class BluetoothManager {
           //print("deviceId =${model.device.id}---上报来的数据data = $data");
           BluetoothDataParse.parseData(data);
         });
+        // 连接成功，则设备列表页面弹窗消失
+        NavigatorUtil.pop();
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
         EasyLoading.showError('disconected');

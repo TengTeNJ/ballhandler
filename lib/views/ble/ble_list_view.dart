@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BLEListView extends StatefulWidget {
@@ -22,15 +23,17 @@ class _BLEListViewState extends State<BLEListView> {
   ];
 
   void listener() {
-    print('蓝牙数据变化');
+    print('搜索到蓝牙设备变化');
     setState(() {
-
+      print('BluetoothManager().deviceList=${BluetoothManager().deviceList}');
     });
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('----------initState-----------');
     BluetoothManager().deviceListLength.addListener(listener);
   }
 
@@ -43,27 +46,33 @@ class _BLEListViewState extends State<BLEListView> {
       child: ListView.separated(
           itemBuilder: (BuildContext context, int index) {
             return index != (BluetoothManager().deviceList.length)
-                ? GestureDetector(child: Container(
-              height: 60,
-              width: Constants.screenWidth(context),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image(
-                    image: AssetImage(_imageNames[index]),
-                    width: 60,
-                    height: 30,
-                  ),
-                  SizedBox(
-                    width: 22,
-                  ),
-                  Constants.mediumWhiteTextWidget(BluetoothManager().deviceList[index].device.name, 14),
-                ],
-              ),
-            ),onTap: (){
-                  print('连接蓝牙设备');
-                  BluetoothManager().conectToDevice(BluetoothManager().deviceList[index]);
-            },)
+                ? InkWell(
+                    child: Container(
+                      height: 60,
+                      width: Constants.screenWidth(context),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage(_imageNames[index]),
+                            width: 60,
+                            height: 30,
+                          ),
+                          SizedBox(
+                            width: 22,
+                          ),
+                          Constants.mediumWhiteTextWidget(
+                              BluetoothManager().deviceList[index].device.name,
+                              14),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      print('连接蓝牙设备');
+                      BluetoothManager()
+                          .conectToDevice(BluetoothManager().deviceList[index]);
+                    },
+                  )
                 : SizedBox();
           },
           separatorBuilder: (BuildContext context, int index) => Divider(

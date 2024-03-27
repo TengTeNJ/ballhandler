@@ -10,12 +10,14 @@ enum BLEDataType{
   targetResponse,
   score,
   gameStatu,
+  remainTime,
 }
 class ResponseCMDType {
   static const int deviceInfo = 0x20; // 设备信息，包含开机状态、电量等
   static const int targetResponse = 0x26; // 标靶响应
   static const int score = 0x28; // 得分
   static const int gameStatu = 0x2A; // 游戏状态:开始和结束
+   static const int remainTime = 0x2C; // 游戏剩余时长
 }
 
 /*蓝牙数据解析类*/
@@ -67,6 +69,12 @@ class BluetoothDataParse {
               BluetoothManager().gameData.gameStart = (data == 0x01);
               print('游戏状态---${data}');
               BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
+              break;
+            case ResponseCMDType.remainTime:
+              int data = element[2];
+              BluetoothManager().gameData.remainTime = data;
+              print('游戏时长---${data}');
+              BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
               break;
           }
         }

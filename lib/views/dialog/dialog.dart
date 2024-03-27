@@ -3,6 +3,8 @@ import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/ble/ble_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io' show Platform;
 
 /**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
@@ -112,13 +114,31 @@ class _BLEListDialogState extends State<BLEListDialog> {
               top: 16,
               right: 16,
               child: GestureDetector(
-                onTap: (){
+                onTap: () async {
                   print('Begain Scan');
-                  BluetoothManager().startScan();
+                  if (Platform.isAndroid) {
+                    PermissionStatus locationPermission =
+                        await Permission.location.request();
+                    PermissionStatus bleScan =
+                        await Permission.bluetoothScan.request();
+                    PermissionStatus bleConnect =
+                        await Permission.bluetoothConnect.request();
+                    if (locationPermission == PermissionStatus.granted &&
+                        bleScan == PermissionStatus.granted &&
+                        bleConnect == PermissionStatus.granted) {
+                      BluetoothManager().startScan();
+                    }
+                  } else {
+                    BluetoothManager().startScan();
+                  }
                 },
                 child: Constants.regularBaseTextWidget('Scan', 16),
               )),
-          Positioned(child: BLEListView(),top: 45,bottom: 99,),
+          Positioned(
+            child: BLEListView(),
+            top: 45,
+            bottom: 99,
+          ),
           Positioned(
             child: GestureDetector(
               onTap: () {

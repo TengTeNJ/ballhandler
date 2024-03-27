@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
 import '../../utils/navigator_util.dart';
 import '../../widgets/account/cancel_button.dart';
-
 class PasswordPageController extends StatefulWidget {
   const PasswordPageController({super.key});
 

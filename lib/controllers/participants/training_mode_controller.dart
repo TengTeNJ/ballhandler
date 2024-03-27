@@ -28,16 +28,19 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     );
   }
 
+  void _listener() {
+    print('蓝牙连接的设备的数量变化');
+    setState(() {
+      print('BluetoothManager().conectedDeviceCount=${BluetoothManager().conectedDeviceCount}');
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // 连接的设备的数量
-    BluetoothManager().conectedDeviceCount.addListener(() {
-      setState(() {
-
-      });
-    });
+    BluetoothManager().conectedDeviceCount.addListener(_listener);
   }
   @override
   Widget build(BuildContext context) {
@@ -91,5 +94,12 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    BluetoothManager().conectedDeviceCount.removeListener(_listener);
+    super.dispose();
   }
 }
