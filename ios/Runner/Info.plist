@@ -2,20 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSFileProviderDomainUsageDescription</key>
-    <string>App需要访问文件系统。</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Save video in gallery</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Save audio in video</string>
-    <key>NSCameraUsageDescription</key>
-    <string>your usage description here</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>your usage description here</string>
-    <key>NSBluetoothAlwaysUsageDescription</key>
-    <string>Need Bluetooth access for scanning devices</string>
-    <key>NSBluetoothPeripheralUsageDescription</key>
-    <string>Need Bluetooth access for scanning devices</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.940248126378-2b6akoge8ed6khk0eqv8m3sgheu273qi</string>
+			</array>
+		</dict>
+	</array>
+	<key>GIDClientID</key>
+	<string>940248126378-2b6akoge8ed6khk0eqv8m3sgheu273qi.apps.googleusercontent.com</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -40,6 +39,18 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Need Bluetooth access for scanning devices</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Need Bluetooth access for scanning devices</string>
+	<key>NSCameraUsageDescription</key>
+	<string>your usage description here</string>
+	<key>NSFileProviderDomainUsageDescription</key>
+	<string>App需要访问文件系统。</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>your usage description here</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Save video in gallery</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

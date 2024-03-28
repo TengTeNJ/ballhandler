@@ -53,6 +53,7 @@ class _RankingItemViewState extends State<RankingItemView> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                 // Text('0.9',style: TextStyle(fontSize: 20,height: 1.0,color: Colors.white),),
                   Constants.boldWhiteTextWidget('0.9', 20,height: 0.8),
                   SizedBox(width: 8,),
                   Constants.regularWhiteTextWidget('sec/pt', 10)],

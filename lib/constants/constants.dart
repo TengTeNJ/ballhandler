@@ -54,9 +54,9 @@ class Constants {
   }
 
   static Text regularGreyTextWidget(String text, double fontSize,
-      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+      {int? maxLines, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
     return Text(
-      maxLines: maxLines,
+       maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(

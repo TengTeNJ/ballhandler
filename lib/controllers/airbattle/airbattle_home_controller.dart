@@ -194,6 +194,10 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
               child: Container(
             margin: EdgeInsets.only(left: 16, right: 16),
             child: ActivityListView(
+              selectItem: (ActivityModel model){
+                print('点击了活动');
+                NavigatorUtil.push('activityDetail');
+              },
               datas: [ActivityModel(), ActivityModel()],
             ),
           )),

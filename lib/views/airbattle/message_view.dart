@@ -17,6 +17,7 @@ class MessageView extends StatelessWidget {
             children: [
               Image(image: AssetImage('images/airbattle/message_blue.png'),width: 48,height: 48,),
               SizedBox(width: 20,),
+              // 加了Expanded 可以自动换行 默认撑起高度
               Expanded(child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

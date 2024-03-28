@@ -1,6 +1,7 @@
 // routes.dart
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
+import 'package:code/controllers/airbattle/activity_detail_controller.dart';
 import 'package:code/controllers/airbattle/message_controller.dart';
 import 'package:code/controllers/participants/TodayDataController.dart';
 import 'package:code/controllers/participants/game_finish_controller.dart';
@@ -25,6 +26,7 @@ class Routes {
   static const String videoplay = 'videoPlay'; //  视频播放页面
   static const String todaydata = 'todayData'; //  视频播放页面
   static const String message = 'message'; //  消息页面
+  static const String actividydetail = 'activityDetail'; //  活动详情页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -58,6 +60,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => TodayDataController());
       case message:
         return MaterialPageRoute(builder: (_) => MessageController());
+      case actividydetail:
+        return MaterialPageRoute(builder: (_) => ActivityDetailController());
+      default:
         return _errorRoute();
     }
   };

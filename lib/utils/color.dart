@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
-Color hexStringToColor(String hex) {
+ Color hexStringToColor(String hex) {
   hex = hex.toUpperCase().replaceFirst('#', '');
   if (hex.length == 6) {
     hex = "FF" + hex;
   }
-  return Color(
+  return  Color(
       ui.Color.fromARGB(
           int.parse(hex.substring(0, 2), radix: 16),
           int.parse(hex.substring(2, 4), radix:16),
