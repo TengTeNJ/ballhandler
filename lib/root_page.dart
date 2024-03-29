@@ -27,22 +27,6 @@ class _RootPageControllerState extends State<RootPageController> {
   @override
   void initState() {
     super.initState();
-    // EasyLoading.instance
-    //   ..displayDuration = const Duration(milliseconds: 2000)
-    //   ..indicatorType = EasyLoadingIndicatorType.circle
-    //   ..loadingStyle = EasyLoadingStyle.custom
-    //   ..indicatorSize = 45.0
-    //   ..radius = 10.0
-    //   ..progressColor = Colors.yellow
-    //   ..backgroundColor = Colors.green
-    //   ..indicatorColor = Colors.orange
-    //   ..textColor = Colors.orange
-    //   ..maskColor = Colors.blue.withOpacity(0.5)
-    //   ..userInteractions = true
-    //   ..dismissOnTap = false;
-    //EasyLoading.show(maskType:EasyLoadingMaskType.black, );
-
-   //EasyLoading.showSuccess('success',);
     _pageController = PageController()
      ..addListener(() {
        // 获取当前滑动页面的索引 (取整)

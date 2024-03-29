@@ -123,7 +123,7 @@ class BluetoothManager {
     if (model == null ||
         model.hasConected == null ||
         model.writerCharacteristic == null) {
-      TTToast.toast('Please connect your device first');
+        TTToast.showErrorInfo('Please connect your device first');
       return;
     }
     await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,

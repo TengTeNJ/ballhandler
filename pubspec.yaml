@@ -39,10 +39,8 @@ dependencies:
   provider: ^6.1.2
   tt_indicator: ^0.0.2
   flutter_screenutil: ^5.8.3
-  avoid_keyboard: ^0.3.0
   flutter_reactive_ble: ^5.3.1
   uuid: ^4.3.3
-  oktoast: ^3.4.0
   camera: ^0.10.5+9
   mobkit_dashed_border: ^0.0.6
   flutter_easyloading: ^3.0.5
@@ -51,6 +49,11 @@ dependencies:
   path_provider: ^2.1.2
   video_player: ^2.8.2
   permission_handler: ^11.3.0
+  google_sign_in: ^6.2.1
+  dio: ^5.4.2+1
+  json_serializable: ^6.7.1
+  json_annotation: ^4.8.1
+  shared_preferences: ^2.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,7 +64,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
-
+  build_runner: ^2.4.9
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

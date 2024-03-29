@@ -2,10 +2,8 @@ import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/root_page.dart';
 import 'package:code/route/route.dart';
-import 'package:code/utils/blue_tooth_manager.dart';
-import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 void main() {
   runApp(UserProvider(child: const MyApp()) );
@@ -16,13 +14,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OKToast(child: MaterialApp(
+    // 初始化用户信息
+    NSUserDefault.initUserInfo(context);
+    return MaterialApp(
         title: 'Flutter Demo',
-        // initialRoute: '/',
         onGenerateRoute: Routes.onGenerateRoute,
         home: RootPageController(),
       builder: EasyLoading.init(),
-    ));
+    );
   }
 }
 

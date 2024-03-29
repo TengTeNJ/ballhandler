@@ -1,14 +1,19 @@
+import 'package:code/constants/constants.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // 用户信息模型
 class UserModel extends ChangeNotifier {
-  String _userName = 'Mike Jacy'; // 同户名
+  String _userName = ''; // 同户名
   String _avgPace = '1.0'; // 平均速度
   String _totalScore = '1000'; // 总得分
   String _totalTime = '4500'; // 总时常
   String _totalTimes = '100'; // 总次数
   bool _hasLogin = false; // 登录标识
+  String _token = ''; // 登录token
+  String _createTime = '----'; // 账号的创建时间
+  String _avatar = ''; // 头像
   List<String> _overDataList = [];
 
   // get方法
@@ -23,6 +28,13 @@ class UserModel extends ChangeNotifier {
   String get totalTimes => _totalTimes;
 
   bool get hasLogin => _hasLogin;
+
+  String get token => _token;
+
+  String get createTime => _createTime;
+
+  String get avatar => _avatar;
+
 
   List<String> get overDataList {
     _overDataList.clear();
@@ -46,6 +58,21 @@ class UserModel extends ChangeNotifier {
 
   set hasLogin(bool hasLogin) {
     _hasLogin = hasLogin;
+    notifyListeners();
+  }
+
+  set createTime(String createTime) {
+    _createTime = createTime;
+    notifyListeners();
+  }
+
+  set token(String token) {
+    _token = token;
+    notifyListeners();
+  }
+
+  set avatar(String avatar) {
+    _avatar = avatar;
     notifyListeners();
   }
 }

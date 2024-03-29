@@ -1,10 +1,14 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
+import 'package:code/models/global/user_info.dart';
+import 'package:code/models/http/user_model.dart';
+import 'package:code/utils/http_util.dart';
+import 'package:code/utils/login_util.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/widgets/account/cancel_button.dart';
-import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 class LoginPageController extends StatefulWidget {
   const LoginPageController({super.key});
 
@@ -75,7 +79,20 @@ class _LoginPageControllerState extends State<LoginPageController> {
                   margin: EdgeInsets.only(top: 48),
                   child: Column(
                     children: List.generate(_thirdMaps.length, (index) {
-                      return Padding(
+                      return InkWell(onTap: () async{
+                         ApiResponse<User> _response =  await LoginUtil.thirdLogin(LoginType.google);
+                         print('result=${_response.success}');
+                         if(_response.success == true){
+                           // 谷歌登录成功
+                           NSUserDefault.setKeyValue<String>(kUserName, _response.data!.nickName);
+                           NSUserDefault.setKeyValue<String>(kAccessToken, _response.data!.memberToken);
+                           NSUserDefault.setKeyValue<String>(kAvatar, _response.data!.avatar);
+                           UserProvider.of(context).userName = _response.data!.nickName;
+                           UserProvider.of(context).token = _response.data!.memberToken;
+                           UserProvider.of(context).avatar = _response.data!.avatar;
+                           NavigatorUtil.pop();
+                         }
+;                      },child: Padding(
                         padding: EdgeInsets.only(bottom: 13),
                         child: Container(
                           decoration: BoxDecoration(
@@ -97,12 +114,12 @@ class _LoginPageControllerState extends State<LoginPageController> {
                                     width: 20,
                                     height: 24,
                                     image:
-                                        AssetImage(_thirdMaps[index]['icon']),
+                                    AssetImage(_thirdMaps[index]['icon']),
                                   ))
                             ],
                           ),
                         ),
-                      );
+                      ),);
                     }),
                   ),
                 ),

@@ -39,7 +39,9 @@ class Constants {
   static Color darkControllerColor = Color.fromRGBO(57, 57, 75, 1);
 
   static Text regularBaseTextWidget(String text, double fontSize,
-      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
@@ -54,9 +56,11 @@ class Constants {
   }
 
   static Text regularGreyTextWidget(String text, double fontSize,
-      {int? maxLines, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+      {int? maxLines,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
-       maxLines: maxLines,
+      maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(
@@ -103,13 +107,15 @@ class Constants {
   }
 
   static Text mediumGreyTextWidget(String text, double fontSize,
-      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(
-        height: height,
+          height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w500,
           color: Constants.baseGreyStyleColor,
@@ -117,12 +123,10 @@ class Constants {
     );
   }
 
-  static Text mediumWhiteTextWidget(
-    String text,
-    double fontSize, {
-    int maxLines = 1,
-    TextAlign textAlign = TextAlign.center, double height = 1.0
-  }) {
+  static Text mediumWhiteTextWidget(String text, double fontSize,
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
@@ -137,7 +141,9 @@ class Constants {
   }
 
   static Text boldWhiteTextWidget(String text, double fontSize,
-      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines,
@@ -153,13 +159,15 @@ class Constants {
   }
 
   static Text boldBlackTextWidget(String text, double fontSize,
-      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines,
       text,
       style: TextStyle(
-        height: height,
+          height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.bold,
           color: Color.fromRGBO(28, 30, 33, 1.0),
@@ -168,13 +176,15 @@ class Constants {
   }
 
   static Text boldBaseTextWidget(String text, double fontSize,
-      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines,
       text,
       style: TextStyle(
-        height: height,
+          height: height,
           fontFamily: 'SanFranciscoDisplay4',
           fontWeight: FontWeight.bold,
           color: Constants.baseStyleColor,
@@ -182,8 +192,10 @@ class Constants {
     );
   }
 
-  static Text customTextWidget(String text, double fontSize,String color,
-      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+  static Text customTextWidget(String text, double fontSize, String color,
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines,
@@ -199,7 +211,9 @@ class Constants {
 
   // DS-DIGI
   static Text digiRegularWhiteTextWidget(String text, double fontSize,
-      {int maxLines = 1, TextAlign textAlign = TextAlign.center,double height = 1.0}) {
+      {int maxLines = 1,
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines,
@@ -222,6 +236,11 @@ class Constants {
   }
 }
 
+/*Preferences key*/
+const kUserName = 'nickName';
+const kAvatar = 'avatar';
+const kAccessToken= 'token';
+
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';
 const kBLEDevice_NewName = 'StarShots';
@@ -232,6 +251,13 @@ const kBLE_SERVICE_WRITER_UUID = "ffe5";
 const kBLE_CHARACTERISTIC_NOTIFY_UUID = "ffe4";
 const kBLE_CHARACTERISTIC_WRITER_UUID = "ffe9";
 
-const kBLEDevice_Names = [kBLEDevice_Name,kBLEDevice_NewName,kFiveBallHandler_Name];
+const kBLEDevice_Names = [
+  kBLEDevice_Name,
+  kBLEDevice_NewName,
+  kFiveBallHandler_Name
+];
 
 const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
+
+const String kBaseUrl_Dev = 'http://120.26.79.141:91'; // 测试环境地址
+
