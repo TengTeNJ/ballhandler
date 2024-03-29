@@ -1,4 +1,9 @@
 import 'package:code/controllers/account/password_login_controller.dart';
+import 'package:code/controllers/account/send_email_controller.dart';
+import 'package:code/services/http/account.dart';
+import 'package:code/utils/http_util.dart';
+import 'package:code/utils/string_util.dart';
+import 'package:code/utils/toast.dart';
 import 'package:code/widgets/account/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
@@ -15,24 +20,14 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _againPwdController = TextEditingController();
-
   final ScrollController _scrollController = ScrollController();
-  void _handleInputFieldTap(int fieldNumber) {
-  }
-
+  String _nameText = '';
+  String _pwdText = '';
+  String _repeatPwdText = '';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _nameController.addListener(() {
-
-    });
-    _pwdController.addListener(() {
-
-    });
-    _againPwdController.addListener(() {
-
-    });
   }
 
   @override
@@ -90,8 +85,10 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                       margin: EdgeInsets.only(left: 16, right: 18, top: 9,bottom: 20),
                       child: CustomTextField(
                         controller: _nameController,
+                        onTap: (text){
+                          _nameText = _nameController.text;
+                        },
                         placeHolder: 'Please Enter Your Name',
-                        onTap: () => _handleInputFieldTap(1),
                       ),
                     ),
                     Container(
@@ -105,9 +102,11 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                       child: CustomTextField(
                         obscureText: true,
                         controller: _pwdController,
+                        onTap: (text){
+                          _pwdText = _pwdController.text;
+                        },
                         keyboardType: TextInputType.visiblePassword,
                         placeHolder: 'Please Enter Your Password',
-                        onTap: () => _handleInputFieldTap(2),
                       ),
                     ),
                     Container(
@@ -122,16 +121,42 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                       child: CustomTextField(
                         obscureText: true,
                         controller: _againPwdController,
+                        onTap: (text){
+                          _repeatPwdText = _againPwdController.text;
+                        },
                         keyboardType: TextInputType.visiblePassword,
                         placeHolder: 'Please Enter Your Password',
-                        onTap: () => _handleInputFieldTap(3),
                       ),
                     ),
                   ],
                 ),
                 GestureDetector(
-                  onTap: () {
-                    NavigatorUtil.present(PassWordLoginController());
+                  onTap: () async{
+                    bool isvalidName = StringUtil.isValidNickname(_nameText);
+                    bool isvalidPwd = StringUtil.isValidPassword(_pwdText);
+                    bool pwdEqualToRepeatPwd  = _pwdText == _repeatPwdText;
+                    print('_nameText=${_nameText}');
+                    print('_pwdText=${_pwdText}');
+                    print('_repeatPwdText=${_repeatPwdText}');
+
+                    if(isvalidName == false){
+                      TTToast.showErrorInfo('Please enter a legal nickname');
+                      return;
+                    }
+                    if(isvalidPwd == false){
+                      TTToast.showErrorInfo('Please enter a valid password');
+                      return;
+                    }
+                    if(pwdEqualToRepeatPwd == false){
+                      TTToast.showErrorInfo('The passwords entered twice are inconsistent, please check');
+                      return;
+                    }
+                    if(isvalidName == true && isvalidName == true && pwdEqualToRepeatPwd == true){
+                     ApiResponse _response = await Account.sendEmail();
+                     if(_response.success == true){
+                       NavigatorUtil.present(SendEmailController());
+                     }
+                    }
                   },
                   child: Container(
                     child: Center(
@@ -149,4 +174,5 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
           ),
         ));
   }
+
 }

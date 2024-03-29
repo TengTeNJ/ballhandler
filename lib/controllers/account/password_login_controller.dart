@@ -15,6 +15,7 @@ class PassWordLoginController extends StatefulWidget {
 }
 
 class _PassWordLoginControllerState extends State<PassWordLoginController> {
+  final TextEditingController _controller = TextEditingController();
   double textWidth = 10;
 
   @override
@@ -84,6 +85,10 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
                     height: 66,
                     margin: EdgeInsets.only(left: 16, right: 18, top: 9),
                     child: CustomTextField(
+                      controller: _controller,
+                      onTap: (text){
+
+                      },
                       placeHolder: 'Please Enter Your Password',
                     ),
                   ),

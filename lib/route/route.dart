@@ -1,6 +1,7 @@
 // routes.dart
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
+import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/airbattle/activity_detail_controller.dart';
 import 'package:code/controllers/airbattle/message_controller.dart';
 import 'package:code/controllers/participants/TodayDataController.dart';
@@ -19,6 +20,7 @@ class Routes {
   static const String home = '/'; // 主页
   static const String login = 'login'; // 登录界面
   static const String privacy = 'privacy';
+  static const String sendemial = 'sendEmial'; //  活动详情页面
   static const String trainingMode = 'trainingMode'; // 训练模式选择
   static const String videocheck = 'videoCheck'; // 视频校验页面
   static const String gamevideo = 'gameVideo'; //  游戏界面，选择视频录制
@@ -62,6 +64,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => MessageController());
       case actividydetail:
         return MaterialPageRoute(builder: (_) => ActivityDetailController());
+      case sendemial:
+        return MaterialPageRoute(builder: (_) => SendEmailController());
       default:
         return _errorRoute();
     }

@@ -33,7 +33,7 @@ class _UserInfoViewState extends State<UserInfoView> {
                   ),
           ),
           SizedBox(
-            height: 4,
+            width: 16,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,

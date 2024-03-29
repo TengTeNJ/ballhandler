@@ -47,7 +47,7 @@ class _HomePageViewState extends State<HomePageController> {
         margin: EdgeInsets.only(left: 0, right: 0),
         child: Column(
           children: [
-            UserInfoView(),
+            Container(margin: EdgeInsets.only(left: 16,right: 16),child: UserInfoView(),),
             SizedBox(
               height: 24,
             ),

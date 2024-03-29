@@ -1,5 +1,6 @@
 import 'package:code/controllers/account/password_page_controller.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
@@ -13,6 +14,7 @@ class EmailPageController extends StatefulWidget {
 }
 
 class _EmailPageControllerState extends State<EmailPageController> {
+  String _inputText = '';
   final TextEditingController _controller = TextEditingController();
   FocusNode _focusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
@@ -25,7 +27,7 @@ class _EmailPageControllerState extends State<EmailPageController> {
 
   void _handleTextChange() {
     // 在这里处理文本变化，比如打印出来
-    print(_controller.text);
+    _inputText =_controller.text;
   }
 
   void _handleInputFieldTap(int fieldNumber) {
@@ -110,9 +112,8 @@ class _EmailPageControllerState extends State<EmailPageController> {
                   ),
                   GestureDetector(
                     onTap: (){
-                      // Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                      //   return PasswordPageController();
-                      // }));
+                      // 跳转到输入密码页面
+                      NSUserDefault.setKeyValue<String>(kInputEmail, _inputText);
                       NavigatorUtil.present(PasswordPageController());
                     },
                     child: Container(

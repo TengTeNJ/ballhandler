@@ -60,7 +60,7 @@ class Constants {
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
-      maxLines: maxLines,
+      maxLines: maxLines ?? null,
       textAlign: textAlign,
       text,
       style: TextStyle(
@@ -240,6 +240,8 @@ class Constants {
 const kUserName = 'nickName';
 const kAvatar = 'avatar';
 const kAccessToken= 'token';
+const kInputEmail= 'inputEmail';
+
 
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';

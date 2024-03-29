@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
 
 class CustomTextField extends StatefulWidget {
-  TextEditingController? controller;
+  TextEditingController controller;
   String ?placeHolder;
   TextInputType? keyboardType;
-  final void Function()? onTap;
+  final void Function(String text)? onTap;
   bool? obscureText = false;
 
-  CustomTextField({ this.controller,this.placeHolder = '',this.keyboardType,this.onTap,this.obscureText });
+  CustomTextField({ required this.controller,this.placeHolder = '',this.keyboardType,this.onTap,this.obscureText });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -17,10 +17,20 @@ class CustomTextField extends StatefulWidget {
 
 class _CustomTextFieldState extends State<CustomTextField> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.controller!.addListener(() {
+      if(widget.onTap != null){
+        widget.onTap!(widget.controller!.text);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
       obscureText: widget.obscureText ?? false,
-      onTap: widget.onTap,
       keyboardType: widget.keyboardType != null ? widget.keyboardType : TextInputType.emailAddress,
       style: TextStyle(color: Constants.baseStyleColor),
       // 设置字体颜色

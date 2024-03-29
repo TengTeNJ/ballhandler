@@ -35,4 +35,9 @@ class NavigatorUtil {
       },
     );
   }
+
+  // 跳转到根试图
+  static popToRoot(){
+    Navigator.of(NavigatorUtil._context).popUntil((route) => route.isFirst);
+  }
 }

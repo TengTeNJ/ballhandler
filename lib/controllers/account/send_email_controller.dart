@@ -14,6 +14,8 @@ class SendEmailController extends StatefulWidget {
 }
 
 class _SendEmailControllerState extends State<SendEmailController> {
+  final TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +36,7 @@ class _SendEmailControllerState extends State<SendEmailController> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 16,right: 16),
+                  margin: EdgeInsets.only(top: 16, right: 16),
                   height: 36,
                   child: Stack(
                     children: [
@@ -47,29 +49,42 @@ class _SendEmailControllerState extends State<SendEmailController> {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 57),
-                  child: Constants.mediumWhiteTextWidget('Forgot your password?', 20),
+                  child: Constants.mediumWhiteTextWidget(
+                      'Forgot your password?', 20),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 16),
-                  child: Constants.regularGreyTextWidget('Enter your email to get help logging in.', 16),
+                  child: Constants.regularGreyTextWidget(
+                      'Enter your email to get help logging in.', 16),
                 ),
                 Container(
                   width: Constants.screenWidth(context) - 48,
-                  margin: EdgeInsets.only(top: 75,left: 24,right: 24),
+                  margin: EdgeInsets.only(top: 75, left: 24, right: 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Constants.regularGreyTextWidget('Email', 14),
-                      SizedBox(height: 10,),
-                      CustomTextField(placeHolder: '1534760657@22.com',),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                          height: 56,
+                          child: CustomTextField(
+                            controller: _controller,
+                            onTap: (text){
+
+                            },
+                            placeHolder: '1534760657@22.com',
+                          )),
                       GestureDetector(
-                        onTap: (){
-                        print('send email');
-                        TTDialog.sendEmailDialog(context);
+                        onTap: () {
+                          print('send email');
+                          TTDialog.sendEmailDialog(context);
                         },
                         child: Container(
                           child: Center(
-                            child: Constants.mediumWhiteTextWidget('Send email', 16),
+                            child: Constants.mediumWhiteTextWidget(
+                                'Send email', 16),
                           ),
                           height: 56,
                           margin: EdgeInsets.only(left: 0, right: 0, top: 32),
@@ -78,7 +93,6 @@ class _SendEmailControllerState extends State<SendEmailController> {
                               color: Constants.baseStyleColor),
                         ),
                       ),
-
                     ],
                   ),
                 )

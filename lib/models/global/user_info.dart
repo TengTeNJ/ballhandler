@@ -15,6 +15,8 @@ class UserModel extends ChangeNotifier {
   String _createTime = '----'; // 账号的创建时间
   String _avatar = ''; // 头像
   List<String> _overDataList = [];
+  String _email = ''; // 用户邮箱
+  String _inputEmail = ''; // 用户输入的邮箱
 
   // get方法
   String get userName => _userName;
@@ -34,6 +36,10 @@ class UserModel extends ChangeNotifier {
   String get createTime => _createTime;
 
   String get avatar => _avatar;
+
+  String get inputEmail => _inputEmail;
+
+  String get email => _email;
 
 
   List<String> get overDataList {
@@ -73,6 +79,15 @@ class UserModel extends ChangeNotifier {
 
   set avatar(String avatar) {
     _avatar = avatar;
+    notifyListeners();
+  }
+
+  set inputEmail(String inputEmail) {
+    _inputEmail = inputEmail;
+  }
+
+  set email(String email) {
+    _email = email;
     notifyListeners();
   }
 }

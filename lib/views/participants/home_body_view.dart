@@ -53,8 +53,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 ),
                 Container(
                   // color: Colors.red,
-                  child: Constants.regularGreyTextWidget('Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials,and push your limits.', 10,maxLines: 5,height: 1.5)
-                  ,
+                  child: Constants.regularGreyTextWidget('Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials,and push your limits.', 10,height: 1.5),
                 ),
               ],
             ),
