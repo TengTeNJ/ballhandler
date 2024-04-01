@@ -1,7 +1,10 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
+import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/ble/ble_list_view.dart';
+import 'package:code/widgets/account/cancel_button.dart';
+import 'package:code/widgets/base/base_button.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io' show Platform;
@@ -158,6 +161,42 @@ class _BLEListDialogState extends State<BLEListDialog> {
             bottom: 42,
             height: 40,
           )
+        ],
+      ),
+    );
+  }
+}
+
+class ExchangeIntegralDialog extends StatelessWidget {
+  const ExchangeIntegralDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [CancelButton()],
+          ),
+          SizedBox(
+            height: 90,
+          ),
+          Constants.regularWhiteTextWidget('Points will be redeemed', 14),
+          SizedBox(
+            height: 97,
+          ),
+          BaseButton(
+              title: 'Confirm',
+              height: 40,
+              onTap: () {
+                print('确认兑换');
+              }),
+          SizedBox(
+            height: 32,
+          ),
         ],
       ),
     );

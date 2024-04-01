@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/views/profile/exchange_rewards_view.dart';
 import 'package:flutter/material.dart';
 
@@ -16,11 +17,16 @@ class _ExchangeRewardListViewState extends State<ExchangeRewardListView> {
       width: Constants.screenWidth(context) - 32,
       child: ListView.separated(
           itemBuilder: (context, index) {
-            return ExchangeRewardsView();
+            return GestureDetector(
+              child: ExchangeRewardsView(),
+              onTap: () {
+                TTDialog.integralExchangeDialog(context);
+              },
+            );
           },
           separatorBuilder: (context, index) => SizedBox(
-            height: 12,
-          ),
+                height: 12,
+              ),
           itemCount: 6),
     );
   }
