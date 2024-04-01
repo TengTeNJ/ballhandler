@@ -11,6 +11,7 @@ import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
 import 'package:code/controllers/participants/video_check_controller.dart';
 import 'package:code/controllers/participants/video_play_controller.dart';
+import 'package:code/controllers/profile/Integral_detail_controller.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
@@ -29,7 +30,7 @@ class Routes {
   static const String todaydata = 'todayData'; //  视频播放页面
   static const String message = 'message'; //  消息页面
   static const String actividydetail = 'activityDetail'; //  活动详情页面
-
+  static const String integraldetail = 'integralDetail'; //  活动详情页面
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
@@ -66,6 +67,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => ActivityDetailController());
       case sendemial:
         return MaterialPageRoute(builder: (_) => SendEmailController());
+      case integraldetail:
+        return MaterialPageRoute(builder: (_) => IntegralDetailController());
       default:
         return _errorRoute();
     }

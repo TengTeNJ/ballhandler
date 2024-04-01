@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/profile/exchange_rewards_list_view.dart';
 import 'package:code/views/profile/integral_next_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
@@ -49,6 +50,7 @@ class _IntegralControllerState extends State<IntegralController> {
               GestureDetector(
                 onTap: () {
                   print('to integral detail');
+                  NavigatorUtil.push('integralDetail');
                 },
                 child: Container(
                   width: 60,
