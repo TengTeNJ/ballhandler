@@ -1,6 +1,8 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/profile/integral_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/profile/profile_grid_list_view.dart';
 import 'package:code/views/profile/profile_grid_view.dart';
 import 'package:code/views/profile/progress_data_view.dart';
@@ -77,7 +79,12 @@ class _ProfileControllerState extends State<ProfileController> {
                 ),
                 RewardView(),
                 SizedBox(height: 6,),
-                ProgressDataView(),
+                GestureDetector(
+                  onTap: (){
+                    NavigatorUtil.present(IntegralController());
+                  },
+                  child: ProgressDataView(),
+                ),
                 SizedBox(height: 40,),
                 Constants.mediumWhiteTextWidget('Lifetime Stats', 16),
                 SizedBox(height: 12,),
@@ -86,7 +93,6 @@ class _ProfileControllerState extends State<ProfileController> {
                 Constants.mediumWhiteTextWidget('Pending discussion', 16),
                 SizedBox(height: 12,),
                 RewardiconsView(),
-
               ],
             );
           },),
