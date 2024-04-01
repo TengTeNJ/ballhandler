@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 // 用户信息模型
 class UserModel extends ChangeNotifier {
-  String _userName = ''; // 同户名
+  String _userName = 'Mike'; // 同户名
   String _avgPace = '1.0'; // 平均速度
   String _totalScore = '1000'; // 总得分
   String _totalTime = '4500'; // 总时常

@@ -66,7 +66,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
             height: 144,
             child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.5, // 设置宽高低，否则宽度默认和撑起的高度一样
+                    childAspectRatio: 0.5, // 设置宽高比，否则宽度默认和撑起的高度一样
                     crossAxisCount: 2,
                     crossAxisSpacing: 32,
                     mainAxisSpacing: 64),

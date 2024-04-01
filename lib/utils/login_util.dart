@@ -2,7 +2,7 @@ import 'package:code/models/http/user_model.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 /*登录类型*/
 enum LoginType {
   appleID,
@@ -31,6 +31,21 @@ class LoginUtil {
          } catch (error) {
            print(error);
          }
+       }
+       else if(type == LoginType.appleID){
+         final credential = await SignInWithApple.getAppleIDCredential(
+           scopes: [
+             AppleIDAuthorizationScopes.email,
+             AppleIDAuthorizationScopes.fullName,
+           ],
+         );
+         print('credential${credential.userIdentifier}');
+         print('credential${credential.givenName}');
+         print('credential${credential.familyName}');
+         print('credential${credential.authorizationCode}');
+         print('credential${credential.email}');
+         print('credential${credential.identityToken}');
+         print('credential${credential.state}');
        }
        return ApiResponse(success: false);
      }

@@ -80,6 +80,11 @@ class _LoginPageControllerState extends State<LoginPageController> {
                   child: Column(
                     children: List.generate(_thirdMaps.length, (index) {
                       return InkWell(onTap: () async{
+                        if(index == 0){
+                          ApiResponse<User> _response =  await LoginUtil.thirdLogin(LoginType.appleID);
+                          print('result=${_response.success}');
+return;
+                        }
                          ApiResponse<User> _response =  await LoginUtil.thirdLogin(LoginType.google);
                          print('result=${_response.success}');
                          if(_response.success == true){

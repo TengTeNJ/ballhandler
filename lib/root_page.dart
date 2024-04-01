@@ -2,6 +2,7 @@ import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
+import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -23,7 +24,7 @@ class _RootPageControllerState extends State<RootPageController> {
     HomePageController(),
     AirBattleHomeController(),
     RankingController(),
-    HomePageController(),
+    ProfileController(),
   ];
   @override
   void initState() {
@@ -52,8 +53,8 @@ class _RootPageControllerState extends State<RootPageController> {
         if(index == 1){
          // NavigatorUtil.push('login');
           if(UserProvider.of(context).hasLogin == false){
-            NavigatorUtil.present(SendEmailController());
-            //NavigatorUtil.present(LoginPageController());
+            //NavigatorUtil.present(SendEmailController());
+            NavigatorUtil.present(LoginPageController());
           }
          // NavigatorUtil.present(TestController());
          // NavigatorUtil.present(SendEmailController());

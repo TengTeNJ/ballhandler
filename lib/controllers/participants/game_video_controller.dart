@@ -39,11 +39,9 @@ class _GameVideoontrollerState extends State<GameVideoontroller> {
       if(type == BLEDataType.gameStatu){
         // 游戏开始
         if(BluetoothManager().gameData.gameStart == true){
-          startRecord();
+
         }else{
-          String videoPath =  await stopRecord();
-          path = videoPath;
-          //NavigatorUtil.push('videoPlay',arguments: path);
+
         }
       }else{
         setState(() {
