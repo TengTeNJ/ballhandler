@@ -4,6 +4,7 @@ import 'package:code/controllers/account/privacy_page_controller.dart';
 import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/airbattle/activity_detail_controller.dart';
 import 'package:code/controllers/airbattle/message_controller.dart';
+import 'package:code/controllers/airbattle/my_activity_controller.dart';
 import 'package:code/controllers/participants/TodayDataController.dart';
 import 'package:code/controllers/participants/game_finish_controller.dart';
 import 'package:code/controllers/participants/game_process_controller.dart';
@@ -33,6 +34,7 @@ class Routes {
   static const String actividydetail = 'activityDetail'; //  活动详情页面
   static const String integraldetail = 'integralDetail'; //  活动详情页面
   static const String gameprocess = 'gameProcess'; //  游戏界面
+  static const String myactivity = 'myActivity'; // 我的活动页面
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
@@ -75,6 +77,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SendEmailController());
       case integraldetail:
         return MaterialPageRoute(builder: (_) => IntegralDetailController());
+      case myactivity:
+        return MaterialPageRoute(builder: (_) => MyActivityController());
       default:
         return _errorRoute();
     }

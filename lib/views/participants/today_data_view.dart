@@ -38,24 +38,26 @@ class _TodayDataViewState extends State<TodayDataView> {
           Positioned(
               top: 12,
               bottom: 12,
-              left: 12,
+              left: 16,
               right: 46,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image(
-                      image: AssetImage('images/participants/icon_orange.png'),
+                      image: AssetImage('images/airbattle/gold.png'),
                       width: 48,
                       height: 48,
                       fit: BoxFit.fill
                   ),
+                  SizedBox(width: 16,),
                   Expanded(child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Constants.customTextWidget('Training Mode', 14, '#B1B1B1'),
+                          SizedBox(width: 16,),
                           Constants.regularWhiteTextWidget('Mar 31,2024 10:30', 10),
                         ],
                       ),

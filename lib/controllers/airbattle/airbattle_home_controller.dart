@@ -65,7 +65,9 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
             margin: EdgeInsets.only(left: 16, right: 16),
             child: Row(
               children: [
-                Container(
+                GestureDetector(onTap: (){
+                  NavigatorUtil.push('myActivity');
+                },child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Constants.darkControllerColor),
@@ -76,14 +78,14 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(padding: EdgeInsets.only(left: 12, top: 12),
-                          child: Constants.regularGreyTextWidget(
-                              'Activity', 12), ),
+                        child: Constants.regularGreyTextWidget(
+                            'Activity', 12), ),
                       Padding(padding: EdgeInsets.only(left: 12, top: 12),
                         child: Constants.mediumWhiteTextWidget(
                             '10', 40), ),
                     ],
                   ),
-                ),
+                ),),
                 SizedBox(width: 8,),
                 Container(
                   decoration: BoxDecoration(

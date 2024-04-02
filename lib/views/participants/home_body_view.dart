@@ -60,32 +60,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           ),
           GestureDetector(
             onTap: () async{
-              //await startRecord();
-              GameOverModel model = GameOverModel();
-
-              // if(_start){
-              //   String path = await stopRecord();
-              //   _start = false;
-              //   NavigatorUtil.push('videoPlay',arguments: path);
-              // }else{
-              //   _start = await startRecord();
-              // }
               NavigatorUtil.push('trainingMode');
-
-            // NavigatorUtil.push('gameFinish',arguments: model);
-            //   PermissionStatus pp = await Permission.bluetooth.request();
-            //   print('Permission.bluetooth.status=${ pp}');
-            //   if(await Permission.bluetooth.status != PermissionStatus.granted){
-            //     print('123');
-            //     PermissionStatus s= await Permission.bluetooth.request();
-            //     print('s==${s}');
-            //   //  openAppSettings();
-            //   }else{
-            //     NavigatorUtil.push('trainingMode');
-            //   }
-              //NavigatorUtil.push('trainingMode');
-
-              //NavigatorUtil.push('trainingMode');
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 16, left: 56, right: 56),

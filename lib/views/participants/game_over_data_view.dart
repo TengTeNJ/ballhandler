@@ -114,7 +114,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
                       Positioned.fill(
                         child: FutureBuilder<String?>(
                           future: VideoThumbnail.thumbnailFile(
-                            video: widget.dataModel.videoPath,
+                            video: widget.dataModel.videoPath??'',
                             imageFormat: ImageFormat.PNG,
                             maxWidth: 24,
                             quality: 50,
@@ -145,7 +145,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
                 onTap: () {
                   print('播放视频');
                   NavigatorUtil.push('videoPlay',
-                      arguments: widget.dataModel.videoPath);
+                      arguments: widget.dataModel.videoPath??'');
                 },
               ),
               SizedBox(

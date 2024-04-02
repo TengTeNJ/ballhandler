@@ -1,11 +1,13 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/views/participants/fireworks_animation-view.dart';
 import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class GameFinishController extends StatefulWidget {
   final GameOverModel dataModel;
@@ -89,10 +91,12 @@ class _GameFinishControllerState extends State<GameFinishController> {
                 ),
               ],
             ),
-            SizedBox(height: 56,),
+            SizedBox(height: Constants.screenHeight(context)*0.05,),
             GestureDetector(
               onTap: (){
                 print('save data');
+                DatabaseHelper dbHelper = DatabaseHelper();
+                dbHelper.insertData(kDataBaseTableName, widget.dataModel);
               },
               child: Container(
                 margin: EdgeInsets.only(left: 24,right: 24),
@@ -112,8 +116,10 @@ class _GameFinishControllerState extends State<GameFinishController> {
               ),
             ),
             GestureDetector(
-              onTap: (){
+              onTap: ()async{
                 print('delete data');
+              final _data =  await DatabaseHelper().getData(kDataBaseTableName);
+              print('_data=${_data[0].score}');
               },
               child: Container(
                 margin: EdgeInsets.only(left: 24,right: 24),
