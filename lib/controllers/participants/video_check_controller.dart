@@ -133,7 +133,7 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                       List<CameraDescription> cameras =
                       await availableCameras();
                       NavigatorUtil.popAndThenPush(
-                        'gameVideo',
+                        'gameProcess',
                         arguments: cameras[0],
                       );
                       // bool hasGranted = false;

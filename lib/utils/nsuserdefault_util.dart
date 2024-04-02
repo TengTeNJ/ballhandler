@@ -60,7 +60,7 @@ class NSUserDefault {
       UserProvider.of(context).avatar = _ava;
     }
     if(_token!=null){
-      UserProvider.of(context).hasLogin = true;
+      UserProvider.of(context).token = _token;
     }
   }
 }

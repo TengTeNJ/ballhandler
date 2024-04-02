@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class GameOverDataView extends StatefulWidget {
   final GameOverModel dataModel;
@@ -58,28 +62,30 @@ class _GameOverDataViewState extends State<GameOverDataView> {
             child: Row(
               children: List.generate(3, (index) {
                 return Expanded(
-                  flex: 1,
-                    child:  Row(
+                    flex: 1,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: (Constants.screenWidth(context) - 96 -1.5 ) / 3.0,
+                          width:
+                              (Constants.screenWidth(context) - 96 - 1.5) / 3.0,
                           // color: Colors.blue,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Constants.boldWhiteTextWidget(_datas[index], 24),
-                              Constants.regularBaseTextWidget(_titles[index], 14),
+                              Constants.regularBaseTextWidget(
+                                  _titles[index], 14),
                             ],
                           ),
                         ),
                         index != (_titles.length - 1)
                             ? Container(
-                          height: 40,
-                          width: 0.5,
-                          color: Color.fromRGBO(86, 86, 116, 1.0),
-                        )
+                                height: 40,
+                                width: 0.5,
+                                color: Color.fromRGBO(86, 86, 116, 1.0),
+                              )
                             : Container(),
                       ],
                     ));
@@ -95,28 +101,59 @@ class _GameOverDataViewState extends State<GameOverDataView> {
             width: Constants.screenWidth(context) - 96,
           ),
           Expanded(
-              child:  Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    color: Colors.red,
-                    width: 24,
-                    height: 24,
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image(
-                            image: AssetImage('images/participants/play.png'),
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                child: Container(
+                  color: Colors.red,
+                  width: 24,
+                  height: 24,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: FutureBuilder<String?>(
+                          future: VideoThumbnail.thumbnailFile(
+                            video: widget.dataModel.videoPath,
+                            imageFormat: ImageFormat.PNG,
+                            maxWidth: 24,
+                            quality: 50,
                           ),
-                        )
-                      ],
-                    ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                snapshot.data != null) {
+                              return Image.file(
+                                  width: 24, height: 24, File(snapshot.data!));
+                            } else if (snapshot.error != null) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image(
+                          image: AssetImage('images/participants/play.png'),
+                        ),
+                      )
+                    ],
                   ),
-                  SizedBox(width: 12,),
-                  Constants.regularWhiteTextWidget('Training video', 14),
-                ],
-              )),
+                ),
+                onTap: () {
+                  print('播放视频');
+                  NavigatorUtil.push('videoPlay',
+                      arguments: widget.dataModel.videoPath);
+                },
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              Constants.regularWhiteTextWidget('Training video', 14),
+            ],
+          )),
         ],
       ),
     );

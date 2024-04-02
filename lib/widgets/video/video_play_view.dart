@@ -19,7 +19,7 @@ class _VideoPlayViewState extends State<VideoPlayView> {
     super.initState();
     File file = File(widget.videoPath);
     _controller = VideoPlayerController.file(file)..initialize();
-    //_controller.play();
+    _controller.play();
   }
 
   @override

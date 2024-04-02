@@ -6,6 +6,7 @@ import 'package:code/controllers/airbattle/activity_detail_controller.dart';
 import 'package:code/controllers/airbattle/message_controller.dart';
 import 'package:code/controllers/participants/TodayDataController.dart';
 import 'package:code/controllers/participants/game_finish_controller.dart';
+import 'package:code/controllers/participants/game_process_controller.dart';
 import 'package:code/controllers/participants/game_video_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
@@ -31,6 +32,7 @@ class Routes {
   static const String message = 'message'; //  消息页面
   static const String actividydetail = 'activityDetail'; //  活动详情页面
   static const String integraldetail = 'integralDetail'; //  活动详情页面
+  static const String gameprocess = 'gameProcess'; //  游戏界面
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
@@ -53,6 +55,10 @@ class Routes {
       case gamefinish:{
         final  GameOverModel model = settings.arguments as GameOverModel;
         return MaterialPageRoute(builder: (_)=> GameFinishController(dataModel: model,));
+      }
+      case gameprocess:{
+        final  CameraDescription camera = settings.arguments as CameraDescription;
+        return MaterialPageRoute(builder: (_)=> GameProcessController(camera: camera,));
       }
       case videoplay:{
         final  String path = settings.arguments as String;

@@ -21,18 +21,20 @@ class _IntegralDetailControllerState extends State<IntegralDetailController> {
         showBack: true,
         title: 'Points Details ',
       ),
-      body: Expanded(
-        child: ListView.separated(
-            itemBuilder: (context, index) {
-              return IntegralView();
-            },
-            separatorBuilder: (context, index) => Container(
-                  margin: EdgeInsets.only(left: 16, right: 16),
-                  decoration: BoxDecoration(color: hexStringToColor('#565674')),
-                  height: 1,
-                ),
-            itemCount: 20),
-      ),
+      body: Column(children:[
+        Expanded(
+          child: ListView.separated(
+              itemBuilder: (context, index) {
+                return IntegralView();
+              },
+              separatorBuilder: (context, index) => Container(
+                margin: EdgeInsets.only(left: 16, right: 16),
+                decoration: BoxDecoration(color: hexStringToColor('#565674')),
+                height: 1,
+              ),
+              itemCount: 20),
+        )
+      ] ,),
     );
   }
 }
