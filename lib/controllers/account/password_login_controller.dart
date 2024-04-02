@@ -1,4 +1,6 @@
 import 'package:code/controllers/account/password_page_controller.dart';
+import 'package:code/services/http/account.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
@@ -15,6 +17,7 @@ class PassWordLoginController extends StatefulWidget {
 }
 
 class _PassWordLoginControllerState extends State<PassWordLoginController> {
+  String _inputText = '';
   final TextEditingController _controller = TextEditingController();
   double textWidth = 10;
 
@@ -23,6 +26,7 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,8 +72,7 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
                   SizedBox(
                     height: 10,
                   ),
-                  Constants.regularWhiteTextWidget(
-                      "Let's start with email", 22),
+                  Constants.regularWhiteTextWidget("Welcome back", 22),
                   Container(
                     width: Constants.screenWidth(context),
                     margin: EdgeInsets.only(left: 16, right: 16, top: 55),
@@ -86,18 +89,20 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
                     margin: EdgeInsets.only(left: 16, right: 18, top: 9),
                     child: CustomTextField(
                       controller: _controller,
-                      onTap: (text){
-
+                      onTap: (text) {
+                        _inputText = text;
                       },
                       placeHolder: 'Please Enter Your Password',
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      // Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                      //   return PasswordPageController();
-                      // }));
-                      NavigatorUtil.present(PasswordPageController());
+                    onTap: () async{
+                     final _response = await Account.emailLogin(_inputText);
+                     // 登录成功
+                     if(_response.success == true){
+                       Account.handleUserData(_response, context);
+                       NavigatorUtil.popToRoot();
+                     }
                     },
                     child: Container(
                       child: Center(
@@ -111,27 +116,29 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
                     ),
                   ),
                   GestureDetector(
-                   child:  Container(
-                     margin: EdgeInsets.only(top: 24),
-                     child: Center(
-                       child: Text(
-                         'Forgot password',
-                         style: TextStyle(
-                           fontSize: 16,
-                           color: Colors.white,
-                           fontFamily: 'SanFranciscoDisplay',
-                           fontWeight: FontWeight.w500,
-                           decoration: TextDecoration.underline, // 设置下划线
-                           decorationColor: Colors.white, // 设置下划线颜色为红色
-                           decorationThickness: 2.0, // 设置下划线粗细为2.0
-                         ),
-                       ),
-                     ),
-                   ),
-                   onTap: (){
-                     print('忘记密码');
-                   },
-                 )
+                    child: Container(
+                      margin: EdgeInsets.only(top: 24),
+                      child: Center(
+                        child: Text(
+                          'Forgot password',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontFamily: 'SanFranciscoDisplay',
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline,
+                            // 设置下划线
+                            decorationColor: Colors.white,
+                            // 设置下划线颜色为红色
+                            decorationThickness: 2.0, // 设置下划线粗细为2.0
+                          ),
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      print('忘记密码');
+                    },
+                  )
                 ],
               ),
             ),

@@ -217,7 +217,7 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                         // NavigatorUtil.present()
                         final _response = await Account.emailLogin(_pwdText);
                         if (_response.success == true) {
-                          handleUserData(_response, context);
+                          Account.handleUserData(_response, context);
                           NavigatorUtil.popToRoot();
                         }
                       }
@@ -241,14 +241,3 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
   }
 }
 
-/*处理登录成功后返回的数据*/
-handleUserData(ApiResponse<User> _response, BuildContext context) {
-  NSUserDefault.setKeyValue<String>(kUserName, _response.data!.nickName);
-  NSUserDefault.setKeyValue<String>(kAccessToken, _response.data!.memberToken);
-  NSUserDefault.setKeyValue<String>(kAvatar, _response.data!.avatar);
-  UserProvider.of(context).userName = _response.data!.nickName;
-  UserProvider.of(context).token = _response.data!.memberToken;
-  UserProvider.of(context).avatar = _response.data!.avatar;
-  UserProvider.of(context).createTime = _response.data!.createTime;
-
-}

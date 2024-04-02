@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/models/http/user_model.dart';
+import 'package:code/services/http/account.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/login_util.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -89,7 +90,7 @@ class _LoginPageControllerState extends State<LoginPageController> {
                           print('result=${_response.success}');
                           if (_response.success == true) {
                             // 登录成功
-                            handleUserData(_response,context);
+                            Account.handleUserData(_response, context);
                             NavigatorUtil.pop();
                           };
                         },
@@ -172,20 +173,4 @@ class _LoginPageControllerState extends State<LoginPageController> {
           ),
         ));
   }
-}
-/*处理登录成功后返回的数据*/
-handleUserData(ApiResponse<User> _response,BuildContext context){
-  NSUserDefault.setKeyValue<String>(
-      kUserName, _response.data!.nickName);
-  NSUserDefault.setKeyValue<String>(
-      kAccessToken, _response.data!.memberToken);
-  NSUserDefault.setKeyValue<String>(
-      kAvatar, _response.data!.avatar);
-  UserProvider.of(context).userName =
-      _response.data!.nickName;
-  UserProvider.of(context).token =
-      _response.data!.memberToken;
-  UserProvider.of(context).avatar =
-      _response.data!.avatar;
-  UserProvider.of(context).createTime = _response.data!.createTime;
 }

@@ -31,7 +31,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
               children: [
                 Constants.boldWhiteTextWidget('Air Battle', 30),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     NavigatorUtil.push('message');
                   },
                   child: Container(
@@ -59,7 +59,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
             ),
           ),
           SizedBox(
-            height: 16,
+            height: 19,
           ),
           Container(
             margin: EdgeInsets.only(left: 16, right: 16),
@@ -69,117 +69,65 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Constants.darkControllerColor),
-                  width: (Constants.screenWidth(context) - 40) * 0.357,
-                  height: 120,
+                  width: (Constants.screenWidth(context) - 48) / 3,
+                  height: 100,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Constants.mediumWhiteTextWidget('Activity', 14),
-                            Image(
-                                width: 18,
-                                height: 18,
-                                image: AssetImage('images/airbattle/next.png'))
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        ),
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                        child: Constants.mediumWhiteTextWidget('10', 40),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                        child: Constants.regularGreyTextWidget('Attended', 14),
-                      )
+                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                          child: Constants.regularGreyTextWidget(
+                              'Activity', 12), ),
+                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                        child: Constants.mediumWhiteTextWidget(
+                            '10', 40), ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  width: 8,
-                ),
+                SizedBox(width: 8,),
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Constants.darkControllerColor),
-                  width: (Constants.screenWidth(context) - 40) * 0.643,
-                  height: 120,
+                  width: (Constants.screenWidth(context) - 48) / 3,
+                  height: 100,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Constants.mediumWhiteTextWidget('Activity', 14),
-                            Image(
-                                width: 18,
-                                height: 18,
-                                image: AssetImage('images/airbattle/next.png'))
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        ),
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                        child: Constants.mediumWhiteTextWidget('10', 40),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Constants.regularGreyTextWidget('Award', 14),
-                            Container(
-                              height: 26,
-                              width: 120,
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Constants.regularGreyTextWidget(
-                                          'Points', 14),
-                                      Row(
-                                        children: [
-                                          Constants.regularBaseTextWidget(
-                                              '200', 14),
-                                          Constants.regularWhiteTextWidget(
-                                              '/1000', 14),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  LinearProgressIndicator(
-                                    borderRadius: BorderRadius.circular(10),
-                                    value: 0.2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Constants.baseStyleColor),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                        child: Constants.regularGreyTextWidget(
+                            'My Rewards', 12), ),
+                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                        child: Constants.mediumWhiteTextWidget(
+                            '1', 40), ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 32,
+                SizedBox(width: 8,),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Constants.darkControllerColor),
+                  width: (Constants.screenWidth(context) - 48) / 3,
+                  height: 100,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                        child: Constants.regularGreyTextWidget(
+                            'Activity Points', 12), ),
+                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                        child: Constants.mediumWhiteTextWidget(
+                            '20', 40), ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
+          SizedBox(width: 8,),
           SizedBox(
             height: 32,
           ),
@@ -192,15 +140,15 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
           ),
           Expanded(
               child: Container(
-            margin: EdgeInsets.only(left: 16, right: 16),
-            child: ActivityListView(
-              selectItem: (ActivityModel model){
-                print('点击了活动');
-                NavigatorUtil.push('activityDetail');
-              },
-              datas: [ActivityModel(), ActivityModel()],
-            ),
-          )),
+                margin: EdgeInsets.only(left: 16, right: 16),
+                child: ActivityListView(
+                  selectItem: (ActivityModel model) {
+                    print('点击了活动');
+                    NavigatorUtil.push('activityDetail');
+                  },
+                  datas: [ActivityModel(), ActivityModel()],
+                ),
+              )),
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:code/models/global/user_info.dart';
 import 'package:code/models/http/user_model.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:flutter/material.dart';
 class Account {
   /*第三方登录*/
   static Future<ApiResponse<User>> thirdLogin(Map<String,dynamic> data) async {
@@ -37,7 +38,7 @@ class Account {
       "account":email,
       "password":password
     };
-    final response = await HttpUtil.get('/api/login/loginByPwd', _data);
+    final response = await HttpUtil.get('/api/login/loginByPwd', _data,showLoading: true);
     return ApiResponse(success: response.success,data: User.fromJson(response.data['data']??{}));
   }
 /*
@@ -53,6 +54,25 @@ class Account {
     final response = await HttpUtil.post('/api/login/register', _data,showLoading: true);
     return ApiResponse(success: response.success);
   }
+/*校验账号是否已存在*/
+  static Future<ApiResponse<bool>> checkeEmail(String account) async{
+    final email = await NSUserDefault.getValue<String>(kInputEmail);
+    Map<String,dynamic> _data = {
+      "account":email,
+    };
+    final response = await HttpUtil.get('/api/login/checkEmail', _data);
+    return ApiResponse(success: response.success,data: response.data['code'] == '0');
+  }
 
+  /*处理登录成功后返回的数据*/
+ static handleUserData(ApiResponse<User> _response, BuildContext context) {
+    NSUserDefault.setKeyValue<String>(kUserName, _response.data!.nickName);
+    NSUserDefault.setKeyValue<String>(kAccessToken, _response.data!.memberToken);
+    NSUserDefault.setKeyValue<String>(kAvatar, _response.data!.avatar);
+    UserProvider.of(context).userName = _response.data!.nickName;
+    UserProvider.of(context).token = _response.data!.memberToken;
+    UserProvider.of(context).avatar = _response.data!.avatar;
+    UserProvider.of(context).createTime = _response.data!.createTime;
 
+  }
 }
