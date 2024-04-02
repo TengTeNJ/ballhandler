@@ -20,8 +20,8 @@ class HttpUtil {
   ));
 
   static Future<ApiResponse> get(
-      String path, Map<String, dynamic>? query, Object? data,
-      {bool showLoading = false}) async {
+      String path, Map<String, dynamic>? query,
+      {bool showLoading = false,Map<String, dynamic> data = const {}}) async {
     // 显示蒙板
     if (showLoading) {
       TTToast.showLoading();
@@ -31,11 +31,14 @@ class HttpUtil {
         Uri uri = Uri.parse(path).replace(queryParameters: query);
         path = uri.toString();
       }
+      print('get数据请求data:${path}');
+      print('get数据请求data:${data}');
       final response = await _dio.get(path, data: data);
+      print('get数据请求返回data:${response}');
       if (showLoading) {
         TTToast.hideLoading();
       }
-      if (response.statusCode == 200 || response.statusCode == 0) {
+      if ( response.data!= null && response.data['code'] == '0' ) {
         return ApiResponse(
             success: true, data: response.data, errorMessage: 'success');
       } else {
@@ -61,11 +64,14 @@ class HttpUtil {
       TTToast.showLoading();
     }
     try {
+      print('post数据请求data:${path}');
+      print('post数据请求data:${data}');
       final response = await _dio.post(path, data: data);
+      print('post数据请求返回data:${response}');
       if (showLoading) {
         TTToast.hideLoading();
       }
-      if (response.statusCode == 200 || response.statusCode == 0) {
+      if ( response.data != null && response.data['code'] == '0') {
         return ApiResponse(
             success: true, data: response.data, errorMessage: 'success');
       } else {

@@ -46,19 +46,22 @@ class _RootPageControllerState extends State<RootPageController> {
     return Scaffold(
       resizeToAvoidBottomInset:false,
       bottomNavigationBar: CustomBottomNavigationBar(onTap: (index){
-        setState(() {
-
-        });
-        _currentIndex = index;
         if(index == 1){
          // NavigatorUtil.push('login');
           if(UserProvider.of(context).hasLogin == false){
             //NavigatorUtil.present(SendEmailController());
             NavigatorUtil.present(LoginPageController());
+          }else{
+            _currentIndex = index;
           }
          // NavigatorUtil.present(TestController());
          // NavigatorUtil.present(SendEmailController());
+        }else{
+          _currentIndex = index;
         }
+        setState(() {
+
+        });
       },),
       body: _pageViews[_currentIndex],
     );

@@ -1,11 +1,14 @@
+import 'package:code/constants/constants.dart';
+import 'package:code/models/global/user_info.dart';
 import 'package:code/models/http/user_model.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/http_util.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 /*登录类型*/
 enum LoginType {
-  appleID,
+  appleID ,
   google,
   faceBook,
 }
@@ -22,10 +25,11 @@ class LoginUtil {
                "avatarUrl": googleUser.photoUrl,
                "gender": 0,
                "nickName": googleUser.displayName,
-               "thirdLoginType": 1,
+               "thirdLoginType": 2,
                "thirdOpenId": googleUser.id
              };
-            return await Account.thirdLogin(_map);
+             final _response = await Account.thirdLogin(_map);
+            return _response;
            }
            // 登录成功后的逻辑，可以跳转到下一个页面或执行其他操作
          } catch (error) {
@@ -39,13 +43,14 @@ class LoginUtil {
              AppleIDAuthorizationScopes.fullName,
            ],
          );
-         print('credential${credential.userIdentifier}');
-         print('credential${credential.givenName}');
-         print('credential${credential.familyName}');
-         print('credential${credential.authorizationCode}');
-         print('credential${credential.email}');
-         print('credential${credential.identityToken}');
-         print('credential${credential.state}');
+         final _map = {
+           "avatarUrl": '',
+           "gender": 0,
+           "nickName": credential.givenName,
+           "thirdLoginType": 1,
+           "thirdOpenId": credential.userIdentifier
+         };
+         return await Account.thirdLogin(_map);
        }
        return ApiResponse(success: false);
      }

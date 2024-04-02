@@ -9,6 +9,7 @@ import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 class LoginPageController extends StatefulWidget {
   const LoginPageController({super.key});
 
@@ -27,7 +28,8 @@ class _LoginPageControllerState extends State<LoginPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false, // 在email页面弹出键盘时总是会弹出溢出的错误，以为是那个页面除了错误，最终发现原来是这个页面的Column溢出了，也是点击控制台日志发现的，于是使用这个方式解决
+        resizeToAvoidBottomInset: false,
+        // 在email页面弹出键盘时总是会弹出溢出的错误，以为是那个页面除了错误，最终发现原来是这个页面的Column溢出了，也是点击控制台日志发现的，于是使用这个方式解决
         backgroundColor: Colors.transparent,
         body: ClipRRect(
           borderRadius: BorderRadius.circular(26),
@@ -79,52 +81,47 @@ class _LoginPageControllerState extends State<LoginPageController> {
                   margin: EdgeInsets.only(top: 48),
                   child: Column(
                     children: List.generate(_thirdMaps.length, (index) {
-                      return InkWell(onTap: () async{
-                        if(index == 0){
-                          ApiResponse<User> _response =  await LoginUtil.thirdLogin(LoginType.appleID);
+                      return InkWell(
+                        onTap: () async {
+                          LoginType type = LoginType.values[index];
+                          ApiResponse<User> _response =
+                              await LoginUtil.thirdLogin(type);
                           print('result=${_response.success}');
-return;
-                        }
-                         ApiResponse<User> _response =  await LoginUtil.thirdLogin(LoginType.google);
-                         print('result=${_response.success}');
-                         if(_response.success == true){
-                           // 谷歌登录成功
-                           NSUserDefault.setKeyValue<String>(kUserName, _response.data!.nickName);
-                           NSUserDefault.setKeyValue<String>(kAccessToken, _response.data!.memberToken);
-                           NSUserDefault.setKeyValue<String>(kAvatar, _response.data!.avatar);
-                           UserProvider.of(context).userName = _response.data!.nickName;
-                           UserProvider.of(context).token = _response.data!.memberToken;
-                           UserProvider.of(context).avatar = _response.data!.avatar;
-                           NavigatorUtil.pop();
-                         }
-;                      },child: Padding(
-                        padding: EdgeInsets.only(bottom: 13),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromRGBO(28, 30, 33, 1.0),
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: EdgeInsets.only(left: 16, right: 16),
-                          height: 56,
-                          child: Stack(
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Constants.regularWhiteTextWidget(
-                                    _thirdMaps[index]['label'], 14),
-                              ),
-                              Positioned(
-                                  left: 12,
-                                  top: 16,
-                                  child: Image(
-                                    width: 20,
-                                    height: 24,
-                                    image:
-                                    AssetImage(_thirdMaps[index]['icon']),
-                                  ))
-                            ],
+                          if (_response.success == true) {
+                            // 登录成功
+                            handleUserData(_response,context);
+                            NavigatorUtil.pop();
+                          };
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 13),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(28, 30, 33, 1.0),
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: EdgeInsets.only(left: 16, right: 16),
+                            height: 56,
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Constants.regularWhiteTextWidget(
+                                      _thirdMaps[index]['label'], 14),
+                                ),
+                                Positioned(
+                                    left: 12,
+                                    top: 16,
+                                    child: Image(
+                                      width: 20,
+                                      height: 24,
+                                      image:
+                                          AssetImage(_thirdMaps[index]['icon']),
+                                    ))
+                              ],
+                            ),
                           ),
                         ),
-                      ),);
+                      );
                     }),
                   ),
                 ),
@@ -175,4 +172,20 @@ return;
           ),
         ));
   }
+}
+/*处理登录成功后返回的数据*/
+handleUserData(ApiResponse<User> _response,BuildContext context){
+  NSUserDefault.setKeyValue<String>(
+      kUserName, _response.data!.nickName);
+  NSUserDefault.setKeyValue<String>(
+      kAccessToken, _response.data!.memberToken);
+  NSUserDefault.setKeyValue<String>(
+      kAvatar, _response.data!.avatar);
+  UserProvider.of(context).userName =
+      _response.data!.nickName;
+  UserProvider.of(context).token =
+      _response.data!.memberToken;
+  UserProvider.of(context).avatar =
+      _response.data!.avatar;
+  UserProvider.of(context).createTime = _response.data!.createTime;
 }

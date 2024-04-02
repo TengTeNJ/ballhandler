@@ -29,7 +29,7 @@ class UserModel extends ChangeNotifier {
 
   String get totalTimes => _totalTimes;
 
-  bool get hasLogin => _hasLogin;
+  bool get hasLogin => _token!=null && _token.length>0;
 
   String get token => _token;
 

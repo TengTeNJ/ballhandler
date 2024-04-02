@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 class StringUtil {
   /*邮箱校验*/
   static bool isValidEmail(String email) {
@@ -25,5 +26,14 @@ class StringUtil {
     String pattern = r'^[a-zA-Z0-9]{1,16}$';
     RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(nickname);
+  }
+
+  /*时间转字符串*/
+  static String dateTimeToString(DateTime datetime){
+    print('datetime11=${datetime}');
+    String _string = formatDate(datetime, [yyyy, '-', mm, '-', dd]);
+    print('datetime=${datetime}');
+    print('_string=' + _string);
+    return _string;
   }
 }
