@@ -1,4 +1,6 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/account/login_page_controller.dart';
+import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
@@ -75,10 +77,26 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       currentIndex: currentIndex,
       onTap: (index){
         setState(() {
-          this.currentIndex = index;
-          if(widget.onTap != null){
-            widget.onTap!(index);
-          }
+          // AirBattle页面登录拦截
+         if(index == 1){
+           // 判断登录的拦截
+           final _hasLogin =  UserProvider.of(context).hasLogin ;
+           if(_hasLogin == false){
+             NavigatorUtil.present(LoginPageController());
+           }else{
+             this.currentIndex = index;
+             if(widget.onTap != null){
+               widget.onTap!(index);
+             }
+           }
+
+         }else{
+           this.currentIndex = index;
+           if(widget.onTap != null){
+             widget.onTap!(index);
+           }
+         }
+
         });
       },
       selectedFontSize: selectedFontSize,

@@ -26,46 +26,38 @@ class _RootPageControllerState extends State<RootPageController> {
     RankingController(),
     ProfileController(),
   ];
+
   @override
   void initState() {
     super.initState();
     _pageController = PageController()
-     ..addListener(() {
-       // 获取当前滑动页面的索引 (取整)
-       int currentpage = _pageController.page!.round();
-       if(_currentIndex !=  currentpage){
-         setState(() {
-           _currentIndex = currentpage;
-         });
-       }
-     });
+      ..addListener(() {
+        // 获取当前滑动页面的索引 (取整)
+        int currentpage = _pageController.page!.round();
+        if (_currentIndex != currentpage) {
+          setState(() {
+            _currentIndex = currentpage;
+          });
+        }
+      });
   }
+
   @override
   Widget build(BuildContext context) {
     NavigatorUtil.init(context);
     return Scaffold(
-      resizeToAvoidBottomInset:false,
-      bottomNavigationBar: CustomBottomNavigationBar(onTap: (index){
-        if(index == 1){
-         // NavigatorUtil.push('login');
-          if(UserProvider.of(context).hasLogin == false){
-            //NavigatorUtil.present(SendEmailController());
-            NavigatorUtil.present(LoginPageController());
-          }else{
+      resizeToAvoidBottomInset: false,
+      bottomNavigationBar: CustomBottomNavigationBar(
+        onTap: (index) {
+          setState(() {
             _currentIndex = index;
-          }
-         // NavigatorUtil.present(TestController());
-         // NavigatorUtil.present(SendEmailController());
-        }else{
-          _currentIndex = index;
-        }
-        setState(() {
-
-        });
-      },),
+          });
+        },
+      ),
       body: _pageViews[_currentIndex],
     );
   }
+
   @override
   void dispose() {
     _pageController.dispose();
