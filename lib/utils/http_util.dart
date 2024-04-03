@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:dio/dio.dart';
 
@@ -31,9 +32,18 @@ class HttpUtil {
         Uri uri = Uri.parse(path).replace(queryParameters: query);
         path = uri.toString();
       }
+
+      // 根据登录状态判断是否传入token
+      Options _options = Options();
+      final _token =  await NSUserDefault.getValue<String>(kAccessToken);
+      if(_token != null &&_token.length >0){
+        _options.headers = {
+          'X-Hockey-Game-Api-Token': _token,
+        };
+      }
       print('get数据请求data:${path}');
       print('get数据请求data:${data}');
-      final response = await _dio.get(path, data: data);
+      final response = await _dio.get(path, data: data,options: _options);
       print('get数据请求返回data:${response}');
       if (showLoading) {
         TTToast.hideLoading();
@@ -66,7 +76,15 @@ class HttpUtil {
     try {
       print('post数据请求data:${path}');
       print('post数据请求data:${data}');
-      final response = await _dio.post(path, data: data);
+      // 根据登录状态判断是否传入token
+      Options _options = Options();
+      final _token =  await NSUserDefault.getValue<String>(kAccessToken);
+      if(_token != null &&_token.length >0){
+        _options.headers = {
+          'X-Hockey-Game-Api-Token': _token,
+        };
+      }
+      final response = await _dio.post(path, data: data,options: _options);
       print('post数据请求返回data:${response}');
       if (showLoading) {
         TTToast.hideLoading();

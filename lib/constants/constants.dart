@@ -220,7 +220,7 @@ class Constants {
       text,
       style: TextStyle(
           height: height,
-          fontFamily: 'DS-DIGI',
+          // fontFamily: 'DS-DIGI',
           fontWeight: FontWeight.w400,
           color: Colors.white,
           fontSize: fontSize),
@@ -264,4 +264,6 @@ const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
 const String kBaseUrl_Dev = 'http://120.26.79.141:91'; // 测试环境地址
 
 const kDataBaseTableName = 'game_data_table'; // 数据库的表名
+
+const kGameDuration = 45; // 游戏时常
 

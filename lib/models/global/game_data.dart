@@ -6,6 +6,7 @@ class GameData  {
   bool _gameStart = false; // 游戏状态
   int _powerValue = 100; // 电量值
   int _remainTime = 45; // 剩余时长
+  int _millSecond= 0; // 剩余时长
   String _showRemainTime = '00:45'; // 需要在UI上显示的剩余时长的格式
   /* get方法 */
   bool get powerOn => _powerOn;
@@ -14,6 +15,8 @@ class GameData  {
   int get powerValue => _powerValue;
   bool get gameStart => _gameStart;
   int get remainTime => _remainTime;
+  int get millSecond => _millSecond;
+
   String get showRemainTime => _showRemainTime;
   /* set方法*/
   set powerOn(bool powerOn){
@@ -38,9 +41,20 @@ class GameData  {
 
   set remainTime(int remainTime){
     _remainTime = remainTime;
+    _millSecond = 99;
     // 自动处理显示的剩余时长格字符串
-    _showRemainTime =  '00:' + _remainTime.toString().padLeft(2, '0');
+    _showRemainTime =  '00:' + _remainTime.toString().padLeft(2, '0') + _millSecond.toString().padLeft(2, '0');
   }
+
+  set millSecond(int millSecond){
+    _millSecond = millSecond;
+    _showRemainTime =  '00:' + _remainTime.toString().padLeft(2, '0') + _millSecond.toString().padLeft(2, '0');
+  }
+
+  set showRemainTime(String showRemainTime){
+    _showRemainTime = showRemainTime;
+  }
+
 
 }
 

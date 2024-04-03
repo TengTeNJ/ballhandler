@@ -5,6 +5,7 @@ import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/ticker_util.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 class GameProcessController extends StatefulWidget {
@@ -16,13 +17,18 @@ class GameProcessController extends StatefulWidget {
   State<GameProcessController> createState() => _GameProcessControllerState();
 }
 
-class _GameProcessControllerState extends State<GameProcessController> {
+class _GameProcessControllerState extends State<GameProcessController> with SingleTickerProviderStateMixin{
   late CameraController _controller;
-
+  late TickerUtil _ticker;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _ticker = TickerUtil(vsync: this, callBack: (){
+     setState(() {
+
+    });
+    });
     //  初始化摄像头
     _controller = CameraController(
       widget.camera, // 选择第一个摄像头
@@ -33,10 +39,14 @@ class _GameProcessControllerState extends State<GameProcessController> {
       if (type == BLEDataType.gameStatu) {
         // 游戏开始
         if (BluetoothManager().gameData.gameStart == true) {
+          // 启动倒计时效果
+          _ticker.start();
           await _controller.initialize(); // 初始化摄像头控制器
           // 开始录制视频
           await _controller.startVideoRecording();
         } else {
+          // 启动倒计时效果
+          _ticker.stop();
           // 停止录制视频
           XFile videoFile = await _controller.stopVideoRecording();
           // 跳转到游戏完成页面
@@ -44,7 +54,7 @@ class _GameProcessControllerState extends State<GameProcessController> {
           model.avgPace = (BluetoothManager().gameData.score / 45).toString();
           model.score = (BluetoothManager().gameData.score).toString();
           model.videoPath = videoFile.path;
-          NavigatorUtil.push('gameFinish', arguments: model);
+          NavigatorUtil.popAndThenPush('gameFinish',arguments: model);
           // 释放摄像头控制器
           await _controller.dispose();
         }
@@ -66,6 +76,14 @@ class _GameProcessControllerState extends State<GameProcessController> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    BluetoothManager().dataChange = null;
+    super.dispose();
   }
 }
 
@@ -96,7 +114,7 @@ Widget VerticalScreenWidget(BuildContext context){
                 ),
                 Constants.mediumWhiteTextWidget('TIME LEFT', 16),
                 Constants.digiRegularWhiteTextWidget(
-                    BluetoothManager().gameData.showRemainTime, 80)
+                    BluetoothManager().gameData.showRemainTime, 20)
               ],
             ),
           ),

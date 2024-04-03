@@ -72,7 +72,6 @@ class BluetoothManager {
             id: model.device.id, connectionTimeout: Duration(seconds: 10))
         .listen((ConnectionStateUpdate connectionStateUpdate) {
       print('connectionStateUpdate = ${connectionStateUpdate.connectionState}');
-      EasyLoading.dismiss();
       if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.connected) {
         // 连接设备数量+1
@@ -91,9 +90,9 @@ class BluetoothManager {
         model.notifyCharacteristic = notifyCharacteristic;
         model.writerCharacteristic = writerCharacteristic;
 
-        // Toast 成功提示
-        //TTToast.toast('sucess');
-        EasyLoading.showSuccess('success');
+        // 连接成功弹窗
+        EasyLoading.showSuccess('Bluetooth connection successful');
+
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((data) {
           //print("deviceId =${model.device.id}---上报来的数据data = $data");

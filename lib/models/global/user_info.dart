@@ -57,6 +57,21 @@ class UserModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  set avgPace(String avgPace) {
+    _avgPace = avgPace;
+    notifyListeners();
+  }
+
+  set totalTime(String totalTime) {
+    _totalTime = totalTime;
+    notifyListeners();
+  }
+
+  set totalTimes(String totalTimes) {
+    _totalTimes = totalTimes;
+    notifyListeners();
+  }
+
   set totalScore(String totalScore) {
     _totalScore = totalScore;
     notifyListeners();

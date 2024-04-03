@@ -1,4 +1,6 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/models/global/user_info.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:code/views/participants/home_body_view.dart';
 import 'package:code/views/participants/overall_data_view.dart';
 import 'package:code/views/participants/user_info_view.dart';
@@ -22,6 +24,17 @@ class _HomePageViewState extends State<HomePageController> {
     HomeBodyView()
   ];
 
+  getHomeData(BuildContext context){
+    Participants.getHomeUserData('1').then((value){
+      if(value.success){
+        UserProvider.of(context).avgPace = value.data!.avgPace;
+        UserProvider.of(context).totalTimes = value.data!.trainCount;
+        UserProvider.of(context).totalScore = value.data!.trainScore;
+        UserProvider.of(context).totalTime = value.data!.trainTime;
+      }
+
+    });
+  }
   @override
   void initState() {
     super.initState();
@@ -37,6 +50,7 @@ class _HomePageViewState extends State<HomePageController> {
   }
   @override
   Widget build(BuildContext context) {
+    getHomeData(context);
     return Scaffold(
       resizeToAvoidBottomInset:false,
       backgroundColor: Constants.darkThemeColor,

@@ -55,6 +55,12 @@ class _RootPageControllerState extends State<RootPageController> {
         },
       ),
       body: _pageViews[_currentIndex],
+      // body: PageView.builder(
+      //     controller: _pageController,
+      //     itemCount: 4,
+      //     itemBuilder: (context, index) {
+      //       return _pageViews[index];
+      //     }),
     );
   }
 
