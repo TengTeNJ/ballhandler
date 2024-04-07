@@ -4,6 +4,7 @@ import 'package:code/models/http/user_model.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:date_format/date_format.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -17,14 +18,18 @@ enum LoginType {
 /*登录util*/
 class LoginUtil {
   static Future<ApiResponse<User>> thirdLogin(LoginType type) async {
-    GoogleSignIn _googleSignIn = GoogleSignIn(scopes: [
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ]);
+
     if (type == LoginType.google) {
+      GoogleSignIn _googleSignIn = GoogleSignIn(scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+      );
       // 谷歌登录
       try {
-        GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        GoogleSignInAccount? googleUser = await _googleSignIn.signIn(
+
+        );
         if (googleUser != null) {
           final _map = {
             "avatarUrl": googleUser.photoUrl,
@@ -47,6 +52,7 @@ class LoginUtil {
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
+        webAuthenticationOptions: WebAuthenticationOptions(clientId: 'com.potent.hockey.train',redirectUri:Uri.parse('https://scarce-wood-spice.glitch.me/callbacks/sign_in_with_apple'))
       );
       final _map = {
         "avatarUrl": '',

@@ -1,4 +1,6 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/route/route.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/ranking/ranking_card_page_view.dart';
 import 'package:code/views/ranking/ranking_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
@@ -38,11 +40,14 @@ class _RankingControllerState extends State<RankingController> {
             SizedBox(
               height: 16,
             ),
-            Container(
+            GestureDetector(onTap: (){
+              // 跳转到数据分析页面
+              NavigatorUtil.push(Routes.mystats);
+            },child: Container(
               width: Constants.screenWidth(context),
               height: 152,
               child: RankingCardPageView(onChange: _pageViewOnChange),
-            ),
+            ),),
             IndicatorView(
               count: 3,
               currentPage: _currentPageIndex,

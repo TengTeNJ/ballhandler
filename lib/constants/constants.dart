@@ -234,14 +234,17 @@ class Constants {
         fontSize: 16,
         fontWeight: FontWeight.w600);
   }
+
+  static double fontSize(BuildContext context, double size) {
+    return Constants.screenWidth(context) / 375 * size;
+  }
 }
 
 /*Preferences key*/
 const kUserName = 'nickName';
 const kAvatar = 'avatar';
-const kAccessToken= 'token';
-const kInputEmail= 'inputEmail';
-
+const kAccessToken = 'token';
+const kInputEmail = 'inputEmail';
 
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';
@@ -267,3 +270,13 @@ const kDataBaseTableName = 'game_data_table'; // 数据库的表名
 
 const kGameDuration = 45; // 游戏时常
 
+double kFontSize(BuildContext context, double size) {
+  double font =Constants.screenWidth(context) / 375 * size;
+  print('font=${font}');
+  return font;
+}
+
+double baseMargin(BuildContext context,double size) {
+  double scale =Constants.screenWidth(context) / 375 ;
+  return scale*size;
+}
