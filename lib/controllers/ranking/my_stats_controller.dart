@@ -1,7 +1,11 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/models/mystats/my_stats_model.dart';
+import 'package:code/views/airbattle/my_stats_bar_chart_view.dart';
 import 'package:code/views/airbattle/my_stats_grid_list_view.dart';
+import 'package:code/views/airbattle/my_stats_line_area_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class MyStatsController extends StatefulWidget {
   const MyStatsController({super.key});
@@ -11,6 +15,27 @@ class MyStatsController extends StatefulWidget {
 }
 
 class _MyStatsControllerState extends State<MyStatsController> {
+  List<MyStatsModel> datas = [];
+  num temp = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    for(int i =0; i<10;i++){
+      var random = Random();
+      int randomNumber = random.nextInt(11);
+      MyStatsModel model = MyStatsModel();
+      model.speed = randomNumber/10;
+      model.indexString = (i+1).toString();
+      datas.add(model);
+      temp = temp<model.speed ?model.speed : temp;
+    }
+    print('temp=${temp}');
+    print('temp/0.2=${temp/0.2}');
+    print('temp/0.2.ceil()*36=${(temp/0.2).ceil()*36}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +78,18 @@ class _MyStatsControllerState extends State<MyStatsController> {
                  Constants.regularWhiteTextWidget('Training Growth', kFontSize(context, 14)),
                ],
              ),
+              SizedBox(height: 36,),
+             Container(
+               height: (temp/0.2).ceil()*36 + 36,
+               child:  MyStatsLineAreaView(datas: datas),
+             ),
+              SizedBox(height: 40,),
+              Constants.regularWhiteTextWidget('Best In History', kFontSize(context, 14)),
+              SizedBox(height: 36,),
+              Container(
+                height: (temp/0.2).ceil()*36 + 36,
+                child:  MyStatsBarChatView(datas: datas),
+              ),
 
             ],
           ),
