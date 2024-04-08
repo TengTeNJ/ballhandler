@@ -65,14 +65,16 @@ class Account {
   }
 
   /*处理登录成功后返回的数据*/
- static handleUserData(ApiResponse<User> _response, BuildContext context) {
+ static handleUserData(ApiResponse<User> _response, BuildContext context) async{
     NSUserDefault.setKeyValue<String>(kUserName, _response.data!.nickName);
     NSUserDefault.setKeyValue<String>(kAccessToken, _response.data!.memberToken);
     NSUserDefault.setKeyValue<String>(kAvatar, _response.data!.avatar);
     UserProvider.of(context).userName = _response.data!.nickName;
+    UserProvider.of(context).userName = _response.data!.nickName;
     UserProvider.of(context).token = _response.data!.memberToken;
     UserProvider.of(context).avatar = _response.data!.avatar;
     UserProvider.of(context).createTime = _response.data!.createTime;
-
+    final _email = await NSUserDefault.getValue(kUserEmail);
+    UserProvider.of(context).email = _email;
   }
 }

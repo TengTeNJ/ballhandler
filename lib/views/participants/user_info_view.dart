@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +27,10 @@ class _UserInfoViewState extends State<UserInfoView> {
                     width: 54,
                     height: 54,
                   )
-                : Image(
-                    image: AssetImage('images/participants/icon_orange.png'),
+                : Container(
                     width: 54,
                     height: 54,
+                    color: hexStringToColor('#AA9155'),
                   ),
           ),
           SizedBox(

@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:flutter/material.dart';
 
 class RankingCardView extends StatefulWidget {
@@ -9,6 +10,26 @@ class RankingCardView extends StatefulWidget {
 }
 
 class _RankingCardViewState extends State<RankingCardView> {
+String _avgPace = '--';
+String _rankNumber = '--';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    queryData();
+  }
+
+  queryData() async{
+    final _response = await Participants.queryRankData();
+    if(_response.success){
+      _avgPace = _response.data!.avgPace ?? '--';
+      _rankNumber = _response.data!.rankNumber ?? '--';
+      setState(() {
+
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,7 +66,7 @@ class _RankingCardViewState extends State<RankingCardView> {
             child: Column(
               children: [
                Container(child:  Row(crossAxisAlignment: CrossAxisAlignment.end,children: [
-                  Constants.mediumWhiteTextWidget('0.7', 40,height: 0.8),
+                  Constants.mediumWhiteTextWidget(_avgPace, 40,height: 0.8),
                  Constants.regularWhiteTextWidget('sec/pt', 14,height: 1.0)
                ],),),
                 SizedBox(height: 6,),
@@ -55,7 +76,7 @@ class _RankingCardViewState extends State<RankingCardView> {
                     children: [
                       Image(image: AssetImage('images/ranking/rank.png'),width: 12,height: 15,),
                       SizedBox(width: 4,),
-                      Constants.regularWhiteTextWidget('Rank 40', 14),
+                      Constants.regularWhiteTextWidget('Rank ' + _rankNumber, 14),
                     ],
                   ),
                 ],),

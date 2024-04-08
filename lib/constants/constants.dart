@@ -193,16 +193,16 @@ class Constants {
   }
 
   static Text customTextWidget(String text, double fontSize, String color,
-      {int maxLines = 1,
+      {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
       textAlign: textAlign,
-      maxLines: maxLines,
+      maxLines: maxLines ?? null,
       text,
       style: TextStyle(
           height: height,
-          fontFamily: 'SanFranciscoDisplay4',
+          fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.bold,
           color: hexStringToColor(color),
           fontSize: fontSize),
@@ -245,6 +245,7 @@ const kUserName = 'nickName';
 const kAvatar = 'avatar';
 const kAccessToken = 'token';
 const kInputEmail = 'inputEmail';
+const kUserEmail = 'userEmail';
 
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';
@@ -255,6 +256,8 @@ const kBLE_SERVICE_NOTIFY_UUID = "ffe0";
 const kBLE_SERVICE_WRITER_UUID = "ffe5";
 const kBLE_CHARACTERISTIC_NOTIFY_UUID = "ffe4";
 const kBLE_CHARACTERISTIC_WRITER_UUID = "ffe9";
+
+const kPageLimit = 10; // 数据分页每页显示的数据量
 
 const kBLEDevice_Names = [
   kBLEDevice_Name,
@@ -279,4 +282,15 @@ double kFontSize(BuildContext context, double size) {
 double baseMargin(BuildContext context,double size) {
   double scale =Constants.screenWidth(context) / 375 ;
   return scale*size;
+}
+
+//*判断对象是否为空以及字符串长度为0*/
+bool ISEmpty(Object? obj) {
+  if (obj == null) {
+    return true;
+  }
+  if (obj is String) {
+    return obj.length == 0;
+  }
+  return false;
 }

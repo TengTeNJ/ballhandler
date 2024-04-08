@@ -1,4 +1,5 @@
 import 'package:code/models/airbattle/activity_model.dart';
+import 'package:code/route/route.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/airbattle/activity_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
@@ -87,23 +88,28 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                   ),
                 ),),
                 SizedBox(width: 8,),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Constants.darkControllerColor),
-                  width: (Constants.screenWidth(context) - 48) / 3,
-                  height: 100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
-                        child: Constants.regularGreyTextWidget(
-                            'My Rewards', 12), ),
-                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
-                        child: Constants.mediumWhiteTextWidget(
-                            '1', 40), ),
-                    ],
+                GestureDetector(
+                  onTap: (){
+                    NavigatorUtil.push(Routes.awardlist); // 跳转到获奖列表页面
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Constants.darkControllerColor),
+                    width: (Constants.screenWidth(context) - 48) / 3,
+                    height: 100,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                          child: Constants.regularGreyTextWidget(
+                              'My Rewards', 12), ),
+                        Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                          child: Constants.mediumWhiteTextWidget(
+                              '1', 40), ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(width: 8,),

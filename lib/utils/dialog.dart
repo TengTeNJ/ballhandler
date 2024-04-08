@@ -59,4 +59,54 @@ class TTDialog {
     //         child: ExchangeIntegralDialog(),);
     //     });
   }
+
+  static championDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              color: hexStringToColor('#3E3E55'),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: ChampionDialog(),
+          ),
+        );
+      },
+    );
+
+    // showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return Dialog(
+    //         backgroundColor: Colors.transparent,
+    //         child: ExchangeIntegralDialog(),);
+    //     });
+  }
+
+  static awardDialog(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: hexStringToColor('#39394B'),
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.42,
+          child: AwardDialog(),
+        );
+      },
+    );
+
+    // showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return Dialog(
+    //         backgroundColor: Colors.transparent,
+    //         child: ExchangeIntegralDialog(),);
+    //     });
+  }
+
 }

@@ -124,7 +124,7 @@ class _EmailPageControllerState extends State<EmailPageController> {
                       final canRegister = await Account.checkeEmail(_inputText);
                       // 跳转到输入密码页面
                       NSUserDefault.setKeyValue<String>(kInputEmail, _inputText);
-                      if(canRegister == true){
+                      if(canRegister.data == true){
                         NavigatorUtil.present(PasswordPageController());
                       }else{
                         NavigatorUtil.present(PassWordLoginController());

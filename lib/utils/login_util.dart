@@ -22,23 +22,24 @@ class LoginUtil {
     if (type == LoginType.google) {
       GoogleSignIn _googleSignIn = GoogleSignIn(scopes: [
         'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
       ],
       );
       // 谷歌登录
       try {
         GoogleSignInAccount? googleUser = await _googleSignIn.signIn(
-
         );
         if (googleUser != null) {
           final _map = {
-            "avatarUrl": googleUser.photoUrl,
+            "avatarUrl": googleUser.photoUrl ?? '',
             "gender": 0,
-            "nickName": googleUser.displayName,
+            "nickName": googleUser.displayName ?? '--',
             "thirdLoginType": 2,
             "thirdOpenId": googleUser.id
           };
           final _response = await Account.thirdLogin(_map);
+          if(_response.success){
+            NSUserDefault.setKeyValue(kUserEmail, googleUser.email ?? '--');
+          }
           return _response;
         }
         // 登录成功后的逻辑，可以跳转到下一个页面或执行其他操作

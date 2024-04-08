@@ -56,10 +56,10 @@ class _ProfileControllerState extends State<ProfileController> {
                         width: 64,
                         height: 64,
                       )
-                          : Image(
-                        image: AssetImage('images/participants/icon_orange.png'),
+                          : Container(
                         width: 54,
                         height: 54,
+                        color: hexStringToColor('#AA9155'),
                       ),
                     ),
                   ],

@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/route/route.dart';
+import 'package:code/services/http/rank.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/ranking/ranking_card_page_view.dart';
 import 'package:code/views/ranking/ranking_list_view.dart';
@@ -15,6 +16,7 @@ class RankingController extends StatefulWidget {
 }
 
 class _RankingControllerState extends State<RankingController> {
+  List<RankModel> _datas = [];
   int _currentPageIndex = 0;
 
   void _pageViewOnChange(int index) {
@@ -23,6 +25,21 @@ class _RankingControllerState extends State<RankingController> {
     });
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    queryRankList();
+  }
+  queryRankList() async{
+    final _response = await Rank.queryRankListData(1);
+    if(_response.success){
+     _datas.addAll(_response.data!);
+     setState(() {
+
+     });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +83,7 @@ class _RankingControllerState extends State<RankingController> {
             Expanded(
                 child: Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
-              child: RankingListView(),
+              child: _datas.length > 0 ? RankingListView(datas: _datas,): Container(),
             )),
           ],
         ),

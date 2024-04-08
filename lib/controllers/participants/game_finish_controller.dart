@@ -1,8 +1,10 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/participants/fireworks_animation-view.dart';
 import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
@@ -93,10 +95,16 @@ class _GameFinishControllerState extends State<GameFinishController> {
             ),
             SizedBox(height: Constants.screenHeight(context)*0.05,),
             GestureDetector(
-              onTap: (){
+              onTap: () async{
                 print('save data');
+                // 保存游戏数据到本地
                 DatabaseHelper dbHelper = DatabaseHelper();
                 dbHelper.insertData(kDataBaseTableName, widget.dataModel);
+                // 保存游戏数据到云端
+               final _response =  await Participants.saveGameData(widget.dataModel);
+               if(_response.success){
+                 NavigatorUtil.pop();
+               }
               },
               child: Container(
                 margin: EdgeInsets.only(left: 24,right: 24),

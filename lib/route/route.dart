@@ -3,6 +3,7 @@ import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
 import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/airbattle/activity_detail_controller.dart';
+import 'package:code/controllers/airbattle/award_list_controller.dart';
 import 'package:code/controllers/airbattle/message_controller.dart';
 import 'package:code/controllers/airbattle/my_activity_controller.dart';
 import 'package:code/controllers/participants/TodayDataController.dart';
@@ -37,6 +38,8 @@ class Routes {
   static const String gameprocess = 'gameProcess'; //  游戏界面
   static const String myactivity = 'myActivity'; // 我的活动页面
   static const String mystats = 'myStats'; // 数据分析页面
+  static const String awardlist = 'awardList'; // 获奖列表页面
+
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
@@ -82,6 +85,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => MyActivityController());
       case mystats:
         return MaterialPageRoute(builder: (_) => MyStatsController());
+      case awardlist:
+        return MaterialPageRoute(builder: (_) => AwardListController());
       default:
         return _errorRoute();
     }

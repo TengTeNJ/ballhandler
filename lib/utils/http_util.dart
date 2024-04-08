@@ -1,3 +1,4 @@
+
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/toast.dart';
@@ -37,6 +38,7 @@ class HttpUtil {
       Options _options = Options();
       final _token =  await NSUserDefault.getValue<String>(kAccessToken);
       if(_token != null &&_token.length >0){
+        print('token='  + _token);
         _options.headers = {
           'X-Hockey-Game-Api-Token': _token,
         };

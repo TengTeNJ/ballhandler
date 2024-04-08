@@ -52,6 +52,7 @@ class NSUserDefault {
     final _nickName = await NSUserDefault.getValue<String>(kUserName);
     final _ava = await NSUserDefault.getValue<String>(kAvatar);
     final _token = await NSUserDefault.getValue<String>(kAccessToken);
+    final _email = await NSUserDefault.getValue<String>(kUserEmail);
 
     if(_nickName != null){
       UserProvider.of(context).userName = _nickName;
@@ -61,6 +62,9 @@ class NSUserDefault {
     }
     if(_token!=null){
       UserProvider.of(context).token = _token;
+    }
+    if(_email!=null){
+      UserProvider.of(context).email = _email;
     }
   }
 }

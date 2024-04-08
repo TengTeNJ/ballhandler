@@ -24,6 +24,7 @@ class _HomePageViewState extends State<HomePageController> {
     HomeBodyView()
   ];
 
+  // 获取用户首页的数据
   getHomeData(BuildContext context){
     Participants.getHomeUserData('1').then((value){
       if(value.success){

@@ -2,10 +2,13 @@ import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/root_page.dart';
 import 'package:code/route/route.dart';
+import 'package:code/utils/global.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get_it/get_it.dart';
 void main() {
+  GetIt.I.registerSingleton<GameUtil>(GameUtil()); // 注册GameUtil实例
   runApp(UserProvider(child: const MyApp()) );
 }
 
