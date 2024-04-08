@@ -8,6 +8,7 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/ticker_util.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+
 class GameProcessController extends StatefulWidget {
   CameraDescription camera;
 
@@ -51,7 +52,7 @@ class _GameProcessControllerState extends State<GameProcessController> with Sing
           XFile videoFile = await _controller.stopVideoRecording();
           // 跳转到游戏完成页面
           GameOverModel model = GameOverModel(time: '45', score: '10', avgPace: '0.5', rank: '1', endTime: '2020');
-          model.avgPace = (BluetoothManager().gameData.score / 45).toString();
+          model.avgPace = (45/BluetoothManager().gameData.score).toStringAsFixed(2);
           model.score = (BluetoothManager().gameData.score).toString();
           model.videoPath = videoFile.path;
           NavigatorUtil.popAndThenPush('gameFinish',arguments: model);

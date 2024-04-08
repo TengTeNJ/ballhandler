@@ -27,7 +27,7 @@ class Participants {
     };
     final response =
         await HttpUtil.get('/api/index/home', _data, showLoading: true);
-    HomeUsermodel model =HomeUsermodel();
+    HomeUsermodel model = HomeUsermodel();
     if (response.success && response.data['data'] != null) {
       model = HomeUsermodel(
           avgPace: response.data['data']['avgPace'].toString(),
@@ -73,12 +73,7 @@ class Participants {
     };
     final response =
         await HttpUtil.post('/api/train/save', _data, showLoading: true);
-    HomeUsermodel model;
-    if (response.success && response.data['data'] != null) {
-      return ApiResponse(success: response.success);
-    } else {
-      return ApiResponse(success: false);
-    }
+    return ApiResponse(success: response.success);
   }
 
   /*根据本人最好成绩的排名和速度*/
@@ -98,8 +93,7 @@ class Participants {
       model.trainCount = _map['trainCount'].toString();
       model.trainScore = _map['trainScore'].toString();
       model.trainTime = _map['trainTime'].toString();
-      return ApiResponse(
-          success: response.success, data: model);
+      return ApiResponse(success: response.success, data: model);
     } else {
       return ApiResponse(success: false);
     }
