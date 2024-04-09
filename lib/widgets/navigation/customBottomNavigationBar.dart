@@ -78,7 +78,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       onTap: (index){
         setState(() {
           // AirBattle页面登录拦截
-         if(index == 1){
+         if(index != 0){
            // 判断登录的拦截
            final _hasLogin =  UserProvider.of(context).hasLogin ;
            if(_hasLogin == false){

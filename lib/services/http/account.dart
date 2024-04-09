@@ -56,9 +56,8 @@ class Account {
   }
 /*校验账号是否已存在*/
   static Future<ApiResponse<bool>> checkeEmail(String account) async{
-    final email = await NSUserDefault.getValue<String>(kInputEmail);
     Map<String,dynamic> _data = {
-      "account":email,
+      "account":account,
     };
     final response = await HttpUtil.get('/api/login/checkEmail', _data);
     return ApiResponse(success: response.success,data: response.data['code'] == '0');

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
@@ -26,10 +28,24 @@ class _RootPageControllerState extends State<RootPageController> {
     RankingController(),
     ProfileController(),
   ];
-
+  int generateBinaryNumber(int length) {
+    Random random = Random();
+    int result = 0;
+    print('random=${random}');
+    for (int i = 0; i < length; i++) {
+      result <<= 1; // 左移一位
+      //result |= random.nextInt(2); // 使用随机数设置当前位
+    }
+    result |= 5;
+    return result;
+  }
   @override
   void initState() {
     super.initState();
+    int length = 8; // 生成8位的二进制数
+    int binaryNumber = generateBinaryNumber(length);
+    print('Generated binary number: ${binaryNumber.toRadixString(2).padLeft(length, '0')}');
+
     _pageController = PageController()
       ..addListener(() {
         // 获取当前滑动页面的索引 (取整)

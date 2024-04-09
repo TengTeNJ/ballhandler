@@ -67,4 +67,12 @@ class NSUserDefault {
       UserProvider.of(context).email = _email;
     }
   }
+  /*清空用户信息*/
+  static clearUserInfo(BuildContext context){
+    NSUserDefault.setKeyValue(kUserEmail, '');
+    NSUserDefault.setKeyValue(kAccessToken, '');
+    NSUserDefault.setKeyValue(kUserName, 'Guest');
+    NSUserDefault.setKeyValue(kAvatar, '');
+   initUserInfo(context);
+  }
 }

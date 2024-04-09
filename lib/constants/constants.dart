@@ -32,11 +32,12 @@ class Constants {
   static String privacyText =
       'To ensure that personal information of players are respected and protected.  I give explicit authorization and consent for their use in commercial promotion or publication on social media. Such materials can only be legally used after obtaining explicit written consent.';
 
-  static Color darkThemeColor = Color.fromRGBO(41, 41, 54, 1);
+  static Color darkThemeColor = Color.fromRGBO(38, 38, 48, 1);
   static Color darkThemeOpacityColor = Color.fromRGBO(41, 41, 54, 0.24);
   static Color baseStyleColor = Color.fromRGBO(248, 133, 11, 1);
   static Color baseGreyStyleColor = Color.fromRGBO(177, 177, 177, 1);
   static Color darkControllerColor = Color.fromRGBO(57, 57, 75, 1);
+  static Color baseControllerColor = Color.fromRGBO(41, 41, 54, 1);
 
   static Text regularBaseTextWidget(String text, double fontSize,
       {int maxLines = 1,
@@ -73,11 +74,11 @@ class Constants {
   }
 
   static Text regularWhiteTextWidget(String text, double fontSize,
-      {int maxLines = 1,
+      {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
-      maxLines: maxLines,
+      maxLines: maxLines ?? null,
       textAlign: textAlign,
       text,
       style: TextStyle(
@@ -220,7 +221,7 @@ class Constants {
       text,
       style: TextStyle(
           height: height,
-          // fontFamily: 'DS-DIGI',
+          fontFamily: 'DS-DIGI',
           fontWeight: FontWeight.w400,
           color: Colors.white,
           fontSize: fontSize),

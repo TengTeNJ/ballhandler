@@ -75,7 +75,7 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('VS. Last Week',style: TextStyle(color: hexStringToColor('#B1B1B1'),fontSize: kFontSize(context, 12)),),
+                        Text('VS. Last Week',style: TextStyle(color: hexStringToColor('#B1B1B1'),fontFamily: 'SanFranciscoDisplay', fontSize: kFontSize(context, 12)),),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [

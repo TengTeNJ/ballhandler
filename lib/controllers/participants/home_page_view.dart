@@ -54,7 +54,7 @@ class _HomePageViewState extends State<HomePageController> {
     getHomeData(context);
     return Scaffold(
       resizeToAvoidBottomInset:false,
-      backgroundColor: Constants.darkThemeColor,
+      backgroundColor: Constants.baseControllerColor,
       appBar: CustomAppBar(
         title: '',
       ),

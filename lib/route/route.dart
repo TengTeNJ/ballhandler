@@ -11,10 +11,12 @@ import 'package:code/controllers/participants/game_finish_controller.dart';
 import 'package:code/controllers/participants/game_process_controller.dart';
 import 'package:code/controllers/participants/game_video_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
+import 'package:code/controllers/participants/record_select_controller.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
 import 'package:code/controllers/participants/video_check_controller.dart';
 import 'package:code/controllers/participants/video_play_controller.dart';
 import 'package:code/controllers/profile/Integral_detail_controller.dart';
+import 'package:code/controllers/profile/setting_controller.dart';
 import 'package:code/controllers/ranking/my_stats_controller.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,8 @@ class Routes {
   static const String myactivity = 'myActivity'; // 我的活动页面
   static const String mystats = 'myStats'; // 数据分析页面
   static const String awardlist = 'awardList'; // 获奖列表页面
+  static const String setting = 'setting'; // 设置页面
+  static const String recordselect = 'recordSelect'; // record选择页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -87,6 +91,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => MyStatsController());
       case awardlist:
         return MaterialPageRoute(builder: (_) => AwardListController());
+      case setting:
+        return MaterialPageRoute(builder: (_) => SettingController());
+      case recordselect:
+        return MaterialPageRoute(builder: (_) => RecordSelectController());
       default:
         return _errorRoute();
     }

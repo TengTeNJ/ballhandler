@@ -124,4 +124,5 @@ class UserProvider extends StatelessWidget {
   static UserModel of(BuildContext context) {
     return Provider.of<UserModel>(context, listen: false);
   }
+
 }

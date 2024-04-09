@@ -4,32 +4,35 @@ import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:provider/provider.dart';
 
-enum BLEDataType{
+enum BLEDataType {
   none,
   dviceInfo,
   targetResponse,
   score,
   gameStatu,
   remainTime,
+  millisecond,
 }
+
 class ResponseCMDType {
   static const int deviceInfo = 0x20; // 设备信息，包含开机状态、电量等
   static const int targetResponse = 0x26; // 标靶响应
   static const int score = 0x28; // 得分
   static const int gameStatu = 0x2A; // 游戏状态:开始和结束
-   static const int remainTime = 0x2C; // 游戏剩余时长
+  static const int remainTime = 0x2C; // 游戏剩余时长
+  static const int millisecond = 0x32; // 游戏毫秒时间同步
 }
 
 /*蓝牙数据解析类*/
 class BluetoothDataParse {
   // 数据解析
-  static  parseData(List<int> data) {
+  static parseData(List<int> data) {
     if (data.contains(kBLEDataFrameHeader)) {
       List<List<int>> _datas = splitData(data);
       _datas.forEach((element) {
         if (element == null || element.length <= 3) {
           // 空数组
-         // print('问题数据');
+          // print('问题数据');
         } else {
           int cmd = element[1];
           switch (cmd) {
@@ -60,7 +63,8 @@ class BluetoothDataParse {
               int data = element[2];
               BluetoothManager().gameData.score = data;
               // 通知
-              print('BluetoothManager().dataChange=${BluetoothManager().dataChange}');
+              print(
+                  'BluetoothManager().dataChange=${BluetoothManager().dataChange}');
               BluetoothManager().triggerCallback(type: BLEDataType.score);
               print('${data}:得分');
               break;
@@ -75,6 +79,12 @@ class BluetoothDataParse {
               BluetoothManager().gameData.remainTime = data;
               print('游戏时长---${data}');
               BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
+              break;
+            case ResponseCMDType.millisecond:
+              int data = element[2];
+              BluetoothManager().gameData.millSecond = data;
+              print('毫秒刷新---${data}');
+              BluetoothManager().triggerCallback(type: BLEDataType.millisecond);
               break;
           }
         }

@@ -2,7 +2,8 @@ import 'package:code/constants/constants.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
 class RecordSelectView extends StatefulWidget {
-  const RecordSelectView({super.key});
+  Function? onTap;
+  RecordSelectView({this.onTap});
 
   @override
   State<RecordSelectView> createState() => _RecordSelectViewState();
@@ -16,8 +17,10 @@ class _RecordSelectViewState extends State<RecordSelectView> {
       onTap: (){
         setState(() {
           _selectStatu = !_selectStatu;
+          if(widget.onTap != null){
+            widget.onTap!(_selectStatu);
+          }
         });
-        print('select---');
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

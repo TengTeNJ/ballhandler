@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/profile/integral_controller.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/route/route.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/profile/profile_grid_list_view.dart';
@@ -35,11 +36,16 @@ class _ProfileControllerState extends State<ProfileController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Image(
-                      image: AssetImage('images/profile/setting.png'),
-                      width: 25,
-                      height: 25,
-                    )
+                   GestureDetector(
+                     onTap: (){
+                       NavigatorUtil.push(Routes.setting);
+                     },
+                     child:  Image(
+                       image: AssetImage('images/profile/setting.png'),
+                       width: 25,
+                       height: 25,
+                     ),
+                   )
                   ],
                 ),
                 SizedBox(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
+import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
@@ -18,18 +19,20 @@ class GameProcessController extends StatefulWidget {
   State<GameProcessController> createState() => _GameProcessControllerState();
 }
 
-class _GameProcessControllerState extends State<GameProcessController> with SingleTickerProviderStateMixin{
+class _GameProcessControllerState extends State<GameProcessController>
+    with SingleTickerProviderStateMixin {
   late CameraController _controller;
   late TickerUtil _ticker;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _ticker = TickerUtil(vsync: this, callBack: (){
-     setState(() {
-
-    });
-    });
+    _ticker = TickerUtil(
+        vsync: this,
+        callBack: () {
+          setState(() {});
+        });
     //  初始化摄像头
     _controller = CameraController(
       widget.camera, // 选择第一个摄像头
@@ -51,11 +54,17 @@ class _GameProcessControllerState extends State<GameProcessController> with Sing
           // 停止录制视频
           XFile videoFile = await _controller.stopVideoRecording();
           // 跳转到游戏完成页面
-          GameOverModel model = GameOverModel(time: '45', score: '10', avgPace: '0.5', rank: '1', endTime: '2020');
-          model.avgPace = (45/BluetoothManager().gameData.score).toStringAsFixed(2);
+          GameOverModel model = GameOverModel(
+              time: '45',
+              score: '10',
+              avgPace: '0.5',
+              rank: '1',
+              endTime: '2020');
+          model.avgPace =
+              (45 / BluetoothManager().gameData.score).toStringAsFixed(2);
           model.score = (BluetoothManager().gameData.score).toString();
           model.videoPath = videoFile.path;
-          NavigatorUtil.popAndThenPush('gameFinish',arguments: model);
+          NavigatorUtil.popAndThenPush('gameFinish', arguments: model);
           // 释放摄像头控制器
           await _controller.dispose();
         }
@@ -89,13 +98,16 @@ class _GameProcessControllerState extends State<GameProcessController> with Sing
 }
 
 //  屏幕竖直方向
-Widget VerticalScreenWidget(BuildContext context){
+Widget VerticalScreenWidget(BuildContext context) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Column(
         children: [
+          SizedBox(
+            height: 85,
+          ),
           Constants.boldWhiteTextWidget('ZIGZAG Challenge', 24),
           SizedBox(
             height: 32,
@@ -103,7 +115,7 @@ Widget VerticalScreenWidget(BuildContext context){
           Container(
             width: Constants.screenWidth(context) - 48,
             margin: EdgeInsets.only(left: 24, right: 24),
-            height: Constants.screenHeight(context)*0.16,
+            height: Constants.screenHeight(context) * 0.16,
             decoration: BoxDecoration(
                 color: hexStringToColor('#204DD1'),
                 borderRadius: BorderRadius.circular(10)),
@@ -114,8 +126,15 @@ Widget VerticalScreenWidget(BuildContext context){
                   height: 16,
                 ),
                 Constants.mediumWhiteTextWidget('TIME LEFT', 16),
-                Constants.digiRegularWhiteTextWidget(
-                    BluetoothManager().gameData.showRemainTime, 20)
+                Row(
+                  children: [
+                    Constants.digiRegularWhiteTextWidget('00:',80),
+                    Constants.digiRegularWhiteTextWidget(BluetoothManager().gameData.remainTime.toString().padLeft(2, '0'),80),
+                    Constants.digiRegularWhiteTextWidget(':',80),
+                    Constants.digiRegularWhiteTextWidget(BluetoothManager().gameData.millSecond.toString().padLeft(2, '0'),80),
+                  ],
+                )
+
               ],
             ),
           ),
@@ -125,7 +144,7 @@ Widget VerticalScreenWidget(BuildContext context){
           Container(
             width: Constants.screenWidth(context) - 48,
             margin: EdgeInsets.only(left: 24, right: 24),
-            height: Constants.screenHeight(context)*0.16,
+            height: Constants.screenHeight(context) * 0.16,
             decoration: BoxDecoration(
                 color: hexStringToColor('#204DD1'),
                 borderRadius: BorderRadius.circular(10)),
@@ -143,17 +162,34 @@ Widget VerticalScreenWidget(BuildContext context){
           ),
         ],
       ),
-      Expanded(
-          child: Container(
-            color: Colors.red,
-          )),
       Container(
         margin: EdgeInsets.only(left: 24, right: 24, bottom: 24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            GestureDetector(
+              onTap: () {
+             NavigatorUtil.pop();
+              },
+              child: Container(
+                child: Center(
+                  child: Image(
+                    image: AssetImage('images/participants/game_back.png'),
+                    width: 26,
+                    height: 20,
+                  ),
+                ),
+                width: 54,
+                height: 54,
+                decoration: BoxDecoration(
+                    color: hexStringToColor('#204DD1'),
+                    borderRadius: BorderRadius.circular(27)),
+              ),
+            ),
+            GestureDetector(onTap: () async{
+              BluetoothManager().writerDataToDevice(BluetoothManager().deviceList[0], openAllBlueLightData());
+            },child: Container(
               child: Center(
                 child: Image(
                   image: AssetImage('images/participants/cast.png'),
@@ -166,36 +202,16 @@ Widget VerticalScreenWidget(BuildContext context){
               decoration: BoxDecoration(
                   color: hexStringToColor('#204DD1'),
                   borderRadius: BorderRadius.circular(27)),
-            ),
-            GestureDetector(
-              onTap: () {
-                GameOverModel model = GameOverModel(time: '45', score: '10', avgPace: '0.5', rank: '1', endTime: '2020');
-                NavigatorUtil.push('gameFinish', arguments: model);
-              },
-              child: Container(
-                child: Center(
-                  child: Image(
-                    image:
-                    AssetImage('images/participants/game_back.png'),
-                    width: 26,
-                    height: 20,
-                  ),
-                ),
-                width: 54,
-                height: 54,
-                decoration: BoxDecoration(
-                    color: hexStringToColor('#204DD1'),
-                    borderRadius: BorderRadius.circular(27)),
-              ),
-            ),
+            ),),
           ],
         ),
       )
     ],
   );
 }
+
 // 屏幕水平方向
-Widget HorizontalScreenWidget(BuildContext context){
+Widget HorizontalScreenWidget(BuildContext context) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -209,7 +225,7 @@ Widget HorizontalScreenWidget(BuildContext context){
           Container(
             width: Constants.screenWidth(context) - 48,
             margin: EdgeInsets.only(left: 24, right: 24),
-            height: Constants.screenHeight(context)*0.16,
+            height: Constants.screenHeight(context) * 0.16,
             decoration: BoxDecoration(
                 color: hexStringToColor('#204DD1'),
                 borderRadius: BorderRadius.circular(10)),
@@ -231,7 +247,7 @@ Widget HorizontalScreenWidget(BuildContext context){
           Container(
             width: Constants.screenWidth(context) - 48,
             margin: EdgeInsets.only(left: 24, right: 24),
-            height: Constants.screenHeight(context)*0.16,
+            height: Constants.screenHeight(context) * 0.16,
             decoration: BoxDecoration(
                 color: hexStringToColor('#204DD1'),
                 borderRadius: BorderRadius.circular(10)),
@@ -251,8 +267,8 @@ Widget HorizontalScreenWidget(BuildContext context){
       ),
       Expanded(
           child: Container(
-            color: Colors.red,
-          )),
+        color: Colors.red,
+      )),
       Container(
         margin: EdgeInsets.only(left: 24, right: 24, bottom: 24),
         child: Row(
@@ -278,8 +294,7 @@ Widget HorizontalScreenWidget(BuildContext context){
               child: Container(
                 child: Center(
                   child: Image(
-                    image:
-                    AssetImage('images/participants/game_back.png'),
+                    image: AssetImage('images/participants/game_back.png'),
                     width: 26,
                     height: 20,
                   ),
