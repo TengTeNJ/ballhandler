@@ -63,13 +63,18 @@ class Participants {
   static Future<ApiResponse<String>> saveGameData(GameOverModel data) async {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-
+    print('score=${data.score}');
+    // 组装数据
     final _data = {
+      "activityId": '0',
+      "modeId": 0,
       "avgPace": data.avgPace,
       "sceneId": (gameUtil.gameScene.index + 1).toString(),
       "trainScore": data.score,
       "trainTime": data.time,
       "trainVideo": "string",
+      "trainIntegral": data.Integral,
+      "trainType": 0,
     };
     final response =
         await HttpUtil.post('/api/train/save', _data, showLoading: true);

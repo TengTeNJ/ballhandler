@@ -41,7 +41,7 @@ class GameData  {
 
   set remainTime(int remainTime){
     _remainTime = remainTime;
-    _millSecond = 99;
+   // _millSecond = 99;
     // 自动处理显示的剩余时长格字符串
     _showRemainTime =  '00:' + _remainTime.toString().padLeft(2, '0') + _millSecond.toString().padLeft(2, '0');
   }

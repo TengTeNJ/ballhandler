@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
+import 'package:code/route/route.dart';
 import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
@@ -9,6 +10,9 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/ticker_util.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../utils/global.dart';
 
 class GameProcessController extends StatefulWidget {
   CameraDescription camera;
@@ -20,19 +24,18 @@ class GameProcessController extends StatefulWidget {
 }
 
 class _GameProcessControllerState extends State<GameProcessController>
-    with SingleTickerProviderStateMixin {
+    with WidgetsBindingObserver {
   late CameraController _controller;
-  late TickerUtil _ticker;
-
+ bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _ticker = TickerUtil(
-        vsync: this,
-        callBack: () {
-          setState(() {});
-        });
+    // 监听生命周期
+    WidgetsBinding.instance.addObserver(this);
+    // 标记进入到游戏页面
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    gameUtil.nowISGamePage = true;
     //  初始化摄像头
     _controller = CameraController(
       widget.camera, // 选择第一个摄像头
@@ -43,35 +46,64 @@ class _GameProcessControllerState extends State<GameProcessController>
       if (type == BLEDataType.gameStatu) {
         // 游戏开始
         if (BluetoothManager().gameData.gameStart == true) {
-          // 启动倒计时效果
-          _ticker.start();
-          await _controller.initialize(); // 初始化摄像头控制器
-          // 开始录制视频
-          await _controller.startVideoRecording();
+          _getStartFlag = true;
+          // 数据初始化
+          BluetoothManager().gameData.remainTime = 45;
+          BluetoothManager().gameData.millSecond = 0;
+          BluetoothManager().gameData.score = 0;
+          setState(() {});
+          // 用户选择了视频录制 则同步开始录制
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          if(gameUtil.selectRecord){
+            await _controller.initialize(); // 初始化摄像头控制器
+            // 开始录制视频
+            await _controller.startVideoRecording();
+          }
+
         } else {
-          // 启动倒计时效果
-          _ticker.stop();
-          // 停止录制视频
-          XFile videoFile = await _controller.stopVideoRecording();
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+           XFile videoFile = XFile('');
+          if(gameUtil.selectRecord && _getStartFlag){
+            // 停止录制视频
+             videoFile = await _controller.stopVideoRecording();
+          }
+
           // 跳转到游戏完成页面
-          GameOverModel model = GameOverModel(
-              time: '45',
-              score: '10',
-              avgPace: '0.5',
-              rank: '1',
-              endTime: '2020');
-          model.avgPace =
-              (45 / BluetoothManager().gameData.score).toStringAsFixed(2);
+          GameOverModel model = GameOverModel();
+          if(BluetoothManager().gameData.score == 0){
+            model.avgPace = '0.0';
+          }else{
+            model.avgPace =
+                (45 / BluetoothManager().gameData.score).toStringAsFixed(2);
+          }
           model.score = (BluetoothManager().gameData.score).toString();
-          model.videoPath = videoFile.path;
+          model.videoPath =  gameUtil.selectRecord ? videoFile.path : '';
           NavigatorUtil.popAndThenPush('gameFinish', arguments: model);
+          // 标记离开游戏页面
+          gameUtil.nowISGamePage = false;
           // 释放摄像头控制器
           await _controller.dispose();
+          _getStartFlag = false;
         }
       } else {
         setState(() {});
       }
     };
+  }
+
+  //  生命周期函数
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused) {
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      gameUtil.nowISGamePage = false;
+      print('App entered background');
+    } else if (state == AppLifecycleState.resumed) {
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      gameUtil.nowISGamePage = true;
+      print('App returned to foreground');
+    }
   }
 
   @override
@@ -93,6 +125,13 @@ class _GameProcessControllerState extends State<GameProcessController>
     // TODO: implement dispose
     _controller.dispose();
     BluetoothManager().dataChange = null;
+    // 标记离开游戏页面
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    gameUtil.nowISGamePage = false;
+    WidgetsBinding.instance.removeObserver(this);
+    BluetoothManager().gameData.remainTime = 45;
+    BluetoothManager().gameData.millSecond = 0;
+    BluetoothManager().gameData.score = 0;
     super.dispose();
   }
 }
@@ -127,14 +166,26 @@ Widget VerticalScreenWidget(BuildContext context) {
                 ),
                 Constants.mediumWhiteTextWidget('TIME LEFT', 16),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Constants.digiRegularWhiteTextWidget('00:',80),
-                    Constants.digiRegularWhiteTextWidget(BluetoothManager().gameData.remainTime.toString().padLeft(2, '0'),80),
-                    Constants.digiRegularWhiteTextWidget(':',80),
-                    Constants.digiRegularWhiteTextWidget(BluetoothManager().gameData.millSecond.toString().padLeft(2, '0'),80),
+                    Constants.digiRegularWhiteTextWidget('00:', 80),
+                    Constants.digiRegularWhiteTextWidget(
+                        BluetoothManager()
+                            .gameData
+                            .remainTime
+                            .toString()
+                            .padLeft(2, '0'),
+                        80),
+                    Constants.digiRegularWhiteTextWidget(':', 80),
+                    Constants.digiRegularWhiteTextWidget(
+                        BluetoothManager()
+                            .gameData
+                            .millSecond
+                            .toString()
+                            .padLeft(2, '0'),
+                        80),
                   ],
                 )
-
               ],
             ),
           ),
@@ -170,7 +221,7 @@ Widget VerticalScreenWidget(BuildContext context) {
           children: [
             GestureDetector(
               onTap: () {
-             NavigatorUtil.pop();
+                NavigatorUtil.pop();
               },
               child: Container(
                 child: Center(
@@ -187,22 +238,26 @@ Widget VerticalScreenWidget(BuildContext context) {
                     borderRadius: BorderRadius.circular(27)),
               ),
             ),
-            GestureDetector(onTap: () async{
-              BluetoothManager().writerDataToDevice(BluetoothManager().deviceList[0], openAllBlueLightData());
-            },child: Container(
-              child: Center(
-                child: Image(
-                  image: AssetImage('images/participants/cast.png'),
-                  width: 26,
-                  height: 20,
+            GestureDetector(
+              onTap: () async {
+                //NavigatorUtil.push(Routes.setting);
+                // BluetoothManager().writerDataToDevice(BluetoothManager().deviceList[0], openAllBlueLightData());
+              },
+              child: Container(
+                child: Center(
+                  child: Image(
+                    image: AssetImage('images/participants/cast.png'),
+                    width: 26,
+                    height: 20,
+                  ),
                 ),
+                width: 54,
+                height: 54,
+                decoration: BoxDecoration(
+                    color: hexStringToColor('#204DD1'),
+                    borderRadius: BorderRadius.circular(27)),
               ),
-              width: 54,
-              height: 54,
-              decoration: BoxDecoration(
-                  color: hexStringToColor('#204DD1'),
-                  borderRadius: BorderRadius.circular(27)),
-            ),),
+            ),
           ],
         ),
       )

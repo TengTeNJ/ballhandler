@@ -13,7 +13,7 @@ GameOverModel _$GameOverModelFromJson(Map<String, dynamic> json) =>
       avgPace: json['avgPace'] as String,
       rank: json['rank'] as String,
       endTime: json['endTime'] as String,
-      videoPath: json['videoPath'] as String?,
+      videoPath: json['videoPath'] as String,
     );
 
 Map<String, dynamic> _$GameOverModelToJson(GameOverModel instance) =>

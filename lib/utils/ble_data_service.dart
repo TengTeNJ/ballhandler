@@ -35,6 +35,10 @@ class BluetoothDataParse {
           // print('问题数据');
         } else {
           int cmd = element[1];
+          print('cmd====${cmd}');
+          if(cmd == 0x24){
+            print('element====${element}');
+          }
           switch (cmd) {
             case ResponseCMDType.deviceInfo:
               int parameter_data = element[2];
@@ -66,25 +70,25 @@ class BluetoothDataParse {
               print(
                   'BluetoothManager().dataChange=${BluetoothManager().dataChange}');
               BluetoothManager().triggerCallback(type: BLEDataType.score);
-              print('${data}:得分');
+             // print('${data}:得分');
               break;
             case ResponseCMDType.gameStatu:
               int data = element[2];
               BluetoothManager().gameData.gameStart = (data == 0x01);
-              print('游戏状态---${data}');
+             // print('游戏状态---${data}');
               BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
               break;
             case ResponseCMDType.remainTime:
               int data = element[2];
               BluetoothManager().gameData.remainTime = data;
-              print('游戏时长---${data}');
+            //  print('游戏时长---${data}');
               BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
               break;
             case ResponseCMDType.millisecond:
               int data = element[2];
-              BluetoothManager().gameData.millSecond = data;
+             BluetoothManager().gameData.millSecond = data;
               print('毫秒刷新---${data}');
-              BluetoothManager().triggerCallback(type: BLEDataType.millisecond);
+             BluetoothManager().triggerCallback(type: BLEDataType.millisecond);
               break;
           }
         }

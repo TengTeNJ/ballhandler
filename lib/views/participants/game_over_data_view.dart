@@ -6,7 +6,10 @@ import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+
+import '../../utils/global.dart';
 
 class GameOverDataView extends StatefulWidget {
   final GameOverModel dataModel;
@@ -34,6 +37,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
 
   @override
   Widget build(BuildContext context) {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     return Container(
       decoration: BoxDecoration(
           color: hexStringToColor('#17171D'),
@@ -104,7 +108,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
               child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GestureDetector(
+              gameUtil.selectRecord ? GestureDetector(
                 child: Container(
                   width: 24,
                   height: 24,
@@ -146,7 +150,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
                   NavigatorUtil.push('videoPlay',
                       arguments: widget.dataModel);
                 },
-              ),
+              ) : Container(),
               SizedBox(
                 width: 12,
               ),

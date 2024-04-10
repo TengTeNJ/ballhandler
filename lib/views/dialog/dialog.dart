@@ -10,7 +10,6 @@ import 'package:code/widgets/base/base_button.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io' show Platform;
-import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 
 /**发送邮件弹窗**/
@@ -144,7 +143,8 @@ class _BLEListDialogState extends State<BLEListDialog> {
           Positioned(
             child: BLEListView(),
             top: 45,
-            bottom: 99,
+            bottom:
+            99,
           ),
           Positioned(
             child: GestureDetector(

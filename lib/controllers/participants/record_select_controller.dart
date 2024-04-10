@@ -3,8 +3,10 @@ import 'package:code/constants/constants.dart';
 import 'package:code/route/route.dart';
 import 'package:code/views/participants/record_select_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../utils/color.dart';
+import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 
 class RecordSelectController extends StatefulWidget {
@@ -74,6 +76,8 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
                    ),
                    child: RecordSelectView(onTap: (value){
                      _recordSelect = value;
+                     GameUtil gameUtil = GetIt.instance<GameUtil>();
+                      gameUtil.selectRecord = true;
                    },),
                  )
                 ],
