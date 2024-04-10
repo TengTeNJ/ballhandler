@@ -1,4 +1,5 @@
 import 'package:date_format/date_format.dart';
+import 'package:intl/intl.dart'; // 导入intl包
 class StringUtil {
   /*邮箱校验*/
   static bool isValidEmail(String email) {
@@ -35,5 +36,10 @@ class StringUtil {
     print('datetime=${datetime}');
     print('_string=' + _string);
     return _string;
+  }
+
+  static String dateToString(DateTime date){
+    String formattedDate = DateFormat('yyyy/MM/dd').format(date);
+   return formattedDate;
   }
 }

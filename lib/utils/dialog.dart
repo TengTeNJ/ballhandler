@@ -99,14 +99,34 @@ class TTDialog {
         );
       },
     );
+  }
 
-    // showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return Dialog(
-    //         backgroundColor: Colors.transparent,
-    //         child: ExchangeIntegralDialog(),);
-    //     });
+  static timeSelect(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: hexStringToColor('#3E3E55'),
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        double _height = 0.40;
+        return StatefulBuilder(builder: (BuildContext context,StateSetter setState){
+          return FractionallySizedBox(
+            heightFactor: _height,
+            child: TimeSelectDialog(datePickerSelect: (value){
+              if(value){
+                _height = 0.72;
+                setState(() {
+                });
+              }else{
+                _height = 0.40;
+                setState(() {
+                });
+              }
+            },),
+          );
+        });
+      },
+
+    );
   }
 
 }

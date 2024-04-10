@@ -1,6 +1,7 @@
 
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -59,7 +60,8 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           ),
           GestureDetector(
             onTap: () async{
-              NavigatorUtil.push('trainingMode');
+             // TTDialog.timeSelect(context);
+             NavigatorUtil.push('trainingMode');
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 16, left: 56, right: 56),

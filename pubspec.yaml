@@ -59,6 +59,8 @@ dependencies:
   flutter_screenutil: ^5.9.0
   syncfusion_flutter_charts: ^24.2.9
   get_it: ^7.6.8
+  scroll_date_picker: ^3.8.0
+  flutter_cupertino_datetime_picker: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
