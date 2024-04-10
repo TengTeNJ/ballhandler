@@ -10,6 +10,7 @@ class GameOverModel {
   String rank = '-';
   String endTime = 'Mar 31.2024 10.30';
   String? videoPath = ''; //  视频路径
+  String Integral = '1'; // 积分，默认为1
   factory GameOverModel.fromJson(Map<String, dynamic> json) =>
       _$GameOverModelFromJson(json);
 

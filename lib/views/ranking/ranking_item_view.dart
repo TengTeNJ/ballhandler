@@ -52,7 +52,7 @@ class _RankingItemViewState extends State<RankingItemView> {
                   ),
                 ),
                 SizedBox(width: 8,),
-                Constants.mediumWhiteTextWidget(widget.model.nickName.toString(), 20),
+                Constants.mediumWhiteTextWidget(widget.model.nickName.toString().length > 7 ? widget.model.nickName.toString().substring(0,6):widget.model.nickName.toString(), 20),
                 SizedBox(width: 8,),
                 Constants.regularGreyTextWidget(widget.model.country.toString(), 10),
               ],),

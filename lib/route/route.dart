@@ -72,8 +72,8 @@ class Routes {
         return MaterialPageRoute(builder: (_)=> GameProcessController(camera: camera,));
       }
       case videoplay:{
-        final  String path = settings.arguments as String;
-        return MaterialPageRoute(builder: (_)=> VideoPlayController(videoPath: path,));
+        final  GameOverModel model = settings.arguments as GameOverModel;
+        return MaterialPageRoute(builder: (_)=> VideoPlayController(model: model,));
       }
       case todaydata:
         return MaterialPageRoute(builder: (_) => TodayDataController());

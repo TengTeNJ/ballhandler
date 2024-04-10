@@ -26,7 +26,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
       var random = Random();
       int randomNumber = random.nextInt(11);
       MyStatsModel model = MyStatsModel();
-      model.speed = randomNumber/10;
+      model.speed = randomNumber/10 + 1;
       model.indexString = (i+1).toString();
       datas.add(model);
       temp = temp<model.speed ?model.speed : temp;

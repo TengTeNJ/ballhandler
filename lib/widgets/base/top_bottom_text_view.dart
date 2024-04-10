@@ -14,7 +14,7 @@ class TBTextView extends StatelessWidget {
     required this.title,
     required this.detailTitle,
     this.titleColor = Colors.white,
-    this.detailColor = const Color.fromRGBO(177, 177, 177, 1) ,
+    this.detailColor = const Color.fromRGBO(177, 177, 177, 1),
     this.titleFontSize = 20,
     this.detailFontSize = 12,
   });
@@ -22,17 +22,27 @@ class TBTextView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment:  MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           title,
-          style: TextStyle(color: titleColor, fontSize: titleFontSize,height: 1.0),
+          style: TextStyle(
+              color: titleColor,
+              fontFamily: 'SanFranciscoDisplay',
+              fontSize: titleFontSize,
+              height: 1.0),
         ),
-        SizedBox(height: 4,),
+        SizedBox(
+          height: 4,
+        ),
         Text(
           detailTitle,
-          style: TextStyle(color: detailColor, fontSize: detailFontSize,height: 1.0),
+          style: TextStyle(
+              color: detailColor,
+              fontFamily: 'SanFranciscoDisplay',
+              fontSize: detailFontSize,
+              height: 1.0),
         ),
       ],
     );

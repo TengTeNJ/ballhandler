@@ -32,7 +32,7 @@ class Rank{
         model.rankNumber = !ISEmpty(_map['rankNumber']) ?  _map['rankNumber'].toString() :'--';
         model.nickName = !ISEmpty(_map['nickName']) ?  _map['nickName'].toString() :'--';
         model.avatar = !ISEmpty(_map['avatar']) ?  _map['avatar'].toString() :'';
-        model.country = !ISEmpty(_map['country']) ?  _map['country'].toString() :'--';
+        model.country = !ISEmpty(_map['country']) ?  _map['country'].toString() :'China';
         _list.add(model);
       });
       return ApiResponse(

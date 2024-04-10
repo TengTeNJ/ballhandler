@@ -18,7 +18,7 @@ class GameOverDataView extends StatefulWidget {
 }
 
 class _GameOverDataViewState extends State<GameOverDataView> {
-  final _titles = ['Time', 'Score', 'Rank'];
+  final _titles = ['Time', 'Score', 'Integral'];
   late final _datas;
 
   @override
@@ -28,7 +28,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
     _datas = [
       widget.dataModel.time,
       widget.dataModel.score.toString(),
-      widget.dataModel.rank
+      widget.dataModel.Integral
     ];
   }
 
@@ -106,7 +106,6 @@ class _GameOverDataViewState extends State<GameOverDataView> {
             children: [
               GestureDetector(
                 child: Container(
-                  color: Colors.red,
                   width: 24,
                   height: 24,
                   child: Stack(
@@ -145,7 +144,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
                 onTap: () {
                   print('播放视频');
                   NavigatorUtil.push('videoPlay',
-                      arguments: widget.dataModel.videoPath??'');
+                      arguments: widget.dataModel);
                 },
               ),
               SizedBox(

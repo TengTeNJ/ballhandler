@@ -52,6 +52,7 @@ class _HomePageViewState extends State<HomePageController> {
   @override
   Widget build(BuildContext context) {
     getHomeData(context);
+    getHomeData(context);
     return Scaffold(
       resizeToAvoidBottomInset:false,
       backgroundColor: Constants.baseControllerColor,
@@ -59,6 +60,13 @@ class _HomePageViewState extends State<HomePageController> {
         title: '',
       ),
       body: Container(
+        decoration: BoxDecoration(
+          gradient:LinearGradient(
+            colors: [Constants.darkThemeColor, Constants.baseControllerColor],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         margin: EdgeInsets.only(left: 0, right: 0),
         child: Column(
           children: [
