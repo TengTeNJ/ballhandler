@@ -87,14 +87,10 @@ class _GameProcessControllerState extends State<GameProcessController>
           _getStartFlag = false;
         }
       } else if (type == BLEDataType.remainTime) {
-        GamedDataProvider
-            .of(context)
-            .remainTime =
+        GamedDataProvider.of(context).remainTime =
             BluetoothManager().gameData.remainTime;
       } else if (type == BLEDataType.millisecond) {
-        GamedDataProvider
-            .of(context)
-            .millSecond =
+        GamedDataProvider.of(context).millSecond =
             BluetoothManager().gameData.millSecond;
       } else {
         //setState(() {});
@@ -143,23 +139,21 @@ class _GameProcessControllerState extends State<GameProcessController>
     BluetoothManager().gameData.remainTime = 45;
     BluetoothManager().gameData.millSecond = 0;
     BluetoothManager().gameData.score = 0;
-    GamedDataProvider
-        .of(context)
-        .remainTime = 45;
-    GamedDataProvider
-        .of(context)
-        .millSecond = 0;
+    GamedDataProvider.of(context).remainTime = 45;
+    GamedDataProvider.of(context).millSecond = 0;
     super.dispose();
   }
 }
 
 //  屏幕竖直方向
 Widget VerticalScreenWidget(BuildContext context) {
+  GameUtil gameUtil = GetIt.instance<GameUtil>();
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      Column(
+      Expanded(
+          child: Column(
         children: [
           SizedBox(
             height: 85,
@@ -168,60 +162,70 @@ Widget VerticalScreenWidget(BuildContext context) {
           SizedBox(
             height: 32,
           ),
-          Padding(padding: EdgeInsets.only(left: 16, right: 16), child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: Constants.screenWidth(context) * 0.56,
-                height: 133,
-                decoration: BoxDecoration(
-                    color: hexStringToColor('#204DD1'),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Constants.mediumWhiteTextWidget('TIME LEFT', 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Constants.digiRegularWhiteTextWidget('00:', 76),
-                        Consumer<GameData>(builder: (context, data, child) {
-                          return Constants.digiRegularWhiteTextWidget(
-                              data.remainTime.toString().padLeft(2, '0'), 76);
-                        }),
-                      ],
-                    )
-                  ],
+          Padding(
+            padding: EdgeInsets.only(left: 16, right: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: Constants.screenWidth(context) * 0.56,
+                  height: 133,
+                  decoration: BoxDecoration(
+                      color: hexStringToColor('#204DD1'),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Constants.mediumWhiteTextWidget('TIME LEFT', 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Constants.digiRegularWhiteTextWidget('00:', 76),
+                          Consumer<GameData>(builder: (context, data, child) {
+                            return Constants.digiRegularWhiteTextWidget(
+                                data.remainTime.toString().padLeft(2, '0'), 76);
+                          }),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                width: Constants.screenWidth(context) * 0.32,
-                height: 133,
-                decoration: BoxDecoration(
-                    color: hexStringToColor('#204DD1'),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Constants.mediumWhiteTextWidget('SCORE', 16),
-                    Constants.digiRegularWhiteTextWidget(
-                        BluetoothManager().gameData.score.toString(), 76)
-                  ],
+                Container(
+                  width: Constants.screenWidth(context) * 0.32,
+                  height: 133,
+                  decoration: BoxDecoration(
+                      color: hexStringToColor('#204DD1'),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Constants.mediumWhiteTextWidget('SCORE', 16),
+                      Constants.digiRegularWhiteTextWidget(
+                          BluetoothManager().gameData.score.toString(), 76)
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),),
+              ],
+            ),
+          ),
           SizedBox(
             height: 24,
           ),
+          Expanded(
+              child: Padding(
+                  padding: EdgeInsets.only(left: 16, right: 16),
+                  child: Image(
+                    image: AssetImage('images/product/product_${gameUtil.modelId}.png'),
+                    width: Constants.screenWidth(context) - 32,
+                  ))),
         ],
-      ),
+      )),
       Container(
         margin: EdgeInsets.only(left: 24, right: 24, bottom: 24),
         child: Row(
@@ -332,8 +336,8 @@ Widget HorizontalScreenWidget(BuildContext context) {
       ),
       Expanded(
           child: Container(
-            color: Colors.red,
-          )),
+        color: Colors.red,
+      )),
       Container(
         margin: EdgeInsets.only(left: 24, right: 24, bottom: 24),
         child: Row(
@@ -381,24 +385,29 @@ Widget HorizontalScreenWidget(BuildContext context) {
 Widget recordWidget() {
   // 用户选择了视频录制 则显示Record图标
   GameUtil gameUtil = GetIt.instance<GameUtil>();
-  return gameUtil.selectRecord ? Container(
-    width: 112,
-    height: 26,
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: hexStringToColor('#1C1E21')
-    ),
-    child: Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image(image: AssetImage('images/participants/point.png'),
-            width: 14,
-            height: 14, ),
-          SizedBox(width: 4,),
-          Constants.regularWhiteTextWidget('Recording', 14)
-        ],
-      ),
-    ),
-  ) :Container();
+  return gameUtil.selectRecord
+      ? Container(
+          width: 112,
+          height: 26,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: hexStringToColor('#1C1E21')),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  image: AssetImage('images/participants/point.png'),
+                  width: 14,
+                  height: 14,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Constants.regularWhiteTextWidget('Recording', 14)
+              ],
+            ),
+          ),
+        )
+      : Container();
 }

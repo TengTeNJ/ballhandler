@@ -18,6 +18,7 @@ class RecordSelectController extends StatefulWidget {
 
 class _RecordSelectControllerState extends State<RecordSelectController> {
   bool _recordSelect = false;
+  GameUtil gameUtil = GetIt.instance<GameUtil>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,19 +55,15 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
           Positioned(
               left: 0,
               right: 0,
-              top: 130,
+              top: 146,
               bottom: 110,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 200,
-                    height: 200,
-                    decoration: BoxDecoration(color: Colors.blueGrey,borderRadius: BorderRadius.circular(100)),
-                  ),
-                  SizedBox(height: 29,),
+               Expanded(child:  Image(image: AssetImage('images/product/product_check_${gameUtil.modelId}.png'))),
+                  SizedBox(height: 16,),
                   Constants.regularWhiteTextWidget('Please place the shapes according to the legend', 14),
-                 SizedBox(height: 26,),
+                 SizedBox(height: 24,),
                  Container(
                    height: 36,
                    width: 112,
@@ -84,7 +81,7 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
               )),
           Positioned(
             left: 24,
-            bottom: 54,
+            bottom: 32,
             child: GestureDetector(
               onTap: () async {
                 List<CameraDescription> cameras =
