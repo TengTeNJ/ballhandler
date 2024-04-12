@@ -1,14 +1,10 @@
 import 'package:code/models/game/game_over_model.dart';
-import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:code/views/participants/player_bottom_view.dart';
-import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:code/widgets/video/video_play_view.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-
 import '../../utils/color.dart';
 import '../../utils/navigator_util.dart';
-
+import 'package:share_plus/share_plus.dart';
 class VideoPlayController extends StatefulWidget {
 GameOverModel model;
   VideoPlayController({required this.model});
@@ -54,6 +50,8 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
               child: GestureDetector(
                 onTap: () {
                   print('share---');
+                  XFile file = XFile(widget.model.videoPath);
+                  Share.shareXFiles([file],text: "Good Game");
                 },
                 child: Container(
                   width: 36,

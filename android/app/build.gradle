@@ -2,8 +2,12 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'
 }
-
+dependencies {
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
+    implementation("com.google.firebase:firebase-analytics")
+}
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -23,7 +27,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.code"
+    namespace "com.potent.stickhandling"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -61,3 +65,4 @@ android {
 flutter {
     source '../..'
 }
+

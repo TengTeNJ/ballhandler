@@ -1,18 +1,12 @@
 import 'dart:math';
-
-import 'package:code/controllers/account/login_page_controller.dart';
-import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
-import 'package:code/models/global/user_info.dart';
-import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 class RootPageController extends StatefulWidget {
   const RootPageController({super.key});
 
@@ -57,6 +51,14 @@ class _RootPageControllerState extends State<RootPageController> {
           });
         }
       });
+
+    testPush();
+
+  }
+
+  testPush() async{
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    print('fcmToken=${fcmToken}' );
   }
 
   @override
