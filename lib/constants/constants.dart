@@ -295,3 +295,6 @@ bool ISEmpty(Object? obj) {
   }
   return false;
 }
+
+// 全局监听
+const kLoginSucess = 'login_success'; // 登录成功

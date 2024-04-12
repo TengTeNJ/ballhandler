@@ -2,6 +2,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:provider/provider.dart';
 
 enum BLEDataType {
@@ -35,7 +36,7 @@ class BluetoothDataParse {
           // print('问题数据');
         } else {
           int cmd = element[1];
-          print('cmd====${cmd}');
+         // print('cmd====${cmd}');
           if(cmd == 0x24){
             print('element====${element}');
           }
@@ -80,15 +81,17 @@ class BluetoothDataParse {
               break;
             case ResponseCMDType.remainTime:
               int data = element[2];
-              BluetoothManager().gameData.remainTime = data;
-            //  print('游戏时长---${data}');
+             BluetoothManager().gameData.remainTime = data;
+            // //  print('游戏时长---${data}');
               BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
+
               break;
             case ResponseCMDType.millisecond:
               int data = element[2];
              BluetoothManager().gameData.millSecond = data;
-              print('毫秒刷新---${data}');
+             //  print('毫秒刷新---${data}');
              BluetoothManager().triggerCallback(type: BLEDataType.millisecond);
+
               break;
           }
         }

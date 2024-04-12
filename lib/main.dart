@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:code/controllers/participants/home_page_view.dart';
+import 'package:code/models/global/game_data.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/root_page.dart';
 import 'package:code/route/route.dart';
@@ -10,26 +11,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if(Platform.isAndroid){
+  if (Platform.isAndroid) {
     // 安卓虽然导入了json文件 可是仍然报错，可能是某方面原因导致不能自动初始化获取参数，所以手动加了参数
     await Firebase.initializeApp(
         options: FirebaseOptions(
-          apiKey: 'AIzaSyCsVdT0KIZIbqeQP4B7ISZDK_cne2E7fnA',
-          appId: '1:217693202761:android:3c338005aa9ef70001d298',
-          messagingSenderId: '217693202761',
-          projectId: 'potent-hockey-8bae8',
-          storageBucket: 'potent-hockey-8bae8.appspot.com',
-        )
-    );
-  }else{
+      apiKey: 'AIzaSyCsVdT0KIZIbqeQP4B7ISZDK_cne2E7fnA',
+      appId: '1:217693202761:android:3c338005aa9ef70001d298',
+      messagingSenderId: '217693202761',
+      projectId: 'potent-hockey-8bae8',
+      storageBucket: 'potent-hockey-8bae8.appspot.com',
+    ));
+  } else {
     await Firebase.initializeApp();
   }
 
   GetIt.I.registerSingleton<GameUtil>(GameUtil()); // 注册GameUtil实例
-  runApp(UserProvider(child: const MyApp()));
+
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => UserModel()),
+      ChangeNotifierProvider(create: (context) => GameData()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

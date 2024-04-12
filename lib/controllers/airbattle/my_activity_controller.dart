@@ -3,6 +3,8 @@ import 'package:code/views/participants/today_data_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/http/airbattle.dart';
+
 class MyActivityController extends StatefulWidget {
   const MyActivityController({super.key});
 
@@ -11,6 +13,23 @@ class MyActivityController extends StatefulWidget {
 }
 
 class _MyActivityControllerState extends State<MyActivityController> {
+  late List<MyActivityModel> _datas = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    queryMyActivityData();
+  }
+
+  queryMyActivityData() async{
+    final _response =  await AirBattle.queryMyActivityData(1);
+    if(_response.success && _response.data!=null){
+      _datas.addAll(_response.data!);
+    }else{
+      _datas = [];
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +54,7 @@ class _MyActivityControllerState extends State<MyActivityController> {
             SizedBox(
               height: 30,
             ),
-            Expanded(child: TodayDataListView())
+            Expanded(child: TodayDataListView(datas: _datas,))
           ],
         ),
       ),

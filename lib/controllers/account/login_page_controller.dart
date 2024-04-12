@@ -6,6 +6,7 @@ import 'package:code/services/http/account.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/login_util.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +92,7 @@ class _LoginPageControllerState extends State<LoginPageController> {
                           if (_response.success == true) {
                             // 登录成功
                             Account.handleUserData(_response, context);
+                            EventBus().sendEvent(kLoginSucess);
                             NavigatorUtil.pop();
                           };
                         },

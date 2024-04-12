@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/utils/notification_bloc.dart';
 import 'package:code/views/participants/home_body_view.dart';
 import 'package:code/views/participants/overall_data_view.dart';
 import 'package:code/views/participants/user_info_view.dart';
@@ -18,6 +21,7 @@ class HomePageController extends StatefulWidget {
 class _HomePageViewState extends State<HomePageController> {
   int _currentIndex = 0;
    PageController _pageController = PageController();
+  late StreamSubscription subscription;
   final List<Widget> _pageViews = [
     HomeBodyView(),
     HomeBodyView(),
@@ -48,10 +52,15 @@ class _HomePageViewState extends State<HomePageController> {
           });
         }
       });
+    // 监听登录成功
+     subscription = EventBus().stream.listen((event) {
+      if(event == kLoginSucess){
+        getHomeData(context);
+      }
+    });
   }
   @override
   Widget build(BuildContext context) {
-    getHomeData(context);
     getHomeData(context);
     return Scaffold(
       resizeToAvoidBottomInset:false,
@@ -117,6 +126,8 @@ class _HomePageViewState extends State<HomePageController> {
   @override
   void dispose() {
     _pageController.dispose();
+    // 在不需要监听事件时取消订阅
+    subscription.cancel();
     super.dispose();
   }
 }

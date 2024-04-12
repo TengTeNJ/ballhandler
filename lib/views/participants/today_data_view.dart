@@ -1,9 +1,11 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
 
 class TodayDataView extends StatefulWidget {
-  const TodayDataView({super.key});
+  MyActivityModel  activityModel;
+   TodayDataView({required this.activityModel});
 
   @override
   State<TodayDataView> createState() => _TodayDataViewState();
@@ -21,7 +23,10 @@ class _TodayDataViewState extends State<TodayDataView> {
       ),
       child: Stack(
         children: [
-          Positioned(
+          Visibility(
+            visible: widget.activityModel.trainVideo.length > 0,
+             replacement: Placeholder(),
+              child: Positioned(
               top: 8,
               right: 8,
               child: Container(
@@ -34,7 +39,7 @@ class _TodayDataViewState extends State<TodayDataView> {
                 child: Center(
                   child: Constants.regularWhiteTextWidget('VIEW', 10),
                 ),
-              )),
+              ))),
           Positioned(
               top: 12,
               bottom: 12,
@@ -43,12 +48,15 @@ class _TodayDataViewState extends State<TodayDataView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image(
-                      image: AssetImage('images/airbattle/gold.png'),
-                      width: 48,
-                      height: 48,
-                      fit: BoxFit.fill
-                  ),
+                  Image.network(widget.activityModel.activityIcon,width: 48,height: 48,loadingBuilder: (context,child,loadingProfress){
+                    return  Image(
+                        image: AssetImage('images/airbattle/gold.png'),
+                        width: 48,
+                        height: 48,
+                        fit: BoxFit.fill
+                    );
+                  },),
+
                   SizedBox(width: 16,),
                   Expanded(child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,9 +64,9 @@ class _TodayDataViewState extends State<TodayDataView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Constants.customTextWidget('Training Mode', 14, '#B1B1B1'),
+                          Constants.customTextWidget(widget.activityModel.activityName, 14, '#B1B1B1'),
                           SizedBox(width: 16,),
-                          Constants.regularWhiteTextWidget('Mar 31,2024 10:30', 10),
+                          Constants.regularWhiteTextWidget(widget.activityModel.startDate, 10),
                         ],
                       ),
                       Row(
@@ -66,21 +74,21 @@ class _TodayDataViewState extends State<TodayDataView> {
                         children: [
                           Column(
                             children: [
-                              Constants.mediumWhiteTextWidget('0.8', 20),
+                              Constants.mediumWhiteTextWidget(widget.activityModel.rankNumber, 20),
                               SizedBox(height: 4,),
                               Constants.customTextWidget('Avg.pace (sec.)', 8, '#B1B1B1'),
                             ],
                           ),
                           Column(
                             children: [
-                              Constants.mediumWhiteTextWidget('0.8', 20),
+                              Constants.mediumWhiteTextWidget(widget.activityModel.trainScore, 20),
                               SizedBox(height: 4,),
                               Constants.customTextWidget('Score(pts.)', 8, '#B1B1B1'),
                             ],
                           ),
                           Column(
                             children: [
-                              Constants.mediumWhiteTextWidget('0.8', 20),
+                              Constants.mediumWhiteTextWidget(widget.activityModel.avgPace, 20),
                               SizedBox(height: 4,),
                               Constants.customTextWidget('Time(min.)', 8, '#B1B1B1'),
                             ],

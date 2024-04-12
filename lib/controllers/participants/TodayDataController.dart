@@ -35,7 +35,7 @@ class _TodayDataControllerState extends State<TodayDataController> {
             SizedBox(
               height: 30,
             ),
-            Expanded(child: TodayDataListView())
+            Expanded(child: TodayDataListView(datas: [],))
           ],
         ),
       ),
