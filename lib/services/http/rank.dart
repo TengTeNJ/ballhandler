@@ -9,6 +9,7 @@ class RankModel{
   String ?nickName;
   String ?avatar;
   String ?country;
+  String trainVideo = '';
 }
 class Rank{
   static Future<ApiResponse<List<RankModel>>> queryRankListData(int page) async {
@@ -33,6 +34,7 @@ class Rank{
         model.nickName = !ISEmpty(_map['nickName']) ?  _map['nickName'].toString() :'--';
         model.avatar = !ISEmpty(_map['avatar']) ?  _map['avatar'].toString() :'';
         model.country = !ISEmpty(_map['country']) ?  _map['country'].toString() :'China';
+        model.trainVideo = !ISEmpty(_map['trainVideo']) ?  _map['trainVideo'].toString() :'';
         _list.add(model);
       });
       return ApiResponse(

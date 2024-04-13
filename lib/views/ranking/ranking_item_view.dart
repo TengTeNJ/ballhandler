@@ -21,17 +21,17 @@ class _RankingItemViewState extends State<RankingItemView> {
       height: 72,
       child: Stack(
         children: [
-          Positioned(
+          widget.model.trainVideo.length > 0 ? Positioned(
               top: 8,
               right: 8,
               child: Container(
-                width: 32,
-                height: 14,
-                decoration: BoxDecoration(
-                    color: Constants.baseStyleColor,
-                    borderRadius: BorderRadius.circular(3)),
-                child:  Center(child:  Constants.regularWhiteTextWidget('View', 10))
-              )),
+                  width: 32,
+                  height: 14,
+                  decoration: BoxDecoration(
+                      color: Constants.baseStyleColor,
+                      borderRadius: BorderRadius.circular(3)),
+                  child:  Center(child:  Constants.regularWhiteTextWidget('View', 10))
+              )) : Container() ,
           Positioned(child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,

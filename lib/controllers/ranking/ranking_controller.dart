@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/rank.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/views/base/no_data_view.dart';
 import 'package:code/views/ranking/ranking_card_page_view.dart';
 import 'package:code/views/ranking/ranking_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
@@ -83,7 +84,7 @@ class _RankingControllerState extends State<RankingController> {
             Expanded(
                 child: Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
-              child: _datas.length > 0 ? RankingListView(datas: _datas,): Container(),
+              child: _datas.length > 0 ? RankingListView(datas: _datas,): NoDataView(),
             )),
           ],
         ),
