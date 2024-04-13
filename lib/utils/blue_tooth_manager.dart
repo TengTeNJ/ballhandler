@@ -93,7 +93,7 @@ class BluetoothManager {
         model.notifyCharacteristic = notifyCharacteristic;
         model.writerCharacteristic = writerCharacteristic;
         // 打开毫秒使能开关
-        writerDataToDevice(model, milleEnableData());
+       // writerDataToDevice(model, milleEnableData());
         // 连接成功弹窗
         EasyLoading.showSuccess('Bluetooth connection successful');
         // 监听数据

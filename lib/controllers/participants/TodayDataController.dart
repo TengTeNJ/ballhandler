@@ -1,7 +1,11 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/models/global/user_info.dart';
+import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/views/participants/today_data_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/game/game_over_model.dart';
 
 class TodayDataController extends StatefulWidget {
   const TodayDataController({super.key});
@@ -11,6 +15,28 @@ class TodayDataController extends StatefulWidget {
 }
 
 class _TodayDataControllerState extends State<TodayDataController> {
+  List<GameOverModel> _datas = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    if (!UserProvider.of(context).hasLogin) {
+      // 未登录
+      final _result = await DatabaseHelper().getData(kDataBaseTableName);
+      _datas = _result;
+    setState(() {
+
+    });
+    } else {
+      // 已登录进行数据请求
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +61,10 @@ class _TodayDataControllerState extends State<TodayDataController> {
             SizedBox(
               height: 30,
             ),
-            Expanded(child: TodayDataListView(datas: [],))
+            Expanded(
+                child: TodayDataListView(
+              datas: _datas,
+            ))
           ],
         ),
       ),

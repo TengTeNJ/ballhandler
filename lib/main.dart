@@ -28,16 +28,8 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
-
   GetIt.I.registerSingleton<GameUtil>(GameUtil()); // 注册GameUtil实例
-
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => UserModel()),
-      ChangeNotifierProvider(create: (context) => GameData()),
-    ],
-    child: const MyApp(),
-  ));
+  runApp(UserProvider(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

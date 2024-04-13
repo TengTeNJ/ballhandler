@@ -4,6 +4,24 @@
 <dict>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+    
+    <key>ASAuthorizationAppleIDProvider</key>
+    <dict>
+      <key>authorizationEndpoint</key>
+      <string>https://appleid.apple.com</string>
+      <key>tokenEndpoint</key>
+      <string>https://appleid.apple.com</string>
+    </dict>
+    <key>ASAuthorizationScope</key>
+    <array>
+      <string>email</string>
+      <string>fullName</string>
+    </array>
+    <key>NSUserActivityTypes</key>
+    <array>
+      <string>com.apple.authenticationservices.token</string>
+    </array>
+
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

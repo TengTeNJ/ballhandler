@@ -8,6 +8,7 @@ import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/utils/ticker_util.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
@@ -62,13 +63,13 @@ class _GameProcessControllerState extends State<GameProcessController>
             await _controller.startVideoRecording();
           }
         } else {
+          // 游戏结束
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           XFile videoFile = XFile('');
           if (gameUtil.selectRecord && _getStartFlag) {
             // 停止录制视频
             videoFile = await _controller.stopVideoRecording();
           }
-
           // 跳转到游戏完成页面
           GameOverModel model = GameOverModel();
           if (BluetoothManager().gameData.score == 0) {
@@ -79,21 +80,17 @@ class _GameProcessControllerState extends State<GameProcessController>
           }
           model.score = (BluetoothManager().gameData.score).toString();
           model.videoPath = gameUtil.selectRecord ? videoFile.path : '';
+          model.endTime = StringUtil.dateToGameTimeString();
+
+          // 释放摄像头控制器
+          await _controller.dispose();
           NavigatorUtil.popAndThenPush('gameFinish', arguments: model);
           // 标记离开游戏页面
           gameUtil.nowISGamePage = false;
-          // 释放摄像头控制器
-          await _controller.dispose();
           _getStartFlag = false;
         }
-      } else if (type == BLEDataType.remainTime) {
-        GamedDataProvider.of(context).remainTime =
-            BluetoothManager().gameData.remainTime;
-      } else if (type == BLEDataType.millisecond) {
-        GamedDataProvider.of(context).millSecond =
-            BluetoothManager().gameData.millSecond;
-      } else {
-        //setState(() {});
+      }  else {
+        setState(() {});
       }
     };
   }
@@ -132,6 +129,7 @@ class _GameProcessControllerState extends State<GameProcessController>
     // TODO: implement dispose
     _controller.dispose();
     BluetoothManager().dataChange = null;
+   // print('dataChange=null');
     // 标记离开游戏页面
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     gameUtil.nowISGamePage = false;
@@ -139,8 +137,6 @@ class _GameProcessControllerState extends State<GameProcessController>
     BluetoothManager().gameData.remainTime = 45;
     BluetoothManager().gameData.millSecond = 0;
     BluetoothManager().gameData.score = 0;
-    GamedDataProvider.of(context).remainTime = 45;
-    GamedDataProvider.of(context).millSecond = 0;
     super.dispose();
   }
 }
@@ -184,10 +180,8 @@ Widget VerticalScreenWidget(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Constants.digiRegularWhiteTextWidget('00:', 76),
-                          Consumer<GameData>(builder: (context, data, child) {
-                            return Constants.digiRegularWhiteTextWidget(
-                                data.remainTime.toString().padLeft(2, '0'), 76);
-                          }),
+                          Constants.digiRegularWhiteTextWidget(
+                              BluetoothManager().gameData.remainTime.toString().padLeft(2, '0'), 76),
                         ],
                       )
                     ],

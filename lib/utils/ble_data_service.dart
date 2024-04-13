@@ -13,6 +13,7 @@ enum BLEDataType {
   gameStatu,
   remainTime,
   millisecond,
+  targetIn,
 }
 
 class ResponseCMDType {
@@ -22,6 +23,8 @@ class ResponseCMDType {
   static const int gameStatu = 0x2A; // 游戏状态:开始和结束
   static const int remainTime = 0x2C; // 游戏剩余时长
   static const int millisecond = 0x32; // 游戏毫秒时间同步
+  static const int targetIn = 0x10; // 目标集中
+
 }
 
 /*蓝牙数据解析类*/
@@ -57,11 +60,13 @@ class BluetoothDataParse {
               String binaryString = data.toRadixString(2); // 转换成二进制字符串
               if (binaryString != null && binaryString.length == 8) {
                 // 前两位都是1，不区分红灯和蓝灯，截取后边6位，判断哪个灯在亮
-                final sub_string = binaryString.substring(2, 7);
+                final sub_string = binaryString.substring(2, 8);
+                print('sub_string=${sub_string}');
                 final ligh_index = sub_string.indexOf('1');
                 final actual_index = 5 - ligh_index + 1;
                 BluetoothManager().gameData.currentTarget = actual_index;
                 print('${actual_index}号灯亮了');
+                print('binaryString=${binaryString}');
               }
               break;
             case ResponseCMDType.score:
@@ -81,17 +86,18 @@ class BluetoothDataParse {
               break;
             case ResponseCMDType.remainTime:
               int data = element[2];
-             BluetoothManager().gameData.remainTime = data;
-            // //  print('游戏时长---${data}');
+              BluetoothManager().gameData.remainTime = data;
               BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
-
               break;
             case ResponseCMDType.millisecond:
               int data = element[2];
              BluetoothManager().gameData.millSecond = data;
              //  print('毫秒刷新---${data}');
              BluetoothManager().triggerCallback(type: BLEDataType.millisecond);
-
+              break;
+            case ResponseCMDType.targetIn:
+              int data = element[2];
+              print('目标击中--${data}');
               break;
           }
         }

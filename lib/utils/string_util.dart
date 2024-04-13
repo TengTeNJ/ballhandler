@@ -31,15 +31,18 @@ class StringUtil {
 
   /*时间转字符串*/
   static String dateTimeToString(DateTime datetime){
-    print('datetime11=${datetime}');
     String _string = formatDate(datetime, [yyyy, '-', mm, '-', dd]);
-    print('datetime=${datetime}');
-    print('_string=' + _string);
     return _string;
   }
 
   static String dateToString(DateTime date){
     String formattedDate = DateFormat('yyyy/MM/dd').format(date);
    return formattedDate;
+  }
+
+  static String dateToGameTimeString(){
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('MMMM.dd.yyyy HH:mm').format(now);
+    return formattedDate;
   }
 }

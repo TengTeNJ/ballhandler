@@ -1,7 +1,9 @@
+import 'package:camera/camera.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:get_it/get_it.dart';
+import 'package:dio/dio.dart';
 
 class HomeUsermodel {
   String avgPace;
@@ -103,4 +105,28 @@ class Participants {
       return ApiResponse(success: false);
     }
   }
+
+
+  static Future<ApiResponse<String>> uploadAsset(String path) async {
+
+    XFile file = XFile(path);
+    var postData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+          file.path, filename: file.name)
+    });
+    print('postData---${postData}');
+    print('name---${file.name}');
+    print('path---${file.path}');
+
+    final response = await HttpUtil.post('/api/oss/upload', postData,
+        showLoading: true);
+    if (response.success && response.data['data'] != null) {
+      String url = response.data['data'][0] ?? '';
+      return ApiResponse(
+          success: response.success,data: url);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
 }

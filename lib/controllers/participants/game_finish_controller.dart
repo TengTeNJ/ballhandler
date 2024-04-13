@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/models/global/user_info.dart';
@@ -9,7 +10,6 @@ import 'package:code/views/participants/fireworks_animation-view.dart';
 import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
 
 class GameFinishController extends StatefulWidget {
   final GameOverModel dataModel;
@@ -97,14 +97,21 @@ class _GameFinishControllerState extends State<GameFinishController> {
             GestureDetector(
               onTap: () async{
                 print('save data');
-                // 保存游戏数据到本地
-                DatabaseHelper dbHelper = DatabaseHelper();
-                dbHelper.insertData(kDataBaseTableName, widget.dataModel);
-                // 保存游戏数据到云端
-               final _response =  await Participants.saveGameData(widget.dataModel);
-               if(_response.success){
-                 NavigatorUtil.pop();
-               }
+                if(UserProvider.of(context).hasLogin){
+                 final _urlResponse =  await Participants.uploadAsset(widget.dataModel.videoPath);
+                 widget.dataModel.videoPath = _urlResponse.data ?? '';
+                  // 保存游戏数据到云端
+                  final _response =  await Participants.saveGameData(widget.dataModel);
+                  if(_response.success){
+                    NavigatorUtil.pop();
+                  }
+                }else{
+                  // 未登录 数据放入缓存
+                  // 保存游戏数据到本地
+                  DatabaseHelper dbHelper = DatabaseHelper();
+                  dbHelper.insertData(kDataBaseTableName, widget.dataModel);
+                  NavigatorUtil.pop();
+                }
               },
               child: Container(
                 margin: EdgeInsets.only(left: 24,right: 24),
