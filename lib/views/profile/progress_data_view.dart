@@ -1,10 +1,12 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/services/http/profile.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProgressDataView extends StatefulWidget {
-  const ProgressDataView({super.key});
+  MyAccountDataModel model;
+   ProgressDataView({required this.model});
 
   @override
   State<ProgressDataView> createState() => _ProgressDataViewState();
@@ -33,17 +35,17 @@ class _ProgressDataViewState extends State<ProgressDataView> {
                 children: [
                   Container(width: 200,height: 6,child: LinearProgressIndicator(
                     borderRadius: BorderRadius.circular(10),
-                    value: 0.8,
+                    value: widget.model.integral/widget.model.upperLimit,
                     valueColor: AlwaysStoppedAnimation<Color>(
                         Constants.baseStyleColor),
                   ),),
-                  Image(image: AssetImage('images/profile/gold.png'),width: 37,height: 42,)
+                  Image(image: AssetImage('images/profile/progress_${widget.model.memberLevel}.png'),width: 37,height: 42,)
                 ],
               ),
              Transform.translate(child:  Row(
                children: [
-                 Text('800',style: TextStyle(color: Constants.baseStyleColor,fontSize: 14,height: 1.0),),
-                 Text('/100',style: TextStyle(color: Colors.white,fontSize: 14,height: 1.0),),
+                 Text(widget.model.integral.toString(),style: TextStyle(color: Constants.baseStyleColor,fontSize: 14,height: 1.0),),
+                 Text('/' + widget.model.upperLimit.toString(), style: TextStyle(color: Colors.white,fontSize: 14,height: 1.0),),
                ],
              ),  offset: Offset(0.0, -10.0),
              ),

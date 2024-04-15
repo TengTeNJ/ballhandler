@@ -1,10 +1,8 @@
-import 'package:code/models/airbattle/activity_model.dart';
 import 'package:code/route/route.dart';
-import 'package:code/utils/navigator_util.dart';
+import 'package:code/services/http/airbattle.dart';import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/airbattle/activity_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
-
 import '../../constants/constants.dart';
 
 class AirBattleHomeController extends StatefulWidget {
@@ -153,8 +151,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                   selectItem: (ActivityModel model) {
                     print('点击了活动');
                     NavigatorUtil.push('activityDetail');
-                  },
-                  datas: [ActivityModel(), ActivityModel()],
+                  }
                 ),
               )),
         ],

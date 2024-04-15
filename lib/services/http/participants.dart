@@ -28,7 +28,7 @@ class Participants {
       "sceneId": sceneId,
     };
     final response =
-        await HttpUtil.get('/api/index/home', _data, showLoading: true);
+        await HttpUtil.get('/api/index/home', _data, showLoading: false);
     HomeUsermodel model = HomeUsermodel();
     if (response.success && response.data['data'] != null) {
       model = HomeUsermodel(

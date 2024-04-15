@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/controllers/profile/integral_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
+import 'package:code/services/http/profile.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/profile/profile_grid_list_view.dart';
@@ -21,6 +22,26 @@ class ProfileController extends StatefulWidget {
 }
 
 class _ProfileControllerState extends State<ProfileController> {
+  late MyAccountDataModel _model = MyAccountDataModel();
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    queryMyAccountInfoData();
+  }
+
+  queryMyAccountInfoData() async{
+    final _response = await Profile.queryIMyAccountInfoData();
+    if(_response.success && _response.data != null){
+      _model = _response.data!;
+      setState(() {
+
+      });
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,18 +104,17 @@ class _ProfileControllerState extends State<ProfileController> {
                     Constants.customTextWidget('July 4, 2024', 16,'#B1B1B1'),
                   ],
                 ),
-                RewardView(),
-                SizedBox(height: 6,),
+                SizedBox(height: 32,),
                 GestureDetector(
                   onTap: (){
                     NavigatorUtil.present(IntegralController());
                   },
-                  child: ProgressDataView(),
+                  child: ProgressDataView(model: _model,),
                 ),
                 SizedBox(height: 40,),
                 Constants.mediumWhiteTextWidget('Lifetime Stats', 16),
                 SizedBox(height: 12,),
-                ProfileGridListView(),
+                ProfileGridListView(model: _model,),
                 SizedBox(height: 40,),
                 Constants.mediumWhiteTextWidget('Pending discussion', 16),
                 SizedBox(height: 12,),

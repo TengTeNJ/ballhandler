@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
-import 'package:code/models/airbattle/activity_model.dart';
+import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,19 +20,20 @@ class _ActivityViewState extends State<ActivityView> {
     return Container(
       width: Constants.screenWidth(context) - 32,
       height: 180,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage('images/airbattle/under_way.png'),
-        fit: BoxFit.fill,
-      )),
+      decoration: BoxDecoration(),
       child: Stack(
         children: [
+          TTNetImage(
+              url: widget.activityModel.activityBackground,
+              placeHolderPath: 'images/airbattle/under_way.png',
+              width: Constants.screenWidth(context) - 32,
+              height: 180,
+              borderRadius: BorderRadius.circular(10)),
           Positioned(
               top: 8,
               right: 12,
               child: Container(
-                width: 100,
-                height: 26,
+                padding: EdgeInsets.all(4),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -40,7 +42,11 @@ class _ActivityViewState extends State<ActivityView> {
                       width: 12,
                       height: 10,
                     ),
-                    Constants.regularWhiteTextWidget('Under Way', 14,
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Constants.regularWhiteTextWidget(
+                        widget.activityModel.statuString, 14,
                         height: 1.0),
                   ],
                 ),
@@ -55,15 +61,27 @@ class _ActivityViewState extends State<ActivityView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image(
-                  image: AssetImage('images/airbattle/icon.png'),
+                TTNetImage(
+                  url: widget.activityModel.activityIcon,
+                  placeHolderPath: 'images/airbattle/icon.png',
                   width: 58,
                   height: 58,
                 ),
-                Constants.boldWhiteTextWidget(widget.activityModel.title, 20),
-                SizedBox(height: 6,),
-                Constants.regularWhiteTextWidget(widget.activityModel.des, 14),
-
+                // Image(
+                //   image: AssetImage('images/airbattle/icon.png'),
+                //   width: 58,
+                //   height: 58,
+                // ),
+                SizedBox(
+                  height: 6,
+                ),
+                Constants.boldWhiteTextWidget(
+                    widget.activityModel.activityName, 20),
+                SizedBox(
+                  height: 6,
+                ),
+                Constants.regularWhiteTextWidget(
+                    widget.activityModel.activityRemark, 14),
               ],
             ),
           ),
@@ -71,7 +89,11 @@ class _ActivityViewState extends State<ActivityView> {
               bottom: 12,
               left: 32,
               right: 32,
-              child: Constants.regularWhiteTextWidget('JULY.2024', 10)),
+              child: Constants.regularWhiteTextWidget(
+                  widget.activityModel.startDate +
+                      '-' +
+                      widget.activityModel.endDate,
+                  10)),
         ],
       ),
     );

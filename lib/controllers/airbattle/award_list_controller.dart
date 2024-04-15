@@ -1,7 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/airbattle/award_model.dart';
 import 'package:code/utils/dialog.dart';
-import 'package:code/utils/toast.dart';
 import 'package:code/views/airbattle/award_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';

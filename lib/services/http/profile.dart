@@ -27,6 +27,22 @@ class ExchangeGoodModel {
   String goodsName = ''; // 商品名称
 }
 
+class MyAccountDataModel {
+  String avatar = ''; // 头像
+  dynamic  avgPace = 0; // 最快速度
+  String birthday = ''; // 生日
+  String country = ''; // 国家
+  int integral = 1; // 积分
+  int memberId = 1; // 会员号
+  int memberLevel = 1; // 会员等级
+  String nickName = ''; // 昵称
+  dynamic trainCount = 1; // 训练次数
+  dynamic trainScore = 1; // 训练总得分
+  dynamic trainTime = 1; // 训练总时常
+  int upperLimit = 1; // 等级积分上限
+}
+
+
 class Profile {
   /*获取积分明细列表*/
   static Future<ApiResponse<List<IntegralModel>>> queryIntegralListData(
@@ -48,15 +64,15 @@ class Profile {
             ? _map['integralName'].toString()
             : '--';
         model.sourceType =
-            !ISEmpty(_map['sourceType']) ? _map['sourceType'].toString() : '--';
+        !ISEmpty(_map['sourceType']) ? _map['sourceType'].toString() : '--';
         model.integralType =
-            !ISEmpty(_map['integralType']) ? _map['integralType'] : 1;
+        !ISEmpty(_map['integralType']) ? _map['integralType'] : 1;
         model.sceneId = !ISEmpty(_map['sceneId']) ? _map['sceneId'] : 1;
         model.modeId = !ISEmpty(_map['modeId']) ? _map['modeId'] : 1;
         model.integralVal =
-            !ISEmpty(_map['integralVal']) ? _map['integralVal'] : 0;
+        !ISEmpty(_map['integralVal']) ? _map['integralVal'] : 0;
         model.createTime =
-            !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
+        !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);
@@ -67,7 +83,7 @@ class Profile {
 
 /*查询可兑换的商品列表*/
   static Future<ApiResponse<List<ExchangeGoodModel>>>
-      queryIExchangeGoodsListData(int page) async {
+  queryIExchangeGoodsListData(int page) async {
     final _data = {
       "limit": kPageLimit.toString(),
       "page": page.toString(),
@@ -82,14 +98,14 @@ class Profile {
         ExchangeGoodModel model = ExchangeGoodModel();
         final _map = element;
         model.goodsImage =
-            !ISEmpty(_map['goodsImage']) ? _map['goodsImage'].toString() : '';
+        !ISEmpty(_map['goodsImage']) ? _map['goodsImage'].toString() : '';
         model.goodsName =
-            !ISEmpty(_map['goodsName']) ? _map['goodsName'].toString() : '--';
+        !ISEmpty(_map['goodsName']) ? _map['goodsName'].toString() : '--';
         model.goodsId = !ISEmpty(_map['goodsId']) ? _map['goodsId'] : 1;
         model.goodsIntegral =
-            !ISEmpty(_map['goodsIntegral']) ? _map['goodsIntegral'] : 1;
+        !ISEmpty(_map['goodsIntegral']) ? _map['goodsIntegral'] : 1;
         model.exchangeMoney =
-            !ISEmpty(_map['exchangeMoney']) ? _map['exchangeMoney'] : 0.1;
+        !ISEmpty(_map['exchangeMoney']) ? _map['exchangeMoney'] : 0.1;
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);
@@ -97,12 +113,50 @@ class Profile {
       return ApiResponse(success: false);
     }
   }
+
 /*积分兑换*/
   static Future<ApiResponse<String>> exchange(int goodsId) async {
     // 组装数据
     final _data = {'goodsId': goodsId};
-    final response =
-        await HttpUtil.post('/api/member/exchange/save', _data, showLoading: true);
+    final response = await HttpUtil.post('/api/member/exchange/save', _data,
+        showLoading: true);
     return ApiResponse(success: response.success);
   }
+
+/*获取我的账号信息*/
+  static Future<ApiResponse<MyAccountDataModel>>
+  queryIMyAccountInfoData() async {
+    final response = await HttpUtil.get(
+        '/api/member/index', null, showLoading: false);
+    MyAccountDataModel model = MyAccountDataModel();
+    if (response.success && response.data['data'] != null) {
+      final element = response.data['data'];
+      final _map = element;
+      model.avatar =
+      !ISEmpty(_map['avatar']) ? _map['avatar'].toString() : '';
+      model.birthday =
+      !ISEmpty(_map['birthday']) ? _map['birthday'].toString() : '--';
+      model.country =
+      !ISEmpty(_map['country']) ? _map['country'].toString() : '--';
+      model.avgPace = !ISEmpty(_map['avgPace']) ? _map['avgPace'] : 0;
+      model.integral = !ISEmpty(_map['integral']) ? _map['integral'] : 0;
+      model.memberId = !ISEmpty(_map['memberId']) ? _map['memberId'] : 1;
+      model.memberLevel =
+      !ISEmpty(_map['memberLevel']) ? _map['memberLevel'] : 1;
+      model.nickName =
+      !ISEmpty(_map['nickName']) ? _map['nickName'].toString() : '--';
+      model.trainCount =
+      !ISEmpty(_map['trainCount']) ? _map['trainCount'] : 0;
+      model.trainScore =
+      !ISEmpty(_map['trainScore']) ? _map['trainScore'] : 0;
+      model.trainTime =
+      !ISEmpty(_map['trainTime']) ? _map['trainTime'] : 0;
+      model.upperLimit =
+      !ISEmpty(_map['upperLimit']) ? _map['upperLimit'] : 1000;
+      return ApiResponse(success: response.success, data: model);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
 }
