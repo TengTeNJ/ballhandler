@@ -57,7 +57,7 @@ class _GameProcessControllerState extends State<GameProcessController>
           setState(() {});
           // 用户选择了视频录制 则同步开始录制
           GameUtil gameUtil = GetIt.instance<GameUtil>();
-          if (gameUtil.selectRecord) {
+          if (gameUtil.selectRecord || gameUtil.isFromAirBattle) {
             await _controller.initialize(); // 初始化摄像头控制器
             // 开始录制视频
             await _controller.startVideoRecording();
@@ -66,7 +66,7 @@ class _GameProcessControllerState extends State<GameProcessController>
           // 游戏结束
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           XFile videoFile = XFile('');
-          if (gameUtil.selectRecord && _getStartFlag) {
+          if ((gameUtil.selectRecord || gameUtil.isFromAirBattle) && _getStartFlag) {
             // 停止录制视频
             videoFile = await _controller.stopVideoRecording();
           }
@@ -79,7 +79,7 @@ class _GameProcessControllerState extends State<GameProcessController>
                 (45 / BluetoothManager().gameData.score).toStringAsFixed(2);
           }
           model.score = (BluetoothManager().gameData.score).toString();
-          model.videoPath = gameUtil.selectRecord ? videoFile.path : '';
+          model.videoPath = (gameUtil.selectRecord || gameUtil.isFromAirBattle)? videoFile.path : '';
           model.endTime = StringUtil.dateToGameTimeString();
 
           // 释放摄像头控制器
@@ -166,7 +166,16 @@ Widget VerticalScreenWidget(BuildContext context) {
                 Container(
                   width: Constants.screenWidth(context) * 0.56,
                   height: 133,
-                  decoration: BoxDecoration(
+                  decoration: gameUtil.isFromAirBattle ? BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        hexStringToColor('#EF8914'),
+                        hexStringToColor('#CF391A'),
+                      ],
+                    ),
+                      borderRadius: BorderRadius.circular(10)):BoxDecoration(
                       color: hexStringToColor('#204DD1'),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
@@ -190,7 +199,16 @@ Widget VerticalScreenWidget(BuildContext context) {
                 Container(
                   width: Constants.screenWidth(context) * 0.32,
                   height: 133,
-                  decoration: BoxDecoration(
+                  decoration: gameUtil.isFromAirBattle ? BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          hexStringToColor('#EF8914'),
+                          hexStringToColor('#CF391A'),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(10)):BoxDecoration(
                       color: hexStringToColor('#204DD1'),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
@@ -240,7 +258,16 @@ Widget VerticalScreenWidget(BuildContext context) {
                 ),
                 width: 54,
                 height: 54,
-                decoration: BoxDecoration(
+                decoration: gameUtil.isFromAirBattle ? BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        hexStringToColor('#EF8914'),
+                        hexStringToColor('#CF391A'),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(27)):BoxDecoration(
                     color: hexStringToColor('#204DD1'),
                     borderRadius: BorderRadius.circular(27)),
               ),
@@ -261,7 +288,16 @@ Widget VerticalScreenWidget(BuildContext context) {
                 ),
                 width: 54,
                 height: 54,
-                decoration: BoxDecoration(
+                decoration: gameUtil.isFromAirBattle ? BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        hexStringToColor('#EF8914'),
+                        hexStringToColor('#CF391A'),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(27)):BoxDecoration(
                     color: hexStringToColor('#204DD1'),
                     borderRadius: BorderRadius.circular(27)),
               ),

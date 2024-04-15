@@ -8,6 +8,7 @@ import 'package:code/utils/login_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:code/views/account/privacy_check_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -170,6 +171,8 @@ class _LoginPageControllerState extends State<LoginPageController> {
                     ),
                   ),
                 ),
+                SizedBox(height: 16,),
+                PrivacyCheckView(),
               ],
             ),
           ),

@@ -30,8 +30,18 @@ class AirBattleGridView extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 4,),
-        Expanded(child: TBTextView(title: title, detailTitle: detail)),
+        SizedBox(
+          width: 8,
+        ),
+        Expanded(
+            child: TBTextView(
+          title: title,
+          detailTitle: detail,
+          titleFontSize: 14,
+          detailFontSize: 14,
+          titleColor: hexStringToColor('#B1B1B1'),
+          detailColor: hexStringToColor('#FFFFFF'),
+        )),
       ],
     );
   }

@@ -9,7 +9,10 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/participants/fireworks_animation-view.dart';
 import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+
+import '../../utils/global.dart';
 
 class GameFinishController extends StatefulWidget {
   final GameOverModel dataModel;
@@ -21,6 +24,7 @@ class GameFinishController extends StatefulWidget {
 }
 
 class _GameFinishControllerState extends State<GameFinishController> {
+  GameUtil gameUtil = GetIt.instance<GameUtil>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +121,14 @@ class _GameFinishControllerState extends State<GameFinishController> {
                 margin: EdgeInsets.only(left: 24,right: 24),
                 height: 56,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: gameUtil.isFromAirBattle ? LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      hexStringToColor('#EF8914'),
+                      hexStringToColor('#CF391A'),
+                    ],
+                  ):LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [

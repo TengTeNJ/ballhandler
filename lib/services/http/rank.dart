@@ -15,6 +15,7 @@ class RankModel {
 }
 
 class Rank {
+  //*查询排名列表*/
   static Future<ApiResponse<List<RankModel>>> queryRankListData(
       int page) async {
     // 获取场景ID

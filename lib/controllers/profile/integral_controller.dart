@@ -6,8 +6,11 @@ import 'package:code/views/profile/integral_next_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/http/profile.dart';
+
 class IntegralController extends StatefulWidget {
-  const IntegralController({super.key});
+   MyAccountDataModel model;
+   IntegralController({required this.model});
 
   @override
   State<IntegralController> createState() => _IntegralControllerState();
@@ -39,7 +42,7 @@ class _IntegralControllerState extends State<IntegralController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Constants.boldBaseTextWidget('300', 40),
+              Constants.boldBaseTextWidget(widget.model.integral.toString(), 40),
               SizedBox(
                 height: 8,
               ),
@@ -84,7 +87,7 @@ class _IntegralControllerState extends State<IntegralController> {
           ),
           Container(
             margin: EdgeInsets.only(left: 16, right: 16),
-            child: IntegralNextView(),
+            child: IntegralNextView(model: widget.model,),
           ),
           SizedBox(
             height: 40,

@@ -68,15 +68,15 @@ class Participants {
     print('score=${data.score}');
     // 组装数据
     final _data = {
-      "activityId": '0',
+      "activityId": gameUtil.isFromAirBattle ?gameUtil.activityModel.activityId : '0',
       "modeId": 0,
       "avgPace": data.avgPace,
       "sceneId": (gameUtil.gameScene.index + 1).toString(),
       "trainScore": data.score,
       "trainTime": data.time,
-      "trainVideo": "string",
+      "trainVideo": data.videoPath,
       "trainIntegral": data.Integral,
-      "trainType": 0,
+      "trainType": gameUtil.isFromAirBattle?1:0,
     };
     final response =
         await HttpUtil.post('/api/train/save', _data, showLoading: true);

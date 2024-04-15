@@ -14,6 +14,22 @@ class AirBattleHomeController extends StatefulWidget {
 }
 
 class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
+  AirBattleHomeModel _model = AirBattleHomeModel();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    queryAirBattleData();
+  }
+
+  queryAirBattleData() async{
+    final _response = await AirBattle.queryIAirBattleData();
+    if(_response.success && _response.data != null){
+      _model = _response.data!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +97,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                             'Activity', 12), ),
                       Padding(padding: EdgeInsets.only(left: 12, top: 12),
                         child: Constants.mediumWhiteTextWidget(
-                            '10', 40), ),
+                            _model.activityCount.toString(), 40), ),
                     ],
                   ),
                 ),),
@@ -105,7 +121,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                               'My Rewards', 12), ),
                         Padding(padding: EdgeInsets.only(left: 12, top: 12),
                           child: Constants.mediumWhiteTextWidget(
-                              '1', 40), ),
+                              _model.activityAward.toString(), 40), ),
                       ],
                     ),
                   ),
@@ -126,7 +142,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                             'Activity Points', 12), ),
                       Padding(padding: EdgeInsets.only(left: 12, top: 12),
                         child: Constants.mediumWhiteTextWidget(
-                            '20', 40), ),
+                            _model.activityIntegral.toString(), 40), ),
                     ],
                   ),
                 ),
@@ -150,7 +166,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                 child: ActivityListView(
                   selectItem: (ActivityModel model) {
                     print('点击了活动');
-                    NavigatorUtil.push('activityDetail');
+                    NavigatorUtil.push('activityDetail',arguments: model);
                   }
                 ),
               )),

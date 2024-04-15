@@ -2,8 +2,11 @@ import 'package:code/constants/constants.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/http/profile.dart';
+
 class IntegralNextView extends StatefulWidget {
-  const IntegralNextView({super.key});
+  MyAccountDataModel model;
+   IntegralNextView({required this.model});
 
   @override
   State<IntegralNextView> createState() => _IntegralNextViewState();
@@ -35,7 +38,7 @@ class _IntegralNextViewState extends State<IntegralNextView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image(
-                  image: AssetImage('images/profile/gold.png'),
+                  image: AssetImage('images/profile/progress_${widget.model.memberLevel}.png'),
                   width: 37,
                   height: 43,
                 ),
@@ -55,14 +58,14 @@ class _IntegralNextViewState extends State<IntegralNextView> {
                               style: DefaultTextStyle.of(context).style,
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: '300 ',
+                                  text: widget.model.integral.toString(),
                                   style: TextStyle(
                                       color: Constants.baseStyleColor,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 TextSpan(
-                                  text: '/1000',
+                                  text: '/${widget.model.upperLimit.toString()}',
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.white,

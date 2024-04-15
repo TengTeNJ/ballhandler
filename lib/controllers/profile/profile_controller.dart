@@ -107,7 +107,7 @@ class _ProfileControllerState extends State<ProfileController> {
                 SizedBox(height: 32,),
                 GestureDetector(
                   onTap: (){
-                    NavigatorUtil.present(IntegralController());
+                    NavigatorUtil.present(IntegralController(model: _model,));
                   },
                   child: ProgressDataView(model: _model,),
                 ),

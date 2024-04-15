@@ -42,7 +42,6 @@ class MyAccountDataModel {
   int upperLimit = 1; // 等级积分上限
 }
 
-
 class Profile {
   /*获取积分明细列表*/
   static Future<ApiResponse<List<IntegralModel>>> queryIntegralListData(

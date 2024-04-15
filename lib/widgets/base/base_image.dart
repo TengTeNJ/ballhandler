@@ -49,7 +49,7 @@ class TTNetImage extends StatelessWidget {
       return  Center(
         child: ClipRRect(
           borderRadius: borderRadius ?? BorderRadius.zero, // 设置圆角半径
-          child: Image(image: AssetImage(placeHolderPath),width: width,height: height,),
+          child: Image(image: AssetImage(placeHolderPath),width: width,height: height,fit: BoxFit.fill,),
         ),
       );
     }

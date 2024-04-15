@@ -19,6 +19,7 @@ import 'package:code/controllers/profile/Integral_detail_controller.dart';
 import 'package:code/controllers/profile/setting_controller.dart';
 import 'package:code/controllers/ranking/my_stats_controller.dart';
 import 'package:code/models/game/game_over_model.dart';
+import 'package:code/services/http/airbattle.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
@@ -80,7 +81,8 @@ class Routes {
       case message:
         return MaterialPageRoute(builder: (_) => MessageController());
       case actividydetail:
-        return MaterialPageRoute(builder: (_) => ActivityDetailController());
+        final  ActivityModel model = settings.arguments as ActivityModel;
+        return MaterialPageRoute(builder: (_) => ActivityDetailController(model: model,));
       case sendemial:
         return MaterialPageRoute(builder: (_) => SendEmailController());
       case integraldetail:

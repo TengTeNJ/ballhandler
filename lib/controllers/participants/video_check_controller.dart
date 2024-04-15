@@ -1,13 +1,13 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
-import 'package:code/utils/record.dart';
-import 'package:code/views/participants/record_select_view.dart';
-import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
+
+import '../../utils/global.dart';
 
 class VideoCheckController extends StatefulWidget {
   CameraDescription camera;
@@ -36,6 +36,7 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
 
   @override
   Widget build(BuildContext context) {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     return Scaffold(
       backgroundColor: Constants.darkThemeColor,
       body: FutureBuilder(
@@ -122,7 +123,14 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                       height: 56,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
+                        gradient: gameUtil.isFromAirBattle ? LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            hexStringToColor('#EF8914'),
+                            hexStringToColor('#CF391A')
+                          ],
+                        ) : LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [

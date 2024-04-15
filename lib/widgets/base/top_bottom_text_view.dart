@@ -23,7 +23,7 @@ class TBTextView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
@@ -34,7 +34,7 @@ class TBTextView extends StatelessWidget {
               height: 1.0),
         ),
         SizedBox(
-          height: 4,
+          height: 6,
         ),
         Text(
           detailTitle,
