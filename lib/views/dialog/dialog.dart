@@ -1,7 +1,9 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/services/http/profile.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/views/ble/ble_list_view.dart';
@@ -143,8 +145,7 @@ class _BLEListDialogState extends State<BLEListDialog> {
           Positioned(
             child: BLEListView(),
             top: 45,
-            bottom:
-            99,
+            bottom: 99,
           ),
           Positioned(
             child: GestureDetector(
@@ -173,7 +174,8 @@ class _BLEListDialogState extends State<BLEListDialog> {
 
 /*积分兑换弹窗 ExchangeIntegralDialog*/
 class ExchangeIntegralDialog extends StatelessWidget {
-  const ExchangeIntegralDialog({super.key});
+  Function exchange;
+ ExchangeIntegralDialog({required this.exchange});
 
   @override
   Widget build(BuildContext context) {
@@ -195,6 +197,50 @@ class ExchangeIntegralDialog extends StatelessWidget {
           ),
           BaseButton(
               title: 'Confirm',
+              height: 40,
+              onTap: () {
+                print('确认兑换');
+                this.exchange();
+              }),
+          SizedBox(
+            height: 32,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/*积分兑换成功弹窗 ExchangeIntegralDialog*/
+class ExchangeIntegralSuccessDialog extends StatelessWidget {
+  const ExchangeIntegralSuccessDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [CancelButton()],
+          ),
+          SizedBox(
+            height: 66,
+          ),
+          Constants.regularWhiteTextWidget('Exchange Successful', 20),
+          SizedBox(
+            height: 20,
+          ),
+          Constants.regularWhiteTextWidget(
+              'We sent an email to ${UserProvider.of(context).email} help You Receive a reward.',
+              14),
+          SizedBox(
+            height: 60,
+          ),
+          BaseButton(
+              title: 'Close',
               height: 40,
               onTap: () {
                 print('确认兑换');
@@ -348,7 +394,8 @@ class AwardDialog extends StatelessWidget {
 /*时间选择弹窗*/
 class TimeSelectDialog extends StatefulWidget {
   Function? datePickerSelect;
-   TimeSelectDialog({this.datePickerSelect});
+
+  TimeSelectDialog({this.datePickerSelect});
 
   @override
   State<TimeSelectDialog> createState() => _TimeSelectDialogState();
@@ -358,11 +405,14 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
   int selectIndex = 0;
   int _timeSelectIndex = 0;
   DateTime _selectedDate = DateTime.now();
-  late DateTime _yesterdayDate ;
+  late DateTime _yesterdayDate;
+
   late String startTime;
   late String endTimer;
+
   // 计算90天前的时间
   late DateTime _minDate;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -376,6 +426,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
     DateTime beforeSeven = yesterday.subtract(Duration(days: 7));
     startTime = StringUtil.dateToString(beforeSeven);
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -400,13 +451,14 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    if(widget.datePickerSelect != null){
+                    if (widget.datePickerSelect != null) {
                       widget.datePickerSelect!(false);
                     }
                     _timeSelectIndex = 0;
                     selectIndex = 0;
                     // 过去七天的第一天的时间
-                    DateTime beforeSeven = _yesterdayDate.subtract(Duration(days: 7));
+                    DateTime beforeSeven =
+                        _yesterdayDate.subtract(Duration(days: 7));
                     startTime = StringUtil.dateToString(beforeSeven);
                     setState(() {});
                   },
@@ -443,13 +495,14 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    if(widget.datePickerSelect != null){
+                    if (widget.datePickerSelect != null) {
                       widget.datePickerSelect!(false);
                     }
                     _timeSelectIndex = 0;
                     selectIndex = 1;
                     // 过去30天的第一天的时间
-                    DateTime beforeSeven = _yesterdayDate.subtract(Duration(days: 30));
+                    DateTime beforeSeven =
+                        _yesterdayDate.subtract(Duration(days: 30));
                     startTime = StringUtil.dateToString(beforeSeven);
                     setState(() {});
                   },
@@ -486,13 +539,14 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    if(widget.datePickerSelect != null){
+                    if (widget.datePickerSelect != null) {
                       widget.datePickerSelect!(false);
                     }
                     _timeSelectIndex = 0;
                     selectIndex = 2;
                     // 过去90天的第一天的时间
-                    DateTime beforeSeven = _yesterdayDate.subtract(Duration(days: 90));
+                    DateTime beforeSeven =
+                        _yesterdayDate.subtract(Duration(days: 90));
                     startTime = StringUtil.dateToString(beforeSeven);
                     setState(() {});
                   },
@@ -531,82 +585,85 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              GestureDetector(onTap: (){
-                if(_timeSelectIndex == 1){
-                  return;
-                }
-                selectIndex = -1;
-                _timeSelectIndex = 1;
-                setState(() {
-
-                });
-                if(widget.datePickerSelect != null){
-                  widget.datePickerSelect!(true);
-                }
-
-              },behavior: HitTestBehavior.opaque,child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Constants.regularWhiteTextWidget(startTime, 16),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Image(
-                        image: AssetImage('images/airbattle/next_white.png'),
-                        width: 5,
-                        height: 10,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    color: hexStringToColor('#707070'),
-                    height: 0.5,
-                    width: (Constants.screenWidth(context) - 90) / 2.0,
-                  )
-                ],
-              ),),
+              GestureDetector(
+                onTap: () {
+                  if (_timeSelectIndex == 1) {
+                    return;
+                  }
+                  selectIndex = -1;
+                  _timeSelectIndex = 1;
+                  setState(() {});
+                  if (widget.datePickerSelect != null) {
+                    widget.datePickerSelect!(true);
+                  }
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Constants.regularWhiteTextWidget(startTime, 16),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Image(
+                          image: AssetImage('images/airbattle/next_white.png'),
+                          width: 5,
+                          height: 10,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Container(
+                      color: hexStringToColor('#707070'),
+                      height: 0.5,
+                      width: (Constants.screenWidth(context) - 90) / 2.0,
+                    )
+                  ],
+                ),
+              ),
               Constants.regularGreyTextWidget('To', 14, height: 0.8),
-              GestureDetector(onTap: (){
-                if(_timeSelectIndex == 2){
-                  return;
-                }
-                selectIndex = -1;
-                _timeSelectIndex = 2;
-                setState(() {
-
-                });
-                if(widget.datePickerSelect != null){
-                  widget.datePickerSelect!(true);
-                }
-              },behavior: HitTestBehavior.opaque,child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Constants.regularWhiteTextWidget(endTimer, 16),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Image(
-                        image: AssetImage('images/airbattle/next_white.png'),
-                        width: 5,
-                        height: 10,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    color: hexStringToColor('#707070'),
-                    height: 0.5,
-                    width: (Constants.screenWidth(context) - 90) / 2.0,
-                  )
-                ],
-              ),),
+              GestureDetector(
+                onTap: () {
+                  if (_timeSelectIndex == 2) {
+                    return;
+                  }
+                  selectIndex = -1;
+                  _timeSelectIndex = 2;
+                  setState(() {});
+                  if (widget.datePickerSelect != null) {
+                    widget.datePickerSelect!(true);
+                  }
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Constants.regularWhiteTextWidget(endTimer, 16),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Image(
+                          image: AssetImage('images/airbattle/next_white.png'),
+                          width: 5,
+                          height: 10,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Container(
+                      color: hexStringToColor('#707070'),
+                      height: 0.5,
+                      width: (Constants.screenWidth(context) - 90) / 2.0,
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
           SizedBox(
@@ -617,55 +674,63 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
           SizedBox(
             height: 32,
           ),
-          _timeSelectIndex >=1 ? Container(
-            color: Colors.red,
-            height: 220,
-            child: Center(
-                child: DateTimePickerWidget(
-                  onChange: (DateTime dateTime, List<int> selectedIndex){
-                    if(_timeSelectIndex == 1){
-                      startTime = StringUtil.dateToString(dateTime);
-                    }else    if(_timeSelectIndex == 2){
-                      endTimer = StringUtil.dateToString(dateTime);
-                    }
-                    setState(() {
-
-                    });
-                    print('dateTime=${dateTime}');
-                  },
-              pickerTheme: DateTimePickerTheme(
-                  itemTextStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontFamily: 'SanFranciscoDisplay'),
-                  backgroundColor: hexStringToColor('#3E3E55'),
-                  titleHeight: 0,
-                  itemHeight: 44,
-                  pickerHeight: 220),
-              minDateTime: _minDate,
-              maxDateTime: _selectedDate,
-              initDateTime: _selectedDate,
-              locale: DateTimePickerLocale.en_us,
-              dateFormat:
-                  'MMMM-dd-yyyy', // 这里的MMMM需要又4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
-            )),
-          ) :Container(),
-          _timeSelectIndex >=1 ?SizedBox(height: 16,) :SizedBox(height: 0,),
+          _timeSelectIndex >= 1
+              ? Container(
+                  color: Colors.red,
+                  height: 220,
+                  child: Center(
+                      child: DateTimePickerWidget(
+                    onChange: (DateTime dateTime, List<int> selectedIndex) {
+                      if (_timeSelectIndex == 1) {
+                        startTime = StringUtil.dateToString(dateTime);
+                      } else if (_timeSelectIndex == 2) {
+                        endTimer = StringUtil.dateToString(dateTime);
+                      }
+                      setState(() {});
+                      print('dateTime=${dateTime}');
+                    },
+                    pickerTheme: DateTimePickerTheme(
+                        itemTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontFamily: 'SanFranciscoDisplay'),
+                        backgroundColor: hexStringToColor('#3E3E55'),
+                        titleHeight: 0,
+                        itemHeight: 44,
+                        pickerHeight: 220),
+                    minDateTime: _minDate,
+                    maxDateTime: _selectedDate,
+                    initDateTime: _selectedDate,
+                    locale: DateTimePickerLocale.en_us,
+                    dateFormat:
+                        'MMMM-dd-yyyy', // 这里的MMMM需要又4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
+                  )),
+                )
+              : Container(),
+          _timeSelectIndex >= 1
+              ? SizedBox(
+                  height: 16,
+                )
+              : SizedBox(
+                  height: 0,
+                ),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: (){
-
-            },
+            onTap: () {},
             child: Container(
               width: 210,
               height: 40,
               decoration: BoxDecoration(
                   color: Constants.baseStyleColor,
                   borderRadius: BorderRadius.circular(5)),
-              child: Center(child: Constants.regularWhiteTextWidget('Confirm', 14),),
+              child: Center(
+                child: Constants.regularWhiteTextWidget('Confirm', 14),
+              ),
             ),
           ),
-          SizedBox(height: 32,),
+          SizedBox(
+            height: 32,
+          ),
         ],
       ),
     );

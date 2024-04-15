@@ -32,8 +32,8 @@ class TTDialog {
       },
     );
   }
-
-  static integralExchangeDialog(BuildContext context) {
+/*积分兑换商品弹窗提醒*/
+  static integralExchangeDialog(BuildContext context,Function exchange) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -45,19 +45,33 @@ class TTDialog {
               color: hexStringToColor('#3E3E55'),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: ExchangeIntegralDialog(),
+            child: ExchangeIntegralDialog(exchange: exchange,),
           ),
         );
       },
     );
 
-    // showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return Dialog(
-    //         backgroundColor: Colors.transparent,
-    //         child: ExchangeIntegralDialog(),);
-    //     });
+  }
+
+  /*积分兑换成功提醒*/
+  static integralExchangeSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              color: hexStringToColor('#3E3E55'),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: ExchangeIntegralSuccessDialog(),
+          ),
+        );
+      },
+    );
+
   }
 
   static championDialog(BuildContext context) {

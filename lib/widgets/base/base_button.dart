@@ -11,7 +11,10 @@ class BaseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(onTap: (){
-      onTap??();
+      if(onTap!=null){
+        onTap!();
+      }
+
     },child: Container(
       height: height,
       decoration: BoxDecoration(

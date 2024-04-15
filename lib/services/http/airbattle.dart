@@ -36,7 +36,6 @@ class AirBattle{
         model.startDate =   !ISEmpty(_map['startDate']) ?  _map['startDate'].toString() :'--';
         model.trainScore =   !ISEmpty(_map['trainScore']) ?  _map['trainScore'].toString() :'--';
         model.trainVideo =   !ISEmpty(_map['trainVideo']) ?  _map['trainVideo'].toString() :'--';
-
         _list.add(model);
       });
       return ApiResponse(

@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/mystats/my_stats_model.dart';
+import 'package:code/services/http/rank.dart';
 import 'package:code/views/airbattle/my_stats_bar_chart_view.dart';
 import 'package:code/views/airbattle/my_stats_grid_list_view.dart';
 import 'package:code/views/airbattle/my_stats_line_area_view.dart';
@@ -17,13 +18,19 @@ class MyStatsController extends StatefulWidget {
 
 class _MyStatsControllerState extends State<MyStatsController> {
   List<MyStatsModel> datas = [];
+  List<MyStatsModel> barViewDatas = [];
+
   num temp = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    initData();
+  }
 
+  initData() async{
+    // mock 数据
     for (int i = 0; i < 20; i++) {
       var random = Random();
       int randomNumber = random.nextInt(11);
@@ -36,6 +43,15 @@ class _MyStatsControllerState extends State<MyStatsController> {
     print('temp=${temp}');
     print('temp/0.2=${temp / 0.2}');
     print('temp/0.2.ceil()*36=${(temp / 0.2).ceil() * 36}');
+    final _response =  await  Rank.queryBarViewData();
+    if(_response.success){
+      if(_response.data!=null &&_response.data!.length > 0){
+        barViewDatas.addAll(_response.data!);
+        setState(() {
+
+        });
+      }
+    }
   }
 
   @override
@@ -122,7 +138,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
               ),
               Container(
                 height: (temp / 0.2).ceil() * 36 + 36,
-                child: BarView( datas),
+                child: BarView( barViewDatas),
               ),
             ],
           ),
@@ -131,7 +147,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
     );
   }
 }
-
+/*折线图*/
 Widget LineAreaView(List<MyStatsModel> datas) {
   int page = 1;
   if (datas.length > 30) {
@@ -150,6 +166,7 @@ Widget LineAreaView(List<MyStatsModel> datas) {
   );
 }
 
+/*柱状图*/
 Widget BarView(List<MyStatsModel> datas) {
   int page = 1;
   if (datas.length >10) {

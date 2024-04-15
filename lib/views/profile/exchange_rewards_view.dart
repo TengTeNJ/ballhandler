@@ -1,9 +1,12 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/services/http/profile.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/material.dart';
 
 class ExchangeRewardsView extends StatefulWidget {
-  const ExchangeRewardsView({super.key});
+  ExchangeGoodModel model;
+   ExchangeRewardsView({required this.model});
 
   @override
   State<ExchangeRewardsView> createState() => _ExchangeRewardsViewState();
@@ -21,17 +24,16 @@ class _ExchangeRewardsViewState extends State<ExchangeRewardsView> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image(
-            image: AssetImage('images/base/five.png'),
-            width: 113,
-            height: 113,
-          ),
+          TTNetImage(url: widget.model.goodsImage, placeHolderPath: 'images/base/five.png', width: 113, height: 113,borderRadius: 5,),
+          SizedBox(width: 32,),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Constants.regularGreyTextWidget('Amazon 200\$ Coupons', 14),
+              Constants.regularGreyTextWidget(widget.model.goodsName, 14),
+             // Constants.regularGreyTextWidget('Amazon ${widget.model.exchangeMoney}\$ Coupons', 14),
               SizedBox(height: 8,),
-              Constants.regularBaseTextWidget('1000 Points', 14),
+              Constants.regularBaseTextWidget('${widget.model.goodsIntegral} Points', 14),
             ],
           ),
         ],

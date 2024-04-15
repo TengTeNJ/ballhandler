@@ -24,28 +24,34 @@ class _SettingViewState extends State<SettingView> {
         ),
         Column(
           children: List.generate(widget.datas.length, (index) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Constants.regularGreyTextWidget(widget.datas[index], 16),
-                    Image(
-                      image: AssetImage('images/airbattle/next_white.png'),
-                      width: 12,
-                      height: 12,
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Container(color: hexStringToColor('#707070'),height: 0.5,),
-              ],
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: (){
+                // 点击cell
+              },
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Constants.regularGreyTextWidget(widget.datas[index], 16),
+                      Image(
+                        image: AssetImage('images/airbattle/next_white.png'),
+                        width: 12,
+                        height: 12,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Container(color: hexStringToColor('#707070'),height: 0.5,),
+                ],
+              ),
             );
           }),
         )

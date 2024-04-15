@@ -57,6 +57,7 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
         plotAreaBorderColor: Colors.transparent,
         // 设置绘图区域的边框颜色为透明色
         primaryYAxis: NumericAxis(
+          // maximum: 10,
           labelAlignment: LabelAlignment.center,
           interval: 0.2,
           axisLine: AxisLine(width: 1, color: Colors.transparent),
@@ -100,7 +101,7 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
               borderRadius: BorderRadius.circular(5),
               // 设置柱状图的圆角
               dataSource: widget.datas,
-              width: 0.8,
+              width: 0.3,
               // 设置柱状图的宽度，值为 0.0 到 1.0 之间，表示相对于间距的比例
               spacing: 0.4,
               //

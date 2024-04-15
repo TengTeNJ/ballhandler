@@ -298,3 +298,16 @@ bool ISEmpty(Object? obj) {
 
 // 全局监听
 const kLoginSucess = 'login_success'; // 登录成功
+
+
+const Map<String,Map<String,String>> kGameSceneAndModelMap = {
+  "1" :{
+    "1" : "ZIGZAG Challenge",
+    "2" : "2 Challenge",
+    "3" : "L Challenge",
+    "4" : "OMEGA Challenge",
+    "5" : "Straight line Challenge",
+    "6" : "Pentagon Challenge",
+    "7" : "SMILE Challenge",
+  }
+}; // 游戏场景和模式映射表
