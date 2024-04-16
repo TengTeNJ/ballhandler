@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 // 用户信息模型
 class UserModel extends ChangeNotifier {
   String _userName = 'Guest'; // 同户名
-  String _avgPace = '1.0'; // 平均速度
-  String _totalScore = '1000'; // 总得分
-  String _totalTime = '4500'; // 总时常
-  String _totalTimes = '100'; // 总次数
+  String _avgPace = '0.0'; // 平均速度
+  String _totalScore = '0'; // 总得分
+  String _totalTime = '0'; // 总时常
+  String _totalTimes = '0'; // 总次数
   bool _hasLogin = false; // 登录标识
   String _token = ''; // 登录token
   String _createTime = '----'; // 账号的创建时间

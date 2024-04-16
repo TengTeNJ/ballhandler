@@ -91,14 +91,6 @@ class TTDialog {
         );
       },
     );
-
-    // showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return Dialog(
-    //         backgroundColor: Colors.transparent,
-    //         child: ExchangeIntegralDialog(),);
-    //     });
   }
 
   static awardDialog(BuildContext context) {
@@ -140,6 +132,20 @@ class TTDialog {
         });
       },
 
+    );
+  }
+
+  static joinAirBattle(BuildContext context,Function continueClick,Function goToSetting) {
+    showModalBottomSheet(
+      backgroundColor: hexStringToColor('#39394B'),
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.45,
+          child: JoinAirBattleDialog(continueClick: continueClick,goToSetting: goToSetting,),
+        );
+      },
     );
   }
 

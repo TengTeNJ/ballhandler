@@ -1,12 +1,15 @@
 import 'package:code/constants/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/color.dart';
+
 class BaseButton extends StatelessWidget {
   String title;
   Function? onTap;
   double height;
+  LinearGradient? linearGradient;
 
-  BaseButton({required this.title, this.height = 44,this.onTap});
+  BaseButton({required this.title, this.height = 44,this.onTap,this.linearGradient});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +21,9 @@ class BaseButton extends StatelessWidget {
     },child: Container(
       height: height,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Constants.baseStyleColor),
+          gradient:  linearGradient,
+          borderRadius: BorderRadius.circular(10),
+          color: Constants.baseStyleColor,),
       child: Center(
         child: Constants.regularWhiteTextWidget(title, 16),
       ),

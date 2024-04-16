@@ -12,7 +12,7 @@ class OverAllDataView extends StatefulWidget {
 }
 
 class _OverAllDataViewState extends State<OverAllDataView> {
-  final List<String> _titles = ['MAX.pace','Total Score','Total Time','Total Times'];
+  final List<String> _titles = ['Carrer best','Total Score(pts.)','Time (Min.)','Trainings'];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,6 +33,7 @@ class _OverAllDataViewState extends State<OverAllDataView> {
                 child: Constants.regularGreyTextWidget('My LifeTime Stats', 14),
               ),
               GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 child: Padding(
                   padding: EdgeInsets.only(right: 20),
                   child: Row(
@@ -51,7 +52,6 @@ class _OverAllDataViewState extends State<OverAllDataView> {
                 onTap: (){
                   print('点击Today按钮');
                   NavigatorUtil.push('todayData');
-                  UserProvider.of(context).totalScore = '9000';
                 },
               )
             ],
@@ -70,8 +70,8 @@ class _OverAllDataViewState extends State<OverAllDataView> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Constants.mediumWhiteTextWidget(user.overDataList[index], 20),
+                          SizedBox(height: 4,),
                           Constants.regularGreyTextWidget(_titles[index], 10),
-
                         ],
                       ),
                     ),

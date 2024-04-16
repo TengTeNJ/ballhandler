@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/services/http/profile.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/views/base/no_data_view.dart';
 import 'package:code/views/profile/integral_detail_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class _IntegralDetailControllerState extends State<IntegralDetailController> {
       ),
       body: Column(children:[
         Expanded(
-          child: ListView.separated(
+          child: _datas.length > 0 ? ListView.separated(
               itemBuilder: (context, index) {
                 return IntegralView(model: _datas[index],);
               },
@@ -51,7 +52,7 @@ class _IntegralDetailControllerState extends State<IntegralDetailController> {
                 decoration: BoxDecoration(color: hexStringToColor('#565674')),
                 height: 1,
               ),
-              itemCount: _datas.length),
+              itemCount: _datas.length) :NoDataView(),
         )
       ] ,),
     );

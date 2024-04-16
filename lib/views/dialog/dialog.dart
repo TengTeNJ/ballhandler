@@ -1,9 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
-import 'package:code/services/http/profile.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
-import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/views/ble/ble_list_view.dart';
@@ -748,6 +746,95 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
           ),
           SizedBox(
             height: 32,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/*加入Airbattle对战*/
+class JoinAirBattleDialog extends StatelessWidget {
+  Function continueClick;
+  Function goToSetting;
+  JoinAirBattleDialog({required this.continueClick,required this.goToSetting});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [CancelButton()],
+          ),
+          SizedBox(
+            height: 42,
+          ),
+          Constants.mediumWhiteTextWidget('Join Battle', 20),
+          SizedBox(height: 20,),
+          GestureDetector(
+            onTap: (){
+              this.goToSetting();
+            },
+            child: RichText(
+              text: TextSpan(
+                text: 'You will compete in the',
+                style: TextStyle(
+                    color: Constants.baseGreyStyleColor,
+                    fontFamily: 'SanFranciscoDisplay',
+                    fontSize: 16,
+                    height: 1.0,
+                    fontWeight: FontWeight.w400),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: ' 10 year old',
+                    style: TextStyle(
+                      fontFamily: 'SanFranciscoDisplay',
+                      fontSize: 16,
+                      color: Constants.baseStyleColor,
+                      height: 1.0,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' category',
+                    style: TextStyle(
+                      fontFamily: 'SanFranciscoDisplay',
+                      fontSize: 16,
+                      height: 1.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 106,
+          ),
+          Container(
+            width: 210,
+            child: BaseButton(
+              linearGradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  hexStringToColor('#EF8914'),
+                  hexStringToColor('#CF391A')
+                ],
+              ),
+                title: 'Continue',
+                height: 40,
+                onTap: () {
+                  this.continueClick();
+                }),
+          ),
+          SizedBox(
+            height: 42,
           ),
         ],
       ),

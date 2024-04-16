@@ -53,7 +53,7 @@ class LoginUtil {
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
-        webAuthenticationOptions: WebAuthenticationOptions(clientId: 'com.potent.hockey.train',redirectUri:Uri.parse('https://scarce-wood-spice.glitch.me/callbacks/sign_in_with_apple'))
+        webAuthenticationOptions: WebAuthenticationOptions(clientId: 'com.potent.stickhandling',redirectUri:Uri.parse('https://scarce-wood-spice.glitch.me/callbacks/sign_in_with_apple'))
       );
       final _map = {
         "avatarUrl": '',

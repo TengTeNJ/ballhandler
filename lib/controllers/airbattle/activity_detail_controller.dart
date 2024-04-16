@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:code/route/route.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/views/airbattle/airbattle_data_view.dart';
 import 'package:code/views/airbattle/airbattle_detail_grid_view.dart';
 import 'package:flutter/material.dart';
@@ -165,10 +166,14 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                     onTap: () async {
                       // List<CameraDescription> cameras =
                       //     await availableCameras();
-                      GameUtil gameUtil = GetIt.instance<GameUtil>();
-                      gameUtil.isFromAirBattle = true;
-                      gameUtil.activityModel = widget.model;
-                       NavigatorUtil.push(Routes.recordselect);
+                      TTDialog.joinAirBattle(context, (){
+                        GameUtil gameUtil = GetIt.instance<GameUtil>();
+                        gameUtil.isFromAirBattle = true;
+                        gameUtil.activityModel = widget.model;
+                        NavigatorUtil.push(Routes.recordselect);
+                      },(){
+                        NavigatorUtil.push(Routes.setting);
+                      });
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 16, right: 16, bottom: 32),

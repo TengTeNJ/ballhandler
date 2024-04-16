@@ -75,6 +75,6 @@ class Account {
     UserProvider.of(context).avatar = _response.data!.avatar;
     UserProvider.of(context).createTime = _response.data!.createTime;
     final _email = await NSUserDefault.getValue(kUserEmail);
-    UserProvider.of(context).email = _email;
+    UserProvider.of(context).email = _email ?? '';
   }
 }
