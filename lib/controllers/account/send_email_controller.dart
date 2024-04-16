@@ -1,10 +1,9 @@
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:code/widgets/account/custom_textfield.dart';
 import 'package:flutter/material.dart';
-
 import '../../constants/constants.dart';
-import '../../utils/navigator_util.dart';
 
 class SendEmailController extends StatefulWidget {
   const SendEmailController({super.key});
@@ -14,7 +13,22 @@ class SendEmailController extends StatefulWidget {
 }
 
 class _SendEmailControllerState extends State<SendEmailController> {
+  String _email = '';
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getInputEmailText();
+  }
+
+  getInputEmailText() async{
+   final _text = await  NSUserDefault.getValue<String>(kInputEmail);
+  _email = _text ?? '';
+  setState(() {
+  });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +88,7 @@ class _SendEmailControllerState extends State<SendEmailController> {
                             onTap: (text){
 
                             },
-                            placeHolder: '1534760657@22.com',
+                            placeHolder: _email,
                           )),
                       GestureDetector(
                         onTap: () {

@@ -1,5 +1,4 @@
 import 'package:code/controllers/account/email_page_controller.dart';
-import 'package:code/controllers/account/password_page_controller.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
@@ -16,11 +15,8 @@ class PrivacyPageController extends StatefulWidget {
 class _PrivacyPageControllerState extends State<PrivacyPageController> {
   bool isChecked = false;
   final _onTap = (){
-    NavigatorUtil.present(EmailPageController());
-   // NavigatorUtil.present(PasswordPageController());
-
+   NavigatorUtil.pop();
   };
-
 
   @override
   void initState() {
@@ -85,47 +81,20 @@ class _PrivacyPageControllerState extends State<PrivacyPageController> {
                       SizedBox(
                         height: 16,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.zero,
-                            child: Checkbox(
-                                activeColor: Constants.baseStyleColor,
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                // 设置为shrinkWrap来减小Checkbox的大小
-                                visualDensity:
-                                    VisualDensity(horizontal: -4, vertical: -4),
-                                value: isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    isChecked = value!;
-                                  });
-                                }), /**/
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Constants.boldWhiteTextWidget(
-                              'I have read and agreed to the Terms.', 14)
-                        ],
-                      ),
                     ],
                   ),
                 ),
                 GestureDetector(
-                  onTap: isChecked ? _onTap : null,
+                  onTap: _onTap ,
                   child: Container(
                     child: Center(
-                      child: Constants.mediumWhiteTextWidget('Continue', 16),
+                      child: Constants.mediumWhiteTextWidget('Got it', 16),
                     ),
                     height: 56,
                     margin: EdgeInsets.only(left: 16, right: 16, top: 64),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: isChecked ? Constants.baseStyleColor : Colors.grey),
+                        color:  Constants.baseStyleColor ),
                   ),
                 )
               ],

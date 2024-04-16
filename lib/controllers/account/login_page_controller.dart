@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/account/email_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/models/http/user_model.dart';
@@ -21,6 +22,7 @@ class LoginPageController extends StatefulWidget {
 }
 
 class _LoginPageControllerState extends State<LoginPageController> {
+  bool privacyChecked = false;
   //  第三方登录图标和图片
   final List<Map> _thirdMaps = [
     {'icon': 'images/account/apple.png', 'label': 'Continue with Apple'},
@@ -86,6 +88,9 @@ class _LoginPageControllerState extends State<LoginPageController> {
                     children: List.generate(_thirdMaps.length, (index) {
                       return InkWell(
                         onTap: () async {
+                          if(!privacyChecked){
+                            return;
+                          }
                           LoginType type = LoginType.values[index];
                           ApiResponse<User> _response =
                               await LoginUtil.thirdLogin(type);
@@ -157,7 +162,9 @@ class _LoginPageControllerState extends State<LoginPageController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    NavigatorUtil.present(PrivacyPageController());
+                    if(privacyChecked){
+                      NavigatorUtil.present(EmailPageController());
+                    }
                   },
                   child: Container(
                     height: 56,
@@ -172,7 +179,11 @@ class _LoginPageControllerState extends State<LoginPageController> {
                   ),
                 ),
                 SizedBox(height: 16,),
-                PrivacyCheckView(),
+                PrivacyCheckView(onSelected: (value){
+                  privacyChecked = value;
+                },goToPrivacy: (){
+                  NavigatorUtil.present(PrivacyPageController());
+                },),
               ],
             ),
           ),

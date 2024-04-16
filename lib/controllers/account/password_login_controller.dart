@@ -1,8 +1,6 @@
-import 'package:code/controllers/account/password_page_controller.dart';
+import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/services/http/account.dart';
-import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
-
 import '../../constants/constants.dart';
 import '../../utils/navigator_util.dart';
 import '../../widgets/account/cancel_button.dart';
@@ -136,7 +134,7 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
                       ),
                     ),
                     onTap: () {
-                      print('忘记密码');
+                      NavigatorUtil.present(SendEmailController());
                     },
                   )
                 ],

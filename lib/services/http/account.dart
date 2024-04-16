@@ -43,13 +43,14 @@ class Account {
   }
 /*
 * 使用邮箱注册账号*/
-  static Future<ApiResponse> registerWithEmail(String password,String birthday,String nickName) async{
+  static Future<ApiResponse> registerWithEmail(String password,String birthday,String nickName,String country) async{
     final email = await NSUserDefault.getValue<String>(kInputEmail);
     final _data = {
       "account":email,
       "password":password,
       "birthday": birthday,
-      "nickName": nickName
+      "nickName": nickName,
+      "country":country,
     };
     final response = await HttpUtil.post('/api/login/register', _data,showLoading: true);
     return ApiResponse(success: response.success);

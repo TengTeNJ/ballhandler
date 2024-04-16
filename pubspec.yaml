@@ -63,6 +63,7 @@ dependencies:
   firebase_messaging: ^14.8.1
   share_plus: ^8.0.3
   firebase_core: ^2.29.0
+  country_picker: ^2.0.25
 dev_dependencies:
   flutter_test:
     sdk: flutter

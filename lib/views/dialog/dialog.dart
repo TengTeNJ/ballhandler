@@ -14,6 +14,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io' show Platform;
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 
+import '../../utils/nsuserdefault_util.dart';
+
 /**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
   const SendEmailDiaog({super.key});
@@ -23,6 +25,22 @@ class SendEmailDiaog extends StatefulWidget {
 }
 
 class _SendEmailDiaogState extends State<SendEmailDiaog> {
+  String _email = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getInputEmailText();
+  }
+
+  getInputEmailText() async{
+    final _text = await  NSUserDefault.getValue<String>(kInputEmail);
+    _email = _text ?? '';
+    setState(() {
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,16 +71,16 @@ class _SendEmailDiaogState extends State<SendEmailDiaog> {
           Positioned(
             child: Container(
               width: Constants.screenWidth(context),
-              child: Text(
+              child: Padding(padding: EdgeInsets.only(left: 16,right: 16),child: Text(
                 textAlign: TextAlign.center,
-                'We sent an email to tommy009@163.com help You log in',
+                'We sent an email to ${_email} help You log in',
                 style: TextStyle(
                   fontFamily: 'SanFranciscoDisplay',
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: 16, // 设置文本水平居中对齐
                 ),
-              ),
+              ),),
             ),
             top: 118,
           ),

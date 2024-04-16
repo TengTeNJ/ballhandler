@@ -1,3 +1,4 @@
+import 'package:code/controllers/account/creat_password_controller.dart';
 import 'package:code/controllers/account/password_login_controller.dart';
 import 'package:code/controllers/account/password_page_controller.dart';
 import 'package:code/services/http/account.dart';
@@ -116,6 +117,7 @@ class _EmailPageControllerState extends State<EmailPageController> {
                   ),
                   GestureDetector(
                     onTap: () async{
+                      FocusScope.of(context).unfocus(); // 移除焦点
                       bool isvalidEmail = StringUtil.isValidEmail(_inputText);
                       if(isvalidEmail == false){
                         TTToast.showErrorInfo('Please enter a valid email');
@@ -125,11 +127,10 @@ class _EmailPageControllerState extends State<EmailPageController> {
                       // 跳转到输入密码页面
                       NSUserDefault.setKeyValue<String>(kInputEmail, _inputText);
                       if(canRegister.data == true){
-                        NavigatorUtil.present(PasswordPageController());
+                        NavigatorUtil.present(CreatPassWordController());
                       }else{
                         NavigatorUtil.present(PassWordLoginController());
                       }
-
                     },
                     child: Container(
                       child: Center(
