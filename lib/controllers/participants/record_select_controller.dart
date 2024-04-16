@@ -19,6 +19,7 @@ class RecordSelectController extends StatefulWidget {
 class _RecordSelectControllerState extends State<RecordSelectController> {
   bool _recordSelect = false;
   GameUtil gameUtil = GetIt.instance<GameUtil>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,23 +61,32 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-               Expanded(child:  Image(image: AssetImage('images/product/product_check_${gameUtil.modelId}.png'))),
-                  SizedBox(height: 16,),
-                  Constants.regularWhiteTextWidget('Please place the shapes according to the legend', 14),
-                 SizedBox(height: 24,),
-                 Container(
-                   height: 36,
-                   width: 112,
-                   decoration: BoxDecoration(
-                     color: hexStringToOpacityColor('#4B5F9A', 0.5),
-                     borderRadius: BorderRadius.circular(5)
-                   ),
-                   child: RecordSelectView(onTap: (value){
-                     _recordSelect = value;
-                     GameUtil gameUtil = GetIt.instance<GameUtil>();
-                      gameUtil.selectRecord = value;
-                   },),
-                 )
+                  Expanded(
+                      child: Image(
+                          image: AssetImage(
+                              'images/product/product_check_${gameUtil.modelId}.png'))),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Constants.regularWhiteTextWidget(
+                      'Please place the shapes according to the legend', 14),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  gameUtil.isFromAirBattle ? Container() : Container(
+                    height: 36,
+                    width: 112,
+                    decoration: BoxDecoration(
+                        color: hexStringToOpacityColor('#4B5F9A', 0.5),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: RecordSelectView(
+                      onTap: (value) {
+                        _recordSelect = value;
+                        GameUtil gameUtil = GetIt.instance<GameUtil>();
+                        gameUtil.selectRecord = value;
+                      },
+                    ),
+                  )
                 ],
               )),
           Positioned(
@@ -84,17 +94,17 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
             bottom: 32,
             child: GestureDetector(
               onTap: () async {
-                List<CameraDescription> cameras =
-                await availableCameras();
-                if(_recordSelect){
+                List<CameraDescription> cameras = await availableCameras();
+                if (_recordSelect) {
                   // 视频check
                   NavigatorUtil.popAndThenPush(
                     Routes.videocheck,
                     arguments: cameras[0],
                   );
-                }else{
+                } else {
                   // 游戏页面
-                  NavigatorUtil.popAndThenPush(Routes.gameprocess,arguments: cameras[0]);
+                  NavigatorUtil.popAndThenPush(Routes.gameprocess,
+                      arguments: cameras[0]);
                 }
               },
               child: Container(
@@ -102,7 +112,16 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
                 height: 56,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  gradient: LinearGradient(
+                  gradient: gameUtil.isFromAirBattle
+                      ?  LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      hexStringToColor('#EF8914'),
+                      hexStringToColor('#CF391A')
+                    ],
+                  )
+                      : LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
@@ -111,9 +130,13 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
                     ],
                   ),
                 ),
-                child: Center(
-                  child: Constants.boldBlackTextWidget('START', 16),
-                ),
+                child: gameUtil.isFromAirBattle
+                    ? Center(
+                        child: Constants.boldBlackTextWidget('Continue', 16),
+                      )
+                    : Center(
+                        child: Constants.boldBlackTextWidget('START', 16),
+                      ),
               ),
             ),
           ),

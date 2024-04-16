@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/material.dart';
 class MyActivityDataView extends StatefulWidget {
   MyActivityModel  activityModel;
@@ -23,8 +24,8 @@ class _MyActivityDataViewState extends State<MyActivityDataView> {
       child: Stack(
         children: [
           Visibility(
-              visible: widget.activityModel.trainVideo.length > 0,
-              replacement: Placeholder(),
+              visible: widget.activityModel.trainVideo.contains('http'),
+              replacement: Container(),
               child: Positioned(
                   top: 8,
                   right: 8,
@@ -47,15 +48,7 @@ class _MyActivityDataViewState extends State<MyActivityDataView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.network(widget.activityModel.activityIcon,width: 48,height: 48,loadingBuilder: (context,child,loadingProfress){
-                    return  Image(
-                        image: AssetImage('images/airbattle/gold.png'),
-                        width: 48,
-                        height: 48,
-                        fit: BoxFit.fill
-                    );
-                  },),
-
+                  TTNetImage(url: widget.activityModel.activityIcon, placeHolderPath: 'images/airbattle/gold.png', width: 48, height: 48),
                   SizedBox(width: 16,),
                   Expanded(child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,21 +68,21 @@ class _MyActivityDataViewState extends State<MyActivityDataView> {
                             children: [
                               Constants.mediumWhiteTextWidget(widget.activityModel.rankNumber, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Avg.pace (sec.)', 8, '#B1B1B1'),
+                              Constants.customTextWidget('Rank', 12, '#B1B1B1'),
                             ],
                           ),
                           Column(
                             children: [
                               Constants.mediumWhiteTextWidget(widget.activityModel.trainScore, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Score(pts.)', 8, '#B1B1B1'),
+                              Constants.customTextWidget('Score', 12, '#B1B1B1'),
                             ],
                           ),
                           Column(
                             children: [
                               Constants.mediumWhiteTextWidget(widget.activityModel.avgPace, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Time(min.)', 8, '#B1B1B1'),
+                              Constants.customTextWidget('Avg.pace', 12, '#B1B1B1'),
                             ],
                           )
                         ],

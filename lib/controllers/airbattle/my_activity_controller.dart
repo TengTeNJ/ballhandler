@@ -27,6 +27,9 @@ class _MyActivityControllerState extends State<MyActivityController> {
     final _response =  await AirBattle.queryMyActivityData(1);
     if(_response.success && _response.data!=null){
       _datas.addAll(_response.data!);
+      setState(() {
+
+      });
     }else{
       _datas = [];
     }

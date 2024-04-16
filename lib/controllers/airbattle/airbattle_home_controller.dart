@@ -27,6 +27,9 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
     final _response = await AirBattle.queryIAirBattleData();
     if(_response.success && _response.data != null){
       _model = _response.data!;
+      setState(() {
+
+      });
     }
   }
 

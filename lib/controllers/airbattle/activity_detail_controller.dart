@@ -163,13 +163,12 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                 : GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () async {
-                      // 跳转到视频校正页面
-                      List<CameraDescription> cameras =
-                          await availableCameras();
+                      // List<CameraDescription> cameras =
+                      //     await availableCameras();
                       GameUtil gameUtil = GetIt.instance<GameUtil>();
                       gameUtil.isFromAirBattle = true;
                       gameUtil.activityModel = widget.model;
-                       NavigatorUtil.push(Routes.videocheck, arguments: cameras[0]);
+                       NavigatorUtil.push(Routes.recordselect);
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 16, right: 16, bottom: 32),
