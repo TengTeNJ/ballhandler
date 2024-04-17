@@ -149,4 +149,10 @@ class TTDialog {
     );
   }
 
+  static userNameDialog(BuildContext context){
+    return showDialog(context: context, builder: (context){
+      return UserNameDialog();
+    });
+  }
+
 }

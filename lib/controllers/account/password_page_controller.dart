@@ -106,7 +106,6 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                         child: CustomTextField(
                           controller: _nameController,
                           onTap: (text) {
-                            print('CustomTextField _nameController');
                             _nameText = _nameController.text;
                           },
                           placeHolder: 'Please Enter Your Name',
@@ -119,7 +118,6 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                       ),
                       GestureDetector(
                           onTap: () {
-                            print('showCountryPicker showCountryPicker');
                             FocusScope.of(context).unfocus(); // 移除焦点
                           showCountryPicker(
                             context: context,

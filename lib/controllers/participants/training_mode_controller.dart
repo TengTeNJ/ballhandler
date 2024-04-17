@@ -8,6 +8,9 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../utils/global.dart';
 
 class TrainingModeController extends StatefulWidget {
   const TrainingModeController({super.key});
@@ -20,18 +23,23 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
   // List View
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
-      child: TrainingModeListView(scanBleList: () async{
-       NavigatorUtil.push(Routes.recordselect);
-       // List<CameraDescription> cameras = await availableCameras();
-       //  NavigatorUtil.push('videoCheck',arguments: cameras[0]);
-      },),
+      child: TrainingModeListView(
+        scanBleList: () async {
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          gameUtil.modelId = index + 1;
+          NavigatorUtil.push(Routes.recordselect);
+          // List<CameraDescription> cameras = await availableCameras();
+          //  NavigatorUtil.push('videoCheck',arguments: cameras[0]);
+        },
+      ),
     );
   }
 
   void _listener() {
     print('蓝牙连接的设备的数量变化');
     setState(() {
-      print('BluetoothManager().conectedDeviceCount=${BluetoothManager().conectedDeviceCount}');
+      print(
+          'BluetoothManager().conectedDeviceCount=${BluetoothManager().conectedDeviceCount}');
     });
   }
 
@@ -42,6 +50,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     // 连接的设备的数量
     BluetoothManager().conectedDeviceCount.addListener(_listener);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,14 +77,22 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                       child: Row(
                         children: [
                           Image(
-                            image:  BluetoothManager().conectedDeviceCount.value>0 ? AssetImage('images/ble/ble_done.png') :AssetImage('images/ble/ble_not.png'),
+                            image:
+                                BluetoothManager().conectedDeviceCount.value > 0
+                                    ? AssetImage('images/ble/ble_done.png')
+                                    : AssetImage('images/ble/ble_not.png'),
                             width: 27,
                             height: 27,
                           ),
                           SizedBox(
                             width: 8,
                           ),
-                          Constants.regularWhiteTextWidget( BluetoothManager().conectedDeviceCount.value.toString(), 16),
+                          Constants.regularWhiteTextWidget(
+                              BluetoothManager()
+                                  .conectedDeviceCount
+                                  .value
+                                  .toString(),
+                              16),
                         ],
                       ),
                     ),
@@ -87,7 +104,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               child: ListView.separated(
                   separatorBuilder: (context, index) => SizedBox(height: 20),
                   // 间隙高度
-                  itemCount: 3,
+                  itemCount: 7,
                   itemBuilder: _itemBuilder),
             )
           ],

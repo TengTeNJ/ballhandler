@@ -271,6 +271,7 @@ const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
 const String kBaseUrl_Dev = 'http://120.26.79.141:91'; // 测试环境地址
 
 const kDataBaseTableName = 'game_data_table'; // 数据库的表名
+const kDataBaseTVideoableName = 'video_table'; // 视频路径数据库的表名
 
 const kGameDuration = 45; // 游戏时常
 
@@ -302,12 +303,12 @@ const kLoginSucess = 'login_success'; // 登录成功
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
   "1" :{
-    "1" : "ZIGZAG Challenge",
-    "2" : "2 Challenge",
-    "3" : "L Challenge",
-    "4" : "OMEGA Challenge",
-    "5" : "Straight line Challenge",
-    "6" : "Pentagon Challenge",
-    "7" : "SMILE Challenge",
+    "7" : "ZIGZAG Challenge",
+    "1" : "2 Challenge",
+    "2" : "L Challenge",
+    "3" : "OMEGA Challenge",
+    "6" : "Straight line Challenge",
+    "4" : "Pentagon Challenge",
+    "5" : "SMILE Challenge",
   }
 }; // 游戏场景和模式映射表

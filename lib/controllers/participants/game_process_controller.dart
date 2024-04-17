@@ -3,6 +3,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/route/route.dart';
+import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
@@ -16,6 +17,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/global.dart';
+import '../../widgets/base/base_image.dart';
 
 class GameProcessController extends StatefulWidget {
   CameraDescription camera;
@@ -69,6 +71,8 @@ class _GameProcessControllerState extends State<GameProcessController>
           if ((gameUtil.selectRecord || gameUtil.isFromAirBattle) && _getStartFlag) {
             // 停止录制视频
             videoFile = await _controller.stopVideoRecording();
+            DatabaseHelper().insertVideoData(kDataBaseTVideoableName, videoFile.path);
+            print("videoFile.path=${videoFile.path}");
           }
           // 跳转到游戏完成页面
           GameOverModel model = GameOverModel();
@@ -144,6 +148,9 @@ class _GameProcessControllerState extends State<GameProcessController>
 //  屏幕竖直方向
 Widget VerticalScreenWidget(BuildContext context) {
   GameUtil gameUtil = GetIt.instance<GameUtil>();
+  String _scene = (gameUtil.gameScene.index+1).toString();
+  String _modelId = gameUtil.modelId.toString();
+  String _title = kGameSceneAndModelMap[_scene]![_modelId] ?? 'ZIGZAG Challenge';
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -154,7 +161,7 @@ Widget VerticalScreenWidget(BuildContext context) {
           SizedBox(
             height: 85,
           ),
-          Constants.boldWhiteTextWidget('ZIGZAG Challenge', 24),
+          Constants.boldWhiteTextWidget(_title, 24),
           SizedBox(
             height: 32,
           ),
@@ -230,12 +237,14 @@ Widget VerticalScreenWidget(BuildContext context) {
             height: 24,
           ),
           Expanded(
-              child: Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16),
-                  child: Image(
-                    image: AssetImage('images/product/product_${gameUtil.modelId}.png'),
-                    width: Constants.screenWidth(context) - 32,
-                  ))),
+              child:  TTNetImage(
+                width: Constants.screenWidth(context) - 32,
+                height: Constants.screenHeight(context) - 400,
+                url:
+                'https://potent-hockey.s3.eu-north-1.amazonaws.com/product/check/scene1/${gameUtil.modelId}.png',
+                placeHolderPath: 'images/product/product_check_6.png',
+                fit: BoxFit.contain,
+              )),
         ],
       )),
       Container(

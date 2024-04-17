@@ -1,12 +1,17 @@
 import 'dart:math';
+import 'package:code/constants/constants.dart';
 import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
+import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/video_util.dart';
 import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:sqflite/sqflite.dart';
+
 class RootPageController extends StatefulWidget {
   const RootPageController({super.key});
 
@@ -23,6 +28,7 @@ class _RootPageControllerState extends State<RootPageController> {
     RankingController(),
     ProfileController(),
   ];
+
   int generateBinaryNumber(int length) {
     Random random = Random();
     int result = 0;
@@ -34,6 +40,7 @@ class _RootPageControllerState extends State<RootPageController> {
     result |= 5;
     return result;
   }
+
   @override
   void initState() {
     super.initState();
@@ -53,12 +60,16 @@ class _RootPageControllerState extends State<RootPageController> {
       });
 
     testPush();
-
   }
 
-  testPush() async{
+  testPush() async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
-    print('fcmToken=${fcmToken}' );
+    print('fcmToken=${fcmToken}');
+    final _datas =
+        await DatabaseHelper().getVideoListData(kDataBaseTVideoableName);
+    if (_datas != null && _datas.length > 0) {
+      VideoUtil().deleteFileInBackground(_datas);
+    }
   }
 
   @override

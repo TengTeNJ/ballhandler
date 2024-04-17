@@ -9,4 +9,23 @@ class GameUtil {
   bool selectRecord = false; // 是否选择录制视频
   bool isFromAirBattle = false; // 是否是AirBattle
   ActivityModel activityModel = ActivityModel(); // 当前的ActivityModel
+  double get imageWidth {
+    if(this.modelId == 1){
+      return 200;
+    }else  if(this.modelId == 6){
+      return 64;
+    }else  if(this.modelId == 7){
+      return 128;
+    }
+    return 0;
+  }
+  double get gameImageWidth {
+    if(this.modelId == 1){
+      return 128;
+    }else  if(this.modelId == 6){
+      return 64;
+    }
+    return 0;
+  }
+
 }

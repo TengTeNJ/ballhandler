@@ -17,6 +17,7 @@ import 'package:code/controllers/participants/video_check_controller.dart';
 import 'package:code/controllers/participants/video_play_controller.dart';
 import 'package:code/controllers/profile/Integral_detail_controller.dart';
 import 'package:code/controllers/profile/setting_controller.dart';
+import 'package:code/controllers/profile/sub_setting_controller.dart';
 import 'package:code/controllers/ranking/my_stats_controller.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/airbattle.dart';
@@ -44,6 +45,7 @@ class Routes {
   static const String awardlist = 'awardList'; // 获奖列表页面
   static const String setting = 'setting'; // 设置页面
   static const String recordselect = 'recordSelect'; // record选择页面
+  static const String subsetting = 'subSetting'; // 二级设置页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -97,6 +99,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SettingController());
       case recordselect:
         return MaterialPageRoute(builder: (_) => RecordSelectController());
+      case subsetting:{
+        final  Map _map = settings.arguments as Map;
+        return MaterialPageRoute(builder: (_)=> SubSettingController(title: _map['title'] ?? '',subTitle: _map['subTitle'] ,));
+      }
       default:
         return _errorRoute();
     }

@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 class SettingView extends StatefulWidget {
   List<String> datas;
   String title;
+  Function? selectItem;
 
-  SettingView({required this.title, required this.datas});
+  SettingView({required this.title, required this.datas,this.selectItem});
 
   @override
   State<SettingView> createState() => _SettingViewState();
@@ -28,6 +29,9 @@ class _SettingViewState extends State<SettingView> {
               behavior: HitTestBehavior.opaque,
               onTap: (){
                 // 点击cell
+                if(widget.selectItem != null){
+                  widget.selectItem!(index);
+                }
               },
               child: Column(
                 children: [

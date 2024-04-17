@@ -13,6 +13,7 @@ import 'package:code/views/profile/reward_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileController extends StatefulWidget {
   const ProfileController({super.key});
@@ -75,18 +76,25 @@ class _ProfileControllerState extends State<ProfileController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(32),
-                      child: userModel.avatar.length > 0
-                          ? Image.network(
-                        userModel.avatar,
-                        width: 64,
-                        height: 64,
-                      )
-                          : Container(
-                        width: 54,
-                        height: 54,
-                        color: hexStringToColor('#AA9155'),
+                    GestureDetector(
+                      onTap: () async{
+                        final picker = ImagePicker();
+                        final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(32),
+                        child: userModel.avatar.length > 0
+                            ? Image.network(
+                          userModel.avatar,
+                          width: 64,
+                          height: 64,
+                        )
+                            : Container(
+                          width: 54,
+                          height: 54,
+                          color: hexStringToColor('#AA9155'),
+                        ),
                       ),
                     ),
                   ],

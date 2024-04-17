@@ -3,6 +3,13 @@ import 'package:code/models/game/game_over_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+class VideoPathModel {
+  String id = '';
+  String videoPath = '';
+
+  VideoPathModel({required this.id, required this.videoPath});
+}
+
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
 
@@ -13,6 +20,7 @@ class DatabaseHelper {
   DatabaseHelper._internal();
 
   Database? _database;
+  Database? _videoDatabase;
 
   Future<Database> get database async {
     if (_database != null) {
@@ -22,6 +30,15 @@ class DatabaseHelper {
     return _database!;
   }
 
+  Future<Database> get videoDatabase async {
+    if (_videoDatabase != null) {
+      return _videoDatabase!;
+    }
+    _videoDatabase = await initVideoDatabase();
+    return _videoDatabase!;
+  }
+
+  /*游戏数据表*/
   Future<Database> initDatabase() async {
     String path = join(await getDatabasesPath(), 'my_table.db');
     return openDatabase(path, version: 1, onCreate: _onCreate);
@@ -41,9 +58,29 @@ class DatabaseHelper {
     ''');
   }
 
+  /*游戏视频*/
+  Future<Database> initVideoDatabase() async {
+    String path = join(await getDatabasesPath(), 'my_table.db');
+    return openDatabase(path, version: 1, onCreate: _onCreateVideo);
+  }
+
+  Future<void> _onCreateVideo(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE ${kDataBaseTVideoableName}(
+        id INTEGER PRIMARY KEY,
+        videoPath TEXT
+      )
+    ''');
+  }
+
   Future<int> insertData(String table, GameOverModel data) async {
     Database db = await database;
     return await db.insert(table, data.toJson());
+  }
+
+  Future<int> insertVideoData(String table, String data) async {
+    Database db = await videoDatabase;
+    return await db.insert(table, {"videoPath": data});
   }
 
   Future<int> updateData(
@@ -57,9 +94,15 @@ class DatabaseHelper {
     return await db.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 
+/*删除某条视频路径数据*/
+  Future<int> deletevVideoPathData(String table, int id) async {
+    Database db = await videoDatabase;
+    return await db.delete(table, where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<List<GameOverModel>> getData(String table) async {
     Database db = await database;
-    final _datas =  await db.query(table);
+    final _datas = await db.query(table);
 
     List<GameOverModel> array = [];
     _datas.forEach((element) {
@@ -68,5 +111,19 @@ class DatabaseHelper {
     });
     return array;
   }
-}
 
+/*获取本地的视频列表*/
+  Future<List<VideoPathModel>> getVideoListData(String table) async {
+    Database db = await videoDatabase;
+    final _datas = await db.query(table);
+
+    List<VideoPathModel> array = [];
+    _datas.forEach((element) {
+      String videoPath = element['videoPath'].toString();
+      String id = element['id'].toString();
+      VideoPathModel model = VideoPathModel(id: id, videoPath: videoPath);
+      array.add(model);
+    });
+    return array;
+  }
+}

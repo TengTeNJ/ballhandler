@@ -32,13 +32,12 @@ class _SendEmailDiaogState extends State<SendEmailDiaog> {
     getInputEmailText();
   }
 
-  getInputEmailText() async{
-    final _text = await  NSUserDefault.getValue<String>(kInputEmail);
+  getInputEmailText() async {
+    final _text = await NSUserDefault.getValue<String>(kInputEmail);
     _email = _text ?? '';
-    setState(() {
-
-    });
+    setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,16 +68,19 @@ class _SendEmailDiaogState extends State<SendEmailDiaog> {
           Positioned(
             child: Container(
               width: Constants.screenWidth(context),
-              child: Padding(padding: EdgeInsets.only(left: 16,right: 16),child: Text(
-                textAlign: TextAlign.center,
-                'We sent an email to ${_email} help You log in',
-                style: TextStyle(
-                  fontFamily: 'SanFranciscoDisplay',
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16, // 设置文本水平居中对齐
+              child: Padding(
+                padding: EdgeInsets.only(left: 16, right: 16),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  'We sent an email to ${_email} help You log in',
+                  style: TextStyle(
+                    fontFamily: 'SanFranciscoDisplay',
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16, // 设置文本水平居中对齐
+                  ),
                 ),
-              ),),
+              ),
             ),
             top: 118,
           ),
@@ -191,7 +193,8 @@ class _BLEListDialogState extends State<BLEListDialog> {
 /*积分兑换弹窗 ExchangeIntegralDialog*/
 class ExchangeIntegralDialog extends StatelessWidget {
   Function exchange;
- ExchangeIntegralDialog({required this.exchange});
+
+  ExchangeIntegralDialog({required this.exchange});
 
   @override
   Widget build(BuildContext context) {
@@ -757,7 +760,8 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
 class JoinAirBattleDialog extends StatelessWidget {
   Function continueClick;
   Function goToSetting;
-  JoinAirBattleDialog({required this.continueClick,required this.goToSetting});
+
+  JoinAirBattleDialog({required this.continueClick, required this.goToSetting});
 
   @override
   Widget build(BuildContext context) {
@@ -774,9 +778,11 @@ class JoinAirBattleDialog extends StatelessWidget {
             height: 42,
           ),
           Constants.mediumWhiteTextWidget('Join Battle', 20),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               this.goToSetting();
             },
             child: RichText(
@@ -819,14 +825,14 @@ class JoinAirBattleDialog extends StatelessWidget {
           Container(
             width: 210,
             child: BaseButton(
-              linearGradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  hexStringToColor('#EF8914'),
-                  hexStringToColor('#CF391A')
-                ],
-              ),
+                linearGradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    hexStringToColor('#EF8914'),
+                    hexStringToColor('#CF391A')
+                  ],
+                ),
                 title: 'Continue',
                 height: 40,
                 onTap: () {
@@ -839,5 +845,77 @@ class JoinAirBattleDialog extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class UserNameDialog extends StatefulWidget {
+  const UserNameDialog({super.key});
+
+  @override
+  State<UserNameDialog> createState() => _UserNameDialogState();
+}
+
+class _UserNameDialogState extends State<UserNameDialog> {
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      title: Constants.boldBlackTextWidget('Enter your text', 20,textAlign: TextAlign.left),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _usernameController,
+            decoration: InputDecoration(labelText: 'Username'),
+          ),
+        ],
+      ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            NavigatorUtil.pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseGreyStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Cancel', 16),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            String username = _usernameController.text;
+            String password = _passwordController.text;
+            print('Username: $username, Password: $password');
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Confirm', 16),
+            ),
+          ),
+        ),
+
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }

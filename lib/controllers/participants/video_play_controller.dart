@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import '../../utils/color.dart';
 import '../../utils/navigator_util.dart';
 import 'package:share_plus/share_plus.dart';
+
 class VideoPlayController extends StatefulWidget {
-GameOverModel model;
-  VideoPlayController({required this.model});
+  bool? fromGameFinishPage = false;
+  GameOverModel model;
+
+  VideoPlayController({required this.model,this.fromGameFinishPage});
 
   @override
   State<VideoPlayController> createState() => _VideoPlayControllerState();
@@ -51,7 +54,7 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
                 onTap: () {
                   print('share---');
                   XFile file = XFile(widget.model.videoPath);
-                  Share.shareXFiles([file],text: "Good Game");
+                  Share.shareXFiles([file], text: "Good Game");
                 },
                 child: Container(
                   width: 36,
@@ -72,8 +75,7 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
               left: 16,
               right: 16,
               bottom: 32,
-              child: PlayerBottomView(
-                  model: widget.model))
+              child: PlayerBottomView(model: widget.model))
         ],
       ),
     );
