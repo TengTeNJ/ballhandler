@@ -64,6 +64,7 @@ dependencies:
   share_plus: ^8.0.3
   firebase_core: ^2.29.0
   country_picker: ^2.0.25
+  vibration: ^1.8.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

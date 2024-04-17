@@ -37,9 +37,9 @@ class _RootPageControllerState extends State<RootPageController> {
   @override
   void initState() {
     super.initState();
-    int length = 8; // 生成8位的二进制数
-    int binaryNumber = generateBinaryNumber(length);
-    print('Generated binary number: ${binaryNumber.toRadixString(2).padLeft(length, '0')}');
+    // int length = 8; // 生成8位的二进制数
+    // int binaryNumber = generateBinaryNumber(length);
+    // print('Generated binary number: ${binaryNumber.toRadixString(2).padLeft(length, '0')}');
 
     _pageController = PageController()
       ..addListener(() {

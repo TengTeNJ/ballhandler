@@ -1,18 +1,17 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/email_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
-import 'package:code/models/global/user_info.dart';
 import 'package:code/models/http/user_model.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/login_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/notification_bloc.dart';
-import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:code/utils/toast.dart';
 import 'package:code/views/account/privacy_check_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:vibration/vibration.dart';
 
 class LoginPageController extends StatefulWidget {
   const LoginPageController({super.key});
@@ -21,7 +20,7 @@ class LoginPageController extends StatefulWidget {
   State<LoginPageController> createState() => _LoginPageControllerState();
 }
 
-class _LoginPageControllerState extends State<LoginPageController> {
+class _LoginPageControllerState extends State<LoginPageController> with SingleTickerProviderStateMixin{
   bool privacyChecked = false;
   //  第三方登录图标和图片
   final List<Map> _thirdMaps = [
@@ -30,6 +29,10 @@ class _LoginPageControllerState extends State<LoginPageController> {
     {'icon': 'images/account/facebook.png', 'label': 'Continue with FaceBook'},
   ];
 
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,6 +92,8 @@ class _LoginPageControllerState extends State<LoginPageController> {
                       return InkWell(
                         onTap: () async {
                           if(!privacyChecked){
+                            TTToast.showToast('Please check the privacy policy first');
+                            Vibration.vibrate(duration: 500); // 触发震动
                             return;
                           }
                           LoginType type = LoginType.values[index];
@@ -164,6 +169,12 @@ class _LoginPageControllerState extends State<LoginPageController> {
                   onTap: () {
                     if(privacyChecked){
                       NavigatorUtil.present(EmailPageController());
+                    }else{
+                      if(!privacyChecked){
+                        TTToast.showToast('Please check the privacy policy first');
+                        Vibration.vibrate(duration: 500); // 触发震动
+                        return;
+                      }
                     }
                   },
                   child: Container(

@@ -63,6 +63,17 @@ class Account {
     final response = await HttpUtil.get('/api/login/checkEmail', _data);
     return ApiResponse(success: response.success,data: response.data['code'] == '0');
   }
+  /*检测是否设置过用户信息*/
+  static Future<ApiResponse<bool>> checkeSetUserInfoStatu() async{
+    final response = await HttpUtil.get('/api/member/ifSetMainParams',null);
+    return ApiResponse(success: response.success,data: response.data['data'] == true);
+  }
+
+/*修改用户信息*/
+  static Future<ApiResponse> updateUserInfo(Map<String,dynamic> data) async{
+    final response = await HttpUtil.post('/api/member/update',data);
+    return ApiResponse(success: response.success);
+  }
 
   /*处理登录成功后返回的数据*/
  static handleUserData(ApiResponse<User> _response, BuildContext context) async{
