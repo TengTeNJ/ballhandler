@@ -14,6 +14,68 @@ class RankModel {
   String trainVideo = '';
 }
 
+class AnalyzeDataModel{
+  dynamic avgPace = 0;
+  dynamic trainCount = 0;
+  dynamic trainScore = 0;
+  dynamic trainTime = 0;
+  dynamic lastAvgPace = 0;
+  dynamic lastTrainCount = 0;
+  dynamic lastTrainScore = 0;
+  dynamic lastTrainTime = 0;
+  String rankNumber = '-';
+  // 速度对比
+  String get avgPaceCompared {
+    bool rise = (this.avgPace - this.lastAvgPace) > 0;
+    double comparedValue = (this.avgPace - this.lastAvgPace).abs()/this.lastAvgPace;
+    String somparedString = convertToPercentage(comparedValue);
+    return rise ?('+' + somparedString): ('-' + somparedString) ;
+  }
+  bool get avgRise {
+    bool rise = (this.avgPace - this.lastAvgPace) > 0;
+   return rise;
+  }
+
+  // 得分对比
+  String get scoreCompared {
+    bool rise = (this.trainScore - this.lastTrainScore) > 0;
+    double comparedValue = (this.trainScore - this.lastTrainScore).abs()/this.lastTrainScore;
+    String somparedString = convertToPercentage(comparedValue);
+    return rise ?('+' + somparedString): ('-' + somparedString) ;
+  }
+  bool get scoreRise {
+    bool rise = (this.trainScore - this.lastTrainScore) > 0;
+    return rise;
+  }
+// 时间对比
+  String get timeCompared {
+    bool rise = (this.trainTime - this.lastTrainTime) > 0;
+    double comparedValue = (this.trainTime - this.lastTrainTime).abs()/this.lastTrainTime;
+    String somparedString = convertToPercentage(comparedValue);
+    return rise ?('+' + somparedString): ('-' + somparedString) ;
+  }
+  bool get timeRise {
+    bool rise = (this.trainTime - this.lastTrainTime) > 0;
+    return rise;
+  }
+
+  // 次数对比
+  String get countCompared {
+    bool rise = (this.trainCount - this.lastTrainCount) > 0;
+    double comparedValue = (this.trainCount - this.lastTrainCount).abs()/this.lastTrainCount;
+    String somparedString = convertToPercentage(comparedValue);
+    return rise ?('+' + somparedString): ('-' + somparedString) ;
+  }
+  bool get countRise {
+    bool rise = (this.trainCount - this.lastTrainCount) > 0;
+    return rise;
+  }
+}
+
+String convertToPercentage(double value) {
+  return '${(value * 100).toStringAsFixed(2)}%';
+}
+
 class RankListModel {
   List<RankModel> data = [];
   int count = 0;
@@ -136,4 +198,59 @@ class Rank {
       return ApiResponse(success: false);
     }
   }
+
+  /*请求分析数据*/
+  static Future<ApiResponse<AnalyzeDataModel>> queryComparetData(String? startDate,String? endDate,String selectType) async {
+
+    DateTime _selectedDate = DateTime.now();
+    DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
+    DateTime  _yesterdayDate = yesterday;
+    String _endTimer = StringUtil.dateTimeToString(yesterday);
+    // 过去七天的第一天的时间
+    DateTime beforeSeven = yesterday.subtract(Duration(days: 7));
+    String  _startTime = StringUtil.dateTimeToString(beforeSeven);
+    if(startDate == null){
+      startDate = _endTimer ;
+    }
+    if(endDate == null){
+      endDate = _startTime;
+    }
+    // 获取场景ID
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    final _data = {
+      "startDate":startDate,
+      "endDate":endDate,
+      "selectType":selectType,
+      "sceneId": (gameUtil.gameScene.index + 1).toString(),
+    };
+    final response = await HttpUtil.get('/api/statistic/trainData', _data,
+        showLoading: false);
+    AnalyzeDataModel _model = AnalyzeDataModel();
+
+    if (response.success && response.data['data'] != null) {
+      final _map = response.data['data'];
+      _model.trainCount =
+      !ISEmpty(_map['trainCount']) ? _map['trainCount'] : 0;
+      _model.lastTrainCount =
+      !ISEmpty(_map['lastTrainCount']) ? _map['lastTrainCount'] : 0;
+      _model.trainTime =
+      !ISEmpty(_map['trainTime']) ? _map['trainTime'] : 0;
+      _model.lastTrainTime =
+      !ISEmpty(_map['lastTrainTime']) ? _map['lastTrainTime'] : 0;
+      _model.trainScore =
+      !ISEmpty(_map['trainScore']) ? _map['trainScore'] : 0;
+      _model.lastTrainScore =
+      !ISEmpty(_map['lastTrainScore']) ? _map['lastTrainScore'] : 0;
+      _model.avgPace =
+      !ISEmpty(_map['avgPace']) ? _map['avgPace'] : 0;
+      _model.lastTrainScore =
+      !ISEmpty(_map['lastTrainScore']) ? _map['lastTrainScore'] : 0;
+      _model.rankNumber =
+      !ISEmpty(_map['trainCount']) ? _map['rankNumber'].toString() : '-';
+      return ApiResponse(success: response.success, data: _model);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
 }

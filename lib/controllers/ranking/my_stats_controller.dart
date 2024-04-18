@@ -43,6 +43,8 @@ class _MyStatsControllerState extends State<MyStatsController> {
     //   datas.add(model);
     //   temp = temp < model.speed ? model.speed : temp;
     // }
+    
+    final _compareResponse =  await Rank.queryComparetData( null, null, '1');
 
     queryLineAreaData(null,null);
     final _response = await Rank.queryBarViewData();
@@ -68,6 +70,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
       }
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {

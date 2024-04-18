@@ -136,6 +136,7 @@ class Participants {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     final _data = {
+      "sceneId" : (gameUtil.gameScene.index + 1).toString(),
       "limit": (kPageLimit*3).toString(),
       "page": page.toString(),
       "startDate": startDate,
