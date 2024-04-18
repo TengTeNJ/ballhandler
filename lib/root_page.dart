@@ -67,6 +67,7 @@ class _RootPageControllerState extends State<RootPageController> {
     print('fcmToken=${fcmToken}');
     final _datas =
         await DatabaseHelper().getVideoListData(kDataBaseTVideoableName);
+    print('_datas=${_datas}');
     if (_datas != null && _datas.length > 0) {
       VideoUtil().deleteFileInBackground(_datas);
     }

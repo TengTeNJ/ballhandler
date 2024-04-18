@@ -43,16 +43,15 @@ class Participants {
   }
 
 /*根据得分获取当前得分的全网排名*/
-  static Future<ApiResponse<String>> queryRankBaseScore(String score) async {
+  static Future<ApiResponse<String>> queryRankBaseScore(String avgPace) async {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     final _data = {
-      "avgPace": score,
+      "avgPace": avgPace,
       "sceneId": (gameUtil.gameScene.index + 1).toString(),
     };
     final response =
         await HttpUtil.get('/api/train/rank', _data, showLoading: true);
-    HomeUsermodel model;
     if (response.success && response.data['data'] != null) {
       return ApiResponse(
           success: response.success, data: response.data['data'].toString());

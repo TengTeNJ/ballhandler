@@ -75,8 +75,8 @@ class Routes {
         return MaterialPageRoute(builder: (_)=> GameProcessController(camera: camera,));
       }
       case videoplay:{
-        final  GameOverModel model = settings.arguments as GameOverModel;
-        return MaterialPageRoute(builder: (_)=> VideoPlayController(model: model,));
+        final  Map _map = settings.arguments as Map;
+        return MaterialPageRoute(builder: (_)=> VideoPlayController(model: _map['model'], fromGameFinishPage: _map['gameFinish'],));
       }
       case todaydata:
         return MaterialPageRoute(builder: (_) => TodayDataController());

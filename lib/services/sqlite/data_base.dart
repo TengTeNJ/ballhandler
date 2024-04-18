@@ -103,7 +103,6 @@ class DatabaseHelper {
   Future<List<GameOverModel>> getData(String table) async {
     Database db = await database;
     final _datas = await db.query(table);
-
     List<GameOverModel> array = [];
     _datas.forEach((element) {
       GameOverModel model = GameOverModel.fromJson(element);

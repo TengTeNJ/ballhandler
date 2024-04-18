@@ -1,4 +1,5 @@
 import 'package:code/models/game/game_over_model.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:code/views/participants/player_bottom_view.dart';
 import 'package:code/widgets/video/video_play_view.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,23 @@ class VideoPlayController extends StatefulWidget {
 }
 
 class _VideoPlayControllerState extends State<VideoPlayController> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.fromGameFinishPage == true){
+      queryRankBaseScore();
+    }
+
+  }
+  queryRankBaseScore () async{
+    final _response = await Participants.queryRankBaseScore(widget.model.avgPace);
+    widget.model.rank = _response.data ?? '--';
+    setState(() {
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,5 +97,11 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }
