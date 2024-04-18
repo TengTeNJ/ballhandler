@@ -5,6 +5,8 @@ import 'package:code/utils/http_util.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 
+import '../../constants/constants.dart';
+
 class HomeUsermodel {
   String avgPace;
   String rankNumber;
@@ -105,7 +107,7 @@ class Participants {
     }
   }
 
-
+/*上传文件接口*/
   static Future<ApiResponse<String>> uploadAsset(String path) async {
 
     XFile file = XFile(path);
@@ -128,4 +130,40 @@ class Participants {
     }
   }
 
+  /*查询训练列表接口*/
+  static Future<ApiResponse<List<GameOverModel>>> queryTrainListData(
+      int page,String startDate,String endDate) async {
+    // 获取场景ID
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    final _data = {
+      "limit": (kPageLimit*3).toString(),
+      "page": page.toString(),
+      "startDate": startDate,
+      "endDate": endDate
+    };
+    final response =
+    await HttpUtil.get('/api/train/list', _data, showLoading: true);
+    List<GameOverModel> _list = [];
+
+    if (response.success && response.data['data'] != null) {
+      final _array = response.data['data'] as List;
+      _array.forEach((element) {
+        GameOverModel model = GameOverModel();
+        final _map = element;
+        model.avgPace =
+        !ISEmpty(_map['avgPace']) ? _map['avgPace'].toString() : '--';
+        model.score =
+        !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '--';
+        model.endTime = !ISEmpty(_map['createTime'])
+            ? _map['createTime'].toString()
+            : '--';
+        model.videoPath =
+        !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '--';
+        _list.add(model);
+      });
+      return ApiResponse(success: response.success, data: _list);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
 }

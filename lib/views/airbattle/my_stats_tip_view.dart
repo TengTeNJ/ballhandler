@@ -18,8 +18,8 @@ class _MyStatsTipViewState extends State<MyStatsTipView> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: hexStringToColor('#3E3E55')),
-      width: 90,
-      height: 90,
+      width: 110,
+      height: 110,
       child: Padding(
         padding: EdgeInsets.only(left: 4,right: 0),
         child: Column(

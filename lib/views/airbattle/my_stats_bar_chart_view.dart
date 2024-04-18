@@ -59,7 +59,7 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
         primaryYAxis: NumericAxis(
           // maximum: 10,
           labelAlignment: LabelAlignment.center,
-          interval: 0.2,
+          interval: 5,
           axisLine: AxisLine(width: 1, color: Colors.transparent),
           // 设置 X 轴轴线颜色和宽度
           plotOffset: 0,
@@ -110,10 +110,8 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
               yValueMapper: (MyStatsModel data, _) => data.speed,
               pointColorMapper: (MyStatsModel data, _) {
                 if (data.selected == true) {
-                  print('-----------------');
                   return hexStringToColor('#F8850B');
                 } else {
-                  print('--------++++++++---------');
                   return hexStringToColor('#CC8E4D');
                 }
               })

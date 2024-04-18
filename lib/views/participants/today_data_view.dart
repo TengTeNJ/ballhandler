@@ -4,6 +4,8 @@ import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/navigator_util.dart';
+
 class TodayDataView extends StatefulWidget {
   GameOverModel  gameOverModel;
    TodayDataView({required this.gameOverModel});
@@ -25,22 +27,31 @@ class _TodayDataViewState extends State<TodayDataView> {
       child: Stack(
         children: [
           Visibility(
-            visible: widget.gameOverModel.videoPath.length > 0,
+            visible: widget.gameOverModel.videoPath.length > 0 && widget.gameOverModel.videoPath.contains('http'),
              replacement: Container(),
-              child: Positioned(
-              top: 8,
-              right: 8,
-              child: Container(
-                width: 34,
-                height: 14,
-                decoration: BoxDecoration(
-                  color: Constants.baseStyleColor,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Center(
-                  child: Constants.regularWhiteTextWidget('VIEW', 10),
-                ),
-              ))),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+                  NavigatorUtil.push('videoPlay', arguments: {
+                    "model": widget.gameOverModel,
+                    "gameFinish": false
+                  });
+                },
+                child: Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      width: 34,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: Constants.baseStyleColor,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: Center(
+                        child: Constants.regularWhiteTextWidget('VIEW', 10),
+                      ),
+                    )),
+              )),
           Positioned(
               top: 12,
               bottom: 12,
@@ -73,21 +84,21 @@ class _TodayDataViewState extends State<TodayDataView> {
                             children: [
                               Constants.mediumWhiteTextWidget(widget.gameOverModel.avgPace, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Avg.pace (sec.)', 8, '#B1B1B1'),
+                              Constants.customTextWidget('Avg.pace (sec.)', 10, '#B1B1B1'),
                             ],
                           ),
                           Column(
                             children: [
                               Constants.mediumWhiteTextWidget(widget.gameOverModel.score, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Score(pts.)', 8, '#B1B1B1'),
+                              Constants.customTextWidget('Score(pts.)', 10, '#B1B1B1'),
                             ],
                           ),
                           Column(
                             children: [
                               Constants.mediumWhiteTextWidget(widget.gameOverModel.time, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Time(min.)', 8, '#B1B1B1'),
+                              Constants.customTextWidget('Time(min.)', 10, '#B1B1B1'),
                             ],
                           )
                         ],

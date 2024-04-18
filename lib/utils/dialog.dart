@@ -107,7 +107,7 @@ class TTDialog {
     );
   }
 
-  static timeSelect(BuildContext context) {
+  static timeSelect(BuildContext context,Function confirm) {
     showModalBottomSheet(
       backgroundColor: hexStringToColor('#3E3E55'),
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
@@ -126,6 +126,14 @@ class TTDialog {
                 _height = 0.40;
                 setState(() {
                 });
+              }
+            },confirm: (startTime,endTime,selectIndex){
+              if(confirm!=null){
+                int _index = selectIndex;
+                if(selectIndex == -1){
+                  _index = 3;
+                }
+                confirm(startTime,endTime,_index);
               }
             },),
           );

@@ -48,7 +48,7 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
           axisLine: AxisLine(width: 2, color: Colors.transparent), // 设置 X 轴轴线颜色和宽度
           labelPosition: ChartDataLabelPosition.outside,
           plotOffset: 0,
-          interval: 0.2,
+          interval: 5,
           majorTickLines: MajorTickLines(color: Colors.yellow, size: 0),
           // 超出坐标系部分的线条设置
           majorGridLines: MajorGridLines(

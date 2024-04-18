@@ -1,10 +1,8 @@
 import 'package:code/constants/constants.dart';
-import 'package:code/models/global/user_info.dart';
 import 'package:code/models/http/user_model.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
-import 'package:date_format/date_format.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 

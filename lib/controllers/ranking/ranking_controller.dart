@@ -19,6 +19,8 @@ class RankingController extends StatefulWidget {
 class _RankingControllerState extends State<RankingController> {
   List<RankModel> _datas = [];
   int _currentPageIndex = 0;
+  int _page = 1;
+  bool _hasMode = false;
 
   void _pageViewOnChange(int index) {
     setState(() {
@@ -32,10 +34,12 @@ class _RankingControllerState extends State<RankingController> {
     super.initState();
     queryRankList();
   }
+  /* 获取排行榜数据*/
   queryRankList() async{
-    final _response = await Rank.queryRankListData(1);
-    if(_response.success){
-     _datas.addAll(_response.data!);
+    final _response = await Rank.queryRankListData(_page);
+    if(_response.success && _response.data != null){
+     _datas.addAll(_response.data!.data);
+     _hasMode = (_datas.length < _response.data!.count);
      setState(() {
 
      });
@@ -84,7 +88,13 @@ class _RankingControllerState extends State<RankingController> {
             Expanded(
                 child: Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
-              child: _datas.length > 0 ? RankingListView(datas: _datas,): NoDataView(),
+              child: _datas.length > 0 ? RankingListView(datas: _datas,loadMore: (){
+                // 上拉加载
+                if(_hasMode){
+                  _page ++;
+                  queryRankList();
+                }
+              },): NoDataView(),
             )),
           ],
         ),

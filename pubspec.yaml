@@ -66,6 +66,7 @@ dependencies:
   country_picker: ^2.0.25
   vibration: ^1.8.4
   image_picker: ^1.1.0
+  chewie: ^1.8.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

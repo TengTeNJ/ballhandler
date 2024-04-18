@@ -12,7 +12,13 @@ class OverAllDataView extends StatefulWidget {
 }
 
 class _OverAllDataViewState extends State<OverAllDataView> {
-  final List<String> _titles = ['Carrer best','Total Score(pts.)','Time (Min.)','Trainings'];
+  final List<String> _titles = [
+    'Carrer best',
+    'Total Score(pts.)',
+    'Time (Min.)',
+    'Trainings'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,7 +46,9 @@ class _OverAllDataViewState extends State<OverAllDataView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Constants.regularBaseTextWidget('Today', 12),
-                      SizedBox(width: 6,),
+                      SizedBox(
+                        width: 6,
+                      ),
                       Image(
                         image: AssetImage('images/participants/back.png'),
                         width: 5,
@@ -49,7 +57,7 @@ class _OverAllDataViewState extends State<OverAllDataView> {
                     ],
                   ),
                 ),
-                onTap: (){
+                onTap: () {
                   print('点击Today按钮');
                   NavigatorUtil.push('todayData');
                 },
@@ -63,23 +71,31 @@ class _OverAllDataViewState extends State<OverAllDataView> {
                     child: Row(
                   children: [
                     Container(
-                      width: (Constants.screenWidth(context) - 32 -2) /4.0,
+                      width: (Constants.screenWidth(context) - 32 - 2) / 4.0,
                       // color: Colors.blue,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Constants.mediumWhiteTextWidget(user.overDataList[index], 20),
-                          SizedBox(height: 4,),
-                          Constants.regularGreyTextWidget(_titles[index], 10),
+                          Constants.mediumWhiteTextWidget(
+                              user.overDataList[index], 20),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Container(
+                            child: Constants.regularGreyTextWidget(
+                                _titles[index], 9),
+                          )
                         ],
                       ),
                     ),
-                    index != (user.overDataList.length-1) ? Container(
-                      height: 30,
-                      width: 0.5,
-                      color: Color.fromRGBO(86, 86, 116, 1.0),
-                    ):Container(),
+                    index != (user.overDataList.length - 1)
+                        ? Container(
+                            height: 30,
+                            width: 0.5,
+                            color: Color.fromRGBO(86, 86, 116, 1.0),
+                          )
+                        : Container(),
                   ],
                 ));
               }),

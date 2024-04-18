@@ -102,8 +102,11 @@ class _GameFinishControllerState extends State<GameFinishController> {
               onTap: () async{
                 print('save data');
                 if(UserProvider.of(context).hasLogin){
-                 final _urlResponse =  await Participants.uploadAsset(widget.dataModel.videoPath);
-                 widget.dataModel.videoPath = _urlResponse.data ?? '';
+                  print('widget.dataModel.videoPath.length=${widget.dataModel.videoPath.length}');
+                  if(widget.dataModel.videoPath.length > 0){
+                    final _urlResponse =  await Participants.uploadAsset(widget.dataModel.videoPath);
+                    widget.dataModel.videoPath = _urlResponse.data ?? '';
+                  }
                   // 保存游戏数据到云端
                   final _response =  await Participants.saveGameData(widget.dataModel);
                   if(_response.success){

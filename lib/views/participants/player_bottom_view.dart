@@ -25,6 +25,7 @@ class PlayerBottomView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TBTextView(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   title: model.rank,
                   detailTitle: 'Rank',
                   titleColor: Colors.white,
@@ -33,6 +34,7 @@ class PlayerBottomView extends StatelessWidget {
                   detailFontSize: 14,
                 ),
                 TBTextView(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   title: model.score,
                   detailTitle: 'Score',
                   titleColor: Colors.white,
@@ -41,6 +43,7 @@ class PlayerBottomView extends StatelessWidget {
                   detailFontSize: 14,
                 ),
                 TBTextView(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   title: model.avgPace,
                   detailTitle: 'Avg.pace',
                   titleColor: Colors.white,

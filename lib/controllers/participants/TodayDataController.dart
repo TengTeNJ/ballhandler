@@ -1,6 +1,8 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:code/services/sqlite/data_base.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/views/participants/today_data_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +32,18 @@ class _TodayDataControllerState extends State<TodayDataController> {
       final _result = await DatabaseHelper().getData(kDataBaseTableName);
       _datas = _result;
     setState(() {
-
     });
     } else {
       // 已登录进行数据请求
+      final _todayDate = DateTime.now();
+      String _todayString =  StringUtil.dateTimeToString(_todayDate);
+      final _response = await Participants.queryTrainListData(1, _todayString, _todayString);
+      if(_response.success && _response.data != null){
+        _datas.addAll(_response.data!);
+        setState(() {
+
+        });
+      }
     }
   }
 

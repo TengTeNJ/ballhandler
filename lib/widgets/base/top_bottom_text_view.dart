@@ -9,7 +9,7 @@ class TBTextView extends StatelessWidget {
   Color? detailColor;
   double? titleFontSize;
   double? detailFontSize;
-
+  CrossAxisAlignment crossAxisAlignment;
   TBTextView({
     required this.title,
     required this.detailTitle,
@@ -17,13 +17,14 @@ class TBTextView extends StatelessWidget {
     this.detailColor = const Color.fromRGBO(177, 177, 177, 1),
     this.titleFontSize = 20,
     this.detailFontSize = 12,
+    this.crossAxisAlignment = CrossAxisAlignment.start
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: crossAxisAlignment,
       children: [
         Text(
           title,

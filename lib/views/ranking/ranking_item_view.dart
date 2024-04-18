@@ -1,10 +1,13 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/rank.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/navigator_util.dart';
+
 class RankingItemView extends StatefulWidget {
-  RankModel model;
+   RankModel model;
    RankingItemView({required this.model});
 
   @override
@@ -21,16 +24,31 @@ class _RankingItemViewState extends State<RankingItemView> {
       height: 72,
       child: Stack(
         children: [
-          widget.model.trainVideo.length > 0 ? Positioned(
+          (widget.model.trainVideo.length > 0 && widget.model.trainVideo.contains('http')) ? Positioned(
               top: 8,
               right: 8,
-              child: Container(
-                  width: 32,
-                  height: 14,
-                  decoration: BoxDecoration(
-                      color: Constants.baseStyleColor,
-                      borderRadius: BorderRadius.circular(3)),
-                  child:  Center(child:  Constants.regularWhiteTextWidget('View', 10))
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+                  GameOverModel model = GameOverModel();
+                  model.rank = widget.model.rankNumber.toString();
+                  model.videoPath = widget.model.trainVideo.toString();
+                  model.avgPace = widget.model.avgPace.toString();
+                  // model.score = widget.model.avgPace.toString();
+                  print('model.path=${model.videoPath}');
+                  NavigatorUtil.push('videoPlay', arguments: {
+                  "model": model,
+                  "gameFinish": false
+                  });
+                },
+                child: Container(
+                    width: 32,
+                    height: 14,
+                    decoration: BoxDecoration(
+                        color: Constants.baseStyleColor,
+                        borderRadius: BorderRadius.circular(3)),
+                    child:  Center(child:  Constants.regularWhiteTextWidget('View', 10))
+                ),
               )) : Container() ,
           Positioned(child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

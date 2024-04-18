@@ -413,8 +413,8 @@ class AwardDialog extends StatelessWidget {
 /*时间选择弹窗*/
 class TimeSelectDialog extends StatefulWidget {
   Function? datePickerSelect;
-
-  TimeSelectDialog({this.datePickerSelect});
+  Function? confirm;
+  TimeSelectDialog({this.datePickerSelect,this.confirm});
 
   @override
   State<TimeSelectDialog> createState() => _TimeSelectDialogState();
@@ -475,6 +475,10 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                     }
                     _timeSelectIndex = 0;
                     selectIndex = 0;
+
+                    DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
+                    _yesterdayDate = yesterday;
+                    endTimer = StringUtil.dateToString(yesterday);
                     // 过去七天的第一天的时间
                     DateTime beforeSeven =
                         _yesterdayDate.subtract(Duration(days: 7));
@@ -519,6 +523,9 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                     }
                     _timeSelectIndex = 0;
                     selectIndex = 1;
+                    DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
+                    _yesterdayDate = yesterday;
+                    endTimer = StringUtil.dateToString(yesterday);
                     // 过去30天的第一天的时间
                     DateTime beforeSeven =
                         _yesterdayDate.subtract(Duration(days: 30));
@@ -563,6 +570,9 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                     }
                     _timeSelectIndex = 0;
                     selectIndex = 2;
+                    DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
+                    _yesterdayDate = yesterday;
+                    endTimer = StringUtil.dateToString(yesterday);
                     // 过去90天的第一天的时间
                     DateTime beforeSeven =
                         _yesterdayDate.subtract(Duration(days: 90));
@@ -735,7 +745,14 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                 ),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () {},
+            onTap: () {
+              if(widget.confirm != null){
+
+                print('startTime----=${startTime}');
+                widget.confirm!(startTime.replaceAll('/', '-'),endTimer.replaceAll('/', '-'),selectIndex);
+              }
+              NavigatorUtil.pop();
+            },
             child: Container(
               width: 210,
               height: 40,
