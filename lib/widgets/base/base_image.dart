@@ -26,11 +26,6 @@ class _TTNetImageState extends State<TTNetImage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // Future.delayed(Duration.zero, () {
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    // });
   }
 
   @override
@@ -70,6 +65,13 @@ class _TTNetImageState extends State<TTNetImage> {
             ),
             // _isLoading ? CircularProgressIndicator() :Container(), // Loading indicator
           ],
+        ),
+      );
+    }else if(widget.url.contains('.png')){
+      return  Center(
+        child: ClipRRect(
+          borderRadius: widget.borderRadius ?? BorderRadius.zero, // 设置圆角半径
+          child:    Image(image: AssetImage(widget.url),width: widget.width,height: widget.height,fit: widget.fit,),
         ),
       );
     }else{

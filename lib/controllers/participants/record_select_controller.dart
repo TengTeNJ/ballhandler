@@ -73,9 +73,8 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
               TTNetImage(
                 width: Constants.screenWidth(context) - 32,
                 height: Constants.screenHeight(context) - 400,
-                url:
-                    'https://potent-hockey.s3.eu-north-1.amazonaws.com/product/check/scene1/${gameUtil.modelId}.png',
-                placeHolderPath: 'images/product/product_check_6.png',
+                url: 'images/product/check${gameUtil.modelId}.png',
+                placeHolderPath: 'images/product/product_6.png',
                 fit: BoxFit.contain,
               ),
               SizedBox(

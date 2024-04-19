@@ -61,12 +61,13 @@ class BluetoothDataParse {
               if (binaryString != null && binaryString.length == 8) {
                 // 前两位都是1，不区分红灯和蓝灯，截取后边6位，判断哪个灯在亮
                 final sub_string = binaryString.substring(2, 8);
-                print('sub_string=${sub_string}');
+                //print('sub_string=${sub_string}');
                 final ligh_index = sub_string.indexOf('1');
                 final actual_index = 5 - ligh_index + 1;
                 BluetoothManager().gameData.currentTarget = actual_index;
-                print('${actual_index}号灯亮了');
-                print('binaryString=${binaryString}');
+                // print('${actual_index}号灯亮了');
+                // print('binaryString=${binaryString}');
+                BluetoothManager().triggerCallback(type: BLEDataType.targetResponse);
               }
               break;
             case ResponseCMDType.score:

@@ -10,11 +10,9 @@ import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
-import 'package:code/utils/ticker_util.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 
 import '../../utils/global.dart';
 import '../../widgets/base/base_image.dart';
@@ -31,15 +29,18 @@ class GameProcessController extends StatefulWidget {
 class _GameProcessControllerState extends State<GameProcessController>
     with WidgetsBindingObserver {
   late CameraController _controller;
+  late String _imagePath;
   bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    _imagePath = 'images/product/check${gameUtil.modelId}.png';
     // 监听生命周期
     WidgetsBinding.instance.addObserver(this);
     // 标记进入到游戏页面
-    GameUtil gameUtil = GetIt.instance<GameUtil>();
     gameUtil.nowISGamePage = true;
     //  初始化摄像头
     _controller = CameraController(
@@ -58,7 +59,6 @@ class _GameProcessControllerState extends State<GameProcessController>
           BluetoothManager().gameData.score = 0;
           setState(() {});
           // 用户选择了视频录制 则同步开始录制
-          GameUtil gameUtil = GetIt.instance<GameUtil>();
           if (gameUtil.selectRecord || gameUtil.isFromAirBattle) {
             await _controller.initialize(); // 初始化摄像头控制器
             // 开始录制视频
@@ -68,10 +68,12 @@ class _GameProcessControllerState extends State<GameProcessController>
           // 游戏结束
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           XFile videoFile = XFile('');
-          if ((gameUtil.selectRecord || gameUtil.isFromAirBattle) && _getStartFlag) {
+          if ((gameUtil.selectRecord || gameUtil.isFromAirBattle) &&
+              _getStartFlag) {
             // 停止录制视频
             videoFile = await _controller.stopVideoRecording();
-            DatabaseHelper().insertVideoData(kDataBaseTVideoableName, videoFile.path);
+            DatabaseHelper()
+                .insertVideoData(kDataBaseTVideoableName, videoFile.path);
             print("videoFile.path=${videoFile.path}");
           }
           // 跳转到游戏完成页面
@@ -83,7 +85,9 @@ class _GameProcessControllerState extends State<GameProcessController>
                 (45 / BluetoothManager().gameData.score).toStringAsFixed(2);
           }
           model.score = (BluetoothManager().gameData.score).toString();
-          model.videoPath = (gameUtil.selectRecord || gameUtil.isFromAirBattle)? videoFile.path : '';
+          model.videoPath = (gameUtil.selectRecord || gameUtil.isFromAirBattle)
+              ? videoFile.path
+              : '';
           model.endTime = StringUtil.dateToGameTimeString();
 
           // 释放摄像头控制器
@@ -93,7 +97,13 @@ class _GameProcessControllerState extends State<GameProcessController>
           gameUtil.nowISGamePage = false;
           _getStartFlag = false;
         }
-      }  else {
+      } else if (type == BLEDataType.targetResponse) {
+        // 哪个灯亮
+        _imagePath =
+            'images/product/scene${gameUtil.gameScene.index + 1}/model${gameUtil.modelId}/${BluetoothManager().gameData.currentTarget}.png';
+        print('ImagePath=${_imagePath}');
+        setState(() {});
+      } else {
         setState(() {});
       }
     };
@@ -121,7 +131,7 @@ class _GameProcessControllerState extends State<GameProcessController>
       body: OrientationBuilder(
         builder: (context, orientation) {
           return orientation == Orientation.portrait
-              ? VerticalScreenWidget(context)
+              ? VerticalScreenWidget(context, _imagePath)
               : HorizontalScreenWidget(context);
         },
       ),
@@ -133,7 +143,7 @@ class _GameProcessControllerState extends State<GameProcessController>
     // TODO: implement dispose
     _controller.dispose();
     BluetoothManager().dataChange = null;
-   // print('dataChange=null');
+    // print('dataChange=null');
     // 标记离开游戏页面
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     gameUtil.nowISGamePage = false;
@@ -146,11 +156,12 @@ class _GameProcessControllerState extends State<GameProcessController>
 }
 
 //  屏幕竖直方向
-Widget VerticalScreenWidget(BuildContext context) {
+Widget VerticalScreenWidget(BuildContext context, String path) {
   GameUtil gameUtil = GetIt.instance<GameUtil>();
-  String _scene = (gameUtil.gameScene.index+1).toString();
+  String _scene = (gameUtil.gameScene.index + 1).toString();
   String _modelId = gameUtil.modelId.toString();
-  String _title = kGameSceneAndModelMap[_scene]![_modelId] ?? 'ZIGZAG Challenge';
+  String _title =
+      kGameSceneAndModelMap[_scene]![_modelId] ?? 'ZIGZAG Challenge';
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -173,18 +184,20 @@ Widget VerticalScreenWidget(BuildContext context) {
                 Container(
                   width: Constants.screenWidth(context) * 0.56,
                   height: 133,
-                  decoration: gameUtil.isFromAirBattle ? BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        hexStringToColor('#EF8914'),
-                        hexStringToColor('#CF391A'),
-                      ],
-                    ),
-                      borderRadius: BorderRadius.circular(10)):BoxDecoration(
-                      color: hexStringToColor('#204DD1'),
-                      borderRadius: BorderRadius.circular(10)),
+                  decoration: gameUtil.isFromAirBattle
+                      ? BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              hexStringToColor('#EF8914'),
+                              hexStringToColor('#CF391A'),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(10))
+                      : BoxDecoration(
+                          color: hexStringToColor('#204DD1'),
+                          borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -197,7 +210,12 @@ Widget VerticalScreenWidget(BuildContext context) {
                         children: [
                           Constants.digiRegularWhiteTextWidget('00:', 76),
                           Constants.digiRegularWhiteTextWidget(
-                              BluetoothManager().gameData.remainTime.toString().padLeft(2, '0'), 76),
+                              BluetoothManager()
+                                  .gameData
+                                  .remainTime
+                                  .toString()
+                                  .padLeft(2, '0'),
+                              76),
                         ],
                       )
                     ],
@@ -206,18 +224,20 @@ Widget VerticalScreenWidget(BuildContext context) {
                 Container(
                   width: Constants.screenWidth(context) * 0.32,
                   height: 133,
-                  decoration: gameUtil.isFromAirBattle ? BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          hexStringToColor('#EF8914'),
-                          hexStringToColor('#CF391A'),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(10)):BoxDecoration(
-                      color: hexStringToColor('#204DD1'),
-                      borderRadius: BorderRadius.circular(10)),
+                  decoration: gameUtil.isFromAirBattle
+                      ? BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              hexStringToColor('#EF8914'),
+                              hexStringToColor('#CF391A'),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(10))
+                      : BoxDecoration(
+                          color: hexStringToColor('#204DD1'),
+                          borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -237,14 +257,13 @@ Widget VerticalScreenWidget(BuildContext context) {
             height: 24,
           ),
           Expanded(
-              child:  TTNetImage(
-                width: Constants.screenWidth(context) - 32,
-                height: Constants.screenHeight(context) - 400,
-                url:
-                'https://potent-hockey.s3.eu-north-1.amazonaws.com/product/check/scene1/${gameUtil.modelId}.png',
-                placeHolderPath: 'images/product/product_check_6.png',
-                fit: BoxFit.contain,
-              )),
+              child: TTNetImage(
+            width: Constants.screenWidth(context) - 32,
+            height: Constants.screenHeight(context) - 400,
+            url: path,
+            placeHolderPath: 'images/product/product_6.png',
+            fit: BoxFit.contain,
+          )),
         ],
       )),
       Container(
@@ -267,18 +286,20 @@ Widget VerticalScreenWidget(BuildContext context) {
                 ),
                 width: 54,
                 height: 54,
-                decoration: gameUtil.isFromAirBattle ? BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        hexStringToColor('#EF8914'),
-                        hexStringToColor('#CF391A'),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(27)):BoxDecoration(
-                    color: hexStringToColor('#204DD1'),
-                    borderRadius: BorderRadius.circular(27)),
+                decoration: gameUtil.isFromAirBattle
+                    ? BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            hexStringToColor('#EF8914'),
+                            hexStringToColor('#CF391A'),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(27))
+                    : BoxDecoration(
+                        color: hexStringToColor('#204DD1'),
+                        borderRadius: BorderRadius.circular(27)),
               ),
             ),
             recordWidget(),
@@ -297,18 +318,20 @@ Widget VerticalScreenWidget(BuildContext context) {
                 ),
                 width: 54,
                 height: 54,
-                decoration: gameUtil.isFromAirBattle ? BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        hexStringToColor('#EF8914'),
-                        hexStringToColor('#CF391A'),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(27)):BoxDecoration(
-                    color: hexStringToColor('#204DD1'),
-                    borderRadius: BorderRadius.circular(27)),
+                decoration: gameUtil.isFromAirBattle
+                    ? BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            hexStringToColor('#EF8914'),
+                            hexStringToColor('#CF391A'),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(27))
+                    : BoxDecoration(
+                        color: hexStringToColor('#204DD1'),
+                        borderRadius: BorderRadius.circular(27)),
               ),
             ),
           ],
