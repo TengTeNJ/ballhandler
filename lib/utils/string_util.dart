@@ -1,5 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart'; // 导入intl包
+
 class StringUtil {
   /*邮箱校验*/
   static bool isValidEmail(String email) {
@@ -30,19 +31,25 @@ class StringUtil {
   }
 
   /*时间转字符串*/
-  static String dateTimeToString(DateTime datetime){
+  static String dateTimeToString(DateTime datetime) {
     String _string = formatDate(datetime, [yyyy, '-', mm, '-', dd]);
     return _string;
   }
 
-  static String dateToString(DateTime date){
+  static String dateToString(DateTime date) {
     String formattedDate = DateFormat('yyyy/MM/dd').format(date);
-   return formattedDate;
+    return formattedDate;
   }
 
-  static String dateToGameTimeString(){
+  static String dateToGameTimeString() {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('MMMM.dd.yyyy HH:mm').format(now);
     return formattedDate;
+  }
+
+  /*时间字符串转换为日期*/
+  static DateTime stringToDate(String timeString) {
+    DateTime dateTime = DateTime.parse(timeString);
+    return dateTime;
   }
 }

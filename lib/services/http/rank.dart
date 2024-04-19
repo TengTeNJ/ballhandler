@@ -26,19 +26,25 @@ class AnalyzeDataModel{
   String rankNumber = '-';
   // 速度对比
   String get avgPaceCompared {
-    bool rise = (this.avgPace - this.lastAvgPace) > 0;
+    if(this.avgPace == 0 || this.lastAvgPace == 0){
+      return '-';
+    }
+    bool rise = (this.avgPace - this.lastAvgPace) < 0; // 速度越小 成绩越好
     double comparedValue = (this.avgPace - this.lastAvgPace).abs()/this.lastAvgPace;
     String somparedString = convertToPercentage(comparedValue);
     return rise ?('+' + somparedString): ('-' + somparedString) ;
   }
   bool get avgRise {
-    bool rise = (this.avgPace - this.lastAvgPace) > 0;
+    bool rise = (this.avgPace - this.lastAvgPace) < 0;
    return rise;
   }
 
   // 得分对比
   String get scoreCompared {
-    bool rise = (this.trainScore - this.lastTrainScore) > 0;
+    if(this.trainScore == 0 || this.lastTrainScore == 0){
+      return '-';
+    }
+    bool rise = (this.trainScore - this.lastTrainScore) >= 0;
     double comparedValue = (this.trainScore - this.lastTrainScore).abs()/this.lastTrainScore;
     String somparedString = convertToPercentage(comparedValue);
     return rise ?('+' + somparedString): ('-' + somparedString) ;
@@ -49,7 +55,10 @@ class AnalyzeDataModel{
   }
 // 时间对比
   String get timeCompared {
-    bool rise = (this.trainTime - this.lastTrainTime) > 0;
+    if(this.trainTime == 0 || this.lastTrainTime == 0){
+      return '-';
+    }
+    bool rise = (this.trainTime - this.lastTrainTime) >= 0;
     double comparedValue = (this.trainTime - this.lastTrainTime).abs()/this.lastTrainTime;
     String somparedString = convertToPercentage(comparedValue);
     return rise ?('+' + somparedString): ('-' + somparedString) ;
@@ -61,9 +70,15 @@ class AnalyzeDataModel{
 
   // 次数对比
   String get countCompared {
-    bool rise = (this.trainCount - this.lastTrainCount) > 0;
+    if(this.trainCount == 0 || this.lastTrainCount == 0){
+      return '-';
+    }
+    bool rise = (this.trainCount - this.lastTrainCount) >= 0;
     double comparedValue = (this.trainCount - this.lastTrainCount).abs()/this.lastTrainCount;
     String somparedString = convertToPercentage(comparedValue);
+    if(somparedString.length >3){
+      somparedString = somparedString.substring(0,4);
+    }
     return rise ?('+' + somparedString): ('-' + somparedString) ;
   }
   bool get countRise {
@@ -73,7 +88,19 @@ class AnalyzeDataModel{
 }
 
 String convertToPercentage(double value) {
-  return '${(value * 100).toStringAsFixed(2)}%';
+  String percentValue = (value * 100).toStringAsFixed(2);
+  String _temp = formatNumber(double.parse(percentValue));
+  return '${_temp}%';
+}
+
+String formatNumber(double number) {
+  if (number >= 100) {
+    return number.toInt().toString();
+  } else if (number >= 10) {
+    return number.toStringAsFixed(1);
+  } else {
+    return number.toStringAsFixed(2);
+  }
 }
 
 class RankListModel {
@@ -218,8 +245,8 @@ class Rank {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     final _data = {
-      "startDate":startDate,
-      "endDate":endDate,
+      "startDate": endDate,
+      "endDate":startDate,
       "selectType":selectType,
       "sceneId": (gameUtil.gameScene.index + 1).toString(),
     };
@@ -243,10 +270,10 @@ class Rank {
       !ISEmpty(_map['lastTrainScore']) ? _map['lastTrainScore'] : 0;
       _model.avgPace =
       !ISEmpty(_map['avgPace']) ? _map['avgPace'] : 0;
-      _model.lastTrainScore =
-      !ISEmpty(_map['lastTrainScore']) ? _map['lastTrainScore'] : 0;
+      _model.lastAvgPace =
+      !ISEmpty(_map['lastAvgPace']) ? _map['lastAvgPace'] : 0;
       _model.rankNumber =
-      !ISEmpty(_map['trainCount']) ? _map['rankNumber'].toString() : '-';
+      !ISEmpty(_map['rankNumber']) ? _map['rankNumber'].toString() : '-';
       return ApiResponse(success: response.success, data: _model);
     } else {
       return ApiResponse(success: false);

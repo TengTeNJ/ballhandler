@@ -412,17 +412,20 @@ class AwardDialog extends StatelessWidget {
 
 /*时间选择弹窗*/
 class TimeSelectDialog extends StatefulWidget {
+  String? startTime;
+  String? endTime;
+  int selectIndex; // 标识选择的时7,30 还是90days
   Function? datePickerSelect;
   Function? confirm;
-  TimeSelectDialog({this.datePickerSelect,this.confirm});
+  TimeSelectDialog({this.datePickerSelect,this.confirm,this.selectIndex = 0,this.startTime,this.endTime});
 
   @override
   State<TimeSelectDialog> createState() => _TimeSelectDialogState();
 }
 
 class _TimeSelectDialogState extends State<TimeSelectDialog> {
-  int selectIndex = 0;
-  int _timeSelectIndex = 0;
+  int _selectIndex = 0;
+  int _timeSelectIndex = 0; // 当选择自定义时，标记选择的时开始还是结束 1开始 2结束
   DateTime _selectedDate = DateTime.now();
   late DateTime _yesterdayDate;
 
@@ -436,14 +439,15 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _selectIndex = widget.selectIndex;
     _minDate = _selectedDate.subtract(Duration(days: 180));
     // 昨天的时间
     DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
     _yesterdayDate = yesterday;
-    endTimer = StringUtil.dateToString(yesterday);
+    endTimer =  widget.endTime != null  ? widget.endTime!:StringUtil.dateToString(yesterday);
     // 过去七天的第一天的时间
     DateTime beforeSeven = yesterday.subtract(Duration(days: 7));
-    startTime = StringUtil.dateToString(beforeSeven);
+    startTime =  widget.startTime != null  ? widget.startTime!:StringUtil.dateToString(beforeSeven);
   }
 
   @override
@@ -474,7 +478,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                       widget.datePickerSelect!(false);
                     }
                     _timeSelectIndex = 0;
-                    selectIndex = 0;
+                    _selectIndex = 0;
 
                     DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
                     _yesterdayDate = yesterday;
@@ -488,7 +492,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                   child: Container(
                       height: 28,
                       decoration: BoxDecoration(
-                          border: selectIndex == 0
+                          border: _selectIndex == 0
                               ? Border.all(
                                   color: hexStringToColor('#707070'),
                                   width: 0.0, // 设置边框宽度
@@ -498,11 +502,11 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                                   width: 1.0, // 设置边框宽度
                                 ),
                           borderRadius: BorderRadius.circular(20),
-                          color: selectIndex == 0
+                          color: _selectIndex == 0
                               ? Constants.baseStyleColor
                               : hexStringToColor('#3E3E55')),
                       child: Center(
-                        child: selectIndex == 0
+                        child: _selectIndex == 0
                             ? Constants.regularWhiteTextWidget(
                                 'Last 7 days', 14)
                             : Constants.regularGreyTextWidget(
@@ -522,7 +526,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                       widget.datePickerSelect!(false);
                     }
                     _timeSelectIndex = 0;
-                    selectIndex = 1;
+                    _selectIndex = 1;
                     DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
                     _yesterdayDate = yesterday;
                     endTimer = StringUtil.dateToString(yesterday);
@@ -535,7 +539,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                   child: Container(
                       height: 28,
                       decoration: BoxDecoration(
-                          border: selectIndex == 1
+                          border: _selectIndex == 1
                               ? Border.all(
                                   color: hexStringToColor('#707070'),
                                   width: 0.0, // 设置边框宽度
@@ -545,11 +549,11 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                                   width: 1.0, // 设置边框宽度
                                 ),
                           borderRadius: BorderRadius.circular(20),
-                          color: selectIndex == 1
+                          color: _selectIndex == 1
                               ? Constants.baseStyleColor
                               : hexStringToColor('#3E3E55')),
                       child: Center(
-                        child: selectIndex == 1
+                        child: _selectIndex == 1
                             ? Constants.regularWhiteTextWidget(
                                 'Last 30 days', 14)
                             : Constants.regularGreyTextWidget(
@@ -569,7 +573,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                       widget.datePickerSelect!(false);
                     }
                     _timeSelectIndex = 0;
-                    selectIndex = 2;
+                    _selectIndex = 2;
                     DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
                     _yesterdayDate = yesterday;
                     endTimer = StringUtil.dateToString(yesterday);
@@ -582,7 +586,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                   child: Container(
                       height: 28,
                       decoration: BoxDecoration(
-                          border: selectIndex == 2
+                          border: _selectIndex == 2
                               ? Border.all(
                                   color: hexStringToColor('#707070'),
                                   width: 0.0, // 设置边框宽度
@@ -592,11 +596,11 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                                   width: 1.0, // 设置边框宽度
                                 ),
                           borderRadius: BorderRadius.circular(20),
-                          color: selectIndex == 2
+                          color: _selectIndex == 2
                               ? Constants.baseStyleColor
                               : hexStringToColor('#3E3E55')),
                       child: Center(
-                        child: selectIndex == 2
+                        child: _selectIndex == 2
                             ? Constants.regularWhiteTextWidget(
                                 'Last 90 days', 14)
                             : Constants.regularGreyTextWidget(
@@ -617,9 +621,16 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
               GestureDetector(
                 onTap: () {
                   if (_timeSelectIndex == 1) {
+                    _timeSelectIndex = 0;
+                    if (widget.datePickerSelect != null) {
+                      widget.datePickerSelect!(false);
+                    }
+                    setState(() {
+
+                    });
                     return;
                   }
-                  selectIndex = -1;
+                  _selectIndex = -1;
                   _timeSelectIndex = 1;
                   setState(() {});
                   if (widget.datePickerSelect != null) {
@@ -635,11 +646,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                         SizedBox(
                           width: 8,
                         ),
-                        Image(
-                          image: AssetImage('images/airbattle/next_white.png'),
-                          width: 5,
-                          height: 10,
-                        )
+                        _timeSelectIndex == 1 ? Icon(Icons.keyboard_arrow_down,color: Constants.baseStyleColor,) :Icon(Icons.chevron_right,color: Constants.baseGreyStyleColor,),
                       ],
                     ),
                     SizedBox(
@@ -657,9 +664,16 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
               GestureDetector(
                 onTap: () {
                   if (_timeSelectIndex == 2) {
+                    _timeSelectIndex = 0;
+                    if (widget.datePickerSelect != null) {
+                      widget.datePickerSelect!(false);
+                    }
+                    setState(() {
+
+                    });
                     return;
                   }
-                  selectIndex = -1;
+                  _selectIndex = -1;
                   _timeSelectIndex = 2;
                   setState(() {});
                   if (widget.datePickerSelect != null) {
@@ -675,11 +689,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                         SizedBox(
                           width: 8,
                         ),
-                        Image(
-                          image: AssetImage('images/airbattle/next_white.png'),
-                          width: 5,
-                          height: 10,
-                        )
+                        _timeSelectIndex == 2 ? Icon(Icons.keyboard_arrow_down,color: Constants.baseStyleColor,) :Icon(Icons.chevron_right,color: Constants.baseGreyStyleColor,),
                       ],
                     ),
                     SizedBox(
@@ -716,7 +726,6 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                         endTimer = StringUtil.dateToString(dateTime);
                       }
                       setState(() {});
-                      print('dateTime=${dateTime}');
                     },
                     pickerTheme: DateTimePickerTheme(
                         itemTextStyle: TextStyle(
@@ -734,7 +743,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                     dateFormat:
                         'MMMM-dd-yyyy', // 这里的MMMM需要又4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
                   )),
-                )
+                )// 时间弹窗
               : Container(),
           _timeSelectIndex >= 1
               ? SizedBox(
@@ -746,10 +755,9 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
+              
               if(widget.confirm != null){
-
-                print('startTime----=${startTime}');
-                widget.confirm!(startTime.replaceAll('/', '-'),endTimer.replaceAll('/', '-'),selectIndex);
+                widget.confirm!(startTime.replaceAll('/', '-'),endTimer.replaceAll('/', '-'),_selectIndex);
               }
               NavigatorUtil.pop();
             },
@@ -763,7 +771,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                 child: Constants.regularWhiteTextWidget('Confirm', 14),
               ),
             ),
-          ),
+          ),// Confirm按钮
           SizedBox(
             height: 32,
           ),

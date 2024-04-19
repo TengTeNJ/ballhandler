@@ -277,7 +277,6 @@ const kGameDuration = 45; // 游戏时常
 
 double kFontSize(BuildContext context, double size) {
   double font =Constants.screenWidth(context) / 375 * size;
-  print('font=${font}');
   return font;
 }
 

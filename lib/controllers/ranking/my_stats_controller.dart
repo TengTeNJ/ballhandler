@@ -9,7 +9,6 @@ import 'package:code/views/airbattle/my_stats_line_area_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class MyStatsController extends StatefulWidget {
   const MyStatsController({super.key});
@@ -21,9 +20,17 @@ class MyStatsController extends StatefulWidget {
 class _MyStatsControllerState extends State<MyStatsController> {
   List<MyStatsModel> datas = [];
   List<MyStatsModel> barViewDatas = [];
-  List<String>_titles = ['Last 7 days','Last 30 days','Last 90 days','Custom'];
- int _timeIndex = 0;
+  AnalyzeDataModel _analyzeDataModelmodel = AnalyzeDataModel();
+  List<String> _titles = [
+    'Last 7 days',
+    'Last 30 days',
+    'Last 90 days',
+    'Custom'
+  ];
+  int _timeIndex = 0;
   num temp = 2;
+  String _start = '';
+  String _end = '';
 
   @override
   void initState() {
@@ -32,45 +39,58 @@ class _MyStatsControllerState extends State<MyStatsController> {
     initData();
   }
 
+  /*获取折线图、柱状图、对比分析数据*/
   initData() async {
-    // mock 数据
-    // for (int i = 0; i < 3; i++) {
-    //   var random = Random();
-    //   int randomNumber = random.nextInt(11);
-    //   MyStatsModel model = MyStatsModel();
-    //   model.speed = randomNumber / 10 + 1;
-    //   model.indexString = (i + 1).toString();
-    //   datas.add(model);
-    //   temp = temp < model.speed ? model.speed : temp;
-    // }
-    
-    final _compareResponse =  await Rank.queryComparetData( null, null, '1');
-
-    queryLineAreaData(null,null);
-    final _response = await Rank.queryBarViewData();
-    print('_response=${_response.data}');
-    if (_response.success) {
-      if (_response.data != null && _response.data!.length > 0) {
-        barViewDatas.addAll(_response.data!);
-        setState(() {});
-      }
+    final List<Future<dynamic>> futures = [];
+    futures.add(Rank.queryComparetData(null, null, '1'));
+    futures.add(Rank.queryLineViewData(null, null));
+    futures.add(Rank.queryBarViewData());
+    final _responses = await Future.wait(futures);
+    // 对比数据
+    final _compareResponse = _responses[0];
+    if (_compareResponse.success && _compareResponse.data != null) {
+      _analyzeDataModelmodel = _compareResponse.data!;
     }
-  }
-
-  queryLineAreaData(String? startTime,String? endTime) async{
-    if(datas.length>0){
-      datas.clear();
-    }
-    final _lineResponse = await Rank.queryLineViewData(startTime,endTime);
-    print('_lineResponse=${_lineResponse.data}');
+    // 折线图数据
+    final _lineResponse = _responses[1];
     if (_lineResponse.success) {
       if (_lineResponse.data != null && _lineResponse.data!.length > 0) {
         datas.addAll(_lineResponse.data!);
-        setState(() {});
       }
     }
+    // 柱状图数据
+    final _response = _responses[2];
+    if (_response.success) {
+      if (_response.data != null && _response.data!.length > 0) {
+        barViewDatas.addAll(_response.data!);
+      }
+    }
+    setState(() {});
   }
-  
+
+/*根据时间范围刷新数据*/
+  changeTimeArea(String? startTime, String? endTime, String selectType) async {
+    final List<Future<dynamic>> futures = [];
+    futures.add(Rank.queryComparetData(startTime, endTime, selectType));
+    futures.add(Rank.queryLineViewData(startTime, endTime));
+    final _responses = await Future.wait(futures);
+    // 对比数据
+    final _compareResponse = _responses[0];
+    if (_compareResponse.success && _compareResponse.data != null) {
+      _analyzeDataModelmodel = _compareResponse.data!;
+    }
+    // 折线图数据
+    final _lineResponse = _responses[1];
+    if (_lineResponse.success) {
+      if (_lineResponse.data != null && _lineResponse.data!.length > 0) {
+        if (datas.length > 0) {
+          datas.clear();
+        }
+        datas.addAll(_lineResponse.data!);
+      }
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +141,8 @@ class _MyStatsControllerState extends State<MyStatsController> {
                         width: 4,
                       ),
                       Constants.mediumWhiteTextWidget(
-                          'RANK  40', kFontSize(context, 16)),
+                          'RANK  ${_analyzeDataModelmodel.rankNumber}',
+                          kFontSize(context, 16)),
                     ],
                   )
                 ],
@@ -129,7 +150,11 @@ class _MyStatsControllerState extends State<MyStatsController> {
               SizedBox(
                 height: 24,
               ),
-              MyStatsGridListView(), // grid view
+              MyStatsGridListView(
+                model: _analyzeDataModelmodel,
+                selectType: _timeIndex,
+              ),
+              // grid view
               SizedBox(
                 height: 16,
               ),
@@ -141,11 +166,20 @@ class _MyStatsControllerState extends State<MyStatsController> {
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      TTDialog.timeSelect(context,(startTime,endTime,index){
-                        print('startTime=${startTime} endTime=${endTime} index=${index}');
+                      // 时间选择弹窗
+                      TTDialog.timeSelect(context, (startTime, endTime, index) {
                         _timeIndex = index;
-                        queryLineAreaData(endTime,startTime);
-                      });
+                        _start = startTime;
+                        _end = endTime;
+                        if(index==3){
+                          _titles[_titles.length-1] = "${_start}-${_end}";
+                          setState(() {
+
+                          });
+                        }
+                        changeTimeArea(
+                            endTime, startTime, (index + 1).toString());
+                      }, index: _timeIndex,start: _start.length > 0 ? _start : null,end: _end.length > 0 ? _end : null);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -158,7 +192,8 @@ class _MyStatsControllerState extends State<MyStatsController> {
                           top: 4, bottom: 4, left: 16, right: 16),
                       child: Row(
                         children: [
-                          Constants.regularWhiteTextWidget(_titles[_timeIndex], 14),
+                          Constants.regularWhiteTextWidget(
+                              _titles[_timeIndex], 14),
                           SizedBox(
                             width: 8,
                           ),

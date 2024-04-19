@@ -67,6 +67,7 @@ dependencies:
   vibration: ^1.8.4
   image_picker: ^1.1.0
   chewie: ^1.8.1
+  auto_size_text: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

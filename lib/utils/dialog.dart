@@ -107,7 +107,7 @@ class TTDialog {
     );
   }
 
-  static timeSelect(BuildContext context,Function confirm) {
+  static timeSelect(BuildContext context,Function confirm,{int index = 0,String? start,String? end}) {
     showModalBottomSheet(
       backgroundColor: hexStringToColor('#3E3E55'),
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
@@ -117,7 +117,7 @@ class TTDialog {
         return StatefulBuilder(builder: (BuildContext context,StateSetter setState){
           return FractionallySizedBox(
             heightFactor: _height,
-            child: TimeSelectDialog(datePickerSelect: (value){
+            child: TimeSelectDialog( startTime: start, endTime: end, selectIndex: index, datePickerSelect: (value){
               if(value){
                 _height = 0.72;
                 setState(() {
