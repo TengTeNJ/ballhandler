@@ -32,8 +32,8 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
       builder: (dynamic data, dynamic point, dynamic series, int pointIndex,
           int seriesIndex) {
         MyStatsModel model = data as MyStatsModel;
-        selectItem(model);
-        model.selected = true;
+        // selectItem(model);
+        // model.selected = true;
         return MyStatsTipView(dataModel: model);
       },
     );
@@ -57,7 +57,7 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
         plotAreaBorderColor: Colors.transparent,
         // 设置绘图区域的边框颜色为透明色
         primaryYAxis: NumericAxis(
-          // maximum: 10,
+          maximum: 50,
           labelAlignment: LabelAlignment.center,
           interval: 5,
           axisLine: AxisLine(width: 1, color: Colors.transparent),
@@ -94,27 +94,21 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
           // Renders column chart
           ColumnSeries<MyStatsModel, num>(
               selectionBehavior: SelectionBehavior(
-                  // enable: true, // 这个设置为true,会在选中时，其他的置灰
+                  enable: true, // 这个设置为true,会在选中时，其他的置灰
                   // toggleSelection: false,
                   //  overlayMode: ChartSelectionOverlayMode.top, // 设置选中视图显示在柱状图上面
                   ),
               borderRadius: BorderRadius.circular(5),
               // 设置柱状图的圆角
               dataSource: widget.datas,
-              width: 0.3,
+              width: 0.5,
               // 设置柱状图的宽度，值为 0.0 到 1.0 之间，表示相对于间距的比例
-              spacing: 0.4,
+              spacing: 0.2,
               //
               xValueMapper: (MyStatsModel data, _) =>
                   int.parse(data.indexString),
               yValueMapper: (MyStatsModel data, _) => data.speed,
-              pointColorMapper: (MyStatsModel data, _) {
-                if (data.selected == true) {
-                  return hexStringToColor('#F8850B');
-                } else {
-                  return hexStringToColor('#CC8E4D');
-                }
-              })
+              pointColorMapper: (MyStatsModel data, _) => hexStringToColor('#F8850B'))
         ]);
   }
 

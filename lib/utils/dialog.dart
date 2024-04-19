@@ -113,17 +113,17 @@ class TTDialog {
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
       context: context,
       builder: (BuildContext context) {
-        double _height = 0.40;
+        double _height = 0.5;
         return StatefulBuilder(builder: (BuildContext context,StateSetter setState){
           return FractionallySizedBox(
             heightFactor: _height,
             child: TimeSelectDialog( startTime: start, endTime: end, selectIndex: index, datePickerSelect: (value){
               if(value){
-                _height = 0.72;
+                _height = 0.80;
                 setState(() {
                 });
               }else{
-                _height = 0.40;
+                _height = 0.5;
                 setState(() {
                 });
               }

@@ -26,9 +26,9 @@ class _TodayDataViewState extends State<TodayDataView> {
       ),
       child: Stack(
         children: [
-          Visibility(
-            visible: widget.gameOverModel.videoPath.length > 0 && widget.gameOverModel.videoPath.contains('http'),
-             replacement: Container(),
+          (widget.gameOverModel.videoPath.length > 0 && widget.gameOverModel.videoPath.contains('http')) ? Positioned(
+              top: 8,
+              right: 8,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: (){
@@ -37,21 +37,18 @@ class _TodayDataViewState extends State<TodayDataView> {
                     "gameFinish": false
                   });
                 },
-                child: Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Container(
-                      width: 34,
-                      height: 14,
-                      decoration: BoxDecoration(
-                        color: Constants.baseStyleColor,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Center(
-                        child: Constants.regularWhiteTextWidget('VIEW', 10),
-                      ),
-                    )),
-              )),
+                child: Container(
+                  width: 34,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    color: Constants.baseStyleColor,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child: Center(
+                    child: Constants.regularWhiteTextWidget('VIEW', 10),
+                  ),
+                ),
+              )) :Container(),
           Positioned(
               top: 12,
               bottom: 12,

@@ -26,21 +26,24 @@ class _OverAllDataViewState extends State<OverAllDataView> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Color.fromRGBO(62, 62, 85, 1)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Constants.regularGreyTextWidget('My LifeTime Stats', 14),
-              ),
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                child: Padding(
+      child: GestureDetector(
+        onTap: (){
+          NavigatorUtil.push('todayData');
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Constants.regularGreyTextWidget('My LifeTime Stats', 14),
+                ),
+                Padding(
                   padding: EdgeInsets.only(right: 20),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,51 +60,47 @@ class _OverAllDataViewState extends State<OverAllDataView> {
                     ],
                   ),
                 ),
-                onTap: () {
-                  print('点击Today按钮');
-                  NavigatorUtil.push('todayData');
-                },
-              )
-            ],
-          ),
-          Consumer<UserModel>(builder: (context, user, child) {
-            return Row(
-              children: List.generate(user.overDataList.length, (index) {
-                return Expanded(
-                    child: Row(
-                  children: [
-                    Container(
-                      width: (Constants.screenWidth(context) - 32 - 2) / 4.0,
-                      // color: Colors.blue,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+              ],
+            ),
+            Consumer<UserModel>(builder: (context, user, child) {
+              return Row(
+                children: List.generate(user.overDataList.length, (index) {
+                  return Expanded(
+                      child: Row(
                         children: [
-                          Constants.mediumWhiteTextWidget(
-                              user.overDataList[index], 20),
-                          SizedBox(
-                            height: 4,
-                          ),
                           Container(
-                            child: Constants.regularGreyTextWidget(
-                                _titles[index], 9),
-                          )
-                        ],
-                      ),
-                    ),
-                    index != (user.overDataList.length - 1)
-                        ? Container(
+                            width: (Constants.screenWidth(context) - 32 - 2) / 4.0,
+                            // color: Colors.blue,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Constants.mediumWhiteTextWidget(
+                                    user.overDataList[index], 20),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Container(
+                                  child: Constants.regularGreyTextWidget(
+                                      _titles[index], 9),
+                                )
+                              ],
+                            ),
+                          ),
+                          index != (user.overDataList.length - 1)
+                              ? Container(
                             height: 30,
                             width: 0.5,
                             color: Color.fromRGBO(86, 86, 116, 1.0),
                           )
-                        : Container(),
-                  ],
-                ));
-              }),
-            );
-          })
-        ],
+                              : Container(),
+                        ],
+                      ));
+                }),
+              );
+            })
+          ],
+        ),
       ),
     );
   }

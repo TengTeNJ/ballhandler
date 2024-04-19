@@ -70,7 +70,7 @@ class Participants {
     // 组装数据
     final _data = {
       "activityId": gameUtil.isFromAirBattle ?gameUtil.activityModel.activityId : '0',
-      "modeId": 0,
+      "modeId": gameUtil.modelId,
       "avgPace": data.avgPace,
       "sceneId": (gameUtil.gameScene.index + 1).toString(),
       "trainScore": data.score,

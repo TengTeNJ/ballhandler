@@ -262,7 +262,7 @@ class ExchangeIntegralSuccessDialog extends StatelessWidget {
               title: 'Close',
               height: 40,
               onTap: () {
-                print('确认兑换');
+                NavigatorUtil.pop();
               }),
           SizedBox(
             height: 32,
