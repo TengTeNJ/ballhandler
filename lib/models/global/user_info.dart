@@ -16,6 +16,7 @@ class UserModel extends ChangeNotifier {
   List<String> _overDataList = [];
   String _email = ''; // 用户邮箱
   String _inputEmail = ''; // 用户输入的邮箱
+  String _brith = '--'; // 用户生日
 
   // get方法
   String get userName => _userName;
@@ -39,6 +40,8 @@ class UserModel extends ChangeNotifier {
   String get inputEmail => _inputEmail;
 
   String get email => _email;
+
+  String get brith => _brith;
 
 
   List<String> get overDataList {
@@ -104,6 +107,11 @@ class UserModel extends ChangeNotifier {
     _email = email;
     notifyListeners();
   }
+  set brith(String brith) {
+    _brith = brith;
+    notifyListeners();
+  }
+
 }
 
 // 创建一个全局的Provider

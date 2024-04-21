@@ -47,6 +47,11 @@ class StringUtil {
     return formattedDate;
   }
 
+  static String dateToBrithString(DateTime date) {
+    String formattedDate = DateFormat('MMMM dd,yyyy').format(date);
+    return formattedDate;
+  }
+
   /*时间字符串转换为日期*/
   static DateTime stringToDate(String timeString) {
     DateTime dateTime = DateTime.parse(timeString);

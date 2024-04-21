@@ -4,6 +4,9 @@ import 'package:code/models/http/user_model.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../utils/global.dart';
 class Account {
   /*第三方登录*/
   static Future<ApiResponse<User>> thirdLogin(Map<String,dynamic> data) async {
@@ -75,6 +78,13 @@ class Account {
     return ApiResponse(success: response.success);
   }
 
+  /*更新用户信息，包括头像、国家、生日、推送的token等消息 birthday firebaseToken nickName*/
+  static Future<ApiResponse> updateAccountInfo(Map<String,dynamic> data) async {
+    final _data = data;
+    final response = await HttpUtil.post('/api/member/update',  _data,showLoading: true,);
+    return ApiResponse(success: response.success,);
+  }
+
   /*处理登录成功后返回的数据*/
  static handleUserData(ApiResponse<User> _response, BuildContext context) async{
     NSUserDefault.setKeyValue<String>(kUserName, _response.data!.nickName);
@@ -87,5 +97,10 @@ class Account {
     UserProvider.of(context).createTime = _response.data!.createTime;
     final _email = await NSUserDefault.getValue(kUserEmail);
     UserProvider.of(context).email = _email ?? '';
+    // 登录成功后绑定用户和推送的token
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    updateAccountInfo({
+      "firebaseToken" : gameUtil.firebaseToken
+    });
   }
 }

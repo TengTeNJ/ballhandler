@@ -1,8 +1,11 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
+import 'package:code/services/http/account.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/views/profile/setting_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +32,12 @@ class _SettingControllerState extends State<SettingController> {
       setState(() {
         selectedDate = picked;
       });
+      final _response = await Account.updateAccountInfo({"birthday":StringUtil.dateTimeToString(selectedDate)});
+      if(_response.success){
+        UserProvider.of(context).brith = StringUtil.dateToBrithString(selectedDate);
+        NSUserDefault.setKeyValue(kBrithDay, StringUtil.dateToBrithString(selectedDate));
+      }
+
     }
   }
   @override
@@ -48,7 +57,13 @@ class _SettingControllerState extends State<SettingController> {
             SizedBox(height:32,),
             SettingView(title: 'Edit Profile', datas: ['Username','Email','Birthday'],selectItem: (index){
               if(index ==0){
-                TTDialog.userNameDialog(context);
+                TTDialog.userNameDialog(context,(value) async{
+                 final _response = await Account.updateAccountInfo({"nickName":value});
+                 if(_response.success){
+                   UserProvider.of(context).userName = value;
+                   NSUserDefault.setKeyValue(kUserName, value);
+                 }
+                });
               }else if(index == 2){
                 _selectDate(context);
               }

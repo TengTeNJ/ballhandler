@@ -39,6 +39,12 @@ class ActivityModel {
   }
 }
 
+class MessageModel{
+   String createTime = ''; // 发送时间
+   String messageDesc = ''; // 消息描述
+   String messageTitle = '';
+}
+
 class AirBattle {
   static Future<ApiResponse<List<MyActivityModel>>> queryMyActivityData(
       int page) async {
@@ -142,6 +148,39 @@ class AirBattle {
       model.activityIntegral =
           !ISEmpty(_map['activityIntegral']) ? _map['activityIntegral'] : 0;
       return ApiResponse(success: response.success, data: model);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+  /*查询所有的消息列表*/
+  static Future<ApiResponse<List<MessageModel>>> queryAllMessageListData(
+      int page) async {
+    final _data = {
+      "limit": kPageLimit.toString(),
+      "page": page.toString(),
+    };
+    final response =
+    await HttpUtil.get('/api/message/list', _data, showLoading: true);
+    List<MessageModel> _list = [];
+
+    if (response.success && response.data['data'] != null) {
+      final _array = response.data['data'] as List;
+      _array.forEach((element) {
+        MessageModel model = MessageModel();
+        final _map = element;
+        model.createTime = !ISEmpty(_map['createTime'])
+            ? _map['createTime'].toString()
+            : '';
+        model.messageDesc = !ISEmpty(_map['messageDesc'])
+            ? _map['messageDesc'].toString()
+            : '--';
+        model.messageTitle = !ISEmpty(_map['messageTitle'])
+            ? _map['messageTitle'].toString()
+            : '--';
+        _list.add(model);
+      });
+      return ApiResponse(success: response.success, data: _list);
     } else {
       return ApiResponse(success: false);
     }

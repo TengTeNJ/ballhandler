@@ -1,9 +1,11 @@
+import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/views/airbattle/message_view.dart';
 import 'package:flutter/material.dart';
 
 class MessageListView extends StatefulWidget {
-  const MessageListView({super.key});
+   List<MessageModel>datas;
+   MessageListView({required this.datas});
 
   @override
   State<MessageListView> createState() => _MessageListViewState();
@@ -14,7 +16,7 @@ class _MessageListViewState extends State<MessageListView> {
   Widget build(BuildContext context) {
     return ListView.separated(
         itemBuilder: (context, index) {
-          return MessageView();
+          return MessageView(model: widget.datas[index],);
         },
         separatorBuilder: (context, index) {
           return Container(

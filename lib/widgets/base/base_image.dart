@@ -1,6 +1,8 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/color.dart';
+
 class TTNetImage extends StatefulWidget {
   String url;
   String placeHolderPath;
@@ -41,7 +43,6 @@ class _TTNetImageState extends State<TTNetImage> {
               loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                 print('loadingProgress=${loadingProgress}');
                 if (loadingProgress == null) {
-
                   return child;
                 } else {
                   return Center(
@@ -55,6 +56,14 @@ class _TTNetImageState extends State<TTNetImage> {
 
               },
               errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                print('error---');
+                if(!widget.placeHolderPath.contains('png')){
+                  return Container(
+                    width: widget.width,
+                    height: widget.height,
+                    color: hexStringToColor('#AA9155'),
+                  );
+                }
                 return Center(
                   child: Image(image: AssetImage(widget.placeHolderPath),width: widget.width,height: widget.height,),
                 );
@@ -75,12 +84,21 @@ class _TTNetImageState extends State<TTNetImage> {
         ),
       );
     }else{
-      return  Center(
-        child: ClipRRect(
-          borderRadius: widget.borderRadius ?? BorderRadius.zero, // 设置圆角半径
-          child:    Image(image: AssetImage(widget.placeHolderPath),width: widget.width,height: widget.height,fit: widget.fit,),
-        ),
-      );
+      if(widget.placeHolderPath.length == 0){
+        return Container(
+          width: widget.width,
+          height: widget.height,
+          color: hexStringToColor('#AA9155'),
+        );
+      }else{
+        return  Center(
+          child: ClipRRect(
+            borderRadius: widget.borderRadius ?? BorderRadius.zero, // 设置圆角半径
+            child:    Image(image: AssetImage(widget.placeHolderPath),width: widget.width,height: widget.height,fit: widget.fit,),
+          ),
+        );
+      }
+
     }
   }
 }

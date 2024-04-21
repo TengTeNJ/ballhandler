@@ -32,7 +32,8 @@ class LoginUtil {
             "gender": 0,
             "nickName": googleUser.displayName ?? '--',
             "thirdLoginType": 2,
-            "thirdOpenId": googleUser.id
+            "thirdOpenId": googleUser.id,
+            "accountNo": googleUser.email
           };
           final _response = await Account.thirdLogin(_map);
           if(_response.success){
@@ -53,12 +54,14 @@ class LoginUtil {
         ],
         webAuthenticationOptions: WebAuthenticationOptions(clientId: 'com.potent.stickhandling',redirectUri:Uri.parse('https://scarce-wood-spice.glitch.me/callbacks/sign_in_with_apple'))
       );
+
       final _map = {
         "avatarUrl": '',
         "gender": 0,
-        "nickName": credential.givenName,
+        "nickName": credential.givenName.toString() + ' ' +  credential.familyName.toString(),
         "thirdLoginType": 1,
-        "thirdOpenId": credential.userIdentifier
+        "thirdOpenId": credential.userIdentifier,
+        "accountNo": credential.email
       };
       return await Account.thirdLogin(_map);
     }

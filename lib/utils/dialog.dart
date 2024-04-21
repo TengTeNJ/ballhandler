@@ -157,9 +157,9 @@ class TTDialog {
     );
   }
 
-  static userNameDialog(BuildContext context){
+  static userNameDialog(BuildContext context,Function confirm){
     return showDialog(context: context, builder: (context){
-      return UserNameDialog();
+      return UserNameDialog(confirm: confirm,);
     });
   }
 

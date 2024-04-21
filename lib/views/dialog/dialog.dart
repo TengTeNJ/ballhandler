@@ -874,7 +874,8 @@ class JoinAirBattleDialog extends StatelessWidget {
 }
 
 class UserNameDialog extends StatefulWidget {
-  const UserNameDialog({super.key});
+  Function?confirm;
+   UserNameDialog({this.confirm});
 
   @override
   State<UserNameDialog> createState() => _UserNameDialogState();
@@ -882,7 +883,6 @@ class UserNameDialog extends StatefulWidget {
 
 class _UserNameDialogState extends State<UserNameDialog> {
   TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -917,8 +917,9 @@ class _UserNameDialogState extends State<UserNameDialog> {
         GestureDetector(
           onTap: () {
             String username = _usernameController.text;
-            String password = _passwordController.text;
-            print('Username: $username, Password: $password');
+            if(widget.confirm != null){
+              widget.confirm!(username);
+            }
             Navigator.of(context).pop();
           },
           child: Container(
@@ -940,7 +941,6 @@ class _UserNameDialogState extends State<UserNameDialog> {
   @override
   void dispose() {
     _usernameController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 }

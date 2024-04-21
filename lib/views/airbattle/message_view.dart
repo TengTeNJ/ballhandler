@@ -1,9 +1,11 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
 
 class MessageView extends StatelessWidget {
-  const MessageView({super.key});
+  MessageModel model;
+   MessageView({required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +24,12 @@ class MessageView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Constants.mediumWhiteTextWidget('Winner Award', 14),
+                  Constants.mediumWhiteTextWidget(model.messageTitle, 14),
                   SizedBox(height: 4,),
                   Text(
                     // maxLines: 3,
                     textAlign: TextAlign.left,
-                    'Messagee Messagee Messagee Messagee Messagee Messagee Messagee Messagee' ,
+                    model.messageDesc,
                     style: TextStyle(color: hexStringToColor('#B1B1B1'),fontSize: 14),
                   )
                 ],

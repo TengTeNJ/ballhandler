@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/rank.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/navigator_util.dart';
@@ -63,11 +64,7 @@ class _RankingItemViewState extends State<RankingItemView> {
                     width: 38,
                     height: 38,
                     color: hexStringToColor('#AA9155'),
-                  ):Image.network(
-                    widget.model.avatar.toString(),
-                    width: 38,
-                    height: 38,
-                  ),
+                  ):TTNetImage(url: widget.model.avatar.toString(), placeHolderPath: '',width: 38,height: 38,),
                 ),
                 SizedBox(width: 8,),
                 Constants.mediumWhiteTextWidget(widget.model.nickName.toString().length > 7 ? widget.model.nickName.toString().substring(0,6):widget.model.nickName.toString(), 20),

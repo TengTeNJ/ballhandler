@@ -5,11 +5,13 @@ import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
 import 'package:code/services/sqlite/data_base.dart';
+import 'package:code/utils/global.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/video_util.dart';
 import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 
 class RootPageController extends StatefulWidget {
@@ -56,15 +58,17 @@ class _RootPageControllerState extends State<RootPageController> {
         }
       });
 
-    testPush();
+    refreshTokenAndDeleteLocanVideo();
   }
 
-  testPush() async {
+  /*刷新token删除本地的存储的视频*/
+  refreshTokenAndDeleteLocanVideo() async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
     print('fcmToken=${fcmToken}');
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    gameUtil.firebaseToken = fcmToken ?? '';
     final _datas =
         await DatabaseHelper().getVideoListData(kDataBaseTVideoableName);
-    print('_datas=${_datas}');
     if (_datas != null && _datas.length > 0) {
       VideoUtil().deleteFileInBackground(_datas);
     }

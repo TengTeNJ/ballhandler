@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/rank.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/toast.dart';
 import 'package:code/views/base/no_data_view.dart';
 import 'package:code/views/ranking/ranking_card_page_view.dart';
 import 'package:code/views/ranking/ranking_list_view.dart';
@@ -35,7 +36,11 @@ class _RankingControllerState extends State<RankingController> {
     queryRankList();
   }
   /* 获取排行榜数据*/
-  queryRankList() async{
+  queryRankList({bool loadMore = false}) async{
+
+    if(loadMore){
+      TTToast.showLoading();
+    }
     final _response = await Rank.queryRankListData(_page);
     if(_response.success && _response.data != null){
      _datas.addAll(_response.data!.data);
@@ -43,6 +48,9 @@ class _RankingControllerState extends State<RankingController> {
      setState(() {
 
      });
+    }
+    if(loadMore){
+      TTToast.hideLoading();
     }
   }
   @override
@@ -92,7 +100,7 @@ class _RankingControllerState extends State<RankingController> {
                 // 上拉加载
                 if(_hasMode){
                   _page ++;
-                  queryRankList();
+                  queryRankList(loadMore: true);
                 }
               },): NoDataView(),
             )),

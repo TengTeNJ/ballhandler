@@ -2,9 +2,12 @@ import 'package:code/constants/constants.dart';
 import 'package:code/controllers/profile/integral_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
+import 'package:code/services/http/account.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:code/services/http/profile.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/views/profile/profile_grid_list_view.dart';
 import 'package:code/views/profile/progress_data_view.dart';
 import 'package:code/views/profile/reward_icons_view.dart';
@@ -78,7 +81,20 @@ class _ProfileControllerState extends State<ProfileController> {
                       onTap: () async{
                         final picker = ImagePicker();
                         final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+                        print('pickedFile=${pickedFile}');
+                        if(pickedFile!=null){
+                          print('pickedFile path=${pickedFile.path}');
+                          // 上传头像
+                          final _response =  await Participants.uploadAsset(pickedFile!.path);
+                          if(_response.success){
+                            final _updateResponse = await Account.updateAccountInfo({"avatar":_response.data});
+                            if(_updateResponse.success){
+                              UserProvider.of(context).avatar = _response.data ?? '';
+                              NSUserDefault.setKeyValue(kAvatar, _response.data ?? '');
+                            }
+                          }
 
+                        }
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(32),
@@ -107,7 +123,7 @@ class _ProfileControllerState extends State<ProfileController> {
                     SizedBox(width: 18,),
                     Container(height: 10,width: 1,color: hexStringToColor('#707070'),),
                     SizedBox(width: 18,),
-                    Constants.customTextWidget('July 4, 2024', 16,'#B1B1B1'),
+                    Constants.customTextWidget(userModel.brith, 16,'#B1B1B1'),
                   ],
                 ),
                 SizedBox(height: 32,),
