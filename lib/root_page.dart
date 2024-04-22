@@ -12,7 +12,6 @@ import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sqflite/sqflite.dart';
 
 class RootPageController extends StatefulWidget {
   const RootPageController({super.key});

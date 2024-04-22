@@ -128,12 +128,6 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                       return;
                     }
                     NavigatorUtil.present(PasswordPageController(password: _inputText,));
-                    // final _response = await Account.emailLogin(_inputText);
-                    // // 登录成功
-                    // if(_response.success == true){
-                    //   Account.handleUserData(_response, context);
-                    //   NavigatorUtil.popToRoot();
-                    // }
                   },
                   child: Container(
                     child: Center(

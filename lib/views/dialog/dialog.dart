@@ -16,7 +16,8 @@ import '../../utils/nsuserdefault_util.dart';
 
 /**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
-  const SendEmailDiaog({super.key});
+  Function? confirm;
+   SendEmailDiaog({this.confirm});
 
   @override
   State<SendEmailDiaog> createState() => _SendEmailDiaogState();
@@ -88,6 +89,9 @@ class _SendEmailDiaogState extends State<SendEmailDiaog> {
             child: GestureDetector(
               onTap: () {
                 NavigatorUtil.pop();
+                if(widget.confirm != null){
+                  widget.confirm!();
+                }
               },
               child: Container(
                 child: Center(

@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import '../../utils/navigator_util.dart';
 
 class CancelButton extends StatelessWidget {
-  const CancelButton({super.key});
+  Function? close;
+
+  CancelButton({this.close});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         NavigatorUtil.pop();
+        if (close != null) {
+          close!();
+        }
       },
       child: Container(
         child: ClipRRect(
@@ -35,5 +40,3 @@ class CancelButton extends StatelessWidget {
     );
   }
 }
-
-

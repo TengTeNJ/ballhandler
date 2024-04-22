@@ -1,10 +1,6 @@
-import 'dart:io';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
-import 'package:code/models/global/game_data.dart';
-import 'package:code/route/route.dart';
 import 'package:code/services/sqlite/data_base.dart';
-import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
@@ -13,7 +9,7 @@ import 'package:code/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:get_it/get_it.dart';
-
+import '../../utils/ble_data.dart';
 import '../../utils/global.dart';
 import '../../widgets/base/base_image.dart';
 
@@ -306,7 +302,7 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
             GestureDetector(
               onTap: () async {
                 //NavigatorUtil.push(Routes.setting);
-                // BluetoothManager().writerDataToDevice(BluetoothManager().deviceList[0], openAllBlueLightData());
+                BluetoothManager().writerDataToDevice(BluetoothManager().deviceList[0], openAllBlueLightData());
               },
               child: Container(
                 child: Center(

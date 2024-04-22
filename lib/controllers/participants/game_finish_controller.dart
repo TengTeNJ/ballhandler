@@ -146,9 +146,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
             ),
             GestureDetector(
               onTap: ()async{
-                print('delete data');
               final _data =  await DatabaseHelper().getData(kDataBaseTableName);
-              print('_data=${_data[0].score}');
               },
               child: Container(
                 margin: EdgeInsets.only(left: 24,right: 24),

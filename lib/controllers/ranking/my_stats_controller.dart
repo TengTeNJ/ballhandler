@@ -6,6 +6,7 @@ import 'package:code/utils/dialog.dart';
 import 'package:code/views/airbattle/my_stats_bar_chart_view.dart';
 import 'package:code/views/airbattle/my_stats_grid_list_view.dart';
 import 'package:code/views/airbattle/my_stats_line_area_view.dart';
+import 'package:code/views/base/no_data_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -237,6 +238,9 @@ class _MyStatsControllerState extends State<MyStatsController> {
 
 /*折线图*/
 Widget LineAreaView(List<MyStatsModel> datas) {
+  if(datas.length == 0){
+    return NoDataView();
+  }
   int page = 1;
   if (datas.length > 30) {
     page = (datas.length / 30).ceil();
@@ -256,6 +260,9 @@ Widget LineAreaView(List<MyStatsModel> datas) {
 
 /*柱状图*/
 Widget BarView(List<MyStatsModel> datas) {
+  if(datas.length == 0){
+    return NoDataView();
+  }
   int page = 1;
   if (datas.length > 10) {
     page = 2;

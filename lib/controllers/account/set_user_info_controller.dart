@@ -1,35 +1,29 @@
 import 'package:code/services/http/account.dart';
-import 'package:code/utils/http_util.dart';
-import 'package:code/utils/string_util.dart';
-import 'package:code/utils/toast.dart';
-import 'package:code/widgets/account/custom_textfield.dart';
-import 'package:flutter/material.dart';
-import '../../constants/constants.dart';
-import '../../utils/navigator_util.dart';
-import '../../widgets/account/cancel_button.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter/material.dart';
 
-class PasswordPageController extends StatefulWidget {
-  String? password;
+import '../../constants/constants.dart';
+import '../../models/global/user_info.dart';
+import '../../utils/nsuserdefault_util.dart';
+import '../../utils/string_util.dart';
+import '../../utils/toast.dart';
+import '../../widgets/account/cancel_button.dart';
+import '../../widgets/account/custom_textfield.dart';
 
-  PasswordPageController({this.password});
+class SetUserInfoController extends StatefulWidget {
+  const SetUserInfoController({super.key});
 
   @override
-  State<PasswordPageController> createState() => _PasswordPageControllerState();
+  State<SetUserInfoController> createState() => _SetUserInfoControllerState();
 }
 
-class _PasswordPageControllerState extends State<PasswordPageController> {
+class _SetUserInfoControllerState extends State<SetUserInfoController> {
   final TextEditingController _nameController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   String _nameText = '';
   DateTime selectedDate = DateTime.now();
   String _countryText = '';
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +40,14 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
         });
       }
     }
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           controller: _scrollController,
           child: GestureDetector(
             onTap: () {
-             FocusScope.of(context).unfocus();
+              FocusScope.of(context).unfocus();
             },
             child: Container(
               height: Constants.screenHeight(context),
@@ -68,7 +63,9 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                     child: Stack(
                       children: [
                         Positioned(
-                          child: CancelButton(),
+                          child: CancelButton(close: (){
+                            NSUserDefault.clearUserInfo(context);
+                          },),
                           right: 0,
                         )
                       ],
@@ -116,8 +113,8 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                             textAlign: TextAlign.left),
                       ),
                       GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).unfocus(); // 移除焦点
+                        onTap: () {
+                          FocusScope.of(context).unfocus(); // 移除焦点
                           showCountryPicker(
                             context: context,
                             showPhoneCode: false,
@@ -216,21 +213,26 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                         TTToast.showErrorInfo('Please enter a legal nickname');
                         return;
                       }
-                      if (isvalidName == true) {
-                        ApiResponse _response = await Account.registerWithEmail(
-                            widget.password ?? '',
-                            StringUtil.dateTimeToString(selectedDate),
-                            _nameText,
-                            _countryText);
-                        if (_response.success == true) {
-                          // NavigatorUtil.present()
-                          final _response =
-                              await Account.emailLogin(widget.password ?? '');
-                          if (_response.success == true) {
-                            Account.handleUserData(_response, context);
-                            NavigatorUtil.popToRoot();
-                          }
-                        }
+                      if (_countryText.length == 0) {
+                        TTToast.showErrorInfo('Please select your region');
+                        return;
+                      }
+                      final _response =  await Account.updateAccountInfo({
+                        "birthday": StringUtil.dateTimeToString(selectedDate),
+                        "country":_countryText,
+                        "nickName":_nameText
+                      });
+                      if(_response.success){
+                        // 更新用户信息
+                        UserProvider.of(context).brith = StringUtil.dateToBrithString(selectedDate);
+                        NSUserDefault.setKeyValue(kBrithDay, StringUtil.dateToBrithString(selectedDate));
+                        UserProvider.of(context).country = _countryText;
+                        NSUserDefault.setKeyValue(kCountry, _countryText);
+                        UserProvider.of(context).userName = _nameText;
+                        NSUserDefault.setKeyValue(kUserName, _nameText);
+                        NavigatorUtil.pop();
+                      }else{
+                        NSUserDefault.clearUserInfo(context);
                       }
                     },
                     child: Container(

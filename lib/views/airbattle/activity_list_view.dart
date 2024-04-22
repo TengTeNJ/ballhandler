@@ -37,7 +37,6 @@ class _ActivityListViewState extends State<ActivityListView> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              print('-----');
               widget.selectItem(_datas[index]);
             },
             child: ActivityView(

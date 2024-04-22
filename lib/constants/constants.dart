@@ -248,6 +248,7 @@ const kAccessToken = 'token';
 const kInputEmail = 'inputEmail';
 const kUserEmail = 'userEmail';
 const kBrithDay = 'brithDay';
+const kCountry= 'countryArea';
 
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';

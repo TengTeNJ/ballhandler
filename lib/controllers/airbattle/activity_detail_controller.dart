@@ -23,7 +23,6 @@ class ActivityDetailController extends StatefulWidget {
 }
 
 class _ActivityDetailControllerState extends State<ActivityDetailController> {
-  bool _end = false;
   final List<String> _iconPaths = [
     'images/airbattle/time.png',
     'images/airbattle/date.png',
@@ -37,7 +36,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _details = ['00:45 sec', widget.model.startDate, '2 Groups', '200\$'];
+    _details = ['00:45 sec', widget.model.startDate, '2 Groups', '${widget.model.startDate}\$'];
   }
 
   @override
@@ -126,41 +125,50 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                         detail: _details[index]);
                   }),
             ),
-            Container(
-              margin: EdgeInsets.all(16),
-              child: Constants.mediumWhiteTextWidget('Champion', 16),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-              child: AirBattleDataView(
-                  grade: Grade.gold,
-                  userName: 'Jay',
-                  area: 'China',
-                  birthday: 'JULY 2024 10:10',
-                  rank: 1,
-                  score: 100,
-                  avgPace: 0.5),
-            ),
-            Container(
-              margin: EdgeInsets.all(16),
-              child: Constants.mediumWhiteTextWidget('Completed', 16),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-              child: AirBattleDataView(
-                  grade: Grade.gold,
-                  userName: 'Jay',
-                  area: 'China',
-                  birthday: 'JULY 2024 10:10',
-                  rank: 1,
-                  score: 100,
-                  avgPace: 0.5),
-            ),
+           widget.model.activityStatus == 2 ? Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+             Container(
+               margin: EdgeInsets.all(16),
+               child: Constants.mediumWhiteTextWidget('Champion', 16),
+             ),
+             Container(
+               margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+               child: AirBattleDataView(
+                   grade: Grade.gold,
+                   userName: 'Jay',
+                   area: 'China',
+                   birthday: 'JULY 2024 10:10',
+                   rank: 1,
+                   score: 100,
+                   avgPace: 0.5),
+             ),
+           ],) :Container(), // 冠军
+            widget.model.activityStatus !=0 ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(16),
+                  child: Constants.mediumWhiteTextWidget('Completed', 16),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                  child: AirBattleDataView(
+                      grade: Grade.gold,
+                      userName: 'Jay',
+                      area: 'China',
+                      birthday: 'JULY 2024 10:10',
+                      rank: 1,
+                      score: 100,
+                      avgPace: 0.5),
+                ),
+              ],
+            ) :Container(), // 已完成的最高成绩
             SizedBox(
               height: 60,
             ),
             widget.model.activityStatus != 1
-                ? _endButtonView()
+                ? _endButtonView(widget.model)
                 : GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () async {
@@ -202,7 +210,12 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
   }
 }
 
-Widget _endButtonView() {
+Widget _endButtonView( ActivityModel model) {
+  if(model.activityStatus == 0){
+    // 未开始
+  }else{
+    // 已结束
+  }
   return Container(
     margin: EdgeInsets.only(left: 16, right: 16, bottom: 32),
     height: 56,

@@ -1,3 +1,4 @@
+
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/profile/integral_controller.dart';
 import 'package:code/models/global/user_info.dart';
@@ -15,6 +16,7 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class ProfileController extends StatefulWidget {
   const ProfileController({super.key});
@@ -33,6 +35,10 @@ class _ProfileControllerState extends State<ProfileController> {
     super.initState();
     queryMyAccountInfoData();
   }
+
+
+
+
 
   queryMyAccountInfoData() async{
     final _response = await Profile.queryIMyAccountInfoData();
@@ -81,11 +87,31 @@ class _ProfileControllerState extends State<ProfileController> {
                       onTap: () async{
                         final picker = ImagePicker();
                         final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-                        print('pickedFile=${pickedFile}');
-                        if(pickedFile!=null){
-                          print('pickedFile path=${pickedFile.path}');
+                        final croppedFile = await ImageCropper().cropImage(
+                          maxHeight: 64,
+                          maxWidth: 64,
+                          sourcePath: pickedFile !=null ? pickedFile!.path : '',
+                          aspectRatioPresets: [
+                            CropAspectRatioPreset.ratio3x2,
+                            CropAspectRatioPreset.ratio4x3,
+                            CropAspectRatioPreset.ratio16x9,
+                            CropAspectRatioPreset.square,
+                          ],
+                          androidUiSettings:  AndroidUiSettings(
+                              toolbarTitle: 'Cropper',
+                              toolbarColor: Colors.deepOrange,
+                              toolbarWidgetColor: Colors.white,
+                              initAspectRatio: CropAspectRatioPreset.original,
+                              lockAspectRatio: false),
+                          iosUiSettings:    IOSUiSettings(
+                            title: 'Cropper',
+                          ),
+                        );
+
+                        if(croppedFile!=null){
+                          print('croppedFile path=${croppedFile.path}');
                           // 上传头像
-                          final _response =  await Participants.uploadAsset(pickedFile!.path);
+                          final _response =  await Participants.uploadAsset(croppedFile!.path);
                           if(_response.success){
                             final _updateResponse = await Account.updateAccountInfo({"avatar":_response.data});
                             if(_updateResponse.success){
@@ -119,7 +145,7 @@ class _ProfileControllerState extends State<ProfileController> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Constants.customTextWidget('Candan', 16,'#B1B1B1'),
+                    Constants.customTextWidget(userModel.country, 16,'#B1B1B1'),
                     SizedBox(width: 18,),
                     Container(height: 10,width: 1,color: hexStringToColor('#707070'),),
                     SizedBox(width: 18,),

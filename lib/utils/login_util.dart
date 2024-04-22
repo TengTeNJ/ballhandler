@@ -52,7 +52,7 @@ class LoginUtil {
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
-        webAuthenticationOptions: WebAuthenticationOptions(clientId: 'com.potent.stickhandling',redirectUri:Uri.parse('https://scarce-wood-spice.glitch.me/callbacks/sign_in_with_apple'))
+        webAuthenticationOptions: WebAuthenticationOptions(clientId: 'com.potent.stickhandling',redirectUri:Uri.parse('https://potentraining.com'))
       );
 
       final _map = {

@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/email_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
+import 'package:code/controllers/account/set_user_info_controller.dart';
 import 'package:code/models/http/user_model.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/http_util.dart';
@@ -104,7 +105,14 @@ class _LoginPageControllerState extends State<LoginPageController> with SingleTi
                             // 登录成功
                             Account.handleUserData(_response, context);
                             EventBus().sendEvent(kLoginSucess);
-                            NavigatorUtil.pop();
+                            final _checkResponse = await Account.checkeSetUserInfoStatu();
+                            if(_checkResponse.data == false){
+                              // 跳转到设置用户信息页面
+                              NavigatorUtil.pop();
+                              NavigatorUtil.present(SetUserInfoController());
+                            }else{
+                              NavigatorUtil.pop();
+                            }
                           };
                         },
                         child: Padding(

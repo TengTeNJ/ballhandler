@@ -85,6 +85,14 @@ class Account {
     return ApiResponse(success: response.success,);
   }
 
+  static Future<ApiResponse> sendFogetPwdEmail(String email) async{
+    Map<String,dynamic> _data = {
+      "email":email,
+    };
+    final response = await HttpUtil.get('/api/login/sendEmailForget', _data);
+    return ApiResponse(success: response.success,);
+  }
+
   /*处理登录成功后返回的数据*/
  static handleUserData(ApiResponse<User> _response, BuildContext context) async{
     NSUserDefault.setKeyValue<String>(kUserName, _response.data!.nickName);

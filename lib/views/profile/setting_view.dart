@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 
 class SettingView extends StatefulWidget {
   List<String> datas;
+  List<String> detailTitles;
+
   String title;
   Function? selectItem;
 
-  SettingView({required this.title, required this.datas,this.selectItem});
+  SettingView({required this.title, required this.datas,this.selectItem,required this.detailTitles});
 
   @override
   State<SettingView> createState() => _SettingViewState();
@@ -43,11 +45,18 @@ class _SettingViewState extends State<SettingView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Constants.regularGreyTextWidget(widget.datas[index], 16),
-                      Image(
-                        image: AssetImage('images/airbattle/next_white.png'),
-                        width: 12,
-                        height: 12,
-                      )
+                      Row(
+                        children: [
+                          Constants.regularGreyTextWidget(widget.detailTitles[index], 16),
+                          SizedBox(width: 12,),
+                          Image(
+                            image: AssetImage('images/airbattle/next_white.png'),
+                            width: 12,
+                            height: 12,
+                          )
+                        ],
+                      ),
+
                     ],
                   ),
                   SizedBox(

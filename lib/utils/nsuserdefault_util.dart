@@ -53,6 +53,8 @@ class NSUserDefault {
     final _ava = await NSUserDefault.getValue<String>(kAvatar);
     final _token = await NSUserDefault.getValue<String>(kAccessToken);
     final _email = await NSUserDefault.getValue<String>(kUserEmail);
+    final _brith = await NSUserDefault.getValue<String>(kBrithDay);
+    final _country = await NSUserDefault.getValue<String>(kCountry);
 
     if(_nickName != null){
       UserProvider.of(context).userName = _nickName;
@@ -65,6 +67,12 @@ class NSUserDefault {
     }
     if(_email!=null){
       UserProvider.of(context).email = _email;
+    }
+    if(_brith!=null){
+      UserProvider.of(context).brith = _brith;
+    }
+    if(_country!=null){
+      UserProvider.of(context).country = _country;
     }
   }
   /*清空用户信息*/

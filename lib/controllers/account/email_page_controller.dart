@@ -1,6 +1,5 @@
 import 'package:code/controllers/account/creat_password_controller.dart';
 import 'package:code/controllers/account/password_login_controller.dart';
-import 'package:code/controllers/account/password_page_controller.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';

@@ -1,4 +1,7 @@
+import 'package:code/services/http/account.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:code/widgets/account/custom_textfield.dart';
@@ -86,14 +89,20 @@ class _SendEmailControllerState extends State<SendEmailController> {
                           child: CustomTextField(
                             controller: _controller,
                             onTap: (text){
-
+                              _email = text;
                             },
                             placeHolder: _email,
                           )),
                       GestureDetector(
-                        onTap: () {
-                          print('send email');
-                          TTDialog.sendEmailDialog(context);
+                        onTap: () async{
+                        final _response =  await Account.sendFogetPwdEmail(_email);
+                        if(_response.success){}
+                        TTDialog.sendEmailDialog(context,(){
+                          Future.delayed(Duration(milliseconds: 100),(){
+                            NavigatorUtil.pop();
+                          });
+                        });
+                        print('发送邮件成功');
                         },
                         child: Container(
                           child: Center(

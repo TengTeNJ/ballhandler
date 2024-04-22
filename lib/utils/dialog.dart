@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class TTDialog {
   /**发送邮件**/
-  static sendEmailDialog(BuildContext context) {
+  static sendEmailDialog(BuildContext context,Function confirm) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
@@ -12,7 +12,7 @@ class TTDialog {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.42,
-          child: SendEmailDiaog(),
+          child: SendEmailDiaog(confirm: confirm,),
         );
       },
     );
