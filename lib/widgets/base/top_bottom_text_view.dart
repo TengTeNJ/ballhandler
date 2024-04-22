@@ -9,6 +9,7 @@ class TBTextView extends StatelessWidget {
   Color? detailColor;
   double? titleFontSize;
   double? detailFontSize;
+  int ? maxLines;
   CrossAxisAlignment crossAxisAlignment;
   TBTextView({
     required this.title,
@@ -17,7 +18,8 @@ class TBTextView extends StatelessWidget {
     this.detailColor = const Color.fromRGBO(177, 177, 177, 1),
     this.titleFontSize = 20,
     this.detailFontSize = 12,
-    this.crossAxisAlignment = CrossAxisAlignment.start
+    this.crossAxisAlignment = CrossAxisAlignment.start,
+    this.maxLines
   });
 
   @override
@@ -29,6 +31,7 @@ class TBTextView extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
+
               color: titleColor,
               fontFamily: 'SanFranciscoDisplay',
               fontSize: titleFontSize,
@@ -39,6 +42,7 @@ class TBTextView extends StatelessWidget {
         ),
         Text(
           detailTitle,
+          maxLines: 3,
           style: TextStyle(
               color: detailColor,
               fontFamily: 'SanFranciscoDisplay',

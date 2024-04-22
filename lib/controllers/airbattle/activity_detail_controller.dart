@@ -1,8 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
+import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/views/airbattle/airbattle_data_view.dart';
 import 'package:code/views/airbattle/airbattle_detail_grid_view.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,8 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _details = ['00:45 sec', widget.model.startDate, '2 Groups', '${widget.model.startDate}\$'];
+   // String timeArea = StringUtil.stringToDate(widget.model.startDate)
+    _details = ['00:45 sec', widget.model.startDate  + '-' + widget.model.endDate,  UserProvider.of(context).group, '200\$'];
   }
 
   @override

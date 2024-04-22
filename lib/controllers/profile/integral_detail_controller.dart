@@ -6,6 +6,8 @@ import 'package:code/views/profile/integral_detail_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/toast.dart';
+
 class IntegralDetailController extends StatefulWidget {
   const IntegralDetailController({super.key});
 
@@ -16,16 +18,37 @@ class IntegralDetailController extends StatefulWidget {
 
 class _IntegralDetailControllerState extends State<IntegralDetailController> {
   List<IntegralModel>_datas = [];
+  bool _hasMode = false;
+  int _page = 1;
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _scrollController.addListener(_scrollListener);
     queryIntegralListData();
   }
-  queryIntegralListData() async{
-    final _response = await Profile.queryIntegralListData(1);
+
+/*监听页面滑动*/
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      print('上拉加载---');
+      if(_hasMode){
+        print('has more');
+        _page ++;
+        queryIntegralListData(loadMore: true);
+      }
+    }
+  }
+  /*请求积分明细列表数据*/
+  queryIntegralListData({bool loadMore = false}) async{
+    if(loadMore){
+      TTToast.showLoading();
+    }
+    final _response = await Profile.queryIntegralListData(_page);
     if(_response.success && _response.data != null){
-      _datas.addAll(_response.data!);
+      _datas.addAll(_response.data!.data);
+      _hasMode = (_datas.length < _response.data!.count);
       setState(() {
 
       });
@@ -44,6 +67,7 @@ class _IntegralDetailControllerState extends State<IntegralDetailController> {
       body: Column(children:[
         Expanded(
           child: _datas.length > 0 ? ListView.separated(
+            controller: _scrollController,
               itemBuilder: (context, index) {
                 return IntegralView(model: _datas[index],);
               },

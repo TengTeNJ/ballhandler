@@ -36,10 +36,6 @@ class _ProfileControllerState extends State<ProfileController> {
     queryMyAccountInfoData();
   }
 
-
-
-
-
   queryMyAccountInfoData() async{
     final _response = await Profile.queryIMyAccountInfoData();
     if(_response.success && _response.data != null){
@@ -52,6 +48,8 @@ class _ProfileControllerState extends State<ProfileController> {
   }
   @override
   Widget build(BuildContext context) {
+    print('------');
+  print('UserProvider.of(context).age=${UserProvider.of(context).age}');
     return Scaffold(
       backgroundColor: Constants.darkThemeColor,
       appBar: CustomAppBar(),

@@ -1,6 +1,7 @@
-
+import 'package:code/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 // 用户信息模型
 class UserModel extends ChangeNotifier {
@@ -30,7 +31,7 @@ class UserModel extends ChangeNotifier {
 
   String get totalTimes => _totalTimes;
 
-  bool get hasLogin => _token!=null && _token.length>0;
+  bool get hasLogin => _token != null && _token.length > 0;
 
   String get token => _token;
 
@@ -46,6 +47,22 @@ class UserModel extends ChangeNotifier {
 
   String get country => _country;
 
+  // 用户的年龄组  Above 12/Under 12
+  String get group {
+     if(this.age >= 12){
+       return 'Above 12';
+     }else{
+       return 'Under 12';
+     }
+  }
+
+/*获取用户的年龄*/
+  int get age {
+    this.brith;
+    DateTime dateTime = DateFormat("MMMM dd,yyyy").parse(this.brith);
+    int age = calculateAge(dateTime);
+    return age;
+  }
 
   List<String> get overDataList {
     _overDataList.clear();
@@ -110,16 +127,16 @@ class UserModel extends ChangeNotifier {
     _email = email;
     notifyListeners();
   }
+
   set brith(String brith) {
     _brith = brith;
     notifyListeners();
   }
 
-  set country(String country){
+  set country(String country) {
     _country = country;
     notifyListeners();
   }
-
 }
 
 // 创建一个全局的Provider
@@ -139,5 +156,16 @@ class UserProvider extends StatelessWidget {
   static UserModel of(BuildContext context) {
     return Provider.of<UserModel>(context, listen: false);
   }
+}
 
+int calculateAge(DateTime brithDate) {
+  final now = DateTime.now();
+  final birthday = brithDate;
+  final age = now.year -
+      birthday.year -
+      ((now.month > birthday.month ||
+              (now.month == birthday.month && now.day >= birthday.day))
+          ? 0
+          : 1);
+  return age;
 }

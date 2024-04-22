@@ -303,7 +303,25 @@ const kLoginSucess = 'login_success'; // 登录成功
 
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
+  "0" :{
+    "7" : "ZIGZAG Challenge",
+    "1" : "2 Challenge",
+    "2" : "L Challenge",
+    "3" : "OMEGA Challenge",
+    "6" : "Straight line Challenge",
+    "4" : "Pentagon Challenge",
+    "5" : "SMILE Challenge",
+  },
   "1" :{
+    "7" : "ZIGZAG Challenge",
+    "1" : "2 Challenge",
+    "2" : "L Challenge",
+    "3" : "OMEGA Challenge",
+    "6" : "Straight line Challenge",
+    "4" : "Pentagon Challenge",
+    "5" : "SMILE Challenge",
+  },
+  "2" :{
     "7" : "ZIGZAG Challenge",
     "1" : "2 Challenge",
     "2" : "L Challenge",

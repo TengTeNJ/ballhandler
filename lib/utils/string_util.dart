@@ -57,4 +57,14 @@ class StringUtil {
     DateTime dateTime = DateTime.parse(timeString);
     return dateTime;
   }
+
+  /*服务器返回的时间字符串转换为界面上需要展示的时间格式字符串*/
+  static String serviceStringToShowDateString(String timeString){
+    print('timeString=${timeString}');
+    DateTime dateTime = stringToDate(timeString);
+    print('dateTime=${dateTime}');
+    String tempString = dateToBrithString(dateTime);
+    print('tempString=${tempString}');
+    return tempString;
+  }
 }

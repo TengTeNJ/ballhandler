@@ -144,8 +144,9 @@ class _BLEListDialogState extends State<BLEListDialog> {
               top: 16,
               right: 16,
               child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  print('Begain Scan');
+                  print('begain scan');
                   if (Platform.isAndroid) {
                     PermissionStatus locationPermission =
                         await Permission.location.request();
@@ -162,7 +163,10 @@ class _BLEListDialogState extends State<BLEListDialog> {
                     BluetoothManager().startScan();
                   }
                 },
-                child: Constants.regularBaseTextWidget('Scan', 16),
+                child: Row(mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(width: 100,height: 20,child: Constants.regularBaseTextWidget('Scan', 16,textAlign: TextAlign.end),)
+                ],),
               )),
           Positioned(
             child: BLEListView(),
@@ -794,6 +798,7 @@ class JoinAirBattleDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String group = UserProvider.of(context).group;
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -816,7 +821,7 @@ class JoinAirBattleDialog extends StatelessWidget {
             },
             child: RichText(
               text: TextSpan(
-                text: 'You will compete in the',
+                text: 'You will compete in the ',
                 style: TextStyle(
                     color: Constants.baseGreyStyleColor,
                     fontFamily: 'SanFranciscoDisplay',
@@ -825,7 +830,7 @@ class JoinAirBattleDialog extends StatelessWidget {
                     fontWeight: FontWeight.w400),
                 children: <TextSpan>[
                   TextSpan(
-                    text: ' 10 year old',
+                    text: group,
                     style: TextStyle(
                       fontFamily: 'SanFranciscoDisplay',
                       fontSize: 16,
@@ -865,6 +870,7 @@ class JoinAirBattleDialog extends StatelessWidget {
                 title: 'Continue',
                 height: 40,
                 onTap: () {
+                  NavigatorUtil.pop();
                   this.continueClick();
                 }),
           ),

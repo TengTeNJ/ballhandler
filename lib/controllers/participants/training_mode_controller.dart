@@ -7,9 +7,7 @@ import 'package:code/views/participants/training_mode_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:get_it/get_it.dart';
-
 import '../../utils/global.dart';
 
 class TrainingModeController extends StatefulWidget {
@@ -25,11 +23,15 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     return Container(
       child: TrainingModeListView(
         scanBleList: () async {
-          GameUtil gameUtil = GetIt.instance<GameUtil>();
-          gameUtil.modelId = index + 1;
-          NavigatorUtil.push(Routes.recordselect);
-          // List<CameraDescription> cameras = await availableCameras();
-          //  NavigatorUtil.push('videoCheck',arguments: cameras[0]);
+          // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
+          if(BluetoothManager().conectedDeviceCount == 0){
+            TTDialog.bleListDialog(context);
+            print('没有连接的蓝牙设备，先蓝牙连接');
+          }else{
+            GameUtil gameUtil = GetIt.instance<GameUtil>();
+            gameUtil.modelId = index + 1;
+            NavigatorUtil.push(Routes.recordselect);
+          }
         },
       ),
     );

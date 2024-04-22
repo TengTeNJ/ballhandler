@@ -18,6 +18,11 @@ class IntegralModel {
   } // 模式显示名称
 }
 
+class IntegralDataModel {
+  List<IntegralModel> data = [];
+  int count = 0;
+}
+
 // 可兑换商品
 class ExchangeGoodModel {
   double exchangeMoney = 0; // 兑换的金额
@@ -44,16 +49,18 @@ class MyAccountDataModel {
 
 class Profile {
   /*获取积分明细列表*/
-  static Future<ApiResponse<List<IntegralModel>>> queryIntegralListData(
+  static Future<ApiResponse<IntegralDataModel>> queryIntegralListData(
       int page) async {
     final _data = {
-      "limit": kPageLimit.toString(),
+      "limit": (kPageLimit * 2).toString(),
       "page": page.toString(),
     };
     final response = await HttpUtil.get('/api/member/integral/list', _data,
         showLoading: true);
     List<IntegralModel> _list = [];
-
+    IntegralDataModel _model = IntegralDataModel();
+    final _count = response.data['count'];
+    _model.count = _count;
     if (response.success && response.data['data'] != null) {
       final _array = response.data['data'] as List;
       _array.forEach((element) {
@@ -74,7 +81,8 @@ class Profile {
         !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
         _list.add(model);
       });
-      return ApiResponse(success: response.success, data: _list);
+      _model.data = _list;
+      return ApiResponse(success: response.success, data: _model);
     } else {
       return ApiResponse(success: false);
     }

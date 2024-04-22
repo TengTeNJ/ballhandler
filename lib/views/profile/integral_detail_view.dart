@@ -11,6 +11,12 @@ class IntegralView extends StatefulWidget {
 
 class _IntegralViewState extends State<IntegralView> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 60,
@@ -34,7 +40,7 @@ class _IntegralViewState extends State<IntegralView> {
               )
             ],
           ),
-          Constants.customTextWidget( (widget.model.integralType == 1 ? '+' : '-' )+'${widget.model.integralVal}', 14, '#5BCC6A')
+          Constants.customTextWidget( (widget.model.integralType == 1 ? '+' : '-' )+'${widget.model.integralVal}', 14,widget.model.integralType == 1 ? '#5BCC6A':'#E33E3E')
         ],
       ),
     );

@@ -37,7 +37,6 @@ class _RankingControllerState extends State<RankingController> {
   }
   /* 获取排行榜数据*/
   queryRankList({bool loadMore = false}) async{
-
     if(loadMore){
       TTToast.showLoading();
     }

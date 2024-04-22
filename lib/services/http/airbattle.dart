@@ -1,4 +1,5 @@
 import 'package:code/utils/http_util.dart';
+import 'package:code/utils/string_util.dart';
 import '../../constants/constants.dart';
 
 class MyActivityModel {
@@ -73,10 +74,11 @@ class AirBattle {
         model.activityName = !ISEmpty(_map['activityName'])
             ? _map['activityName'].toString()
             : '--';
+
         model.endDate =
-            !ISEmpty(_map['endDate']) ? _map['endDate'].toString() : '--';
+            !ISEmpty(_map['endDate']) ?StringUtil.serviceStringToShowDateString(_map['endDate'].toString()) : '--';
         model.startDate =
-            !ISEmpty(_map['startDate']) ? _map['startDate'].toString() : '--';
+            !ISEmpty(_map['startDate']) ? StringUtil.serviceStringToShowDateString(_map['startDate'].toString()).toString() : '--';
         model.trainScore =
             !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '--';
         model.trainVideo =
@@ -119,9 +121,9 @@ class AirBattle {
             ? _map['activityRemark'].toString()
             : '--';
         model.endDate =
-            !ISEmpty(_map['endDate']) ? _map['endDate'].toString() : '--';
+            !ISEmpty(_map['endDate']) ? StringUtil.serviceStringToShowDateString(_map['endDate'].toString()) : '--';
         model.startDate =
-            !ISEmpty(_map['startDate']) ? _map['startDate'].toString() : '--';
+            !ISEmpty(_map['startDate']) ? StringUtil.serviceStringToShowDateString(_map['startDate'].toString()) : '--';
         model.activityName = !ISEmpty(_map['activityName'])
             ? _map['activityName'].toString()
             : '--';
