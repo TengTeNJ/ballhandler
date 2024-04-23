@@ -1,4 +1,5 @@
 import 'package:code/services/http/airbattle.dart';
+import 'package:code/utils/toast.dart';
 import 'package:code/views/airbattle/activity_view.dart';
 import 'package:flutter/material.dart';
 
@@ -15,25 +16,46 @@ class ActivityListView extends StatefulWidget {
 
 class _ActivityListViewState extends State<ActivityListView> {
   List<ActivityModel> _datas = [];
-
+  ScrollController _scrollController = ScrollController();
+ bool _hasMore = false;
+ int _page = 1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _scrollController.addListener(_scrollListener);
     queryActivityListData();
   }
-  queryActivityListData()async{
-    final _response = await AirBattle.queryAllActivityListData(1);
-    if(_response.success && _response.data != null){
-      _datas.addAll(_response.data!);
-      setState(() {
 
-      });
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      print('上拉加载---');
+      if(_hasMore){
+        _page ++ ;
+        queryActivityListData(loadMore: true);
+      }
     }
   }
+
+  queryActivityListData({bool loadMore = false}) async {
+    if(loadMore){
+      TTToast.showLoading();
+    }
+    final _response = await AirBattle.queryAllActivityListData(_page);
+    if (_response.success && _response.data != null) {
+      _datas.addAll(_response.data!.data);
+      _hasMore = _datas.length < _response.data!.count;
+      setState(() {});
+    }
+    if(loadMore){
+      TTToast.hideLoading();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+        controller: _scrollController,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {

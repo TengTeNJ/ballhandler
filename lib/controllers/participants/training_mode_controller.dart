@@ -24,7 +24,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       child: TrainingModeListView(
         scanBleList: () async {
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
-          if(BluetoothManager().conectedDeviceCount == 0){
+          if(BluetoothManager().conectedDeviceCount.value == 0){
             TTDialog.bleListDialog(context);
             print('没有连接的蓝牙设备，先蓝牙连接');
           }else{

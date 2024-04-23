@@ -172,8 +172,6 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
   }
 
   Widget RaiseIcon() {
-    print('RaiseIcon================${widget.riseUp}');
-
     if (widget.comparevalue == '-') {
       return Container();
     }

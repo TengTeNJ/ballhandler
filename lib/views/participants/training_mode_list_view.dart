@@ -17,6 +17,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        print('GestureDetector==');
         if (widget.scanBleList != null) {
           widget.scanBleList!();
         }

@@ -38,7 +38,6 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-   // String timeArea = StringUtil.stringToDate(widget.model.startDate)
     _details = ['00:45 sec', widget.model.startDate  + '-' + widget.model.endDate,  UserProvider.of(context).group, '200\$'];
   }
 
@@ -202,7 +201,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                       ),
                       child: Center(
                         child: Constants.boldWhiteTextWidget(
-                            'Starting in 74:30:10', 16),
+                            'End in ${widget.model.timeDifferentString}', 16),
                       ),
                     ),
                   )

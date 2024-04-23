@@ -93,6 +93,7 @@ class BluetoothManager {
         model.notifyCharacteristic = notifyCharacteristic;
         model.writerCharacteristic = writerCharacteristic;
         // 打开毫秒使能开关
+        print('onLineData=${onLineData()}');
        writerDataToDevice(model, onLineData());
         // 连接成功弹窗
         EasyLoading.showSuccess('Bluetooth connection successful');
@@ -132,6 +133,7 @@ class BluetoothManager {
       TTToast.showErrorInfo('Please connect your device first');
       return;
     }
+    print('data=${data}');
     await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
         value: data);
   }

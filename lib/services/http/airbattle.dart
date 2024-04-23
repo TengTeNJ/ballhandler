@@ -29,6 +29,16 @@ class ActivityModel {
   int activityStatus = 0; // 活动状态：0未开始 1正在进行 2已结束
   String endDate = ''; // 活动结束时间
   String startDate = ''; // 活动开始时间
+  String get timeDifferentString {
+    String targetTime = this.endDate + ' 23:59';
+    DateTime time = StringUtil.showTimeStringToDate(targetTime);
+    Duration remainingTime = time.difference(DateTime.now());
+    int days = remainingTime.inDays;
+    int hours = remainingTime.inHours % 24;
+    int minutes = remainingTime.inMinutes % 60;
+    print('${days}days${hours}hours${minutes}mins');
+    return '${days} days ${hours} hours ${minutes} minutess';
+  }
   String get statuString {
     String tempString = 'Not started yet';
     if (this.activityStatus == 1) {
@@ -38,6 +48,11 @@ class ActivityModel {
     }
     return tempString;
   }
+}
+
+class ActivityDataModel{
+  List<ActivityModel> data = [];
+  int count = 0;
 }
 
 class MessageModel{
@@ -92,7 +107,7 @@ class AirBattle {
   }
 
   /*查询所有的活动列表*/
-  static Future<ApiResponse<List<ActivityModel>>> queryAllActivityListData(
+  static Future<ApiResponse<ActivityDataModel>> queryAllActivityListData(
       int page) async {
     final _data = {
       "limit": kPageLimit.toString(),
@@ -101,7 +116,7 @@ class AirBattle {
     final response =
         await HttpUtil.get('/api/activity/allList', _data, showLoading: true);
     List<ActivityModel> _list = [];
-
+    ActivityDataModel model = ActivityDataModel();
     if (response.success && response.data['data'] != null) {
       final _array = response.data['data'] as List;
       _array.forEach((element) {
@@ -129,7 +144,8 @@ class AirBattle {
             : '--';
         _list.add(model);
       });
-      return ApiResponse(success: response.success, data: _list);
+      model.data = _list;
+      return ApiResponse(success: response.success, data: model);
     } else {
       return ApiResponse(success: false);
     }

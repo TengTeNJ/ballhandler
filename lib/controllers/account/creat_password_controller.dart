@@ -1,4 +1,3 @@
-
 import 'package:code/controllers/account/password_page_controller.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +7,16 @@ import '../../utils/string_util.dart';
 import '../../utils/toast.dart';
 import '../../widgets/account/cancel_button.dart';
 import '../../widgets/account/custom_textfield.dart';
+
 class CreatPassWordController extends StatefulWidget {
   const CreatPassWordController({super.key});
 
   @override
-  State<CreatPassWordController> createState() => _CreatPassWordControllerState();
+  State<CreatPassWordController> createState() =>
+      _CreatPassWordControllerState();
 }
 
 class _CreatPassWordControllerState extends State<CreatPassWordController> {
-
   String _inputText = '';
   String _repeatInputText = '';
   final TextEditingController _controller = TextEditingController();
@@ -27,7 +27,7 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constants.darkControllerColor,
+      backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         // controller: _scrollController,
         child: GestureDetector(
@@ -85,11 +85,19 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                   height: 66,
                   margin: EdgeInsets.only(left: 16, right: 18, top: 9),
                   child: CustomTextField(
+                    hintStyle: TextStyle(
+                        color: Color.fromRGBO(132, 132, 132, 1.0),
+                        fontFamily: 'SemiBold',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600),
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
                     controller: _controller,
                     onTap: (text) {
                       _inputText = _controller.text;
                     },
-                    placeHolder: 'Please Enter Your Password',
+                    placeHolder:
+                        '8 to 32 characters, including letters and numbers',
                   ),
                 ),
                 Container(
@@ -107,15 +115,24 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                   height: 66,
                   margin: EdgeInsets.only(left: 16, right: 18, top: 9),
                   child: CustomTextField(
+                    hintStyle: TextStyle(
+                        color: Color.fromRGBO(132, 132, 132, 1.0),
+                        fontFamily: 'SemiBold',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600),
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
                     controller: _repeatController,
                     onTap: (text) {
                       _repeatInputText = _repeatController.text;
                     },
-                    placeHolder: 'Please Enter Your Password',
+                    placeHolder:
+                        '8 to 32 characters, including letters and numbers',
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async{
+                  onTap: () async {
+                    FocusScope.of(context).unfocus();
                     bool isvalidPwd = StringUtil.isValidPassword(_inputText);
                     bool pwdEqualToRepeatPwd = (_inputText == _repeatInputText);
                     if (!isvalidPwd) {
@@ -127,7 +144,9 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                           'The passwords entered twice are inconsistent, please check');
                       return;
                     }
-                    NavigatorUtil.present(PasswordPageController(password: _inputText,));
+                    NavigatorUtil.present(PasswordPageController(
+                      password: _inputText,
+                    ));
                   },
                   child: Container(
                     child: Center(

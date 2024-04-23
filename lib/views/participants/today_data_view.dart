@@ -93,9 +93,9 @@ class _TodayDataViewState extends State<TodayDataView> {
                           ),
                           Column(
                             children: [
-                              Constants.mediumWhiteTextWidget(widget.gameOverModel.time, 20),
+                              Constants.mediumWhiteTextWidget('00:' + widget.gameOverModel.time, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Time(min.)', 10, '#B1B1B1'),
+                              Constants.customTextWidget('Time(sec.)', 10, '#B1B1B1'),
                             ],
                           )
                         ],

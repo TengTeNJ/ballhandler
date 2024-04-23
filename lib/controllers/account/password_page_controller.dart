@@ -210,7 +210,8 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      print('ApiResponse ApiResponse');
+                      FocusScope.of(context).unfocus();
+
                       bool isvalidName = StringUtil.isValidNickname(_nameText);
                       if (isvalidName == false) {
                         TTToast.showErrorInfo('Please enter a legal nickname');
@@ -223,7 +224,6 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                             _nameText,
                             _countryText);
                         if (_response.success == true) {
-                          // NavigatorUtil.present()
                           final _response =
                               await Account.emailLogin(widget.password ?? '');
                           if (_response.success == true) {

@@ -65,7 +65,7 @@ class BluetoothDataParse {
                 final ligh_index = sub_string.indexOf('1');
                 final actual_index = 5 - ligh_index + 1;
                 BluetoothManager().gameData.currentTarget = actual_index;
-                // print('${actual_index}号灯亮了');
+                 print('${actual_index}号灯亮了');
                 // print('binaryString=${binaryString}');
                 BluetoothManager().triggerCallback(type: BLEDataType.targetResponse);
               }

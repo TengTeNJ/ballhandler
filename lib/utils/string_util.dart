@@ -58,13 +58,34 @@ class StringUtil {
     return dateTime;
   }
 
+  /*UI上展示的时间字符串转换为DateTime*/
+  static DateTime showTimeStringToDate(String timeString) {
+    final DateFormat formatter = DateFormat("MMMM dd,yyyy HH:mm'");
+    DateTime dateTime = formatter.parse(timeString);
+    return dateTime;
+  }
+
   /*服务器返回的时间字符串转换为界面上需要展示的时间格式字符串*/
-  static String serviceStringToShowDateString(String timeString){
-    print('timeString=${timeString}');
-    DateTime dateTime = stringToDate(timeString);
-    print('dateTime=${dateTime}');
-    String tempString = dateToBrithString(dateTime);
-    print('tempString=${tempString}');
-    return tempString;
+  static String serviceStringToShowDateString(String timeString) {
+    try {
+      DateTime dateTime = stringToDate(timeString);
+      String tempString = dateToBrithString(dateTime);
+      return tempString;
+    } catch (error) {
+      return '--';
+    }
+  }
+
+  static String serviceStringToShowMinuteString(String timeString) {
+    try {
+      print('timeString=${timeString}');
+      DateTime dateTime = stringToDate(timeString);
+      print('dateTime=${dateTime}');
+      String formattedDate = DateFormat('MMMM dd,yyyy HH:mm').format(dateTime);
+      print('tempString=${formattedDate}');
+      return formattedDate;
+    } catch (error) {
+      return '--';
+    }
   }
 }
