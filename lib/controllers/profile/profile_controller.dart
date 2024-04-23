@@ -48,8 +48,6 @@ class _ProfileControllerState extends State<ProfileController> {
   }
   @override
   Widget build(BuildContext context) {
-    print('------');
-  print('UserProvider.of(context).age=${UserProvider.of(context).age}');
     return Scaffold(
       backgroundColor: Constants.darkThemeColor,
       appBar: CustomAppBar(),

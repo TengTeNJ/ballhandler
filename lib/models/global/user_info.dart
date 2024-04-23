@@ -49,19 +49,23 @@ class UserModel extends ChangeNotifier {
 
   // 用户的年龄组  Above 12/Under 12
   String get group {
-     if(this.age >= 12){
-       return 'Above 12';
-     }else{
-       return 'Under 12';
-     }
+    if (this.age >= 12) {
+      return 'Above 12';
+    } else {
+      return 'Under 12';
+    }
   }
 
 /*获取用户的年龄*/
   int get age {
     this.brith;
-    DateTime dateTime = DateFormat("MMMM dd,yyyy").parse(this.brith);
-    int age = calculateAge(dateTime);
-    return age;
+    try {
+      DateTime dateTime = DateFormat("MMMM dd,yyyy").parse(this.brith);
+      int age = calculateAge(dateTime);
+      return age;
+    } catch (error) {
+      return 0;
+    }
   }
 
   List<String> get overDataList {
