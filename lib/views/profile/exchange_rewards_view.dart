@@ -31,7 +31,7 @@ class _ExchangeRewardsViewState extends State<ExchangeRewardsView> {
             width: 113,
             height: 113,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
           ),
           SizedBox(
             width: 32,

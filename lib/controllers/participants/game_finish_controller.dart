@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/models/global/user_info.dart';
@@ -11,7 +10,6 @@ import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-
 import '../../utils/global.dart';
 
 class GameFinishController extends StatefulWidget {

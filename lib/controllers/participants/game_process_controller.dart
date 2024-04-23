@@ -11,6 +11,7 @@ import 'package:camera/camera.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/ble_data.dart';
 import '../../utils/global.dart';
+import '../../utils/system_device.dart';
 import '../../widgets/base/base_image.dart';
 
 class GameProcessController extends StatefulWidget {
@@ -31,7 +32,7 @@ class _GameProcessControllerState extends State<GameProcessController>
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    SystemUtil.resetScreenDirection(); // 锁定屏幕方向
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     _imagePath = 'images/product/check${gameUtil.modelId}.png';
     // 监听生命周期
@@ -128,7 +129,7 @@ class _GameProcessControllerState extends State<GameProcessController>
         builder: (context, orientation) {
           return orientation == Orientation.portrait
               ? VerticalScreenWidget(context, _imagePath)
-              : HorizontalScreenWidget(context);
+              : HorizontalScreenWidget(context,_imagePath);
         },
       ),
     );
@@ -138,6 +139,7 @@ class _GameProcessControllerState extends State<GameProcessController>
   void dispose() {
     // TODO: implement dispose
     _controller.dispose();
+    SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     BluetoothManager().dataChange = null;
     // print('dataChange=null');
     // 标记离开游戏页面
@@ -338,86 +340,126 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
 }
 
 // 屏幕水平方向
-Widget HorizontalScreenWidget(BuildContext context) {
+Widget HorizontalScreenWidget(BuildContext context,String path) {
+  GameUtil gameUtil = GetIt.instance<GameUtil>();
+  String _scene = (gameUtil.gameScene.index + 1).toString();
+  String _modelId = gameUtil.modelId.toString();
+  String _title =
+      kGameSceneAndModelMap[_scene]![_modelId] ?? 'ZIGZAG Challenge';
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      Column(
-        children: [
-          Constants.boldWhiteTextWidget('ZIGZAG Challenge', 24),
-          SizedBox(
-            height: 32,
-          ),
-          Container(
-            width: Constants.screenWidth(context) - 48,
-            margin: EdgeInsets.only(left: 24, right: 24),
-            height: Constants.screenHeight(context) * 0.16,
-            decoration: BoxDecoration(
-                color: hexStringToColor('#204DD1'),
-                borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 16,
-                ),
-                Constants.mediumWhiteTextWidget('TIME LEFT', 12),
-                Constants.digiRegularWhiteTextWidget(
-                    BluetoothManager().gameData.showRemainTime, 14)
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Container(
-            width: Constants.screenWidth(context) - 48,
-            margin: EdgeInsets.only(left: 24, right: 24),
-            height: Constants.screenHeight(context) * 0.16,
-            decoration: BoxDecoration(
-                color: hexStringToColor('#204DD1'),
-                borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 16,
-                ),
-                Constants.mediumWhiteTextWidget('SCORE', 12),
-                Constants.digiRegularWhiteTextWidget(
-                    BluetoothManager().gameData.score.toString(), 14)
-              ],
-            ),
-          ),
-        ],
-      ),
       Expanded(
-          child: Container(
-        color: Colors.red,
-      )),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Constants.boldWhiteTextWidget(_title, 24),
+              SizedBox(
+                height: 32,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 16, right: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: Constants.screenWidth(context) * 0.56,
+                      height: 80,
+                      decoration: gameUtil.isFromAirBattle
+                          ? BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              hexStringToColor('#EF8914'),
+                              hexStringToColor('#CF391A'),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(10))
+                          : BoxDecoration(
+                          color: hexStringToColor('#204DD1'),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Constants.mediumWhiteTextWidget('TIME LEFT', 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Constants.digiRegularWhiteTextWidget('00:', 36),
+                              Constants.digiRegularWhiteTextWidget(
+                                  BluetoothManager()
+                                      .gameData
+                                      .remainTime
+                                      .toString()
+                                      .padLeft(2, '0'),
+                                  36),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: Constants.screenWidth(context) * 0.32,
+                      height: 80,
+                      decoration: gameUtil.isFromAirBattle
+                          ? BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              hexStringToColor('#EF8914'),
+                              hexStringToColor('#CF391A'),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(10))
+                          : BoxDecoration(
+                          color: hexStringToColor('#204DD1'),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Constants.mediumWhiteTextWidget('SCORE', 16),
+                          Constants.digiRegularWhiteTextWidget(
+                              BluetoothManager().gameData.score.toString(), 36)
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Expanded(
+                  child: TTNetImage(
+                    width: Constants.screenWidth(context) - 32,
+                    height: Constants.screenHeight(context) - 200,
+                    url: path,
+                    placeHolderPath: 'images/product/product_6.png',
+                    fit: BoxFit.contain,
+                  )),
+            ],
+          )),
       Container(
         margin: EdgeInsets.only(left: 24, right: 24, bottom: 24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              child: Center(
-                child: Image(
-                  image: AssetImage('images/participants/cast.png'),
-                  width: 26,
-                  height: 20,
-                ),
-              ),
-              width: 54,
-              height: 54,
-              decoration: BoxDecoration(
-                  color: hexStringToColor('#204DD1'),
-                  borderRadius: BorderRadius.circular(27)),
-            ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                NavigatorUtil.pop();
+              },
               child: Container(
                 child: Center(
                   child: Image(
@@ -428,7 +470,50 @@ Widget HorizontalScreenWidget(BuildContext context) {
                 ),
                 width: 54,
                 height: 54,
-                decoration: BoxDecoration(
+                decoration: gameUtil.isFromAirBattle
+                    ? BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        hexStringToColor('#EF8914'),
+                        hexStringToColor('#CF391A'),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(27))
+                    : BoxDecoration(
+                    color: hexStringToColor('#204DD1'),
+                    borderRadius: BorderRadius.circular(27)),
+              ),
+            ),
+            recordWidget(),
+            GestureDetector(
+              onTap: () async {
+                //NavigatorUtil.push(Routes.setting);
+                BluetoothManager().writerDataToDevice(BluetoothManager().deviceList[0], openAllBlueLightData());
+              },
+              child: Container(
+                child: Center(
+                  child: Image(
+                    image: AssetImage('images/participants/cast.png'),
+                    width: 26,
+                    height: 20,
+                  ),
+                ),
+                width: 54,
+                height: 54,
+                decoration: gameUtil.isFromAirBattle
+                    ? BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        hexStringToColor('#EF8914'),
+                        hexStringToColor('#CF391A'),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(27))
+                    : BoxDecoration(
                     color: hexStringToColor('#204DD1'),
                     borderRadius: BorderRadius.circular(27)),
               ),

@@ -92,7 +92,7 @@ class _HomePageViewState extends State<HomePageController> {
             ),
             Expanded(
               child: PageView.builder(
-                controller: _pageController,
+                  controller: _pageController,
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     return Padding(
