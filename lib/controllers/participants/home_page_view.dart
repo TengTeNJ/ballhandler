@@ -9,7 +9,10 @@ import 'package:code/views/participants/overall_data_view.dart';
 import 'package:code/views/participants/user_info_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
+
+import '../../utils/global.dart';
 
 class HomePageController extends StatefulWidget {
   const HomePageController({super.key});
@@ -20,7 +23,7 @@ class HomePageController extends StatefulWidget {
 
 class _HomePageViewState extends State<HomePageController> {
   int _currentIndex = 0;
-   PageController _pageController = PageController();
+  PageController _pageController = PageController();
   late StreamSubscription subscription;
   final List<Widget> _pageViews = [
     HomeBodyView(),
@@ -29,48 +32,56 @@ class _HomePageViewState extends State<HomePageController> {
   ];
 
   // 获取用户首页的数据
-  getHomeData(BuildContext context){
-    Participants.getHomeUserData('1').then((value){
-      if(value.success){
+  getHomeData(BuildContext context) {
+    Participants.getHomeUserData().then((value) {
+      if (value.success) {
         UserProvider.of(context).avgPace = value.data!.avgPace;
         UserProvider.of(context).totalTimes = value.data!.trainCount;
         UserProvider.of(context).totalScore = value.data!.trainScore;
         UserProvider.of(context).totalTime = value.data!.trainTime;
       }
-
     });
   }
+
   @override
   void initState() {
     super.initState();
     _pageController.addListener(() {
-        // 获取当前滑动页面的索引 (取整)
-        int currentpage = _pageController.page!.round();
-        if(_currentIndex !=  currentpage){
-          setState(() {
-            _currentIndex = currentpage;
-          });
-        }
-      });
+      // 获取当前滑动页面的索引 (取整)
+      int currentpage = _pageController.page!.round();
+      if (_currentIndex != currentpage) {
+        setState(() {
+          _currentIndex = currentpage;
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          gameUtil.gameScene = [
+            GameScene.five,
+            GameScene.erqiling,
+            GameScene.threee
+          ][_currentIndex];
+        });
+        getHomeData(context);
+      }
+    });
     // 监听登录成功
-     subscription = EventBus().stream.listen((event) {
-      if(event == kLoginSucess){
+    subscription = EventBus().stream.listen((event) {
+      if (event == kLoginSucess) {
         getHomeData(context);
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     getHomeData(context);
     return Scaffold(
-      resizeToAvoidBottomInset:false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Constants.baseControllerColor,
       appBar: CustomAppBar(
         title: '',
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient:LinearGradient(
+          gradient: LinearGradient(
             colors: [Constants.darkThemeColor, Constants.baseControllerColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -79,7 +90,10 @@ class _HomePageViewState extends State<HomePageController> {
         margin: EdgeInsets.only(left: 0, right: 0),
         child: Column(
           children: [
-            Container(margin: EdgeInsets.only(left: 16,right: 16),child: UserInfoView(),),
+            Container(
+              margin: EdgeInsets.only(left: 16, right: 16),
+              child: UserInfoView(),
+            ),
             SizedBox(
               height: 24,
             ),

@@ -33,10 +33,10 @@ class GameModel {
 
 class Participants {
   /*获取首页用户的数据*/
-  static Future<ApiResponse<HomeUsermodel>> getHomeUserData(
-      String sceneId) async {
+  static Future<ApiResponse<HomeUsermodel>> getHomeUserData() async {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     final _data = {
-      "sceneId": sceneId,
+      "sceneId": (gameUtil.gameScene.index + 1).toString(),
     };
     final response =
         await HttpUtil.get('/api/index/home', _data, showLoading: false);
