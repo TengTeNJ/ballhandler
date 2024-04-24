@@ -1,4 +1,6 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/participants/p1_controller.dart';
+import 'package:code/controllers/participants/p2_controller.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
@@ -20,8 +22,8 @@ class TrainingModeController extends StatefulWidget {
 }
 
 class _TrainingModeControllerState extends State<TrainingModeController> {
-  List<GameModel>_datas = [];
-  
+  List<GameModel> _datas = [];
+
   // List View
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
@@ -29,13 +31,22 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
         model: _datas[index],
         scanBleList: () async {
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
-          if(BluetoothManager().conectedDeviceCount.value == 0){
+          if (BluetoothManager().conectedDeviceCount.value == 0) {
             TTDialog.bleListDialog(context);
             print('没有连接的蓝牙设备，先蓝牙连接');
-          }else{
+          } else {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
             gameUtil.modelId = index + 1;
-            NavigatorUtil.push(Routes.recordselect);
+            if (gameUtil.gameScene == GameScene.five) {
+              NavigatorUtil.push(Routes.recordselect);
+            } else if (gameUtil.gameScene == GameScene.erqiling) {
+              const List<Widget> _controllers = [
+                P1Controller(),
+                P2Controller(),
+                P2Controller()
+              ];
+              NavigatorUtil.present(_controllers[index]);
+            }
           }
         },
       ),
@@ -58,14 +69,12 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     BluetoothManager().conectedDeviceCount.addListener(_listener);
     queryModeListData();
   }
-  
-  queryModeListData() async{
-    final _response = await Participants.queryModelListData();
-    if(_response.success && _response.data != null){
-      _datas.addAll(_response.data!);
-      setState(() {
 
-      });
+  queryModeListData() async {
+    final _response = await Participants.queryModelListData();
+    if (_response.success && _response.data != null) {
+      _datas.addAll(_response.data!);
+      setState(() {});
     }
   }
 
@@ -119,11 +128,14 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               ),
             ),
             Expanded(
-              child: _datas.length ==  0 ? NoDataView() : ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(height: 20),
-                  // 间隙高度
-                  itemCount: _datas.length,
-                  itemBuilder: _itemBuilder),
+              child: _datas.length == 0
+                  ? NoDataView()
+                  : ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 20),
+                      // 间隙高度
+                      itemCount: _datas.length,
+                      itemBuilder: _itemBuilder),
             )
           ],
         ),

@@ -11,6 +11,7 @@ import 'package:code/controllers/participants/game_finish_controller.dart';
 import 'package:code/controllers/participants/game_process_controller.dart';
 import 'package:code/controllers/participants/game_video_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
+import 'package:code/controllers/participants/p1_controller.dart';
 import 'package:code/controllers/participants/record_select_controller.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
 import 'package:code/controllers/participants/video_check_controller.dart';
@@ -46,6 +47,7 @@ class Routes {
   static const String setting = 'setting'; // 设置页面
   static const String recordselect = 'recordSelect'; // record选择页面
   static const String subsetting = 'subSetting'; // 二级设置页面
+  static const String p1 = 'p1'; // 270度的P1模式介绍页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -103,6 +105,8 @@ class Routes {
         final  Map _map = settings.arguments as Map;
         return MaterialPageRoute(builder: (_)=> SubSettingController(title: _map['title'] ?? '',subTitle: _map['subTitle'] ,));
       }
+      case p1:
+        return MaterialPageRoute(builder: (_) => P1Controller());
       default:
         return _errorRoute();
     }
