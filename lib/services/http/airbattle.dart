@@ -29,6 +29,9 @@ class ActivityModel {
   int activityStatus = 0; // 活动状态：0未开始 1正在进行 2已结束
   String endDate = ''; // 活动结束时间
   String startDate = ''; // 活动开始时间
+  String rewardMoney = ''; // 活动奖励
+  String rewardPoint = ''; // 活动积分
+  String activityRule = ''; // 活动规则
   String get timeDifferentString {
     String targetTime = this.endDate + ' 23:59';
     DateTime time = StringUtil.showTimeStringToDate(targetTime);
@@ -39,6 +42,7 @@ class ActivityModel {
     print('${days}days${hours}hours${minutes}mins');
     return '${days} days ${hours} hours ${minutes} minutess';
   }
+
   String get statuString {
     String tempString = 'Not started yet';
     if (this.activityStatus == 1) {
@@ -50,15 +54,15 @@ class ActivityModel {
   }
 }
 
-class ActivityDataModel{
+class ActivityDataModel {
   List<ActivityModel> data = [];
   int count = 0;
 }
 
-class MessageModel{
-   String createTime = ''; // 发送时间
-   String messageDesc = ''; // 消息描述
-   String messageTitle = '';
+class MessageModel {
+  String createTime = ''; // 发送时间
+  String messageDesc = ''; // 消息描述
+  String messageTitle = '';
 }
 
 class AirBattle {
@@ -89,11 +93,15 @@ class AirBattle {
         model.activityName = !ISEmpty(_map['activityName'])
             ? _map['activityName'].toString()
             : '--';
-
-        model.endDate =
-            !ISEmpty(_map['endDate']) ?StringUtil.serviceStringToShowDateString(_map['endDate'].toString()) : '--';
-        model.startDate =
-            !ISEmpty(_map['startDate']) ? StringUtil.serviceStringToShowDateString(_map['startDate'].toString()).toString() : '--';
+        model.endDate = !ISEmpty(_map['endDate'])
+            ? StringUtil.serviceStringToShowDateString(
+                _map['endDate'].toString())
+            : '--';
+        model.startDate = !ISEmpty(_map['startDate'])
+            ? StringUtil.serviceStringToShowDateString(
+                    _map['startDate'].toString())
+                .toString()
+            : '--';
         model.trainScore =
             !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '--';
         model.trainVideo =
@@ -135,12 +143,28 @@ class AirBattle {
         model.activityRemark = !ISEmpty(_map['activityRemark'])
             ? _map['activityRemark'].toString()
             : '--';
-        model.endDate =
-            !ISEmpty(_map['endDate']) ? StringUtil.serviceStringToShowDateString(_map['endDate'].toString()) : '--';
-        model.startDate =
-            !ISEmpty(_map['startDate']) ? StringUtil.serviceStringToShowDateString(_map['startDate'].toString()) : '--';
+        model.endDate = !ISEmpty(_map['endDate'])
+            ? StringUtil.serviceStringToShowDateString(
+                _map['endDate'].toString())
+            : '--';
+        model.startDate = !ISEmpty(_map['startDate'])
+            ? StringUtil.serviceStringToShowDateString(
+                _map['startDate'].toString())
+            : '--';
         model.activityName = !ISEmpty(_map['activityName'])
             ? _map['activityName'].toString()
+            : '--';
+        model.rewardMoney = !ISEmpty(_map['rewardMoney'])
+            ? _map['rewardMoney'].toString()
+            : '0';
+        model.rewardPoint = !ISEmpty(_map['rewardPoint'])
+            ? _map['rewardPoint'].toString()
+            : '0';
+        model.activityRemark = !ISEmpty(_map['activityRemark'])
+            ? _map['activityRemark'].toString()
+            : '--';
+        model.activityRule = !ISEmpty(_map['activityRule'])
+            ? _map['activityRule'].toString()
             : '--';
         _list.add(model);
       });
@@ -179,7 +203,7 @@ class AirBattle {
       "page": page.toString(),
     };
     final response =
-    await HttpUtil.get('/api/message/list', _data, showLoading: true);
+        await HttpUtil.get('/api/message/list', _data, showLoading: true);
     List<MessageModel> _list = [];
 
     if (response.success && response.data['data'] != null) {
@@ -187,9 +211,8 @@ class AirBattle {
       _array.forEach((element) {
         MessageModel model = MessageModel();
         final _map = element;
-        model.createTime = !ISEmpty(_map['createTime'])
-            ? _map['createTime'].toString()
-            : '';
+        model.createTime =
+            !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '';
         model.messageDesc = !ISEmpty(_map['messageDesc'])
             ? _map['messageDesc'].toString()
             : '--';

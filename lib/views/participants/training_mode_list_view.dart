@@ -1,12 +1,14 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TrainingModeListView extends StatefulWidget {
+  GameModel model;
   final void Function()? scanBleList;
 
-  TrainingModeListView({this.scanBleList});
+  TrainingModeListView({this.scanBleList,required this.model});
 
   @override
   State<TrainingModeListView> createState() => _TrainingModeListViewState();
@@ -35,7 +37,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               margin: EdgeInsets.only(left: 16, top: 21),
@@ -52,7 +54,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                     width: 8,
                   ),
                   Text(
-                    'Training Mode ',
+                    widget.model.modeName,
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -81,7 +83,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   Constants.regularWhiteTextWidget('Easy -', 12),
                   SizedBox(width: 4,),
                   Row(
-                    children: List.generate(5, (index) {
+                    children: List.generate(widget.model.difficultyLevel, (index) {
                       return Image(image: AssetImage(
                           'images/participants/five_star.png'),
                           width: 8,
@@ -95,14 +97,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
               margin: EdgeInsets.only(left: 16, right: 16, top: 3),
               height: 44,
               child: SingleChildScrollView(
-                child: Text(
-                  maxLines: 2,
-                  'ChallengeRulesChallengeRuleeRulesChallengeRulesChallenge RulesChallenge RulesChallenge Rules Challenge RulesChallenge Rules',
-                  style: TextStyle(
-                      height: 1.2,
-                      color: Color.fromRGBO(203, 203, 203, 1.0),
-                      fontSize: 12),
-                ),
+                child: Constants.regularGreyTextWidget(widget.model.modeRemark, 14,height: 1.2,textAlign: TextAlign.start),
               ),
             ),
             Expanded(
@@ -139,7 +134,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                                             .center,
                                         children: [
                                           Constants.regularWhiteTextWidget(
-                                              '00:45', 14),
+                                              '00:${widget.model.trainTime}', 14),
                                           Constants.regularWhiteTextWidget(
                                               'Time', 12),
                                         ],

@@ -1,8 +1,10 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/route/route.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/views/base/no_data_view.dart';
 import 'package:code/views/participants/training_mode_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,10 +20,13 @@ class TrainingModeController extends StatefulWidget {
 }
 
 class _TrainingModeControllerState extends State<TrainingModeController> {
+  List<GameModel>_datas = [];
+  
   // List View
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
       child: TrainingModeListView(
+        model: _datas[index],
         scanBleList: () async {
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
           if(BluetoothManager().conectedDeviceCount.value == 0){
@@ -51,6 +56,17 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     super.initState();
     // 连接的设备的数量
     BluetoothManager().conectedDeviceCount.addListener(_listener);
+    queryModeListData();
+  }
+  
+  queryModeListData() async{
+    final _response = await Participants.queryModelListData();
+    if(_response.success && _response.data != null){
+      _datas.addAll(_response.data!);
+      setState(() {
+
+      });
+    }
   }
 
   @override
@@ -103,10 +119,10 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               ),
             ),
             Expanded(
-              child: ListView.separated(
+              child: _datas.length ==  0 ? NoDataView() : ListView.separated(
                   separatorBuilder: (context, index) => SizedBox(height: 20),
                   // 间隙高度
-                  itemCount: 7,
+                  itemCount: _datas.length,
                   itemBuilder: _itemBuilder),
             )
           ],

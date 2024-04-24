@@ -66,6 +66,7 @@ class _ActivityViewState extends State<ActivityView> {
                   placeHolderPath: 'images/airbattle/icon.png',
                   width: 58,
                   height: 58,
+                  borderRadius: BorderRadius.circular(29),
                 ),
                 // Image(
                 //   image: AssetImage('images/airbattle/icon.png'),

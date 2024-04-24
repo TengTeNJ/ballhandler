@@ -23,6 +23,14 @@ class HomeUsermodel {
       this.rankNumber = '--'});
 }
 
+class GameModel {
+  String modeId = '1'; // 模式id
+  String modeName = ''; // 模式名称
+  String modeRemark = ''; // 模式描述
+  String trainTime = ''; // 游戏时间
+  int difficultyLevel = 1; // 难易程度
+}
+
 class Participants {
   /*获取首页用户的数据*/
   static Future<ApiResponse<HomeUsermodel>> getHomeUserData(
@@ -159,6 +167,41 @@ class Participants {
             : '--';
         model.videoPath =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '--';
+        _list.add(model);
+      });
+      return ApiResponse(success: response.success, data: _list);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+  /*查询训练模式列表接口*/
+  static Future<ApiResponse<List<GameModel>>> queryModelListData() async {
+    // 获取场景ID
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    final _data = {
+      "sceneId": (gameUtil.gameScene.index + 1).toString(),
+    };
+    final response =
+        await HttpUtil.get('/api/train/mode/list', _data, showLoading: true);
+    List<GameModel> _list = [];
+
+    if (response.success && response.data['data'] != null) {
+      final _array = response.data['data'] as List;
+      _array.forEach((element) {
+        GameModel model = GameModel();
+        final _map = element;
+        model.modeId =
+            !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
+        model.difficultyLevel = !ISEmpty(_map['difficultyLevel'])
+            ? _map['difficultyLevel']
+            : 1;
+        model.modeName = !ISEmpty(_map['modeName']) ? _map['modeName'] : '--';
+        model.modeRemark =
+            !ISEmpty(_map['modeRemark']) ? _map['modeRemark'].toString() : '--';
+
+        model.trainTime =
+            !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);

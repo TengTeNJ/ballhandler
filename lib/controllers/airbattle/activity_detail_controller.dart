@@ -38,7 +38,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _details = ['00:45 sec', widget.model.startDate  + '-' + widget.model.endDate,  UserProvider.of(context).group, '200\$'];
+    _details = ['00:45 sec', widget.model.startDate  + '-' + widget.model.endDate,  UserProvider.of(context).group, '${widget.model.rewardMoney}\$'];
   }
 
   @override
@@ -105,7 +105,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
               // 自动换行撑起高度的话 不要设置maxLines
               // child: Text('ctivity rules Activity rulesActivity rulesActivity rulesActivity Activity rulesActivity rulesActivity rules',style: TextStyle(color: Colors.red),),
               child: Constants.regularGreyTextWidget(
-                  'Activity rules Activity rulesActivity rulesActivity rulesActivity Activity rulesActivity rulesActivity rules',
+                 widget.model.activityRule,
                   14,
                   textAlign: TextAlign.left),
             ),
