@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/participants/p1_controller.dart';
 import 'package:code/controllers/participants/p2_controller.dart';
+import 'package:code/controllers/participants/p3_controller.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
@@ -43,7 +44,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               const List<Widget> _controllers = [
                 P1Controller(),
                 P2Controller(),
-                P2Controller()
+                P3Controller()
               ];
               NavigatorUtil.present(_controllers[index]);
             }
