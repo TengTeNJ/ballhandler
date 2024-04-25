@@ -25,6 +25,7 @@ class ActivityDetailController extends StatefulWidget {
 }
 
 class _ActivityDetailControllerState extends State<ActivityDetailController> {
+  ActivityDetailModel detailModel = ActivityDetailModel();
   final List<String> _iconPaths = [
     'images/airbattle/time.png',
     'images/airbattle/date.png',
@@ -39,6 +40,17 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
     // TODO: implement initState
     super.initState();
     _details = ['00:45 sec', widget.model.startDate  + '-' + widget.model.endDate,  UserProvider.of(context).group, '${widget.model.rewardMoney}\$'];
+    queryActivityDetailData();
+  }
+  
+  queryActivityDetailData() async{
+    final _response = await  AirBattle.queryIActivityDetailData(widget.model.activityId);
+    if(_response.success && _response.data != null){
+      detailModel = _response.data!;
+      setState(() {
+        
+      });
+    }
   }
 
   @override
@@ -138,15 +150,15 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
                child: AirBattleDataView(
                    grade: Grade.gold,
-                   userName: 'Jay',
-                   area: 'China',
+                   userName: detailModel.champion.championNickName,
+                   area: detailModel.champion.championCountry,
                    birthday: 'JULY 2024 10:10',
                    rank: 1,
-                   score: 100,
-                   avgPace: 0.5),
+                   score: double.parse(detailModel.champion.championTrainScore),
+                   avgPace: detailModel.champion.championAvgPace),
              ),
            ],) :Container(), // 冠军
-            widget.model.activityStatus !=0 ? Column(
+            ( widget.model.activityStatus !=0  && detailModel.self.nickName != null ) ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
@@ -157,12 +169,12 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                   margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
                   child: AirBattleDataView(
                       grade: Grade.gold,
-                      userName: 'Jay',
-                      area: 'China',
+                      userName: detailModel.self.nickName ?? 'Guest',
+                      area: detailModel.self.country ?? '',
                       birthday: 'JULY 2024 10:10',
-                      rank: 1,
-                      score: 100,
-                      avgPace: 0.5),
+                      rank: detailModel.self.rankNumber ?? 0,
+                      score: double.parse(detailModel.self.trainScore ?? '0'),
+                      avgPace: detailModel.self.avgPace),
                 ),
               ],
             ) :Container(), // 已完成的最高成绩

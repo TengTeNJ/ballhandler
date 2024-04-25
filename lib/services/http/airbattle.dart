@@ -1,3 +1,4 @@
+import 'package:code/models/airbattle/award_model.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/string_util.dart';
 import '../../constants/constants.dart';
@@ -63,6 +64,37 @@ class MessageModel {
   String createTime = ''; // 发送时间
   String messageDesc = ''; // 消息描述
   String messageTitle = '';
+}
+
+class AwardDataModel {
+  List<AwardModel> data = [];
+  int count = 0;
+}
+
+class ActivityDetailModel {
+  int activityStatus = 0; // 活动状态：0未开始 1正在进行 2已结束
+  ChampionModel champion = ChampionModel();
+  SelfActivityModel self = SelfActivityModel();
+}
+
+class ChampionModel {
+  String championNickName = '';
+  String championCountry = '';
+  dynamic championTrainTime = 0;
+  dynamic championAvgPace = 0.0;
+  String championTrainScore = '0';
+  int championRankNumber = 1;
+  String championTrainVideo = '';
+}
+
+class SelfActivityModel {
+  String? country = '';
+  String? nickName = '';
+  dynamic? trainTime = 0;
+  dynamic? avgPace = 0.0;
+  String? trainScore = '0';
+  int? rankNumber = 0;
+  String? trainVideo = '';
 }
 
 class AirBattle {
@@ -222,6 +254,99 @@ class AirBattle {
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+  /*查询我的奖励的数据*/
+  static Future<ApiResponse<AwardDataModel>> queryMyAwardData(int page) async {
+    final _data = {
+      "limit": kPageLimit.toString(),
+      "page": page.toString(),
+    };
+    final response =
+        await HttpUtil.get('/api/member/reward/list', _data, showLoading: true);
+    AwardDataModel awardDataModelodel = AwardDataModel();
+    List<AwardModel> _list = [];
+
+    if (response.success && response.data['data'] != null) {
+      final _array = response.data['data'] as List;
+      _array.forEach((element) {
+        AwardModel model = AwardModel();
+        final _map = element;
+        model.activityName = !ISEmpty(_map['activityName'])
+            ? _map['activityName'].toString()
+            : '--';
+
+        model.rewardMoney =
+            !ISEmpty(_map['rewardMoney']) ? _map['rewardMoney'] : 0.0;
+
+        model.rewardStatus =
+            !ISEmpty(_map['rewardStatus']) ? _map['rewardStatus'] : 0;
+        model.createTime =
+            !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
+        _list.add(model);
+      });
+      awardDataModelodel.data = _list;
+      return ApiResponse(success: response.success, data: awardDataModelodel);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+/*查询活动详情*/
+  static Future<ApiResponse<ActivityDetailModel>> queryIActivityDetailData(
+      int activityId) async {
+    final response = await HttpUtil.get(
+        '/api/activity/detail', {"activityId": activityId.toString()},
+        showLoading: false);
+    ActivityDetailModel model = ActivityDetailModel();
+    SelfActivityModel self = SelfActivityModel();
+    ChampionModel championModel = ChampionModel();
+    if (response.success && response.data['data'] != null) {
+      final element = response.data['data'];
+      final _map = element;
+      model.activityStatus = !ISEmpty(_map['activityStatus']) ? _map['activityStatus'] : 0;
+      if (model.activityStatus != 0) {
+        /*用户的活动数据*/
+        self.nickName = _map['nickName'];
+        self.country =
+            !ISEmpty(_map['country']) ? _map['country'].toString() : '';
+        self.avgPace = !ISEmpty(_map['avgPace']) ? _map['avgPace'] : 0.0;
+        self.trainScore = !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '0';
+        self.rankNumber = _map['rankNumber'];
+        self.trainVideo =
+            !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
+        model.self = self;
+      }
+      if (model.activityStatus == 2) {
+        /*冠军数据*/
+        championModel.championCountry = !ISEmpty(_map['championCountry'])
+            ? _map['championCountry'].toString()
+            : '';
+        championModel.championNickName = !ISEmpty(_map['championNickName'])
+            ? _map['championNickName'].toString()
+            : '';
+        championModel.championTrainTime =
+            !ISEmpty(_map['championTrainTime']) ? _map['championTrainTime'] : 0;
+        championModel.championAvgPace =
+            !ISEmpty(_map['championAvgPace']) ? _map['championAvgPace'] : 0.0;
+        championModel.championTrainScore = !ISEmpty(_map['championTrainScore'])
+            ? _map['championTrainScore'].toString()
+            : '0';
+        championModel.championCountry = !ISEmpty(_map['championCountry'])
+            ? _map['championCountry'].toString()
+            : '';
+        championModel.championRankNumber = !ISEmpty(_map['championRankNumber'])
+            ? _map['championRankNumber']
+            : '1';
+        championModel.championTrainVideo = !ISEmpty(_map['championTrainVideo'])
+            ? _map['championTrainVideo'].toString()
+            : '';
+        model.champion = championModel;
+      }
+      return ApiResponse(success: response.success, data: model);
     } else {
       return ApiResponse(success: false);
     }

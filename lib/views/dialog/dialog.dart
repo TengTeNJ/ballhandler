@@ -400,16 +400,21 @@ class AwardDialog extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          width: 209,
-          height: 40,
-          child: Center(
-            child: Constants.regularWhiteTextWidget('Got It', 16),
-          ),
-          decoration: BoxDecoration(
-              color: Constants.baseStyleColor,
-              borderRadius: BorderRadius.circular(10)),
-        ),
+       GestureDetector(
+         onTap: (){
+           NavigatorUtil.pop();
+         },
+         child:  Container(
+           width: 209,
+           height: 40,
+           child: Center(
+             child: Constants.regularWhiteTextWidget('Got It', 16),
+           ),
+           decoration: BoxDecoration(
+               color: Constants.baseStyleColor,
+               borderRadius: BorderRadius.circular(10)),
+         ),
+       ),
         SizedBox(
           height: 44,
         )

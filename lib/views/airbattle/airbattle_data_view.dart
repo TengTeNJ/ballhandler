@@ -16,7 +16,7 @@ class AirBattleDataView extends StatelessWidget {
   String area;
   String birthday;
   int rank;
-  int score;
+  double score;
   double avgPace;
 
   AirBattleDataView(

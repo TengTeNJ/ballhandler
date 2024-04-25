@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 class MyAwardView extends StatefulWidget {
   AwardModel model;
-
   MyAwardView({required this.model});
 
   @override
@@ -43,7 +42,7 @@ class _MyAwardViewState extends State<MyAwardView> {
                     height: 4,
                   ),
                   Constants.customTextWidget(
-                      widget.model.airbattleTitle + ' ' + widget.model.time,
+                      widget.model.airbattleTitle + '   ' + widget.model.showTime,
                       14,
                       '#B1B1B1')
                 ],
@@ -67,7 +66,7 @@ class _MyAwardViewState extends State<MyAwardView> {
 }
 
 Widget StatuView(AwardModel model) {
-  if (model.statu == 'No Viewed') {
+  if (model.statuString == 'No Viewed') {
     return Container(
       padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -75,7 +74,7 @@ Widget StatuView(AwardModel model) {
           color: hexStringToColor('#3E3E55')),
       child: Constants.customTextWidget('No Viewed', 10, '#B6F61D'),
     );
-  } else if (model.statu == 'Viewed') {
+  } else if (model.statuString == 'Viewed') {
     return Container(
       padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
