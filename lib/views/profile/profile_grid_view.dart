@@ -32,7 +32,8 @@ class _ProfileGridViewState extends State<ProfileGridView> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image(
-                  image: AssetImage(widget.assetPath ?? 'images/profile/time.png'''),
+                  image: AssetImage(
+                      widget.assetPath ?? 'images/profile/time.png' ''),
                   width: 28,
                   height: 22,
                 )
@@ -50,14 +51,20 @@ class _ProfileGridViewState extends State<ProfileGridView> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      widget.title ?? '--',
-                      style: TextStyle(
-                          fontSize: 40, color: Colors.white, height: 0.8),
+                    Container(
+                      constraints: BoxConstraints(maxWidth: (Constants.screenWidth(context) - 56) / 2.0 - 44),
+                      child: Text(
+                        widget.title ?? '--',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontFamily: 'SanFranciscoDisplay',
+                            fontSize: 40, color: Colors.white, height: 0.8),
+                      ),
                     ),
                     Text(
                       widget.unit ?? 'Sec',
                       style: TextStyle(
+                          fontFamily: 'SanFranciscoDisplay',
                           fontSize: 10, color: Colors.white, height: 0.8),
                     )
                   ],
@@ -68,6 +75,7 @@ class _ProfileGridViewState extends State<ProfileGridView> {
                 Text(
                   widget.des ?? 'Best React Time',
                   style: TextStyle(
+                      fontFamily: 'SanFranciscoDisplay',
                       color: hexStringToColor('#B1B1B1'), fontSize: 10),
                 )
               ],

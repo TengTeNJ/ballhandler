@@ -66,7 +66,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
               child: Stack(
                 children: [
                   TTNetImage(
-                      url: widget.model.activityBackground,
+                      url: detailModel.activityBackground,
                       placeHolderPath: 'images/airbattle/under_way.png',
                       width: Constants.screenWidth(context),
                       height: 270),
@@ -99,7 +99,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
             Container(
               margin: EdgeInsets.all(16),
               child: Constants.boldWhiteTextWidget(
-                  widget.model.activityName, 30,
+                  detailModel.activityName, 30,
                   textAlign: TextAlign.left),
             ),
             Container(
@@ -110,14 +110,14 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                 child: Padding(
                   padding: EdgeInsets.all(4),
                   child: Constants.regularBaseTextWidget(
-                      widget.model.activityRemark, 12),
+                      detailModel.activityRemark, 12),
                 )),
             Padding(
               padding: EdgeInsets.all(16),
               // 自动换行撑起高度的话 不要设置maxLines
               // child: Text('ctivity rules Activity rulesActivity rulesActivity rulesActivity Activity rulesActivity rulesActivity rules',style: TextStyle(color: Colors.red),),
               child: Constants.regularGreyTextWidget(
-                 widget.model.activityRule,
+                  detailModel.activityRule,
                   14,
                   textAlign: TextAlign.left),
             ),
@@ -139,7 +139,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                         detail: _details[index]);
                   }),
             ),
-           widget.model.activityStatus == 2 ? Column(
+            detailModel.activityStatus == 2 ? Column(
              crossAxisAlignment: CrossAxisAlignment.start,
              children: [
              Container(
@@ -158,7 +158,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                    avgPace: detailModel.champion.championAvgPace),
              ),
            ],) :Container(), // 冠军
-            ( widget.model.activityStatus !=0  && detailModel.self.nickName != null ) ? Column(
+            ( detailModel.activityStatus !=0  && detailModel.self.nickName != null ) ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
@@ -181,8 +181,8 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
             SizedBox(
               height: 60,
             ),
-            widget.model.activityStatus != 1
-                ? _endButtonView(widget.model)
+            detailModel.activityStatus != 1
+                ? _endButtonView(detailModel)
                 : GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () async {
@@ -213,7 +213,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                       ),
                       child: Center(
                         child: Constants.boldWhiteTextWidget(
-                            'End in ${widget.model.timeDifferentString}', 16),
+                            'End in ${detailModel.timeDifferentString}', 16),
                       ),
                     ),
                   )
@@ -224,7 +224,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
   }
 }
 
-Widget _endButtonView( ActivityModel model) {
+Widget _endButtonView( ActivityDetailModel model) {
   if(model.activityStatus == 0){
     // 未开始
   }else{

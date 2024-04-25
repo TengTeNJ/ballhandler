@@ -72,9 +72,30 @@ class AwardDataModel {
 }
 
 class ActivityDetailModel {
+  String activityBackground = '';
+  String activityIcon = '';
+  int activityId = 1;
+  String activityName = '';
+  String activityRemark = '';
+  String activityRule = '';
+  dynamic activityTime = 45;
+  dynamic rewardMoney = 0;
+  dynamic rewardPoint = 1;
   int activityStatus = 0; // 活动状态：0未开始 1正在进行 2已结束
+  String endDate = ''; // 活动结束时间
   ChampionModel champion = ChampionModel();
   SelfActivityModel self = SelfActivityModel();
+  String get timeDifferentString {
+    String targetTime = this.endDate + ' 23:59';
+    DateTime time = StringUtil.showTimeStringToDate(targetTime);
+    Duration remainingTime = time.difference(DateTime.now());
+    int days = remainingTime.inDays;
+    int hours = remainingTime.inHours % 24;
+    int minutes = remainingTime.inMinutes % 60;
+    print('${days}days${hours}hours${minutes}mins');
+    return '${days} days ${hours} hours ${minutes} minutess';
+  }
+
 }
 
 class ChampionModel {
@@ -308,6 +329,24 @@ class AirBattle {
       final element = response.data['data'];
       final _map = element;
       model.activityStatus = !ISEmpty(_map['activityStatus']) ? _map['activityStatus'] : 0;
+      model.activityBackground =
+      !ISEmpty(_map['activityBackground']) ? _map['activityBackground'].toString() : '';
+      model.activityIcon =
+      !ISEmpty(_map['activityIcon']) ? _map['activityIcon'].toString() : '';
+      model.activityName =
+      !ISEmpty(_map['activityName']) ? _map['activityName'].toString() : '';
+      model.activityRemark =
+      !ISEmpty(_map['activityRemark']) ? _map['activityRemark'].toString() : '';
+      model.activityRule =
+      !ISEmpty(_map['activityRule']) ? _map['activityRule'].toString() : '';
+      model.activityTime =
+      !ISEmpty(_map['activityTime']) ? _map['activityTime'] : 45;
+      model.rewardMoney =
+      !ISEmpty(_map['rewardMoney']) ? _map['rewardMoney'] : 0;
+      model.rewardPoint =
+      !ISEmpty(_map['rewardPoint']) ? _map['rewardPoint'] : 0;
+      model.endDate =
+      !ISEmpty(_map['endDate']) ?  StringUtil.serviceStringToShowDateString(_map['endDate'].toString())  : '';
       if (model.activityStatus != 0) {
         /*用户的活动数据*/
         self.nickName = _map['nickName'];

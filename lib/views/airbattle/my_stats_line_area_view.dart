@@ -45,6 +45,7 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
       plotAreaBorderColor: Colors.transparent,
       // 控制和Y交叉方向的直线的样式
       primaryYAxis: NumericAxis(
+        maximum: 52,
           axisLine: AxisLine(width: 2, color: Colors.transparent), // 设置 X 轴轴线颜色和宽度
           labelPosition: ChartDataLabelPosition.outside,
           plotOffset: 0,
@@ -106,7 +107,7 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
             dataSource: widget.datas,
             pointColorMapper: (MyStatsModel data, _) => Colors.yellow,
             xValueMapper: (MyStatsModel data, _) => data.indexString,
-            yValueMapper: (MyStatsModel data, _) => data.speed),
+            yValueMapper: (MyStatsModel data, _) => data.speed > 50 ? 50 : data.speed),
         // AreaSeries(
         //   color: Colors.red,
         //     borderColor: Colors.blue, // 设置边界线颜色

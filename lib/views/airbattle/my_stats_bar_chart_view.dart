@@ -32,8 +32,6 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
       builder: (dynamic data, dynamic point, dynamic series, int pointIndex,
           int seriesIndex) {
         MyStatsModel model = data as MyStatsModel;
-        // selectItem(model);
-        // model.selected = true;
         return MyStatsTipView(dataModel: model);
       },
     );
@@ -69,7 +67,6 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
           majorTickLines: MajorTickLines(width: 0),
 
           //opposedPosition: true, // 将 Y 轴放置在图表的右侧
-
           // minimum: 0, // 设置 Y 轴的最小值为0
           // maximum: 50, // 设置 Y 轴的最大值
           // interval: 10, // 设置 Y 轴的间隔
@@ -101,13 +98,13 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
               borderRadius: BorderRadius.circular(5),
               // 设置柱状图的圆角
               dataSource: widget.datas,
-              width: 0.5,
+              width: 0.3,
               // 设置柱状图的宽度，值为 0.0 到 1.0 之间，表示相对于间距的比例
-              spacing: 0.2,
+              spacing: 0.0,
               //
               xValueMapper: (MyStatsModel data, _) =>
                   int.parse(data.indexString),
-              yValueMapper: (MyStatsModel data, _) => data.speed,
+              yValueMapper: (MyStatsModel data, _) => data.speed > 50 ? 50 : data.speed,
               pointColorMapper: (MyStatsModel data, _) => hexStringToColor('#F8850B'))
         ]);
   }

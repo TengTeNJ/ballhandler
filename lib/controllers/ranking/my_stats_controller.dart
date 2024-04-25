@@ -264,7 +264,7 @@ Widget BarView(List<MyStatsModel> datas) {
     return NoDataView();
   }
   int page = 1;
-  if (datas.length > 10) {
+  if (datas.length > 20) {
     page = 2;
   }
   return PageView.builder(

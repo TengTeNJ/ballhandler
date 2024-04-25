@@ -8,7 +8,7 @@ class TrainingModeListView extends StatefulWidget {
   GameModel model;
   final void Function()? scanBleList;
 
-  TrainingModeListView({this.scanBleList,required this.model});
+  TrainingModeListView({this.scanBleList, required this.model});
 
   @override
   State<TrainingModeListView> createState() => _TrainingModeListViewState();
@@ -40,7 +40,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(left: 16, top: 21),
+              margin: EdgeInsets.only(left: 16, top: 21,right: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,18 +53,21 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   SizedBox(
                     width: 8,
                   ),
-                  Text(
+                  Container(
+                      constraints: BoxConstraints(maxWidth: Constants.screenWidth(context) - 124),
+                      child: Text(
                     widget.model.modeName,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 22),
-                  ),
+                  )),
                   SizedBox(
                     width: 2,
                   ),
                   Container(
-                    // color: Colors.red,
+                      // color: Colors.red,
                       width: 16,
                       height: 16,
                       child: Image(
@@ -81,13 +84,17 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Constants.regularWhiteTextWidget('Easy -', 12),
-                  SizedBox(width: 4,),
+                  SizedBox(
+                    width: 4,
+                  ),
                   Row(
-                    children: List.generate(widget.model.difficultyLevel, (index) {
-                      return Image(image: AssetImage(
-                          'images/participants/five_star.png'),
-                          width: 8,
-                          height: 7.65,);
+                    children:
+                        List.generate(widget.model.difficultyLevel, (index) {
+                      return Image(
+                        image: AssetImage('images/participants/five_star.png'),
+                        width: 8,
+                        height: 7.65,
+                      );
                     }),
                   )
                 ],
@@ -97,96 +104,91 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
               margin: EdgeInsets.only(left: 16, right: 16, top: 3),
               height: 44,
               child: SingleChildScrollView(
-                child: Constants.regularGreyTextWidget(widget.model.modeRemark, 14,height: 1.2,textAlign: TextAlign.start),
+                child: Constants.regularGreyTextWidget(
+                    widget.model.modeRemark, 14,
+                    height: 1.2, textAlign: TextAlign.start),
               ),
             ),
             Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(left: 16, right: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(child: Container(
-                        child: Consumer<UserModel>(
-                            builder: (context, user, child) {
-                              return Row(
+              margin: EdgeInsets.only(left: 16, right: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(child: Container(
+                    child: Consumer<UserModel>(builder: (context, user, child) {
+                      return Row(
+                        children: [
+                          // Time
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image(
+                                image:
+                                    AssetImage('images/participants/time.png'),
+                                width: 16.8,
+                                height: 16.8,
+                              ),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  // Time
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    children: [
-                                      Image(
-                                        image:
-                                        AssetImage(
-                                            'images/participants/time.png'),
-                                        width: 16.8,
-                                        height: 16.8,
-                                      ),
-                                      SizedBox(
-                                        width: 6,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment
-                                            .start,
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .center,
-                                        children: [
-                                          Constants.regularWhiteTextWidget(
-                                              '00:${widget.model.trainTime}', 14),
-                                          Constants.regularWhiteTextWidget(
-                                              'Time', 12),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  // Participants
-                                  SizedBox(
-                                    width: 27,
-                                  ),
-                                  user.hasLogin == true
-                                      ? Row(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    children: [
-                                      Image(
-                                        image: AssetImage(
-                                            'images/participants/person.png'),
-                                        width: 16.8,
-                                        height: 16.8,
-                                      ),
-                                      SizedBox(
-                                        width: 6,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Constants.regularWhiteTextWidget(
-                                              '105', 14),
-                                          Constants.regularWhiteTextWidget(
-                                              'Participants', 12),
-                                        ],
-                                      )
-                                    ],
-                                  )
-                                      : Container(),
+                                  Constants.regularWhiteTextWidget(
+                                      '00:${widget.model.trainTime}', 14),
+                                  Constants.regularWhiteTextWidget('Time', 12),
                                 ],
-                              );
-                            }),
-                      )),
-                      Image(
-                        image: AssetImage('images/participants/next_green.png'),
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.fill,
-                      ),
-                    ],
+                              )
+                            ],
+                          ),
+                          // Participants
+                          SizedBox(
+                            width: 27,
+                          ),
+                          user.hasLogin == true
+                              ? Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image(
+                                      image: AssetImage(
+                                          'images/participants/person.png'),
+                                      width: 16.8,
+                                      height: 16.8,
+                                    ),
+                                    SizedBox(
+                                      width: 6,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Constants.regularWhiteTextWidget(
+                                            '105', 14),
+                                        Constants.regularWhiteTextWidget(
+                                            'Participants', 12),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              : Container(),
+                        ],
+                      );
+                    }),
+                  )),
+                  Image(
+                    image: AssetImage('images/participants/next_green.png'),
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.fill,
                   ),
-                )),
+                ],
+              ),
+            )),
           ],
         ),
       ),
