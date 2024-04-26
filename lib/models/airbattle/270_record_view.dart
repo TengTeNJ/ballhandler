@@ -1,15 +1,15 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
-class RecordSelectView extends StatefulWidget {
+class ErQilingRecordSelectView extends StatefulWidget {
   Function? onTap;
-  RecordSelectView({this.onTap});
+  ErQilingRecordSelectView({this.onTap});
 
   @override
-  State<RecordSelectView> createState() => _RecordSelectViewState();
+  State<ErQilingRecordSelectView> createState() => _ErQilingRecordSelectViewState();
 }
 
-class _RecordSelectViewState extends State<RecordSelectView> {
+class _ErQilingRecordSelectViewState extends State<ErQilingRecordSelectView> {
   bool _selectStatu = false;
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class _RecordSelectViewState extends State<RecordSelectView> {
           }
         });
       },
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

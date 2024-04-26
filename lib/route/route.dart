@@ -12,6 +12,8 @@ import 'package:code/controllers/participants/game_process_controller.dart';
 import 'package:code/controllers/participants/game_video_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/participants/p1_controller.dart';
+import 'package:code/controllers/participants/p3_game_process_controller.dart';
+import 'package:code/controllers/participants/p3_record_select_controller.dart';
 import 'package:code/controllers/participants/record_select_controller.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
 import 'package:code/controllers/participants/video_check_controller.dart';
@@ -48,6 +50,8 @@ class Routes {
   static const String recordselect = 'recordSelect'; // record选择页面
   static const String subsetting = 'subSetting'; // 二级设置页面
   static const String p1 = 'p1'; // 270度的P1模式介绍页面
+  static const String p3check = 'p3Check';
+  static const String process270 = '270Process';
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -107,6 +111,14 @@ class Routes {
       }
       case p1:
         return MaterialPageRoute(builder: (_) => P1Controller());
+      case p3check:{
+        final  CameraDescription camera = settings.arguments as CameraDescription;
+        return MaterialPageRoute(builder: (_)=> P3RecordSelectController(camera: camera,));
+      }
+      case process270:{
+        final  CameraDescription camera = settings.arguments as CameraDescription;
+        return MaterialPageRoute(builder: (_)=> P3GameProcesController(camera: camera,));
+      }
       default:
         return _errorRoute();
     }

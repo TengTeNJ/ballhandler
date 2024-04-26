@@ -2,15 +2,25 @@ import 'package:flutter/services.dart';
 
 class SystemUtil {
   /*锁定屏幕为竖屏*/
-  static lockScreenDirection(){
-    SystemChrome.setPreferredOrientations([
+  static Future<void> lockScreenDirection() {
+    return SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
     ]);
   }
+
+/*锁定屏幕为横屏幕*/
+  static Future<void> lockScreenHorizontalDirection() {
+    return SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+  }
+
   /*恢复屏幕可横竖屏切换*/
-  static resetScreenDirection(){
+  static Future<void> resetScreenDirection() {
 // 允许屏幕旋转
-    SystemChrome.setPreferredOrientations([
+    return SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,

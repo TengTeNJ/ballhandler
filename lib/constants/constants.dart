@@ -330,4 +330,6 @@ const Map<String,Map<String,String>> kGameSceneAndModelMap = {
     "4" : "Pentagon Challenge",
     "5" : "SMILE Challenge",
   }
-}; // 游戏场景和模式映射表
+};// 游戏场景和模式映射表
+
+const k270ProductImageScale = 1445/737; // 270产品图片宽高比

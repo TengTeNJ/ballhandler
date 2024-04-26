@@ -27,35 +27,7 @@ class P2Controller extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 16,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            GestureDetector(onTap: (){
-                              NavigatorUtil.pop();
-                            },child: Container(
-                              width: 36,
-                              height: 36,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(18),
-                                  color: hexStringToColor('#65657D')),
-                              child: Center(
-                                child: Image(
-                                  image: AssetImage(
-                                      'images/participants/back_grey.png'),
-                                  width: 16,
-                                  height: 12,
-                                ),
-                              ),
-                            ),)
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
+                        height: 68,
                       ),
                       Constants.mediumWhiteTextWidget('P2 Dynamic Gaameplay Mode', 22),
                       SizedBox(
@@ -159,6 +131,39 @@ class P2Controller extends StatelessWidget {
                     ],
                   ),
                 )),
+            Positioned(
+              top: 16,
+              left: 0,
+              child: Padding(
+                padding: EdgeInsets.only(left: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        print('----------');
+                        NavigatorUtil.pop();
+                      },
+                      child: Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            color: hexStringToColor('#65657D')),
+                        child: Center(
+                          child: Image(
+                            image:
+                            AssetImage('images/participants/back_grey.png'),
+                            width: 16,
+                            height: 12,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
             Positioned(
                 bottom: 44,
                 left: 24,
