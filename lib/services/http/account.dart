@@ -42,7 +42,10 @@ class Account {
       "password":password
     };
     final response = await HttpUtil.get('/api/login/loginByPwd', _data,showLoading: true);
-    return ApiResponse(success: response.success,data: User.fromJson(response.data['data']??{}));
+    if(response.success){
+      NSUserDefault.setKeyValue(kUserEmail, email);
+    }
+    return ApiResponse(success: response.success,data: response.success ? User.fromJson(response.data['data']) : null);
   }
 /*
 * 使用邮箱注册账号*/
@@ -98,13 +101,19 @@ class Account {
     NSUserDefault.setKeyValue<String>(kUserName, _response.data!.nickName);
     NSUserDefault.setKeyValue<String>(kAccessToken, _response.data!.memberToken);
     NSUserDefault.setKeyValue<String>(kAvatar, _response.data!.avatar);
-    UserProvider.of(context).userName = _response.data!.nickName;
-    UserProvider.of(context).userName = _response.data!.nickName;
+    NSUserDefault.setKeyValue<String>(kBrithDay, _response.data!.birthday);
+    NSUserDefault.setKeyValue<String>(kCountry, _response.data!.country);
+
+    UserProvider.of(context).userName = ISEmpty(_response.data!.nickName) ? '--' : _response.data!.nickName;
     UserProvider.of(context).token = _response.data!.memberToken;
     UserProvider.of(context).avatar = _response.data!.avatar;
     UserProvider.of(context).createTime = _response.data!.createTime;
+    UserProvider.of(context).country = ISEmpty(_response.data!.country) ? '--' : _response.data!.country;
+    UserProvider.of(context).brith = ISEmpty(_response.data!.birthday) ? '--' : _response.data!.birthday;
+
     final _email = await NSUserDefault.getValue(kUserEmail);
     UserProvider.of(context).email = _email ?? '';
+
     // 登录成功后绑定用户和推送的token
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     updateAccountInfo({

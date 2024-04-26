@@ -95,11 +95,10 @@ class Participants {
   }
 
   /*根据本人最好成绩的排名和速度*/
-  static Future<ApiResponse<HomeUsermodel>> queryRankData() async {
+  static Future<ApiResponse<HomeUsermodel>> queryRankData(int sceneId) async {
     // 获取场景ID
-    GameUtil gameUtil = GetIt.instance<GameUtil>();
     final _data = {
-      "sceneId": (gameUtil.gameScene.index + 1).toString(),
+      "sceneId": sceneId.toString(),
     };
     final response = await HttpUtil.get('/api/statistic/rankData', _data,
         showLoading: false);

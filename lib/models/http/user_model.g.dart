@@ -14,6 +14,8 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       memberToken: json['memberToken'] as String,
       createTime: json['createTime'] as String,
       realName: json['realName'] as String?,
+      birthday: json['birthday'] as String,
+      country:  json['country'] as String,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{

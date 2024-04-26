@@ -3,7 +3,8 @@ import 'package:code/services/http/participants.dart';
 import 'package:flutter/material.dart';
 
 class RankingCardView extends StatefulWidget {
-  const RankingCardView({super.key});
+  int index = 0;
+  RankingCardView({ required this.index});
 
   @override
   State<RankingCardView> createState() => _RankingCardViewState();
@@ -20,7 +21,7 @@ String _rankNumber = '--';
   }
 
   queryData() async{
-    final _response = await Participants.queryRankData();
+    final _response = await Participants.queryRankData(widget.index + 1);
     if(_response.success){
       _avgPace = _response.data!.avgPace ?? '--';
       _rankNumber = _response.data!.rankNumber ?? '--';

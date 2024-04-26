@@ -8,7 +8,10 @@ import 'package:code/views/ranking/ranking_card_page_view.dart';
 import 'package:code/views/ranking/ranking_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
+
+import '../../utils/global.dart';
 
 class RankingController extends StatefulWidget {
   const RankingController({super.key});
@@ -25,8 +28,17 @@ class _RankingControllerState extends State<RankingController> {
 
   void _pageViewOnChange(int index) {
     setState(() {
+      _page = 1;
+      _datas.clear();
       _currentPageIndex = index;
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      gameUtil.gameScene = [
+        GameScene.five,
+        GameScene.erqiling,
+        GameScene.threee
+      ][_currentPageIndex];
     });
+    queryRankList();
   }
 
   @override

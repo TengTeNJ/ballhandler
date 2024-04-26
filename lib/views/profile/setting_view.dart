@@ -5,11 +5,17 @@ import 'package:flutter/material.dart';
 class SettingView extends StatefulWidget {
   List<String> datas;
   List<String> detailTitles;
+  List<bool> showArrows;
 
   String title;
   Function? selectItem;
 
-  SettingView({required this.title, required this.datas,this.selectItem,required this.detailTitles});
+  SettingView(
+      {required this.title,
+      required this.datas,
+      this.selectItem,
+      required this.detailTitles,
+      required this.showArrows});
 
   @override
   State<SettingView> createState() => _SettingViewState();
@@ -29,10 +35,12 @@ class _SettingViewState extends State<SettingView> {
           children: List.generate(widget.datas.length, (index) {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: (){
+              onTap: () {
                 // 点击cell
-                if(widget.selectItem != null){
-                  widget.selectItem!(index);
+                if (widget.showArrows[index]) {
+                  if (widget.selectItem != null) {
+                    widget.selectItem!(index);
+                  }
                 }
               },
               child: Column(
@@ -47,22 +55,30 @@ class _SettingViewState extends State<SettingView> {
                       Constants.regularGreyTextWidget(widget.datas[index], 16),
                       Row(
                         children: [
-                          Constants.regularGreyTextWidget(widget.detailTitles[index], 16),
-                          SizedBox(width: 12,),
-                          Image(
-                            image: AssetImage('images/airbattle/next_white.png'),
+                          Constants.regularGreyTextWidget(
+                              widget.detailTitles[index], 16),
+                          SizedBox(
                             width: 12,
-                            height: 12,
-                          )
+                          ),
+                          widget.showArrows[index]
+                              ? Image(
+                                  image: AssetImage(
+                                      'images/airbattle/next_white.png'),
+                                  width: 12,
+                                  height: 12,
+                                )
+                              : Container()
                         ],
                       ),
-
                     ],
                   ),
                   SizedBox(
                     height: 16,
                   ),
-                  Container(color: hexStringToColor('#707070'),height: 0.5,),
+                  Container(
+                    color: hexStringToColor('#707070'),
+                    height: 0.5,
+                  ),
                 ],
               ),
             );
