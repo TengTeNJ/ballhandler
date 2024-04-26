@@ -104,66 +104,64 @@ class _GameOverDataViewState extends State<GameOverDataView> {
             height: 1,
             width: Constants.screenWidth(context) - 96,
           ),
-          Expanded(
+          gameUtil.selectRecord ? Expanded(
               child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              gameUtil.selectRecord
-                  ? GestureDetector(
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: FutureBuilder<String?>(
-                                future: VideoThumbnail.thumbnailFile(
-                                  video: widget.dataModel.videoPath ?? '',
-                                  imageFormat: ImageFormat.PNG,
-                                  maxWidth: 24,
-                                  quality: 50,
-                                ),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.done &&
-                                      snapshot.data != null) {
-                                    return Image.file(
-                                        width: 24,
-                                        height: 24,
-                                        File(snapshot.data!));
-                                  } else if (snapshot.error != null) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    return CircularProgressIndicator();
-                                  }
-                                },
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    child: Container(
+                      width: 24,
+                      height: 24,
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: FutureBuilder<String?>(
+                              future: VideoThumbnail.thumbnailFile(
+                                video: widget.dataModel.videoPath ?? '',
+                                imageFormat: ImageFormat.PNG,
+                                maxWidth: 24,
+                                quality: 50,
                               ),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                    snapshot.data != null) {
+                                  return Image.file(
+                                      width: 24,
+                                      height: 24,
+                                      File(snapshot.data!));
+                                } else if (snapshot.error != null) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return CircularProgressIndicator();
+                                }
+                              },
                             ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Image(
-                                image:
-                                    AssetImage('images/participants/play.png'),
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Image(
+                              image:
+                              AssetImage('images/participants/play.png'),
+                            ),
+                          )
+                        ],
                       ),
-                      onTap: () {
-                        print('播放视频');
-                        NavigatorUtil.push('videoPlay', arguments: {
-                          "model": widget.dataModel,
-                          "gameFinish": true
-                        });
-                      },
-                    )
-                  : Container(),
-              SizedBox(
-                width: 12,
-              ),
-              Constants.regularWhiteTextWidget('Training video', 14),
-            ],
-          )),
+                    ),
+                    onTap: () {
+                      print('播放视频');
+                      NavigatorUtil.push('videoPlay', arguments: {
+                        "model": widget.dataModel,
+                        "gameFinish": true
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Constants.regularWhiteTextWidget('Training video', 14),
+                ],
+              )) :Container(),
         ],
       ),
     );

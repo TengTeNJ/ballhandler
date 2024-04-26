@@ -105,7 +105,6 @@ class _ProfileControllerState extends State<ProfileController> {
                         );
 
                         if(croppedFile!=null){
-                          print('croppedFile path=${croppedFile.path}');
                           // 上传头像
                           final _response =  await Participants.uploadAsset(croppedFile!.path);
                           if(_response.success){
@@ -115,7 +114,6 @@ class _ProfileControllerState extends State<ProfileController> {
                               NSUserDefault.setKeyValue(kAvatar, _response.data ?? '');
                             }
                           }
-
                         }
                       },
                       child: ClipRRect(

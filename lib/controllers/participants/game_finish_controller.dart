@@ -142,16 +142,6 @@ class _GameFinishControllerState extends State<GameFinishController> {
                 child: Center(child: Constants.boldBlackTextWidget('SAVE', 16),),
               ),
             ),
-            GestureDetector(
-              onTap: ()async{
-              final _data =  await DatabaseHelper().getData(kDataBaseTableName);
-              },
-              child: Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                height: 32,
-                child: Center(child: Text('Delete',style: TextStyle(color: hexStringToColor('#B1B1B1')),),),
-              ),
-            )
           ],
         ),)
         // body: Center(child: GameOverDataView(dataModel: widget.dataModel,),),

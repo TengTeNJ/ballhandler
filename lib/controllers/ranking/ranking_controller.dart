@@ -45,12 +45,13 @@ class _RankingControllerState extends State<RankingController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    queryRankList();
   }
   /* 获取排行榜数据*/
   queryRankList({bool loadMore = false}) async{
     if(loadMore){
       TTToast.showLoading();
+    }else{
+      _datas.clear();
     }
     final _response = await Rank.queryRankListData(_page);
     if(_response.success && _response.data != null){

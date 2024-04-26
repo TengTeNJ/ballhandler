@@ -40,7 +40,6 @@ class ActivityModel {
     int days = remainingTime.inDays;
     int hours = remainingTime.inHours % 24;
     int minutes = remainingTime.inMinutes % 60;
-    print('${days}days${hours}hours${minutes}mins');
     return '${days} days ${hours} hours ${minutes} minutess';
   }
 
