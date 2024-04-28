@@ -17,6 +17,7 @@ String _rankNumber = '--';
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('--------initState------');
     queryData();
   }
 
@@ -87,5 +88,11 @@ String _rankNumber = '--';
         ],
       ),
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    print('--------dispose------');
+    super.dispose();
   }
 }

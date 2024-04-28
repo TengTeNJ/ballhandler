@@ -85,7 +85,7 @@ class Participants {
       "sceneId": (gameUtil.gameScene.index + 1).toString(),
       "trainScore": data.score,
       "trainTime": data.time,
-      "trainVideo": data.videoPath,
+      "trainVideo": data.videoPath ?? '',
       "trainIntegral": data.Integral,
       "trainType": gameUtil.isFromAirBattle ? 1 : 0,
     };
@@ -166,6 +166,10 @@ class Participants {
             : '--';
         model.videoPath =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '--';
+        model.sceneId =
+        !ISEmpty(_map['sceneId']) ? _map['sceneId'].toString() : '1';
+        model.modeId =
+        !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);

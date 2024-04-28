@@ -59,7 +59,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                       children: [
                         Image(
                             image: AssetImage('images/airbattle/message.png')),
-                        Positioned(
+                        ( _model.unreadCount != null && _model.unreadCount > 0) ? Positioned(
                             right: 0,
                             top: 0,
                             child: Container(
@@ -68,7 +68,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                               decoration: BoxDecoration(
                                   color: Colors.red,
                                   borderRadius: BorderRadius.circular(4)),
-                            ))
+                            )) :Container()
                       ],
                     ),
                   ),

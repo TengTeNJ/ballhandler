@@ -196,12 +196,14 @@ class Constants {
   static Text customTextWidget(String text, double fontSize, String color,
       {int? maxLines,
       TextAlign textAlign = TextAlign.center,
-      double height = 1.0}) {
+      double height = 1.0,
+        TextOverflow? overflow}) {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines ?? null,
       text,
       style: TextStyle(
+         overflow: overflow,
           height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.bold,

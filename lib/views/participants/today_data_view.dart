@@ -3,7 +3,9 @@ import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 
 class TodayDataView extends StatefulWidget {
@@ -16,7 +18,16 @@ class TodayDataView extends StatefulWidget {
 
 class _TodayDataViewState extends State<TodayDataView> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    String _scene = widget.gameOverModel.sceneId;
+    String _modelId = widget.gameOverModel.modeId;
+    String _title =
+        kGameSceneAndModelMap[_scene]![_modelId] ?? 'ZIGZAG Challenge';
     return Container(
       height: 86,
       width: Constants.screenWidth(context) - 32,
@@ -70,7 +81,10 @@ class _TodayDataViewState extends State<TodayDataView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Constants.customTextWidget('Training Mode', 14, '#B1B1B1'),
+                          Container(
+                            constraints:BoxConstraints(maxWidth: 110),
+                            child: Constants.customTextWidget(_title, 14, '#B1B1B1',maxLines: 1,overflow: TextOverflow.ellipsis),
+                          ),
                           Constants.regularWhiteTextWidget(widget.gameOverModel.endTime, 10),
                         ],
                       ),

@@ -84,7 +84,12 @@ class _SettingControllerState extends State<SettingController> {
                       });
                     } else if (index == 2) {
                       // 修改生日
-                      selectedDate =StringUtil.stringToDate( userModel.brith);
+                      print('userModel.brith=${userModel.brith}');
+                      if(userModel.brith.length < 4){
+                        selectedDate = DateTime.now();
+                      }else{
+                        selectedDate =StringUtil.stringToDate( userModel.brith);
+                      }
                       _selectDate(context);
                     }
                   },

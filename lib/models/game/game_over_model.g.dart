@@ -14,6 +14,8 @@ GameOverModel _$GameOverModelFromJson(Map<String, dynamic> json) =>
       rank: json['rank'] as String,
       endTime: json['endTime'] as String,
       videoPath: json['videoPath'] as String,
+      sceneId: json['sceneId'] as String,
+      modeId: json['sceneId'] as String,
     );
 
 Map<String, dynamic> _$GameOverModelToJson(GameOverModel instance) =>
@@ -24,4 +26,6 @@ Map<String, dynamic> _$GameOverModelToJson(GameOverModel instance) =>
       'rank': instance.rank,
       'endTime': instance.endTime,
       'videoPath': instance.videoPath,
+      'sceneId': instance.sceneId,
+      'modeId': instance.modeId
     };

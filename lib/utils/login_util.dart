@@ -52,7 +52,7 @@ class LoginUtil {
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
-        webAuthenticationOptions: WebAuthenticationOptions(clientId: 'com.potent.stickhandling',redirectUri:Uri.parse('https://potentraining.com'))
+        webAuthenticationOptions: WebAuthenticationOptions(clientId: 'com.potent.stickhandling',redirectUri:Uri.parse('https://hockey.fjcctv.com:4432/api/third/apple'))
       );
 
       final _map = {

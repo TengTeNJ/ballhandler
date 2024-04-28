@@ -31,7 +31,6 @@ class TBTextView extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-
               color: titleColor,
               fontFamily: 'SanFranciscoDisplay',
               fontSize: titleFontSize,

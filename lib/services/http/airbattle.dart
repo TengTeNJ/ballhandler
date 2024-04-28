@@ -1,5 +1,6 @@
 import 'package:code/models/airbattle/award_model.dart';
 import 'package:code/utils/http_util.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/string_util.dart';
 import '../../constants/constants.dart';
 
@@ -19,6 +20,7 @@ class AirBattleHomeModel {
   int activityAward = 0; // 获奖次数
   int activityCount = 0; // 参加活动的次数
   int activityIntegral = 0; // 活动得的积分
+  int unreadCount = 0; // 未读消息的数量
 }
 
 class ActivityModel {
@@ -63,6 +65,8 @@ class MessageModel {
   String createTime = ''; // 发送时间
   String messageDesc = ''; // 消息描述
   String messageTitle = '';
+  int isRead = 0; //  是否已读(0未读，1已读)
+  int pushId = 0; // 消息推送编号
 }
 
 class AwardDataModel {
@@ -82,8 +86,10 @@ class ActivityDetailModel {
   dynamic rewardPoint = 1;
   int activityStatus = 0; // 活动状态：0未开始 1正在进行 2已结束
   String endDate = ''; // 活动结束时间
+  int isJoin = 0; // 是否加入过活动0未加入，1已加入
   ChampionModel champion = ChampionModel();
   SelfActivityModel self = SelfActivityModel();
+
   String get timeDifferentString {
     String targetTime = this.endDate + ' 23:59';
     DateTime time = StringUtil.showTimeStringToDate(targetTime);
@@ -94,14 +100,13 @@ class ActivityDetailModel {
     print('${days}days${hours}hours${minutes}mins');
     return '${days} days ${hours} hours ${minutes} minutess';
   }
-
 }
 
 class ChampionModel {
   String championNickName = '';
   String championCountry = '';
-  dynamic championTrainTime = 0;
-  dynamic championAvgPace = 0.0;
+  dynamic championTrainTime = 45;
+  dynamic championAvgPace = '-';
   String championTrainScore = '0';
   int championRankNumber = 1;
   String championTrainVideo = '';
@@ -113,7 +118,7 @@ class SelfActivityModel {
   dynamic? trainTime = 0;
   dynamic? avgPace = 0.0;
   String? trainScore = '0';
-  int? rankNumber = 0;
+  dynamic? rankNumber = 0;
   String? trainVideo = '';
 }
 
@@ -241,6 +246,8 @@ class AirBattle {
           !ISEmpty(_map['activityCount']) ? _map['activityCount'] : 0;
       model.activityIntegral =
           !ISEmpty(_map['activityIntegral']) ? _map['activityIntegral'] : 0;
+      model.unreadCount =
+          !ISEmpty(_map['unreadCount']) ? _map['unreadCount'] : 0;
       return ApiResponse(success: response.success, data: model);
     } else {
       return ApiResponse(success: false);
@@ -327,33 +334,40 @@ class AirBattle {
     if (response.success && response.data['data'] != null) {
       final element = response.data['data'];
       final _map = element;
-      model.activityStatus = !ISEmpty(_map['activityStatus']) ? _map['activityStatus'] : 0;
-      model.activityBackground =
-      !ISEmpty(_map['activityBackground']) ? _map['activityBackground'].toString() : '';
+      model.activityStatus =
+          !ISEmpty(_map['activityStatus']) ? _map['activityStatus'] : 0;
+      model.activityBackground = !ISEmpty(_map['activityBackground'])
+          ? _map['activityBackground'].toString()
+          : '';
       model.activityIcon =
-      !ISEmpty(_map['activityIcon']) ? _map['activityIcon'].toString() : '';
+          !ISEmpty(_map['activityIcon']) ? _map['activityIcon'].toString() : '';
       model.activityName =
-      !ISEmpty(_map['activityName']) ? _map['activityName'].toString() : '';
-      model.activityRemark =
-      !ISEmpty(_map['activityRemark']) ? _map['activityRemark'].toString() : '';
+          !ISEmpty(_map['activityName']) ? _map['activityName'].toString() : '';
+      model.activityRemark = !ISEmpty(_map['activityRemark'])
+          ? _map['activityRemark'].toString()
+          : '';
       model.activityRule =
-      !ISEmpty(_map['activityRule']) ? _map['activityRule'].toString() : '';
+          !ISEmpty(_map['activityRule']) ? _map['activityRule'].toString() : '';
       model.activityTime =
-      !ISEmpty(_map['activityTime']) ? _map['activityTime'] : 45;
+          !ISEmpty(_map['activityTime']) ? _map['activityTime'] : 45;
       model.rewardMoney =
-      !ISEmpty(_map['rewardMoney']) ? _map['rewardMoney'] : 0;
+          !ISEmpty(_map['rewardMoney']) ? _map['rewardMoney'] : 0;
       model.rewardPoint =
-      !ISEmpty(_map['rewardPoint']) ? _map['rewardPoint'] : 0;
-      model.endDate =
-      !ISEmpty(_map['endDate']) ?  StringUtil.serviceStringToShowDateString(_map['endDate'].toString())  : '';
+          !ISEmpty(_map['rewardPoint']) ? _map['rewardPoint'] : 0;
+      model.endDate = !ISEmpty(_map['endDate'])
+          ? StringUtil.serviceStringToShowDateString(_map['endDate'].toString())
+          : '';
+      model.isJoin =
+      !ISEmpty(_map['isJoin']) ? _map['isJoin'] : 0;
       if (model.activityStatus != 0) {
         /*用户的活动数据*/
-        self.nickName = _map['nickName'];
+        self.nickName = await NSUserDefault.getValue(kUserName);
         self.country =
-            !ISEmpty(_map['country']) ? _map['country'].toString() : '';
-        self.avgPace = !ISEmpty(_map['avgPace']) ? _map['avgPace'] : 0.0;
-        self.trainScore = !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '0';
-        self.rankNumber = _map['rankNumber'];
+        await NSUserDefault.getValue(kCountry);
+        self.avgPace = !ISEmpty(_map['avgPace']) ? _map['avgPace'] : '-';
+        self.trainScore =
+            !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '-';
+        self.rankNumber = _map['rankNumber'] ?? '-';
         self.trainVideo =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
         model.self = self;
@@ -369,10 +383,10 @@ class AirBattle {
         championModel.championTrainTime =
             !ISEmpty(_map['championTrainTime']) ? _map['championTrainTime'] : 0;
         championModel.championAvgPace =
-            !ISEmpty(_map['championAvgPace']) ? _map['championAvgPace'] : 0.0;
+            !ISEmpty(_map['championAvgPace']) ? _map['championAvgPace'].toString() : '0';
         championModel.championTrainScore = !ISEmpty(_map['championTrainScore'])
             ? _map['championTrainScore'].toString()
-            : '0';
+            : '-';
         championModel.championCountry = !ISEmpty(_map['championCountry'])
             ? _map['championCountry'].toString()
             : '';
@@ -388,5 +402,21 @@ class AirBattle {
     } else {
       return ApiResponse(success: false);
     }
+  }
+
+/*消息阅读接口*/
+  static Future<ApiResponse> readMessage(int pushId) async {
+    final response = await HttpUtil.get(
+        '/api/message/detail', {"pushId": pushId},
+        showLoading: false);
+    return ApiResponse(success: response.success);
+  }
+
+  /*报名参加活动接口*/
+  static Future<ApiResponse> joinActivity(int activityId) async {
+    final response = await HttpUtil.post(
+        '/api/activity/join', {"activityId": activityId},
+        showLoading: true);
+    return ApiResponse(success: response.success);
   }
 }

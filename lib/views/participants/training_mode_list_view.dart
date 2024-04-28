@@ -76,7 +76,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                 ],
               ),
             ),
-            Container(
+            widget.model.difficultyLevel >0 ?  Container(
               width: Constants.screenWidth(context) - 32,
               height: 20,
               margin: EdgeInsets.only(top: 10, left: 16, right: 16),
@@ -99,7 +99,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   )
                 ],
               ),
-            ),
+            ) :SizedBox(height: 14,),
             Container(
               margin: EdgeInsets.only(left: 16, right: 16, top: 3),
               height: 44,

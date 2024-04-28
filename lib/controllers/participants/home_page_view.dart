@@ -24,7 +24,7 @@ class HomePageController extends StatefulWidget {
 class _HomePageViewState extends State<HomePageController> {
   int _currentIndex = 0;
   late  final initialPage ;
-  PageController _pageController = PageController();
+ late PageController _pageController;
   late StreamSubscription subscription;
   final List<Widget> _pageViews = [
     HomeBodyView(),
@@ -49,6 +49,7 @@ class _HomePageViewState extends State<HomePageController> {
     super.initState();
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     _currentIndex = gameUtil.gameScene.index;
+    _pageController = PageController(initialPage: _currentIndex);
     _pageController.addListener(() {
       // 获取当前滑动页面的索引 (取整)
       int currentpage = _pageController.page!.round();
@@ -63,9 +64,6 @@ class _HomePageViewState extends State<HomePageController> {
         });
         getHomeData(context);
       }
-    });
-    Future.delayed(Duration(milliseconds: 100),(){
-      _pageController.jumpToPage(_currentIndex);
     });
     // 监听登录成功
     subscription = EventBus().stream.listen((event) {

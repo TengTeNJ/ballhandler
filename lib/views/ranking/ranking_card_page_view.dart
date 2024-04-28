@@ -17,13 +17,14 @@ class _RankingCardPageViewState extends State<RankingCardPageView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _pageController = PageController()
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+
+    _pageController = PageController(initialPage:gameUtil.gameScene.index)
     ..addListener(() {
       int currentpage = _pageController.page!.round();
       widget.onChange(currentpage);
     });
 
-    GameUtil gameUtil = GetIt.instance<GameUtil>();
     Future.delayed(Duration(milliseconds: 100),(){
       _pageController.jumpToPage(gameUtil.gameScene.index);
       widget.onChange(gameUtil.gameScene.index);
@@ -32,7 +33,8 @@ class _RankingCardPageViewState extends State<RankingCardPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(itemBuilder: (context,index){
+    return PageView.builder(
+      itemBuilder: (context,index){
       return Padding(padding: EdgeInsets.only(left: 16,right: 16,top: 16,bottom: 10),child: RankingCardView(index: index,),);
     },itemCount: 3,controller: _pageController,);
   }

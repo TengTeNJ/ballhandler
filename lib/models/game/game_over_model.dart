@@ -11,6 +11,9 @@ class GameOverModel {
   String endTime = 'Mar 31.2024 10.30';
   String videoPath = ''; //  视频路径
   String Integral = '1'; // 积分，默认为1
+  String sceneId = '1';
+  String modeId = '1';
+
   factory GameOverModel.fromJson(Map<String, dynamic> json) =>
       _$GameOverModelFromJson(json);
 
@@ -22,5 +25,7 @@ class GameOverModel {
       this.avgPace = '0.0',
       this.rank = '-',
       this.endTime = '',
-      this.videoPath = ''});
+      this.videoPath = '',
+      this.sceneId = '1',
+      this.modeId = '1'});
 }

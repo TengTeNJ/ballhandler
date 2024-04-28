@@ -1,6 +1,5 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/views/airbattle/my_activity_list_view.dart';
-import 'package:code/views/participants/today_data_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 

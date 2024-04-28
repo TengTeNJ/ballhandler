@@ -167,9 +167,9 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                         detailModel.champion.championNickName,
                                     area: detailModel.champion.championCountry,
                                     birthday: 'JULY 2024 10:10',
-                                    rank: 1,
-                                    score: double.parse(detailModel
-                                        .champion.championTrainScore),
+                                    rank: '1',
+                                    score: detailModel
+                                        .champion.championTrainScore,
                                     avgPace:
                                         detailModel.champion.championAvgPace),
                               ),
@@ -195,9 +195,8 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                         detailModel.self.nickName ?? 'Guest',
                                     area: detailModel.self.country ?? '',
                                     birthday: 'JULY 2024 10:10',
-                                    rank: detailModel.self.rankNumber ?? 0,
-                                    score: double.parse(
-                                        detailModel.self.trainScore ?? '0'),
+                                    rank: detailModel.self.rankNumber ?? '-',
+                                    score: detailModel.self.trainScore ?? '-',
                                     avgPace: detailModel.self.avgPace),
                               ),
                             ],
@@ -206,52 +205,58 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                     SizedBox(
                       height: 60,
                     ),
+
+                    detailModel.activityStatus == 2
+                        ? _endButtonView(detailModel)
+                        : GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () async {
+                        // List<CameraDescription> cameras =
+                        //     await availableCameras();
+                        TTDialog.joinAirBattle(context, () async{
+                          final _response = await  AirBattle.joinActivity(widget.model.activityId);
+                          if(_response.success){
+                            detailModel.isJoin = 1;
+                            setState(() {
+
+                            });
+                            GameUtil gameUtil = GetIt.instance<GameUtil>();
+                            gameUtil.isFromAirBattle = true;
+                            gameUtil.activityModel = widget.model;
+                            NavigatorUtil.push(Routes.recordselect);
+                          }
+
+                        }, () {
+                          NavigatorUtil.push(Routes.setting);
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            left: 16, right: 16, bottom: 32),
+                        height: 56,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              hexStringToColor('#EF8914'),
+                              hexStringToColor('#E53F1D'),
+                            ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Constants.boldWhiteTextWidget(
+                                 detailModel.isJoin == 0 ? 'JOIN' :  'End in ${detailModel.timeDifferentString}',
+                              16),
+                        ),
+                      ),
+                    )
                   
                   ],
                 ),
               )),
-          Positioned(
-            bottom: 32,
-              left: 16,
-              right: 16,
-              child:   detailModel.activityStatus != 1
-              ? _endButtonView(detailModel)
-              : GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () async {
-              // List<CameraDescription> cameras =
-              //     await availableCameras();
-              TTDialog.joinAirBattle(context, () {
-                GameUtil gameUtil = GetIt.instance<GameUtil>();
-                gameUtil.isFromAirBattle = true;
-                gameUtil.activityModel = widget.model;
-                NavigatorUtil.push(Routes.recordselect);
-              }, () {
-                NavigatorUtil.push(Routes.setting);
-              });
-            },
-            child: Container(
-              margin: EdgeInsets.only(
-                  left: 16, right: 16, bottom: 32),
-              height: 56,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    hexStringToColor('#EF8914'),
-                    hexStringToColor('#E53F1D'),
-                  ],
-                ),
-              ),
-              child: Center(
-                child: Constants.boldWhiteTextWidget(
-                    'End in ${detailModel.timeDifferentString}',
-                    16),
-              ),
-            ),
-          ))
+
         ],
       ),
     );

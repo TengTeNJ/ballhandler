@@ -15,9 +15,9 @@ class AirBattleDataView extends StatelessWidget {
   String userName;
   String area;
   String birthday;
-  int rank;
-  double score;
-  double avgPace;
+  String rank;
+  String score;
+  String avgPace;
 
   AirBattleDataView(
       {required this.userName,
@@ -53,59 +53,65 @@ class AirBattleDataView extends StatelessWidget {
                           child: Constants.regularWhiteTextWidget('View', 10))))
               : Container(),
           Positioned(
-              left: 24,
-              top: 6,
-              bottom: 6,
-              right: 56,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image(
-                      image: AssetImage(grade == Grade.gold
-                          ? "images/airbattle/gold.png"
-                          : "images/airbattle/icon.png"),
-                      width: 48,
-                      height: 48,
-                    ),
-                    SizedBox(
-                      width: 24,
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            left: 24,
+            top: 6,
+            bottom: 6,
+            right: 56,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image(
+                  image: AssetImage(grade == Grade.gold
+                      ? "images/airbattle/gold.png"
+                      : "images/airbattle/icon.png"),
+                  width: 48,
+                  height: 48,
+                ),
+                SizedBox(
+                  width: 24,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Constants.regularWhiteTextWidget(userName, 14),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Constants.regularGreyTextWidget(area, 10),
-                              SizedBox(
-                                width: 6,
-                              ),
-                              Constants.regularGreyTextWidget(birthday, 10),
-                            ],
+                          Constants.regularWhiteTextWidget(userName, 14),
+                          SizedBox(
+                            width: 4,
                           ),
-                         Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TBTextView(
-                                  title: rank.toString(), detailTitle: 'Rank'),
-                              TBTextView(
-                                  title: score.toString(),
-                                  detailTitle: 'Score'),
-                              TBTextView(
-                                  title: avgPace.toString(),
-                                  detailTitle: 'Avg.Pace'),
-                            ],
+                          Constants.regularGreyTextWidget(area, 10),
+                          SizedBox(
+                            width: 6,
                           ),
+                          Constants.regularGreyTextWidget(birthday, 10),
                         ],
-                      ),)
-                  ],
-                ),),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TBTextView(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              title: rank.toString(),
+                              detailTitle: 'Rank'),
+                          TBTextView(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              title: score.toString(),
+                              detailTitle: 'Score'),
+                          TBTextView(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              title: avgPace.toString(),
+                              detailTitle: 'Avg.Pace'),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );

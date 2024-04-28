@@ -9,6 +9,7 @@ import 'package:code/services/http/profile.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/views/profile/profile_grid_list_view.dart';
 import 'package:code/views/profile/progress_data_view.dart';
 import 'package:code/views/profile/reward_icons_view.dart';
@@ -143,7 +144,7 @@ class _ProfileControllerState extends State<ProfileController> {
                     SizedBox(width: 18,),
                     Container(height: 10,width: 1,color: hexStringToColor('#707070'),),
                     SizedBox(width: 18,),
-                    Constants.customTextWidget(userModel.brith, 16,'#B1B1B1'),
+                    Constants.customTextWidget(StringUtil.serviceStringToShowDateString(userModel.brith), 16,'#B1B1B1'),
                   ],
                 ),
                 SizedBox(height: 32,),
