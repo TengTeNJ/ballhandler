@@ -11,7 +11,7 @@ class IntegralModel {
   int sceneId = 1; // 场景编号
   String sourceType = 'Daly Train'; // 积分来源类型
   String get modelName {
-    String modelId = (this.modeId + 1).toString();
+    String modelId = (this.modeId).toString();
     String sceneId = this.sceneId.toString();
     String? name = kGameSceneAndModelMap[sceneId]?[modelId];
     return name ?? '';

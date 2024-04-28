@@ -4,6 +4,8 @@ import 'package:code/views/airbattle/activity_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
+import '../../services/http/profile.dart';
+import '../profile/integral_controller.dart';
 
 class AirBattleHomeController extends StatefulWidget {
   const AirBattleHomeController({super.key});
@@ -130,25 +132,37 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                   ),
                 ),
                 SizedBox(width: 8,),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Constants.darkControllerColor),
-                  width: (Constants.screenWidth(context) - 48) / 3,
-                  height: 100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
-                        child: Constants.regularGreyTextWidget(
-                            'Activity Points', 12), ),
-                      Padding(padding: EdgeInsets.only(left: 12, top: 12),
-                        child: Constants.mediumWhiteTextWidget(
-                            _model.activityIntegral.toString(), 40), ),
-                    ],
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async{
+                    final _response = await Profile.queryIMyAccountInfoData();
+                    if(_response.success && _response.data != null){
+                      MyAccountDataModel _model = _response.data!;
+                      NavigatorUtil.present(IntegralController(model: _model,));
+                    }
+
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Constants.darkControllerColor),
+                    width: (Constants.screenWidth(context) - 48) / 3,
+                    height: 100,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                          child: Constants.regularGreyTextWidget(
+                              'Activity Points', 12), ),
+                        Padding(padding: EdgeInsets.only(left: 12, top: 12),
+                          child: Constants.mediumWhiteTextWidget(
+                              _model.activityIntegral.toString(), 40), ),
+                      ],
+                    ),
                   ),
                 ),
+
               ],
             ),
           ),

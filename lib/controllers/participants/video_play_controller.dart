@@ -27,9 +27,7 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.fromGameFinishPage == true) {
       queryRankBaseScore();
-    }
   }
 
   queryRankBaseScore() async {

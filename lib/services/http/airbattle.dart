@@ -108,7 +108,7 @@ class ChampionModel {
   dynamic championTrainTime = 45;
   dynamic championAvgPace = '-';
   String championTrainScore = '0';
-  int championRankNumber = 1;
+  dynamic championRankNumber = '1';
   String championTrainVideo = '';
 }
 
@@ -118,7 +118,7 @@ class SelfActivityModel {
   dynamic? trainTime = 0;
   dynamic? avgPace = 0.0;
   String? trainScore = '0';
-  dynamic? rankNumber = 0;
+  dynamic? rankNumber = '-';
   String? trainVideo = '';
 }
 
@@ -367,7 +367,7 @@ class AirBattle {
         self.avgPace = !ISEmpty(_map['avgPace']) ? _map['avgPace'] : '-';
         self.trainScore =
             !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '-';
-        self.rankNumber = _map['rankNumber'] ?? '-';
+        self.rankNumber = _map['rankNumber'].toString()?? '-';
         self.trainVideo =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
         model.self = self;
@@ -391,7 +391,7 @@ class AirBattle {
             ? _map['championCountry'].toString()
             : '';
         championModel.championRankNumber = !ISEmpty(_map['championRankNumber'])
-            ? _map['championRankNumber']
+            ? _map['championRankNumber'].toString()
             : '1';
         championModel.championTrainVideo = !ISEmpty(_map['championTrainVideo'])
             ? _map['championTrainVideo'].toString()

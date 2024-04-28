@@ -25,7 +25,7 @@ class _ProfileGridListViewState extends State<ProfileGridListView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ProfileGridView(assetPath: 'images/profile/training.png',title: (widget.model.trainTime/60).toStringAsFixed(2) ,unit: 'Pts',des: 'Time on Trainings',),
+            ProfileGridView(assetPath: 'images/profile/training.png',title: (widget.model.trainTime/60).toStringAsFixed(2) ,unit: 'Min',des: 'Time on Trainings',),
             ProfileGridView(assetPath: 'images/profile/home.png',title: widget.model.trainCount.toString() ,unit: '',des: 'Trainings',),
           ],
         ),

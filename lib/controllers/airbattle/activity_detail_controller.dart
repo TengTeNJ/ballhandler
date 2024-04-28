@@ -213,22 +213,32 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                       onTap: () async {
                         // List<CameraDescription> cameras =
                         //     await availableCameras();
-                        TTDialog.joinAirBattle(context, () async{
-                          final _response = await  AirBattle.joinActivity(widget.model.activityId);
-                          if(_response.success){
-                            detailModel.isJoin = 1;
-                            setState(() {
 
-                            });
-                            GameUtil gameUtil = GetIt.instance<GameUtil>();
-                            gameUtil.isFromAirBattle = true;
-                            gameUtil.activityModel = widget.model;
-                            NavigatorUtil.push(Routes.recordselect);
-                          }
+                        if( detailModel.isJoin == 0){
+                          // 未加入则先加入游戏
+                          TTDialog.joinAirBattle(context, () async{
+                            final _response = await  AirBattle.joinActivity(widget.model.activityId);
+                            if(_response.success){
+                              detailModel.isJoin = 1;
+                              setState(() {
 
-                        }, () {
-                          NavigatorUtil.push(Routes.setting);
-                        });
+                              });
+                              GameUtil gameUtil = GetIt.instance<GameUtil>();
+                              gameUtil.isFromAirBattle = true;
+                              gameUtil.activityModel = widget.model;
+                              NavigatorUtil.push(Routes.recordselect);
+                            }
+
+                          }, () {
+                            NavigatorUtil.push(Routes.setting);
+                          });
+                        }else{
+                          GameUtil gameUtil = GetIt.instance<GameUtil>();
+                          gameUtil.isFromAirBattle = true;
+                          gameUtil.activityModel = widget.model;
+                          NavigatorUtil.push(Routes.recordselect);
+                        }
+
                       },
                       child: Container(
                         margin: EdgeInsets.only(

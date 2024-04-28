@@ -34,14 +34,17 @@ class _HomePageViewState extends State<HomePageController> {
 
   // 获取用户首页的数据
   getHomeData(BuildContext context) {
-    Participants.getHomeUserData().then((value) {
-      if (value.success) {
-        UserProvider.of(context).avgPace = value.data!.avgPace;
-        UserProvider.of(context).totalTimes = value.data!.trainCount;
-        UserProvider.of(context).totalScore = value.data!.trainScore;
-        UserProvider.of(context).totalTime = value.data!.trainTime;
-      }
-    });
+    // 登录了则请求相关数据
+    if(UserProvider.of(context).hasLogin){
+      Participants.getHomeUserData().then((value) {
+        if (value.success) {
+          UserProvider.of(context).avgPace = value.data!.avgPace;
+          UserProvider.of(context).totalTimes = value.data!.trainCount;
+          UserProvider.of(context).totalScore = value.data!.trainScore;
+          UserProvider.of(context).totalTime = value.data!.trainTime;
+        }
+      });
+    }
   }
 
   @override
