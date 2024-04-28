@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
+import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
 import 'package:code/views/participants/record_select_view.dart';
 import 'package:code/widgets/base/base_image.dart';
@@ -85,7 +86,7 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
               SizedBox(
                 height: 16,
               ),
-              gameUtil.isFromAirBattle
+    ( gameUtil.isFromAirBattle || !UserProvider.of(context).hasLogin)
                   ? Container()
                   : Container(
                       height: 36,

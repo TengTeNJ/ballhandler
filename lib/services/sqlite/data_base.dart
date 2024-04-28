@@ -53,18 +53,11 @@ class DatabaseHelper {
         avgPace TEXT,
         rank TEXT,
         endTime TEXT,
-        videoPath TEXT
+        videoPath TEXT,
+        sceneId TEXT,
+         modeId TEXT
       )
     ''');
-  }
-
-  /*游戏视频*/
-  Future<Database> initVideoDatabase() async {
-    String path = join(await getDatabasesPath(), 'my_table.db');
-    return openDatabase(path, version: 1, onCreate: _onCreateVideo);
-  }
-
-  Future<void> _onCreateVideo(Database db, int version) async {
     await db.execute('''
       CREATE TABLE ${kDataBaseTVideoableName}(
         id INTEGER PRIMARY KEY,
@@ -73,11 +66,29 @@ class DatabaseHelper {
     ''');
   }
 
+  /*游戏视频*/
+  Future<Database> initVideoDatabase() async {
+    String path = join(await getDatabasesPath(), 'my_table.db');
+    return openDatabase(path, version: 1, onCreate: _onCreate);
+  }
+
+  // Future<void> _onCreateVideo(Database db, int version) async {
+  //   await db.execute('''
+  //     CREATE TABLE ${kDataBaseTVideoableName}(
+  //       id INTEGER PRIMARY KEY,
+  //       videoPath TEXT
+  //     )
+  //   ''');
+  // }
+
+  /*插入游戏数据*/
   Future<int> insertData(String table, GameOverModel data) async {
     Database db = await database;
+    print('插入游戏数据=${ data.toJson}');
     return await db.insert(table, data.toJson());
   }
 
+  /*插入游戏视频路径数据*/
   Future<int> insertVideoData(String table, String data) async {
     Database db = await videoDatabase;
     return await db.insert(table, {"videoPath": data});
@@ -85,7 +96,7 @@ class DatabaseHelper {
 
   Future<int> updateData(
       String table, Map<String, dynamic> data, int id) async {
-    Database db = await database;
+      Database db = await database;
     return await db.update(table, data, where: 'id = ?', whereArgs: [id]);
   }
 

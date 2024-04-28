@@ -114,6 +114,8 @@ class _GameFinishControllerState extends State<GameFinishController> {
                   // 未登录 数据放入缓存
                   // 保存游戏数据到本地
                   DatabaseHelper dbHelper = DatabaseHelper();
+                  widget.dataModel.modeId = gameUtil.modelId.toString();
+                  widget.dataModel.sceneId = (gameUtil.gameScene.index + 1).toString();
                   dbHelper.insertData(kDataBaseTableName, widget.dataModel);
                   NavigatorUtil.pop();
                 }
