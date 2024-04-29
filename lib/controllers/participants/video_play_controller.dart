@@ -4,6 +4,7 @@ import 'package:code/services/http/participants.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:code/views/participants/player_bottom_view.dart';
+import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:code/widgets/video/video_play_view.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -52,8 +53,8 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
           Positioned(
             left: 0,
               right: 0,
-              top: 0,
-              bottom: 0,
+              top: 100,
+              bottom: 130,
               child: VideoPlayView(
             videoPath: widget.model.videoPath ?? '',
           )),
@@ -109,7 +110,7 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
           Positioned(
               left: 16,
               right: 16,
-              bottom: 44,
+              bottom: 0,
               child: PlayerBottomView(model: widget.model))
         ],
       ),

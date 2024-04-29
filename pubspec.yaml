@@ -69,6 +69,7 @@ dependencies:
   chewie: ^1.8.1
   auto_size_text: ^3.0.0
   image_cropper: ^1.5.1
+  responsive_grid_list: ^1.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -17,6 +17,7 @@ import 'package:code/controllers/participants/p3_record_select_controller.dart';
 import 'package:code/controllers/participants/record_select_controller.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
 import 'package:code/controllers/participants/video_check_controller.dart';
+import 'package:code/controllers/participants/video_list_controller.dart';
 import 'package:code/controllers/participants/video_play_controller.dart';
 import 'package:code/controllers/profile/Integral_detail_controller.dart';
 import 'package:code/controllers/profile/setting_controller.dart';
@@ -52,6 +53,7 @@ class Routes {
   static const String p1 = 'p1'; // 270度的P1模式介绍页面
   static const String p3check = 'p3Check';
   static const String process270 = '270Process';
+  static const String videolist = 'videoList'; // 视频列表页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -119,6 +121,8 @@ class Routes {
         final  CameraDescription camera = settings.arguments as CameraDescription;
         return MaterialPageRoute(builder: (_)=> P3GameProcesController(camera: camera,));
       }
+      case videolist:
+        return MaterialPageRoute(builder: (_) => VideoListController());
       default:
         return _errorRoute();
     }

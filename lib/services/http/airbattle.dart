@@ -375,7 +375,7 @@ class AirBattle {
         self.avgPace = !ISEmpty(_map['avgPace']) ? _map['avgPace'] : '-';
         self.trainScore =
             !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '-';
-        self.rankNumber = _map['rankNumber'].toString()?? '-';
+        self.rankNumber =  !ISEmpty(_map['rankNumber']) ? _map['rankNumber'].toString() : '-';
         self.trainVideo =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
         model.self = self;

@@ -46,6 +46,21 @@ class MyAccountDataModel {
   dynamic trainTime = 1; // 训练总时常
   int upperLimit = 1; // 等级积分上限
 }
+class VideoModel{
+  String avgPace = '0.0';
+  String createTime = '--';
+  String modeId = '1';
+  String sceneId = '1';
+  String trainId = '1';
+  String trainScore = '0';
+  String trainTime = '45';
+  String trainVideo = '';
+}
+
+class VideoDataModel {
+  List<VideoModel> data = [];
+  int count = 0;
+}
 
 class Profile {
   /*获取积分明细列表*/
@@ -164,6 +179,75 @@ class Profile {
     } else {
       return ApiResponse(success: false);
     }
+  }
+
+  /*查询用户下的视频列表*/
+  static Future<ApiResponse> queryUserVideoListData(int page) async {
+    final _data = {
+      "limit": (kPageLimit * 2).toString(),
+      "page": page.toString(),
+    };
+    final response = await HttpUtil.get('/api/train/video/list', _data,
+        showLoading: true);
+    List<VideoModel> _list = [];
+    VideoDataModel _model = VideoDataModel();
+    final _count = response.data['count'];
+    _model.count = _count;
+    if (response.success && response.data['data'] != null) {
+      final _array = response.data['data'] as List;
+      _array.forEach((element) {
+        VideoModel model = VideoModel();
+        final _map = element;
+        model.avgPace = !ISEmpty(_map['avgPace'])
+            ? _map['avgPace'].toString()
+            : '--';
+        model.createTime =
+        !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
+        model.modeId =
+        !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
+        model.sceneId = !ISEmpty(_map['sceneId']) ? _map['sceneId'].toString() : '1';
+        model.trainId =
+        !ISEmpty(_map['trainId']) ? _map['trainId'].toString() : '1';
+        model.trainScore =
+        !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '--';
+        model.trainTime =
+        !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
+        model.trainVideo =
+        !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
+        _list.add(model);
+      });
+      _model.data = _list;
+      return ApiResponse(success: response.success, data: _model);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+/*查询用户下的视频个数*/
+  static Future<ApiResponse<int>> queryUserVideoCountData() async {
+    final _data = {
+      "limit": '1',
+      "page": '1',
+    };
+    final response = await HttpUtil.get('/api/train/video/list', _data,
+        showLoading: true);
+    VideoDataModel _model = VideoDataModel();
+    if (response.success && response.data['data'] != null) {
+      final _count = response.data['count'];
+      _model.count = _count;
+      return ApiResponse(success: response.success, data: _count);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+  static Future<ApiResponse<int>> deleteVideo(String trainId) async {
+    final _data = {
+      "trainId": trainId,
+    };
+    final response = await HttpUtil.post('/api/train/video/delete', _data,
+        showLoading: true);
+      return ApiResponse(success: response.success);
   }
 
 }

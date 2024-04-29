@@ -67,10 +67,14 @@ class _SettingControllerState extends State<SettingController> {
               ),
               Consumer<UserModel>(builder: (context, userModel, child) {
                 return SettingView(
-                  showArrows: [true,false,true],
+                  showArrows: [true, false, true],
                   title: 'Edit Profile',
                   datas: ['Username', 'Email', 'Birthday'],
-                  detailTitles: [userModel.userName, userModel.email, StringUtil.serviceStringToShowDateString(userModel.brith)],
+                  detailTitles: [
+                    userModel.userName,
+                    userModel.email,
+                    StringUtil.serviceStringToShowDateString(userModel.brith)
+                  ],
                   selectItem: (index) {
                     if (index == 0) {
                       // 修改昵称
@@ -85,10 +89,10 @@ class _SettingControllerState extends State<SettingController> {
                     } else if (index == 2) {
                       // 修改生日
                       print('userModel.brith=${userModel.brith}');
-                      if(userModel.brith.length < 4){
+                      if (userModel.brith.length < 4) {
                         selectedDate = DateTime.now();
-                      }else{
-                        selectedDate =StringUtil.stringToDate( userModel.brith);
+                      } else {
+                        selectedDate = StringUtil.stringToDate(userModel.brith);
                       }
                       _selectDate(context);
                     }
@@ -99,16 +103,20 @@ class _SettingControllerState extends State<SettingController> {
                 height: 32,
               ),
               SettingView(
-                showArrows: [true,true],
-                title: 'Date',
-                datas: ['Video', 'Contact'],
-                detailTitles: ['', ''],
-              ),
+                  showArrows: [true, true],
+                  title: 'Date',
+                  datas: ['Video', 'Contact'],
+                  detailTitles: ['', ''],
+                  selectItem: (index) {
+                    if(index == 0){
+                      NavigatorUtil.push(Routes.videolist);
+                    }
+                  }),
               SizedBox(
                 height: 32,
               ),
               SettingView(
-                showArrows: [true,true],
+                showArrows: [true, true],
                 title: 'Privacy',
                 detailTitles: ['', ''],
                 datas: ['Private Profile', 'Activity Feed Privacy'],

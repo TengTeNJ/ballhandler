@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
-import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';

@@ -98,9 +98,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
             SizedBox(height: Constants.screenHeight(context)*0.05,),
             GestureDetector(
               onTap: () async{
-                print('save data');
                 if(UserProvider.of(context).hasLogin){
-                  print('widget.dataModel.videoPath.length=${widget.dataModel.videoPath.length}');
                   if(widget.dataModel.videoPath.length > 0){
                     final _urlResponse =  await Participants.uploadAsset(widget.dataModel.videoPath);
                     widget.dataModel.videoPath = _urlResponse.data ?? '';
