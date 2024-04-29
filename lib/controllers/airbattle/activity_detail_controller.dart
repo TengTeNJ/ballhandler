@@ -8,6 +8,7 @@ import 'package:code/views/airbattle/airbattle_detail_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import '../../services/http/airbattle.dart';
+import '../../utils/blue_tooth_manager.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 import '../../widgets/base/base_image.dart';
@@ -220,6 +221,11 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                               setState(() {
 
                               });
+                              // 如果未连接设备 则先提示连接设备
+                              if (BluetoothManager().conectedDeviceCount.value == 0) {
+                                TTDialog.bleListDialog(context);
+                                return;
+                              }
                               GameUtil gameUtil = GetIt.instance<GameUtil>();
                               gameUtil.isFromAirBattle = true;
                               gameUtil.activityModel = widget.model;
@@ -233,12 +239,17 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                           });
                         }else{
                           // 已经报名过 直接跳转到确认页面
+                          // 如果未连接设备 则先提示连接设备
+                          if (BluetoothManager().conectedDeviceCount.value == 0) {
+                            TTDialog.bleListDialog(context);
+                            return;
+                          }
                           GameUtil gameUtil = GetIt.instance<GameUtil>();
                           gameUtil.isFromAirBattle = true;
                           gameUtil.activityModel = widget.model;
                           gameUtil.modelId = int.parse(detailModel.modeId);
                           gameUtil.gameScene = [GameScene.five,GameScene.threee,GameScene.erqiling][int.parse(detailModel.sceneId) - 1];
-                          NavigatorUtil.push(Routes.recordselect);
+                         NavigatorUtil.popAndThenPush(Routes.recordselect);
                         }
 
                       },

@@ -10,6 +10,7 @@ class NavigatorUtil {
 
   // 跳转到新页面（push）
   static push(String routeName,{Object arguments = const Object()}) {
+    print('NavigatorUtil.utilContext=${NavigatorUtil.utilContext}');
     return Navigator.pushNamed(NavigatorUtil.utilContext, routeName,arguments: arguments);
   }
 

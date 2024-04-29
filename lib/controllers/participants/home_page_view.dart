@@ -49,10 +49,14 @@ class _HomePageViewState extends State<HomePageController> {
           UserProvider.of(context).totalScore = value.data!.trainScore;
           UserProvider.of(context).totalTime = value.data!.trainTime;
           // 首页弹窗
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
           if (value.data!.noticeType != 0) {
-            TTDialog.championDialog(context, () {
-              NavigatorUtil.push(Routes.awardlist); // 跳转到获奖列表页面
-            });
+            if(!gameUtil.hasShowNitice){
+              TTDialog.championDialog(context, () {
+                NavigatorUtil.push(Routes.awardlist); // 跳转到获奖列表页面
+              });
+              gameUtil.hasShowNitice = true;
+            }
           }
         }
       });
@@ -84,9 +88,10 @@ class _HomePageViewState extends State<HomePageController> {
         //getHomeData(context);
       }
     });
-    // 监听登录成功
+    // 监听
     subscription = EventBus().stream.listen((event) {
-      if (event == kLoginSucess) {
+      if (event == kLoginSucess || event == kFinishGame) {
+        // 登录成功,完成游戏
         getHomeData(context);
       }
     });

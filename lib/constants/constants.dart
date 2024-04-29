@@ -302,6 +302,7 @@ bool ISEmpty(Object? obj) {
 
 // 全局监听
 const kLoginSucess = 'login_success'; // 登录成功
+const kFinishGame = 'finish_game'; // 游戏完成，保存数据成功
 
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
@@ -335,3 +336,5 @@ const Map<String,Map<String,String>> kGameSceneAndModelMap = {
 };// 游戏场景和模式映射表
 
 const k270ProductImageScale = 1445/737; // 270产品图片宽高比
+
+const  kUserVideoMaxCount = 100; // 视频的最大数量

@@ -419,6 +419,14 @@ class AirBattle {
         showLoading: false);
     return ApiResponse(success: response.success);
   }
+  /*阅读奖励消息*/
+  static Future<ApiResponse> readAwardMessage(String rewardId) async {
+    final response = await HttpUtil.get(
+        '/api/member/reward/detail', {"pushId": rewardId},
+        showLoading: true);
+    return ApiResponse(success: response.success);
+  }
+
 
   /*报名参加活动接口*/
   static Future<ApiResponse> joinActivity(int activityId) async {

@@ -110,7 +110,7 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
           Positioned(
               left: 16,
               right: 16,
-              bottom: 0,
+              bottom: 12,
               child: PlayerBottomView(model: widget.model))
         ],
       ),

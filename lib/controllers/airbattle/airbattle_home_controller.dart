@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code/route/route.dart';
 import 'package:code/services/http/airbattle.dart';import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/airbattle/activity_list_view.dart';
@@ -5,6 +7,7 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
 import '../../services/http/profile.dart';
+import '../../utils/notification_bloc.dart';
 import '../profile/integral_controller.dart';
 
 class AirBattleHomeController extends StatefulWidget {
@@ -17,12 +20,20 @@ class AirBattleHomeController extends StatefulWidget {
 
 class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
   AirBattleHomeModel _model = AirBattleHomeModel();
+  late StreamSubscription subscription;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     queryAirBattleData();
+    // 监听
+    subscription = EventBus().stream.listen((event) {
+      if ( event == kFinishGame) {
+        // 完成游戏
+        queryAirBattleData();
+      }
+    });
   }
 
   queryAirBattleData() async{

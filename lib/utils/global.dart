@@ -10,6 +10,7 @@ class GameUtil {
   bool isFromAirBattle = false; // 是否是AirBattle
   String firebaseToken = ''; // firebase 推送的token
   ActivityModel activityModel = ActivityModel(); // 当前的ActivityModel
+  bool hasShowNitice = false; // 是否已经展示首页获奖弹窗
   double get imageWidth {
     if(this.modelId == 1){
       return 200;

@@ -1,7 +1,9 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/services/http/profile.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -9,8 +11,10 @@ import 'package:code/views/participants/fireworks_animation-view.dart';
 import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../utils/global.dart';
+import '../../utils/notification_bloc.dart';
 
 class GameFinishController extends StatefulWidget {
   final GameOverModel dataModel;
@@ -22,7 +26,27 @@ class GameFinishController extends StatefulWidget {
 }
 
 class _GameFinishControllerState extends State<GameFinishController> {
+  int _videoCount = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    queryVideoCount();
+  }
+
+  queryVideoCount() async {
+    final _response = await Profile.queryUserVideoCountData();
+    if (_response.success && _response.data != null) {
+      _videoCount = _response.data!;
+      setState(() {
+
+      });
+    }
+  }
+
   GameUtil gameUtil = GetIt.instance<GameUtil>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +104,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
             SizedBox(
               height: 4,
             ),
-            Row(
+            _videoCount >= kUserVideoMaxCount ? Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Constants.regularWhiteTextWidget(
@@ -88,38 +112,56 @@ class _GameFinishControllerState extends State<GameFinishController> {
                 SizedBox(
                   width: 4,
                 ),
-                Text(
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque, onTap: () {
+                  NavigatorUtil.push(Routes.videolist);
+                }, child: Text(
                   ' My Video',
                   style: TextStyle(
-                      color: hexStringToColor('#27B6F5'), fontSize: 14),
-                ),
+                      decoration: TextDecoration.underline,
+                      // 添加下划线
+                      decorationColor: hexStringToColor('#27B6F5'),
+                      // 下划线颜色
+                      decorationThickness: 2,
+                      // 下划线厚度
+                      fontFamily: 'SanFranciscoDisplay',
+                      color: hexStringToColor('#27B6F5'),
+                      fontSize: 14),
+                ),),
               ],
-            ),
-            SizedBox(height: Constants.screenHeight(context)*0.05,),
+            ) : Container(),
+            SizedBox(height: Constants.screenHeight(context) * 0.05,),
             GestureDetector(
-              onTap: () async{
-                if(UserProvider.of(context).hasLogin){
-                  if(widget.dataModel.videoPath.length > 0){
-                    final _urlResponse =  await Participants.uploadAsset(widget.dataModel.videoPath);
+              onTap: () async {
+                if (UserProvider
+                    .of(context)
+                    .hasLogin) {
+                  if (widget.dataModel.videoPath.length > 0) {
+                    final _urlResponse = await Participants.uploadAsset(
+                        widget.dataModel.videoPath);
                     widget.dataModel.videoPath = _urlResponse.data ?? '';
                   }
                   // 保存游戏数据到云端
-                  final _response =  await Participants.saveGameData(widget.dataModel);
-                  if(_response.success){
+                  final _response = await Participants.saveGameData(
+                      widget.dataModel);
+                  if (_response.success) {
                     NavigatorUtil.pop();
+                    EventBus().sendEvent(kFinishGame);
                   }
-                }else{
+                } else {
                   // 未登录 数据放入缓存
                   // 保存游戏数据到本地
                   DatabaseHelper dbHelper = DatabaseHelper();
                   widget.dataModel.modeId = gameUtil.modelId.toString();
-                  widget.dataModel.sceneId = (gameUtil.gameScene.index + 1).toString();
+                  widget.dataModel.sceneId =
+                      (gameUtil.gameScene.index + 1).toString();
                   dbHelper.insertData(kDataBaseTableName, widget.dataModel);
+                  EventBus().sendEvent(kFinishGame);
                   NavigatorUtil.pop();
                 }
               },
               child: Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
+                margin: EdgeInsets.only(left: 24, right: 24),
                 height: 56,
                 decoration: BoxDecoration(
                   gradient: gameUtil.isFromAirBattle ? LinearGradient(
@@ -129,7 +171,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
                       hexStringToColor('#EF8914'),
                       hexStringToColor('#CF391A'),
                     ],
-                  ):LinearGradient(
+                  ) : LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
@@ -139,12 +181,13 @@ class _GameFinishControllerState extends State<GameFinishController> {
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Center(child: Constants.boldBlackTextWidget('SAVE', 16),),
+                child: Center(
+                  child: Constants.boldBlackTextWidget('SAVE', 16),),
               ),
             ),
           ],
         ),)
-        // body: Center(child: GameOverDataView(dataModel: widget.dataModel,),),
-        );
+      // body: Center(child: GameOverDataView(dataModel: widget.dataModel,),),
+    );
   }
 }

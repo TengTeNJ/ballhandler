@@ -104,6 +104,7 @@ class Routes {
       case awardlist:
         return MaterialPageRoute(builder: (_) => AwardListController());
       case setting:
+        print('------------------');
         return MaterialPageRoute(builder: (_) => SettingController());
       case recordselect:
         return MaterialPageRoute(builder: (_) => RecordSelectController());

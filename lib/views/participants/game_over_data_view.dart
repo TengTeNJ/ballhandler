@@ -40,7 +40,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
       decoration: BoxDecoration(
           color: hexStringToColor('#17171D'),
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 1, color: Constants.baseStyleColor)),
+          border: Border.all(width: 0.5, color: Constants.baseStyleColor)),
       width: Constants.screenWidth(context) - 63,
       height: 260,
       child: Column(
@@ -102,7 +102,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
             height: 1,
             width: Constants.screenWidth(context) - 96,
           ),
-          gameUtil.selectRecord ? Expanded(
+          (gameUtil.selectRecord  || gameUtil.isFromAirBattle) ? Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -147,7 +147,6 @@ class _GameOverDataViewState extends State<GameOverDataView> {
                       ),
                     ),
                     onTap: () {
-                      print('播放视频');
                       NavigatorUtil.push('videoPlay', arguments: {
                         "model": widget.dataModel,
                         "gameFinish": true

@@ -93,7 +93,7 @@ class TTDialog {
     );
   }
 
-  static awardDialog(BuildContext context) {
+  static awardDialog(BuildContext context,Function gotIt) {
     showModalBottomSheet(
       backgroundColor: hexStringToColor('#39394B'),
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
@@ -101,7 +101,7 @@ class TTDialog {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.42,
-          child: AwardDialog(),
+          child: AwardDialog(gotIt: gotIt,),
         );
       },
     );

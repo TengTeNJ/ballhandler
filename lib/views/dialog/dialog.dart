@@ -357,7 +357,8 @@ class ChampionDialog extends StatelessWidget {
 
 /*奖品确认弹窗*/
 class AwardDialog extends StatelessWidget {
-  const AwardDialog({super.key});
+  Function? gotIt;
+   AwardDialog({this.gotIt});
 
   @override
   Widget build(BuildContext context) {
@@ -406,6 +407,9 @@ class AwardDialog extends StatelessWidget {
         ),
        GestureDetector(
          onTap: (){
+           if(gotIt!=null){
+             gotIt!();
+           }
            NavigatorUtil.pop();
          },
          child:  Container(
@@ -825,8 +829,11 @@ class JoinAirBattleDialog extends StatelessWidget {
             height: 20,
           ),
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
-              this.goToSetting();
+              if(goToSetting != null){
+                goToSetting();
+              };
             },
             child: RichText(
               text: TextSpan(
