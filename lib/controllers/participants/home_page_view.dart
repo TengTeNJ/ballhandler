@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/utils/notification_bloc.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/views/participants/home_body_view.dart';
 import 'package:code/views/participants/overall_data_view.dart';
 import 'package:code/views/participants/user_info_view.dart';
@@ -12,7 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 
+import '../../route/route.dart';
 import '../../utils/global.dart';
+import '../../utils/navigator_util.dart';
 
 class HomePageController extends StatefulWidget {
   const HomePageController({super.key});
@@ -23,8 +27,9 @@ class HomePageController extends StatefulWidget {
 
 class _HomePageViewState extends State<HomePageController> {
   int _currentIndex = 0;
-  late  final initialPage ;
- late PageController _pageController;
+  late final initialPage;
+
+  late PageController _pageController;
   late StreamSubscription subscription;
   final List<Widget> _pageViews = [
     HomeBodyView(),
@@ -33,15 +38,22 @@ class _HomePageViewState extends State<HomePageController> {
   ];
 
   // 获取用户首页的数据
-  getHomeData(BuildContext context) {
+  getHomeData(BuildContext context) async{
     // 登录了则请求相关数据
-    if(UserProvider.of(context).hasLogin){
+    final _token = await NSUserDefault.getValue(kAccessToken);
+    if (_token!=null && _token.length > 0) {
       Participants.getHomeUserData().then((value) {
-        if (value.success) {
+        if (value.success && value.data != null) {
           UserProvider.of(context).avgPace = value.data!.avgPace;
           UserProvider.of(context).totalTimes = value.data!.trainCount;
           UserProvider.of(context).totalScore = value.data!.trainScore;
           UserProvider.of(context).totalTime = value.data!.trainTime;
+          // 首页弹窗
+          if (value.data!.noticeType != 0) {
+            TTDialog.championDialog(context, () {
+              NavigatorUtil.push(Routes.awardlist); // 跳转到获奖列表页面
+            });
+          }
         }
       });
     }
@@ -65,7 +77,11 @@ class _HomePageViewState extends State<HomePageController> {
             GameScene.threee
           ][_currentIndex];
         });
-        getHomeData(context);
+        // 延迟100毫秒进行数据请求，防止初始化本地用户信息未完成
+        Future.delayed(Duration(milliseconds: 100),(){
+          getHomeData(context);
+        });
+        //getHomeData(context);
       }
     });
     // 监听登录成功

@@ -14,13 +14,15 @@ class HomeUsermodel {
   String trainCount;
   String trainScore;
   String trainTime;
+  int noticeType = 0; // 公告类型：0无；1获奖；2补充信息
 
   HomeUsermodel(
       {this.avgPace = '--',
       this.trainCount = '0',
       this.trainScore = '0',
       this.trainTime = '0',
-      this.rankNumber = '--'});
+      this.rankNumber = '--',
+      this.noticeType = 0});
 }
 
 class GameModel {
@@ -29,6 +31,12 @@ class GameModel {
   String modeRemark = ''; // 模式描述
   String trainTime = ''; // 游戏时间
   int difficultyLevel = 1; // 难易程度
+}
+
+class GameJoinCountModel{
+  int totalMemberCount  = 0; // 活动+日常训练总人数
+  int activityMemberCount = 0;// 活动参与总人数
+  int trainMemberCount = 0; // 日常训练总人数
 }
 
 class Participants {
@@ -46,7 +54,8 @@ class Participants {
           avgPace: response.data['data']['avgPace'].toString(),
           trainCount: response.data['data']['trainCount'].toString(),
           trainScore: response.data['data']['trainScore'].toString(),
-          trainTime: response.data['data']['trainTime'].toString());
+          trainTime: response.data['data']['trainTime'].toString(),
+          noticeType: response.data['data']['noticeType'] ?? 0);
       return ApiResponse(success: response.success, data: model);
     } else {
       return ApiResponse(success: false);
@@ -167,9 +176,9 @@ class Participants {
         model.videoPath =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '--';
         model.sceneId =
-        !ISEmpty(_map['sceneId']) ? _map['sceneId'].toString() : '1';
+            !ISEmpty(_map['sceneId']) ? _map['sceneId'].toString() : '1';
         model.modeId =
-        !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
+            !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);
@@ -196,9 +205,8 @@ class Participants {
         final _map = element;
         model.modeId =
             !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
-        model.difficultyLevel = !ISEmpty(_map['difficultyLevel'])
-            ? _map['difficultyLevel']
-            : 1;
+        model.difficultyLevel =
+            !ISEmpty(_map['difficultyLevel']) ? _map['difficultyLevel'] : 1;
         model.modeName = !ISEmpty(_map['modeName']) ? _map['modeName'] : '--';
         model.modeRemark =
             !ISEmpty(_map['modeRemark']) ? _map['modeRemark'].toString() : '--';
@@ -208,6 +216,28 @@ class Participants {
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+  /*根据本人最好成绩的排名和速度*/
+  static Future<ApiResponse<GameJoinCountModel>> queryJoinCount(String modeId) async {
+    // 获取场景ID
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    final _data = {
+      "sceneId": (gameUtil.gameScene.index + 1).toString(),
+      "modeId" : modeId
+    };
+    final response = await HttpUtil.get('/api/train/getTrainMemberCount', _data,
+        showLoading: false);
+    GameJoinCountModel model = GameJoinCountModel();
+    if (response.success && response.data['data'] != null) {
+      final _map = response.data['data'];
+      model.totalMemberCount = _map['totalMemberCount'] ?? 0;
+      model.activityMemberCount = _map['activityMemberCount'] ?? 0;
+      model.trainMemberCount = _map['trainMemberCount'] ?? 0;
+      return ApiResponse(success: response.success, data: model);
     } else {
       return ApiResponse(success: false);
     }

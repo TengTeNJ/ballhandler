@@ -74,7 +74,7 @@ class TTDialog {
 
   }
 
-  static championDialog(BuildContext context) {
+  static championDialog(BuildContext context,Function gotIt) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -86,7 +86,7 @@ class TTDialog {
               color: hexStringToColor('#3E3E55'),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: ChampionDialog(),
+            child: ChampionDialog(gotIt: gotIt,),
           ),
         );
       },

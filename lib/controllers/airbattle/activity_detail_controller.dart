@@ -211,9 +211,6 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                         : GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () async {
-                        // List<CameraDescription> cameras =
-                        //     await availableCameras();
-
                         if( detailModel.isJoin == 0){
                           // 未加入则先加入游戏
                           TTDialog.joinAirBattle(context, () async{
@@ -226,6 +223,8 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                               GameUtil gameUtil = GetIt.instance<GameUtil>();
                               gameUtil.isFromAirBattle = true;
                               gameUtil.activityModel = widget.model;
+                              gameUtil.modelId = int.parse(detailModel.modeId);
+                              gameUtil.gameScene = [GameScene.five,GameScene.threee,GameScene.erqiling][int.parse(detailModel.sceneId) - 1];
                               NavigatorUtil.push(Routes.recordselect);
                             }
 
@@ -233,9 +232,12 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                             NavigatorUtil.push(Routes.setting);
                           });
                         }else{
+                          // 已经报名过 直接跳转到确认页面
                           GameUtil gameUtil = GetIt.instance<GameUtil>();
                           gameUtil.isFromAirBattle = true;
                           gameUtil.activityModel = widget.model;
+                          gameUtil.modelId = int.parse(detailModel.modeId);
+                          gameUtil.gameScene = [GameScene.five,GameScene.threee,GameScene.erqiling][int.parse(detailModel.sceneId) - 1];
                           NavigatorUtil.push(Routes.recordselect);
                         }
 
@@ -272,7 +274,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
     );
   }
 }
-
+/*活动已结束End*/
 Widget _endButtonView(ActivityDetailModel model) {
   if (model.activityStatus == 0) {
     // 未开始

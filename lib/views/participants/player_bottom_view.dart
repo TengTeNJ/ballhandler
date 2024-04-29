@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/widgets/base/top_bottom_text_view.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,10 @@ class PlayerBottomView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String _scene = model.sceneId;
+    String _modelId = model.modeId;
+    String _title =
+        kGameSceneAndModelMap[_scene]![_modelId] ?? 'ZIGZAG Challenge';
     return Container(
       width: Constants.screenWidth(context) - 32,
       height: 120,
@@ -70,11 +75,10 @@ class PlayerBottomView extends StatelessWidget {
                         height: 20,
                       ),
                       SizedBox(width: 6,),
-                      Constants.regularGreyTextWidget('How many in 45', 14),
+                      Constants.regularGreyTextWidget(_title, 14),
                     ],
                   ),
-                  Constants.regularGreyTextWidget('JULY 1 , 2024', 10),
-
+                  Constants.regularGreyTextWidget(model.endTime, 10),
                 ],
               ))
         ],

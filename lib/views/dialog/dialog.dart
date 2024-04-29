@@ -283,7 +283,8 @@ class ExchangeIntegralSuccessDialog extends StatelessWidget {
 
 /*冠军得奖弹窗ChampionDialog*/
 class ChampionDialog extends StatelessWidget {
-  const ChampionDialog({super.key});
+   Function ?gotIt;
+   ChampionDialog({this.gotIt});
 
   @override
   Widget build(BuildContext context) {
@@ -336,12 +337,15 @@ class ChampionDialog extends StatelessWidget {
           SizedBox(
             height: 44,
           ),
-          BaseButton(
+          Padding(padding: EdgeInsets.only(left: 24,right: 24),child: BaseButton(
               title: 'Got It',
               height: 40,
               onTap: () {
-                print('Got It');
-              }),
+                NavigatorUtil.pop();
+                if(gotIt != null){
+                  gotIt!();
+                }
+              }),),
           SizedBox(
             height: 24,
           ),

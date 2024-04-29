@@ -30,6 +30,7 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
       queryRankBaseScore();
   }
 
+  /*根据得分查询排名数据*/
   queryRankBaseScore() async {
     final _response =
         await Participants.queryRankBaseScore(widget.model.avgPace);
@@ -43,11 +44,19 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
       backgroundColor: Constants.darkThemeColor,
       body: Stack(
         children: [
-          Align(alignment: Alignment.center,
-            child: VideoPlayView(
-              videoPath: widget.model.videoPath ?? '',
-            ),
-          ),
+          // Align(alignment: Alignment.center,
+          //   child: VideoPlayView(
+          //     videoPath: widget.model.videoPath ?? '',
+          //   ),
+          // ),
+          Positioned(
+            left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              child: VideoPlayView(
+            videoPath: widget.model.videoPath ?? '',
+          )),
           Positioned(
               left: 16,
               top: 60,
@@ -100,7 +109,7 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
           Positioned(
               left: 16,
               right: 16,
-              bottom: 32,
+              bottom: 44,
               child: PlayerBottomView(model: widget.model))
         ],
       ),

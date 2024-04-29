@@ -48,7 +48,7 @@ class NSUserDefault {
     await _preferences.remove(key);
   }
 
-  static initUserInfo(BuildContext context) async{
+  static Future<void> initUserInfo(BuildContext context) async{
     final _nickName = await NSUserDefault.getValue<String>(kUserName);
     final _ava = await NSUserDefault.getValue<String>(kAvatar);
     final _token = await NSUserDefault.getValue<String>(kAccessToken);

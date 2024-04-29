@@ -79,6 +79,8 @@ class ActivityDetailModel {
   String activityIcon = '';
   int activityId = 1;
   String activityName = '';
+  String sceneId = '1';
+  String modeId = '1';
   String activityRemark = '';
   String activityRule = '';
   dynamic activityTime = 45;
@@ -359,6 +361,12 @@ class AirBattle {
           : '';
       model.isJoin =
       !ISEmpty(_map['isJoin']) ? _map['isJoin'] : 0;
+      model.sceneId = !ISEmpty(_map['sceneId'])
+          ? _map['sceneId'].toString()
+          : '1';
+      model.modeId = !ISEmpty(_map['modeId'])
+          ? _map['modeId'].toString()
+          : '1';
       if (model.activityStatus != 0) {
         /*用户的活动数据*/
         self.nickName = await NSUserDefault.getValue(kUserName);

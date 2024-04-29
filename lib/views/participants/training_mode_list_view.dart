@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,11 +11,34 @@ class TrainingModeListView extends StatefulWidget {
 
   TrainingModeListView({this.scanBleList, required this.model});
 
+
   @override
   State<TrainingModeListView> createState() => _TrainingModeListViewState();
 }
 
 class _TrainingModeListViewState extends State<TrainingModeListView> {
+  int _joinCount = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    queryJoinCountData();
+  }
+
+  queryJoinCountData() async{
+    String _token = await NSUserDefault.getValue(kAccessToken);
+    // 登录了才进行数据请求
+    if(_token!=null && _token.length>0){
+      final _response = await  Participants.queryJoinCount(widget.model.modeId);
+      if(_response.success && _response.data != null){
+        _joinCount = _response.data!.trainMemberCount;
+        setState(() {
+
+        });
+      }
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -168,7 +192,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Constants.regularWhiteTextWidget(
-                                            '105', 14),
+                                            _joinCount.toString(), 14),
                                         Constants.regularWhiteTextWidget(
                                             'Participants', 12),
                                       ],
