@@ -167,7 +167,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                     userName:
                                         detailModel.champion.championNickName,
                                     area: detailModel.champion.championCountry,
-                                    birthday: 'JULY 2024 10:10',
+                                    birthday: detailModel.champion.createTime,
                                     rank: '1',
                                     score: detailModel
                                         .champion.championTrainScore,
@@ -195,7 +195,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                     userName:
                                         detailModel.self.nickName ?? 'Guest',
                                     area: detailModel.self.country ?? '',
-                                    birthday: 'JULY 2024 10:10',
+                                    birthday: detailModel.self.createTime,
                                     rank: detailModel.self.rankNumber ?? '-',
                                     score: detailModel.self.trainScore ?? '-',
                                     avgPace: detailModel.self.avgPace),

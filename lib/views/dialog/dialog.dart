@@ -14,7 +14,7 @@ import 'dart:io' show Platform;
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 
 import '../../utils/nsuserdefault_util.dart';
-
+import 'package:flutter_to_airplay/flutter_to_airplay.dart';
 /**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
   Function? confirm;
@@ -1036,3 +1036,17 @@ class _UserNameDialogState extends State<UserNameDialog> {
     super.dispose();
   }
 }
+
+class AirPlayView extends StatelessWidget {
+  const AirPlayView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AirPlayRoutePickerView(
+      tintColor: Colors.white,
+      activeTintColor: Colors.white,
+      backgroundColor: Colors.transparent,
+    );
+  }
+}
+

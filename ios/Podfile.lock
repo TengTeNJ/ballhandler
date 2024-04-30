@@ -71,6 +71,9 @@ PODS:
     - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesSwift (~> 2.1)
   - Flutter (1.0.0)
+  - flutter_to_airplay (0.0.1):
+    - Flutter
+    - Mux-Stats-AVPlayer
   - google_sign_in_ios (0.0.1):
     - AppAuth (>= 1.7.4)
     - Flutter
@@ -135,6 +138,9 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
+  - Mux-Stats-AVPlayer (3.6.1):
+    - Mux-Stats-Core (= 4.7.1)
+  - Mux-Stats-Core (4.7.1)
   - nanopb (2.30910.0):
     - nanopb/decode (= 2.30910.0)
     - nanopb/encode (= 2.30910.0)
@@ -186,6 +192,7 @@ DEPENDENCIES:
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
+  - flutter_to_airplay (from `.symlinks/plugins/flutter_to_airplay/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
@@ -220,6 +227,8 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - libwebp
+    - Mux-Stats-AVPlayer
+    - Mux-Stats-Core
     - nanopb
     - PromisesObjC
     - PromisesSwift
@@ -242,6 +251,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
+  flutter_to_airplay:
+    :path: ".symlinks/plugins/flutter_to_airplay/ios"
   google_sign_in_ios:
     :path: ".symlinks/plugins/google_sign_in_ios/darwin"
   image_cropper:
@@ -291,6 +302,7 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfigInterop: 6c349a466490aeace3ce9c091c86be1730711634
   FirebaseSessions: 2651b464e241c93fd44112f995d5ab663c970487
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_to_airplay: 3194fe6e4ca6ba1d9529c3c4194c32b9610d990f
   google_sign_in_ios: 07375bfbf2620bc93a602c0e27160d6afc6ead38
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
@@ -300,6 +312,8 @@ SPEC CHECKSUMS:
   image_cropper: 60c2789d1f1a78c873235d4319ca0c34a69f2d98
   image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
+  Mux-Stats-AVPlayer: 8f8bc6ee7ea9b19e17b8aac9d9267a09f22e3c32
+  Mux-Stats-Core: b3b61726282ee28e84656734469636ea42787581
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c

@@ -12,6 +12,7 @@ class RankModel {
   String? avatar;
   String? country;
   String trainVideo = '';
+  String trainScore = '0';
 }
 
 class AnalyzeDataModel{
@@ -141,6 +142,8 @@ class Rank {
             !ISEmpty(_map['country']) ? _map['country'].toString() : 'China';
         model.trainVideo =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
+        model.trainScore =
+        !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '-';
         _list.add(model);
       });
       _model.data = _list;

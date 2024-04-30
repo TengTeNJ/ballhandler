@@ -72,6 +72,7 @@ dependencies:
   responsive_grid_list: ^1.4.0
   firebase_crashlytics: ^3.5.4
   app_links: ^5.0.0
+  flutter_to_airplay: ^2.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -73,12 +73,15 @@ class _AwardListControllerState extends State<AwardListController> {
                 }
               },
               selectItem: (AwardModel model) {
-                model.rewardStatus = 1;
-                setState(() {
 
-                });
                 TTDialog.awardDialog(context,() async{
-                  //await AirBattle.readAwardMessage(model.re)
+                final _response =   await AirBattle.readAwardMessage(model.rewardId);
+                if(_response.success){
+                 model.rewardStatus = 1;
+                  setState(() {
+
+                  });
+                }
                 });
               },
             ))

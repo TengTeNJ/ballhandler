@@ -11,6 +11,7 @@ class AwardModel {
   double rewardMoney = 0; // 奖励金额
   String createTime = '--';
   String activityName = ''; // 活动名称
+  String rewardId = '1';
   String get statuString {
     if (this.rewardStatus == 0) {
       return 'No Viewed';

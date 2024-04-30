@@ -64,6 +64,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           GestureDetector(
             onTap: () async{
              // TTDialog.timeSelect(context);
+             //  TTDialog.airplayDialog(context);
               GameUtil gameUtil = GetIt.instance<GameUtil>();
               gameUtil.isFromAirBattle = false;
               NavigatorUtil.push('trainingMode');

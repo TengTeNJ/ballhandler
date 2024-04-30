@@ -91,7 +91,6 @@ class ActivityDetailModel {
   int isJoin = 0; // 是否加入过活动0未加入，1已加入
   ChampionModel champion = ChampionModel();
   SelfActivityModel self = SelfActivityModel();
-
   String get timeDifferentString {
     String targetTime = this.endDate + ' 23:59';
     DateTime time = StringUtil.showTimeStringToDate(targetTime);
@@ -112,6 +111,7 @@ class ChampionModel {
   String championTrainScore = '0';
   dynamic championRankNumber = '1';
   String championTrainVideo = '';
+  String createTime = '--';
 }
 
 class SelfActivityModel {
@@ -122,6 +122,7 @@ class SelfActivityModel {
   String? trainScore = '0';
   dynamic? rankNumber = '-';
   String? trainVideo = '';
+  String createTime = '--';
 }
 
 class AirBattle {
@@ -315,6 +316,9 @@ class AirBattle {
             !ISEmpty(_map['rewardStatus']) ? _map['rewardStatus'] : 0;
         model.createTime =
             !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
+        model.rewardId =
+        !ISEmpty(_map['rewardId']) ? _map['rewardId'].toString() : '1';
+
         _list.add(model);
       });
       awardDataModelodel.data = _list;
@@ -378,6 +382,8 @@ class AirBattle {
         self.rankNumber =  !ISEmpty(_map['rankNumber']) ? _map['rankNumber'].toString() : '-';
         self.trainVideo =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
+        self.createTime =
+        !ISEmpty(_map['createTime']) ? StringUtil.serviceStringToShowDateString(_map['createTime'].toString()) : '--';
         model.self = self;
       }
       if (model.activityStatus == 2) {
@@ -404,6 +410,8 @@ class AirBattle {
         championModel.championTrainVideo = !ISEmpty(_map['championTrainVideo'])
             ? _map['championTrainVideo'].toString()
             : '';
+        championModel.createTime =
+        !ISEmpty(_map['championCreateTime']) ? StringUtil.serviceStringToShowDateString(_map['championCreateTime'].toString()) : '--';
         model.champion = championModel;
       }
       return ApiResponse(success: response.success, data: model);
@@ -422,7 +430,7 @@ class AirBattle {
   /*阅读奖励消息*/
   static Future<ApiResponse> readAwardMessage(String rewardId) async {
     final response = await HttpUtil.get(
-        '/api/member/reward/detail', {"pushId": rewardId},
+        '/api/member/reward/detail', {"rewardId": rewardId},
         showLoading: true);
     return ApiResponse(success: response.success);
   }

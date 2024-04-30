@@ -163,4 +163,10 @@ class TTDialog {
     });
   }
 
+
+  static airplayDialog(BuildContext context){
+    return showDialog(context: context, builder: (context){
+      return AirPlayView();
+    });
+  }
 }

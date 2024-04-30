@@ -54,8 +54,9 @@ class LoginUtil {
           webAuthenticationOptions: WebAuthenticationOptions(
               clientId: 'com.potent.stickhandling',
               redirectUri:
-                  Uri.parse('https://potent-hockey.s3.eu-north-1.amazonaws.com/h5/index.html')));
+                  Uri.parse('https://hockey.fjcctv.com:4432/api/third/apple')));
 
+      print('credential=====${credential}');
       final _map = {
         "avatarUrl": '',
         "gender": 0,
