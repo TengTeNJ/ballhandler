@@ -71,6 +71,7 @@ dependencies:
   image_cropper: ^1.5.1
   responsive_grid_list: ^1.4.0
   firebase_crashlytics: ^3.5.4
+  app_links: ^5.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

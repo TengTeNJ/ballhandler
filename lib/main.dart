@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:app_links/app_links.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isAndroid) {
@@ -28,6 +28,8 @@ void main() async {
     await Firebase.initializeApp();
   }
   fireBaseCrashlytics();
+
+  initDeepLinking();
 
   GetIt.I.registerSingleton<GameUtil>(GameUtil()); // 注册GameUtil实例
   runApp(UserProvider(child: const MyApp()));
@@ -51,6 +53,18 @@ fireBaseCrashlytics() async{
     FirebaseCrashlytics.instance.setCustomKey('email', email ?? '--');
   }
 }
+/*外部web跳转*/
+void initDeepLinking() {
+  final _appLinks = AppLinks();
+
+// Subscribe to all events when app is started.
+// (Use allStringLinkStream to get it as [String])
+  _appLinks.allUriLinkStream.listen((uri) {
+    print('uri=${uri}');
+    // Do something (navigation, ...)
+  });
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
