@@ -4,6 +4,7 @@ import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
+import 'package:code/utils/toast.dart';
 import 'package:code/views/ble/ble_list_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:code/widgets/base/base_button.dart';
@@ -17,7 +18,8 @@ import '../../utils/nsuserdefault_util.dart';
 /**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
   Function? confirm;
-   SendEmailDiaog({this.confirm});
+
+  SendEmailDiaog({this.confirm});
 
   @override
   State<SendEmailDiaog> createState() => _SendEmailDiaogState();
@@ -89,7 +91,7 @@ class _SendEmailDiaogState extends State<SendEmailDiaog> {
             child: GestureDetector(
               onTap: () {
                 NavigatorUtil.pop();
-                if(widget.confirm != null){
+                if (widget.confirm != null) {
                   widget.confirm!();
                 }
               },
@@ -163,10 +165,17 @@ class _BLEListDialogState extends State<BLEListDialog> {
                     BluetoothManager().startScan();
                   }
                 },
-                child: Row(mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(width: 100,height: 20,child: Constants.regularBaseTextWidget('Scan', 16,textAlign: TextAlign.end),)
-                ],),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 20,
+                      child: Constants.regularBaseTextWidget('Scan', 16,
+                          textAlign: TextAlign.end),
+                    )
+                  ],
+                ),
               )),
           Positioned(
             child: BLEListView(),
@@ -283,8 +292,9 @@ class ExchangeIntegralSuccessDialog extends StatelessWidget {
 
 /*冠军得奖弹窗ChampionDialog*/
 class ChampionDialog extends StatelessWidget {
-   Function ?gotIt;
-   ChampionDialog({this.gotIt});
+  Function? gotIt;
+
+  ChampionDialog({this.gotIt});
 
   @override
   Widget build(BuildContext context) {
@@ -337,15 +347,18 @@ class ChampionDialog extends StatelessWidget {
           SizedBox(
             height: 44,
           ),
-          Padding(padding: EdgeInsets.only(left: 24,right: 24),child: BaseButton(
-              title: 'Got It',
-              height: 40,
-              onTap: () {
-                NavigatorUtil.pop();
-                if(gotIt != null){
-                  gotIt!();
-                }
-              }),),
+          Padding(
+            padding: EdgeInsets.only(left: 24, right: 24),
+            child: BaseButton(
+                title: 'Got It',
+                height: 40,
+                onTap: () {
+                  NavigatorUtil.pop();
+                  if (gotIt != null) {
+                    gotIt!();
+                  }
+                }),
+          ),
           SizedBox(
             height: 24,
           ),
@@ -358,7 +371,8 @@ class ChampionDialog extends StatelessWidget {
 /*奖品确认弹窗*/
 class AwardDialog extends StatelessWidget {
   Function? gotIt;
-   AwardDialog({this.gotIt});
+
+  AwardDialog({this.gotIt});
 
   @override
   Widget build(BuildContext context) {
@@ -405,24 +419,24 @@ class AwardDialog extends StatelessWidget {
             ],
           ),
         ),
-       GestureDetector(
-         onTap: (){
-           if(gotIt!=null){
-             gotIt!();
-           }
-           NavigatorUtil.pop();
-         },
-         child:  Container(
-           width: 209,
-           height: 40,
-           child: Center(
-             child: Constants.regularWhiteTextWidget('Got It', 16),
-           ),
-           decoration: BoxDecoration(
-               color: Constants.baseStyleColor,
-               borderRadius: BorderRadius.circular(10)),
-         ),
-       ),
+        GestureDetector(
+          onTap: () {
+            if (gotIt != null) {
+              gotIt!();
+            }
+            NavigatorUtil.pop();
+          },
+          child: Container(
+            width: 209,
+            height: 40,
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Got It', 16),
+            ),
+            decoration: BoxDecoration(
+                color: Constants.baseStyleColor,
+                borderRadius: BorderRadius.circular(10)),
+          ),
+        ),
         SizedBox(
           height: 44,
         )
@@ -438,7 +452,13 @@ class TimeSelectDialog extends StatefulWidget {
   int selectIndex; // 标识选择的时7,30 还是90days
   Function? datePickerSelect;
   Function? confirm;
-  TimeSelectDialog({this.datePickerSelect,this.confirm,this.selectIndex = 0,this.startTime,this.endTime});
+
+  TimeSelectDialog(
+      {this.datePickerSelect,
+      this.confirm,
+      this.selectIndex = 0,
+      this.startTime,
+      this.endTime});
 
   @override
   State<TimeSelectDialog> createState() => _TimeSelectDialogState();
@@ -448,6 +468,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
   int _selectIndex = 0;
   int _timeSelectIndex = 0; // 当选择自定义时，标记选择的时开始还是结束 1开始 2结束
   DateTime _selectedDate = DateTime.now();
+  DateTime _maxDate = DateTime.now();
   late DateTime _yesterdayDate;
 
   late String startTime;
@@ -465,338 +486,381 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
     // 昨天的时间
     DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
     _yesterdayDate = yesterday;
-    endTimer =  widget.endTime != null  ? widget.endTime!:StringUtil.dateToString(yesterday);
+    endTimer = widget.endTime != null
+        ? widget.endTime!
+        : StringUtil.dateToString(yesterday);
     // 过去七天的第一天的时间
     DateTime beforeSeven = yesterday.subtract(Duration(days: 7));
-    startTime =  widget.startTime != null  ? widget.startTime!:StringUtil.dateToString(beforeSeven);
+    startTime = widget.startTime != null
+        ? widget.startTime!
+        : StringUtil.dateToString(beforeSeven);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 16, right: 16),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 16,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [CancelButton()],
-          ),
-          SizedBox(
-            height: 28,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    if (widget.datePickerSelect != null) {
-                      widget.datePickerSelect!(false);
-                    }
-                    _timeSelectIndex = 0;
-                    _selectIndex = 0;
-
-                    DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
-                    _yesterdayDate = yesterday;
-                    endTimer = StringUtil.dateToString(yesterday);
-                    // 过去七天的第一天的时间
-                    DateTime beforeSeven =
-                        _yesterdayDate.subtract(Duration(days: 7));
-                    startTime = StringUtil.dateToString(beforeSeven);
-                    setState(() {});
-                  },
-                  child: Container(
-                      height: 28,
-                      decoration: BoxDecoration(
-                          border: _selectIndex == 0
-                              ? Border.all(
-                                  color: hexStringToColor('#707070'),
-                                  width: 0.0, // 设置边框宽度
-                                )
-                              : Border.all(
-                                  color: hexStringToColor('#707070'),
-                                  width: 1.0, // 设置边框宽度
-                                ),
-                          borderRadius: BorderRadius.circular(20),
-                          color: _selectIndex == 0
-                              ? Constants.baseStyleColor
-                              : hexStringToColor('#3E3E55')),
-                      child: Center(
-                        child: _selectIndex == 0
-                            ? Constants.regularWhiteTextWidget(
-                                'Last 7 days', 14)
-                            : Constants.regularGreyTextWidget(
-                                'Last 7 days', 14),
-                      )),
-                ),
-                flex: 1,
-              ),
-              SizedBox(
-                width: 6,
-              ),
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    if (widget.datePickerSelect != null) {
-                      widget.datePickerSelect!(false);
-                    }
-                    _timeSelectIndex = 0;
-                    _selectIndex = 1;
-                    DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
-                    _yesterdayDate = yesterday;
-                    endTimer = StringUtil.dateToString(yesterday);
-                    // 过去30天的第一天的时间
-                    DateTime beforeSeven =
-                        _yesterdayDate.subtract(Duration(days: 30));
-                    startTime = StringUtil.dateToString(beforeSeven);
-                    setState(() {});
-                  },
-                  child: Container(
-                      height: 28,
-                      decoration: BoxDecoration(
-                          border: _selectIndex == 1
-                              ? Border.all(
-                                  color: hexStringToColor('#707070'),
-                                  width: 0.0, // 设置边框宽度
-                                )
-                              : Border.all(
-                                  color: hexStringToColor('#707070'),
-                                  width: 1.0, // 设置边框宽度
-                                ),
-                          borderRadius: BorderRadius.circular(20),
-                          color: _selectIndex == 1
-                              ? Constants.baseStyleColor
-                              : hexStringToColor('#3E3E55')),
-                      child: Center(
-                        child: _selectIndex == 1
-                            ? Constants.regularWhiteTextWidget(
-                                'Last 30 days', 14)
-                            : Constants.regularGreyTextWidget(
-                                'Last 30 days', 14),
-                      )),
-                ),
-                flex: 1,
-              ),
-              SizedBox(
-                width: 6,
-              ),
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    if (widget.datePickerSelect != null) {
-                      widget.datePickerSelect!(false);
-                    }
-                    _timeSelectIndex = 0;
-                    _selectIndex = 2;
-                    DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
-                    _yesterdayDate = yesterday;
-                    endTimer = StringUtil.dateToString(yesterday);
-                    // 过去90天的第一天的时间
-                    DateTime beforeSeven =
-                        _yesterdayDate.subtract(Duration(days: 90));
-                    startTime = StringUtil.dateToString(beforeSeven);
-                    setState(() {});
-                  },
-                  child: Container(
-                      height: 28,
-                      decoration: BoxDecoration(
-                          border: _selectIndex == 2
-                              ? Border.all(
-                                  color: hexStringToColor('#707070'),
-                                  width: 0.0, // 设置边框宽度
-                                )
-                              : Border.all(
-                                  color: hexStringToColor('#707070'),
-                                  width: 1.0, // 设置边框宽度
-                                ),
-                          borderRadius: BorderRadius.circular(20),
-                          color: _selectIndex == 2
-                              ? Constants.baseStyleColor
-                              : hexStringToColor('#3E3E55')),
-                      child: Center(
-                        child: _selectIndex == 2
-                            ? Constants.regularWhiteTextWidget(
-                                'Last 90 days', 14)
-                            : Constants.regularGreyTextWidget(
-                                'Last 90 days', 14),
-                      )),
-                ),
-                flex: 1,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 48,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  if (_timeSelectIndex == 1) {
-                    _timeSelectIndex = 0;
-                    if (widget.datePickerSelect != null) {
-                      widget.datePickerSelect!(false);
-                    }
-                    setState(() {
-
-                    });
-                    return;
-                  }
-                  _selectIndex = -1;
-                  _timeSelectIndex = 1;
-                  setState(() {});
-                  if (widget.datePickerSelect != null) {
-                    widget.datePickerSelect!(true);
-                  }
-                },
-                behavior: HitTestBehavior.opaque,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Constants.regularWhiteTextWidget(startTime, 16),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        _timeSelectIndex == 1 ? Icon(Icons.keyboard_arrow_down,color: Constants.baseStyleColor,) :Icon(Icons.chevron_right,color: Constants.baseGreyStyleColor,),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Container(
-                      color: hexStringToColor('#707070'),
-                      height: 0.5,
-                      width: (Constants.screenWidth(context) - 90) / 2.0,
-                    )
-                  ],
-                ),
-              ),
-              Constants.regularGreyTextWidget('To', 14, height: 0.8),
-              GestureDetector(
-                onTap: () {
-                  if (_timeSelectIndex == 2) {
-                    _timeSelectIndex = 0;
-                    if (widget.datePickerSelect != null) {
-                      widget.datePickerSelect!(false);
-                    }
-                    setState(() {
-
-                    });
-                    return;
-                  }
-                  _selectIndex = -1;
-                  _timeSelectIndex = 2;
-                  setState(() {});
-                  if (widget.datePickerSelect != null) {
-                    widget.datePickerSelect!(true);
-                  }
-                },
-                behavior: HitTestBehavior.opaque,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Constants.regularWhiteTextWidget(endTimer, 16),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        _timeSelectIndex == 2 ? Icon(Icons.keyboard_arrow_down,color: Constants.baseStyleColor,) :Icon(Icons.chevron_right,color: Constants.baseGreyStyleColor,),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Container(
-                      color: hexStringToColor('#707070'),
-                      height: 0.5,
-                      width: (Constants.screenWidth(context) - 90) / 2.0,
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Constants.regularGreyTextWidget(
-              'Only six months of data are available', 10),
-          SizedBox(
-            height: 32,
-          ),
-          _timeSelectIndex >= 1
-              ? Container(
-                  color: Colors.red,
-                  height: 220,
-                  child: Center(
-                      child: DateTimePickerWidget(
-                    onChange: (DateTime dateTime, List<int> selectedIndex) {
-                      if (_timeSelectIndex == 1) {
-                        startTime = StringUtil.dateToString(dateTime);
-                      } else if (_timeSelectIndex == 2) {
-                        endTimer = StringUtil.dateToString(dateTime);
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(left: 16, right: 16),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [CancelButton()],
+            ),
+            SizedBox(
+              height: 28,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      // Last 7days
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
                       }
+                      _timeSelectIndex = 0;
+                      _selectIndex = 0;
+
+                      DateTime yesterday =
+                          _selectedDate.subtract(Duration(days: 1));
+                      _yesterdayDate = yesterday;
+                      endTimer = StringUtil.dateToString(yesterday);
+                      // 过去七天的第一天的时间
+                      DateTime beforeSeven =
+                          _yesterdayDate.subtract(Duration(days: 7));
+                      startTime = StringUtil.dateToString(beforeSeven);
                       setState(() {});
                     },
-                    pickerTheme: DateTimePickerTheme(
-                        itemTextStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: 'SanFranciscoDisplay'),
-                        backgroundColor: hexStringToColor('#3E3E55'),
-                        titleHeight: 0,
-                        itemHeight: 44,
-                        pickerHeight: 220),
-                    minDateTime: _minDate,
-                    maxDateTime: _selectedDate,
-                    initDateTime: _selectedDate,
-                    locale: DateTimePickerLocale.en_us,
-                    dateFormat:
-                        'MMMM-dd-yyyy', // 这里的MMMM需要又4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
-                  )),
-                )// 时间弹窗
-              : Container(),
-          _timeSelectIndex >= 1
-              ? SizedBox(
-                  height: 16,
-                )
-              : SizedBox(
-                  height: 0,
+                    child: Container(
+                        height: 28,
+                        decoration: BoxDecoration(
+                            border: _selectIndex == 0
+                                ? Border.all(
+                                    color: hexStringToColor('#707070'),
+                                    width: 0.0, // 设置边框宽度
+                                  )
+                                : Border.all(
+                                    color: hexStringToColor('#707070'),
+                                    width: 1.0, // 设置边框宽度
+                                  ),
+                            borderRadius: BorderRadius.circular(20),
+                            color: _selectIndex == 0
+                                ? Constants.baseStyleColor
+                                : hexStringToColor('#3E3E55')),
+                        child: Center(
+                          child: _selectIndex == 0
+                              ? Constants.regularWhiteTextWidget(
+                                  'Last 7 days', 14)
+                              : Constants.regularGreyTextWidget(
+                                  'Last 7 days', 14),
+                        )),
+                  ),
+                  flex: 1,
                 ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              
-              if(widget.confirm != null){
-                widget.confirm!(startTime.replaceAll('/', '-'),endTimer.replaceAll('/', '-'),_selectIndex);
-              }
-              NavigatorUtil.pop();
-            },
-            child: Container(
-              width: 210,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: Constants.baseStyleColor,
-                  borderRadius: BorderRadius.circular(5)),
-              child: Center(
-                child: Constants.regularWhiteTextWidget('Confirm', 14),
-              ),
+                SizedBox(
+                  width: 6,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      // Last 30days
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
+                      }
+                      _timeSelectIndex = 0;
+                      _selectIndex = 1;
+                      DateTime yesterday =
+                          _selectedDate.subtract(Duration(days: 1));
+                      _yesterdayDate = yesterday;
+                      endTimer = StringUtil.dateToString(yesterday);
+                      // 过去30天的第一天的时间
+                      DateTime beforeSeven =
+                          _yesterdayDate.subtract(Duration(days: 30));
+                      startTime = StringUtil.dateToString(beforeSeven);
+                      setState(() {});
+                    },
+                    child: Container(
+                        height: 28,
+                        decoration: BoxDecoration(
+                            border: _selectIndex == 1
+                                ? Border.all(
+                                    color: hexStringToColor('#707070'),
+                                    width: 0.0, // 设置边框宽度
+                                  )
+                                : Border.all(
+                                    color: hexStringToColor('#707070'),
+                                    width: 1.0, // 设置边框宽度
+                                  ),
+                            borderRadius: BorderRadius.circular(20),
+                            color: _selectIndex == 1
+                                ? Constants.baseStyleColor
+                                : hexStringToColor('#3E3E55')),
+                        child: Center(
+                          child: _selectIndex == 1
+                              ? Constants.regularWhiteTextWidget(
+                                  'Last 30 days', 14)
+                              : Constants.regularGreyTextWidget(
+                                  'Last 30 days', 14),
+                        )),
+                  ),
+                  flex: 1,
+                ),
+                SizedBox(
+                  width: 6,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      // Last 90days
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
+                      }
+                      _timeSelectIndex = 0;
+                      _selectIndex = 2;
+                      DateTime yesterday =
+                          _selectedDate.subtract(Duration(days: 1));
+                      _yesterdayDate = yesterday;
+                      endTimer = StringUtil.dateToString(yesterday);
+                      // 过去90天的第一天的时间
+                      DateTime beforeSeven =
+                          _yesterdayDate.subtract(Duration(days: 90));
+                      startTime = StringUtil.dateToString(beforeSeven);
+                      setState(() {});
+                    },
+                    child: Container(
+                        height: 28,
+                        decoration: BoxDecoration(
+                            border: _selectIndex == 2
+                                ? Border.all(
+                                    color: hexStringToColor('#707070'),
+                                    width: 0.0, // 设置边框宽度
+                                  )
+                                : Border.all(
+                                    color: hexStringToColor('#707070'),
+                                    width: 1.0, // 设置边框宽度
+                                  ),
+                            borderRadius: BorderRadius.circular(20),
+                            color: _selectIndex == 2
+                                ? Constants.baseStyleColor
+                                : hexStringToColor('#3E3E55')),
+                        child: Center(
+                          child: _selectIndex == 2
+                              ? Constants.regularWhiteTextWidget(
+                                  'Last 90 days', 14)
+                              : Constants.regularGreyTextWidget(
+                                  'Last 90 days', 14),
+                        )),
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-          ),// Confirm按钮
-          SizedBox(
-            height: 32,
-          ),
-        ],
+            SizedBox(
+              height: 48,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    if (_timeSelectIndex == 1) {
+                      _timeSelectIndex = 0;
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
+                      }
+                      setState(() {});
+                      return;
+                    }
+                    _selectIndex = -1;
+                    _timeSelectIndex = 0; // 如果时间选择弹窗正在显示，先让收起
+                    setState(() {});
+
+                    Future.delayed(Duration(milliseconds: 100), () {
+                      _selectedDate = StringUtil.stringToDate(startTime);
+                      _timeSelectIndex = 1;
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(true);
+                      }
+                      setState(() {});
+                    });
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Constants.regularWhiteTextWidget(startTime, 16),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          _timeSelectIndex == 1
+                              ? Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Constants.baseStyleColor,
+                                )
+                              : Icon(
+                                  Icons.chevron_right,
+                                  color: Constants.baseGreyStyleColor,
+                                ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        color: hexStringToColor('#707070'),
+                        height: 0.5,
+                        width: (Constants.screenWidth(context) - 90) / 2.0,
+                      )
+                    ],
+                  ),
+                ),
+                Constants.regularGreyTextWidget('To', 14, height: 0.8),
+                GestureDetector(
+                  onTap: () {
+                    if (_timeSelectIndex == 2) {
+                      _timeSelectIndex = 0;
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
+                      }
+                      setState(() {});
+                      return;
+                    }
+                    _selectIndex = -1;
+                    _timeSelectIndex = 0; // 如果时间选择弹窗正在显示，先让收起
+                    setState(() {});
+
+                    Future.delayed(Duration(milliseconds: 100), () {
+                      _selectedDate = StringUtil.stringToDate(endTimer);
+                      _timeSelectIndex = 2;
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(true);
+                      }
+                      setState(() {});
+                    });
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Constants.regularWhiteTextWidget(endTimer, 16),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          _timeSelectIndex == 2
+                              ? Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Constants.baseStyleColor,
+                                )
+                              : Icon(
+                                  Icons.chevron_right,
+                                  color: Constants.baseGreyStyleColor,
+                                ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        color: hexStringToColor('#707070'),
+                        height: 0.5,
+                        width: (Constants.screenWidth(context) - 90) / 2.0,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Constants.regularGreyTextWidget(
+                'Only six months of data are available', 10),
+            SizedBox(
+              height: 32,
+            ),
+            _timeSelectIndex >= 1
+                ? Container(
+                    color: Colors.red,
+                    height: 220,
+                    child: Center(
+                        child: DateTimePickerWidget(
+                      onChange: (DateTime dateTime, List<int> selectedIndex) {
+                        if (_timeSelectIndex == 1) {
+                          startTime = StringUtil.dateToString(dateTime);
+                        } else if (_timeSelectIndex == 2) {
+                          endTimer = StringUtil.dateToString(dateTime);
+                        }
+                        setState(() {});
+                      },
+                      pickerTheme: DateTimePickerTheme(
+                          itemTextStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: 'SanFranciscoDisplay'),
+                          backgroundColor: hexStringToColor('#3E3E55'),
+                          titleHeight: 0,
+                          itemHeight: 44,
+                          pickerHeight: 220),
+                      minDateTime: _minDate,
+                      maxDateTime: _maxDate,
+                      initDateTime: _selectedDate,
+                      locale: DateTimePickerLocale.en_us,
+                      dateFormat:
+                          'MMMM-dd-yyyy', // 这里的MMMM需要有4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
+                    )),
+                  ) // 时间弹窗
+                : Container(),
+            _timeSelectIndex >= 1
+                ? SizedBox(
+                    height: 16,
+                  )
+                : SizedBox(
+                    height: 0,
+                  ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                DateTime startDate = StringUtil.stringToDate(startTime);
+                DateTime endDate = StringUtil.stringToDate(endTimer);
+                if (endDate.isBefore(startDate)) {
+                  // 结束时间不能早于开始时间
+                  TTToast.showToast(
+                      'End time cannot be earlier than start time');
+                  return;
+                }
+                if (widget.confirm != null) {
+                  widget.confirm!(startTime.replaceAll('/', '-'), endTimer.replaceAll('/', '-'), _selectIndex);
+                }
+                NavigatorUtil.pop();
+              },
+              child: Container(
+                width: 210,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Constants.baseStyleColor,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Center(
+                  child: Constants.regularWhiteTextWidget('Confirm', 14),
+                ),
+              ),
+            ), // Confirm按钮
+            SizedBox(
+              height: 32,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -831,9 +895,10 @@ class JoinAirBattleDialog extends StatelessWidget {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              if(goToSetting != null){
+              if (goToSetting != null) {
                 goToSetting();
-              };
+              }
+              ;
             },
             child: RichText(
               text: TextSpan(
@@ -900,8 +965,9 @@ class JoinAirBattleDialog extends StatelessWidget {
 }
 
 class UserNameDialog extends StatefulWidget {
-  Function?confirm;
-   UserNameDialog({this.confirm});
+  Function? confirm;
+
+  UserNameDialog({this.confirm});
 
   @override
   State<UserNameDialog> createState() => _UserNameDialogState();
@@ -914,7 +980,8 @@ class _UserNameDialogState extends State<UserNameDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       actionsAlignment: MainAxisAlignment.spaceBetween,
-      title: Constants.boldBlackTextWidget('Enter your text', 20,textAlign: TextAlign.left),
+      title: Constants.boldBlackTextWidget('Enter your text', 20,
+          textAlign: TextAlign.left),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -943,7 +1010,7 @@ class _UserNameDialogState extends State<UserNameDialog> {
         GestureDetector(
           onTap: () {
             String username = _usernameController.text;
-            if(widget.confirm != null){
+            if (widget.confirm != null) {
               widget.confirm!(username);
             }
             Navigator.of(context).pop();
@@ -959,7 +1026,6 @@ class _UserNameDialogState extends State<UserNameDialog> {
             ),
           ),
         ),
-
       ],
     );
   }

@@ -54,6 +54,9 @@ class StringUtil {
 
   /*时间字符串转换为日期*/
   static DateTime stringToDate(String timeString) {
+    if(timeString.contains('/')){
+      timeString = timeString.replaceAll('/', '-');
+    }
     DateTime dateTime = DateTime.parse(timeString);
     return dateTime;
   }
@@ -78,11 +81,8 @@ class StringUtil {
 
   static String serviceStringToShowMinuteString(String timeString) {
     try {
-      print('timeString=${timeString}');
       DateTime dateTime = stringToDate(timeString);
-      print('dateTime=${dateTime}');
       String formattedDate = DateFormat('MMMM dd,yyyy HH:mm').format(dateTime);
-      print('tempString=${formattedDate}');
       return formattedDate;
     } catch (error) {
       return '--';

@@ -38,9 +38,12 @@ class _VideoViewState extends State<VideoView> {
       quality: 50, // 质量
     );
     if (uint8list != null) {
-      setState(() {
-        _imageUrl = uint8list;
-      });
+      // 防止用户已退出本页面，而图片未加载封面图完成
+      if(mounted){
+        setState(() {
+          _imageUrl = uint8list;
+        });
+      }
     }
   }
 

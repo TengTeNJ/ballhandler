@@ -173,7 +173,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
                         _start = startTime;
                         _end = endTime;
                         if(index==3){
-                          _titles[_titles.length-1] = "${_start}-${_end}";
+                          _titles[_titles.length-1] = "${_start.replaceAll('-', '/')}-${_end.replaceAll('-', '/')}";
                           setState(() {
 
                           });
