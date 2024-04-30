@@ -3,6 +3,7 @@ import 'package:code/models/global/user_info.dart';
 import 'package:code/models/http/user_model.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -119,5 +120,13 @@ class Account {
     updateAccountInfo({
       "firebaseToken" : gameUtil.firebaseToken
     });
+
+    String userName =  await NSUserDefault.getValue(kUserName) ?? '--';
+    String email =  await NSUserDefault.getValue(kUserEmail) ?? '--';
+    if(userName!=null && userName.length > 0){
+      FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
+      FirebaseCrashlytics.instance.setCustomKey('userName', userName);
+      FirebaseCrashlytics.instance.setCustomKey('email', email ?? '--');
+    }
   }
 }

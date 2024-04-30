@@ -70,6 +70,7 @@ dependencies:
   auto_size_text: ^3.0.0
   image_cropper: ^1.5.1
   responsive_grid_list: ^1.4.0
+  firebase_crashlytics: ^3.5.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

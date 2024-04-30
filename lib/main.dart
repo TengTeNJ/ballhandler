@@ -1,12 +1,12 @@
 import 'dart:io';
-
-import 'package:code/controllers/participants/home_page_view.dart';
-import 'package:code/models/global/game_data.dart';
+import 'dart:ui';
+import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/root_page.dart';
 import 'package:code/route/route.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_it/get_it.dart';
@@ -27,10 +27,30 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
+  fireBaseCrashlytics();
+
   GetIt.I.registerSingleton<GameUtil>(GameUtil()); // 注册GameUtil实例
   runApp(UserProvider(child: const MyApp()));
 }
 
+/*异常捕获*/
+fireBaseCrashlytics() async{
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+  String userName =  await NSUserDefault.getValue(kUserName) ?? '--';
+  String email =  await NSUserDefault.getValue(kUserEmail) ?? '--';
+  if(userName!=null && userName.length > 0){
+    FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
+    FirebaseCrashlytics.instance.setCustomKey('userName', userName);
+    FirebaseCrashlytics.instance.setCustomKey('email', email ?? '--');
+  }
+}
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
