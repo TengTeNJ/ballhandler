@@ -36,12 +36,14 @@ class _GameFinishControllerState extends State<GameFinishController> {
   }
 
   queryVideoCount() async {
-    final _response = await Profile.queryUserVideoCountData();
-    if (_response.success && _response.data != null) {
-      _videoCount = _response.data!;
-      setState(() {
+    if(UserProvider.of(context).hasLogin){
+      final _response = await Profile.queryUserVideoCountData();
+      if (_response.success && _response.data != null) {
+        _videoCount = _response.data!;
+        setState(() {
 
-      });
+        });
+      }
     }
   }
 
@@ -51,7 +53,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Constants.darkThemeColor,
-        body: SingleChildScrollView(child: Column(
+        body: WillPopScope(child: SingleChildScrollView(child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
@@ -147,6 +149,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
                   if (_response.success) {
                     NavigatorUtil.pop();
                     EventBus().sendEvent(kFinishGame);
+                    EventBus().sendEvent(kBackFromFinish);
                   }
                 } else {
                   // 未登录 数据放入缓存
@@ -186,7 +189,10 @@ class _GameFinishControllerState extends State<GameFinishController> {
               ),
             ),
           ],
-        ),)
+        ),), onWillPop: () async {
+          EventBus().sendEvent(kBackFromFinish);
+          return true;
+        })
       // body: Center(child: GameOverDataView(dataModel: widget.dataModel,),),
     );
   }

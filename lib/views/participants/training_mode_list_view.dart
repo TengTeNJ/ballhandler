@@ -162,7 +162,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Constants.regularWhiteTextWidget(
-                                      '00:${widget.model.trainTime}', 14),
+                                      '00:${widget.model.trainTime.padLeft(2, '0')}', 14),
                                   Constants.regularWhiteTextWidget('Time', 12),
                                 ],
                               )

@@ -376,7 +376,8 @@ class AirBattle {
         self.nickName = await NSUserDefault.getValue(kUserName);
         self.country =
         await NSUserDefault.getValue(kCountry);
-        self.avgPace = !ISEmpty(_map['avgPace']) ? _map['avgPace'] : '-';
+        self.avgPace = !ISEmpty(_map['avgPace']) ? _map['avgPace'] .toString(): '-';
+        self.avgPace = !ISEmpty(_map['avgPace']) ? _map['avgPace'] .toString(): '-';
         self.trainScore =
             !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '-';
         self.rankNumber =  !ISEmpty(_map['rankNumber']) ? _map['rankNumber'].toString() : '-';

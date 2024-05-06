@@ -150,25 +150,21 @@ class _LoginPageControllerState extends State<LoginPageController> with SingleTi
                 Container(
                   margin: EdgeInsets.only(top: 8, left: 16, right: 16),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
                         height: 1,
                         color: Color.fromRGBO(177, 177, 177, 1.0),
-                        width: (Constants.screenWidth(context) - 32 - 18) / 2.0,
+                        width: (Constants.screenWidth(context) - 32 - 24) / 2.0,
                       ),
                       Center(
-                        child: Text(
-                          'or',
-                          style: TextStyle(
-                              color: Color.fromRGBO(177, 177, 177, 1.0),
-                              fontSize: 12),
-                        ),
+                        child:Constants.regularGreyTextWidget('or', 14),
                       ),
                       Container(
                         height: 1,
                         color: Color.fromRGBO(177, 177, 177, 1.0),
-                        width: (Constants.screenWidth(context) - 32 - 18) / 2.0,
+                        width: (Constants.screenWidth(context) - 32 - 24) / 2.0,
                       )
                     ],
                   ),

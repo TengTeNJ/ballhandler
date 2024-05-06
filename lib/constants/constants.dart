@@ -303,7 +303,8 @@ bool ISEmpty(Object? obj) {
 // 全局监听
 const kLoginSucess = 'login_success'; // 登录成功
 const kFinishGame = 'finish_game'; // 游戏完成，保存数据成功
-
+const kSignOut = 'sign_out'; // 退出登录
+const kBackFromFinish = 'back_from_finish'; // 从finish页面返回
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
   "0" :{

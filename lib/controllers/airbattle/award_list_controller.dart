@@ -61,7 +61,7 @@ class _AwardListControllerState extends State<AwardListController> {
             ),
             Constants.boldWhiteTextWidget('Award', 30),
             SizedBox(
-              height: 6,
+              height:  _datas.length == 0 ? 0 : 6,
             ),
             Expanded(
                 child: AwardListView(

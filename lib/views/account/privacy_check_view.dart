@@ -60,7 +60,7 @@ class _PrivacyCheckViewState extends State<PrivacyCheckView> {
           },
           child: RichText(
             text: TextSpan(
-              text: 'By signing up you agree to  Privacy Policy',
+              text: 'By signing up you agree to ',
               style: TextStyle(
                   color: Constants.baseGreyStyleColor,
                   fontFamily: 'SanFranciscoDisplay',

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/color.dart';
+import '../../utils/notification_bloc.dart';
 
 class SettingController extends StatefulWidget {
   const SettingController({super.key});
@@ -141,6 +142,7 @@ class _SettingControllerState extends State<SettingController> {
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   NSUserDefault.clearUserInfo(context);
+                  EventBus().sendEvent(kSignOut);
                   NavigatorUtil.pop();
                 },
                 child: Column(

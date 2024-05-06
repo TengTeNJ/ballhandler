@@ -55,7 +55,7 @@ class _MyActivityControllerState extends State<MyActivityController> {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: _datas.length == 0 ? 0 : 30,
             ),
             Expanded(child: MyActivityListView(datas: _datas,))
           ],

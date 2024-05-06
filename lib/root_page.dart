@@ -31,17 +31,17 @@ class _RootPageControllerState extends State<RootPageController> {
     ProfileController(),
   ];
 
-  int generateBinaryNumber(int length) {
-    Random random = Random();
-    int result = 0;
-    print('random=${random}');
-    for (int i = 0; i < length; i++) {
-      result <<= 1; // 左移一位
-      //result |= random.nextInt(2); // 使用随机数设置当前位
-    }
-    result |= 5;
-    return result;
-  }
+  // int generateBinaryNumber(int length) {
+  //   Random random = Random();
+  //   int result = 0;
+  //   print('random=${random}');
+  //   for (int i = 0; i < length; i++) {
+  //     result <<= 1; // 左移一位
+  //     //result |= random.nextInt(2); // 使用随机数设置当前位
+  //   }
+  //   result |= 5;
+  //   return result;
+  // }
 
   @override
   void initState() {

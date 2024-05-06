@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
@@ -60,6 +61,8 @@ class _HomePageViewState extends State<HomePageController> {
           }
         }
       });
+    }else{
+      DatabaseHelper().getLocalGuestData(context);
     }
   }
 
@@ -90,7 +93,7 @@ class _HomePageViewState extends State<HomePageController> {
     });
     // 监听
     subscription = EventBus().stream.listen((event) {
-      if (event == kLoginSucess || event == kFinishGame) {
+      if (event == kLoginSucess || event == kFinishGame || event == kSignOut) {
         // 登录成功,完成游戏
         getHomeData(context);
       }

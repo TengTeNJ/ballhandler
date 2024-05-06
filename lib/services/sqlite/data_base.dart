@@ -1,7 +1,12 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
+import 'package:code/models/global/user_info.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import '../../utils/global.dart';
 
 class VideoPathModel {
   String id = '';
@@ -114,10 +119,13 @@ class DatabaseHelper {
   Future<List<GameOverModel>> getData(String table) async {
     Database db = await database;
     final _datas = await db.query(table);
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     List<GameOverModel> array = [];
     _datas.forEach((element) {
       GameOverModel model = GameOverModel.fromJson(element);
-      array.add(model);
+      if(model.sceneId == (gameUtil.gameScene.index + 1).toString()){
+        array.add(model);
+      }
     });
     return array;
   }
@@ -135,5 +143,30 @@ class DatabaseHelper {
       array.add(model);
     });
     return array;
+  }
+
+  /*获取本地的游客数据*/
+  Future<void> getLocalGuestData(BuildContext context) async{
+    List<GameOverModel> _data =  await DatabaseHelper().getData(kDataBaseTableName);
+    if(_data.length == 0){
+      UserProvider.of(context).avgPace = '-';
+      UserProvider.of(context).totalScore = '-';
+      UserProvider.of(context).totalTime = '-';
+      UserProvider.of(context).totalTimes = '-';
+    }else{
+      double _bestSpeed = 9999;
+      double _totalScore = 0;
+      double _totalTime = 0;
+      _data.forEach((element) {
+        // 速度越小 成绩越好
+        _bestSpeed = double.parse(element.avgPace) < _bestSpeed ?  double.parse(element.avgPace) : _bestSpeed;
+      _totalScore =  _totalScore + double.parse(element.score);
+      _totalTime = _totalTime + double.parse(element.time);
+    });
+      UserProvider.of(context).totalTimes = _data.length.toString();
+      UserProvider.of(context).avgPace = _bestSpeed.toString();
+      UserProvider.of(context).totalScore = _totalScore.toString();
+      UserProvider.of(context).totalTime = (_totalTime/60).toStringAsFixed(1);
+    }
   }
 }

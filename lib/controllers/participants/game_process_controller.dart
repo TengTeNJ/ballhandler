@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/sqlite/data_base.dart';
@@ -11,6 +13,7 @@ import 'package:camera/camera.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/ble_data.dart';
 import '../../utils/global.dart';
+import '../../utils/notification_bloc.dart';
 import '../../utils/system_device.dart';
 import '../../widgets/base/base_image.dart';
 
@@ -28,6 +31,7 @@ class _GameProcessControllerState extends State<GameProcessController>
   late CameraController _controller;
   late String _imagePath;
   bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
+  late StreamSubscription subscription;
   @override
   void initState() {
     // TODO: implement initState
@@ -90,8 +94,8 @@ class _GameProcessControllerState extends State<GameProcessController>
           model.endTime = StringUtil.dateToGameTimeString();
 
           // 释放摄像头控制器
-          await _controller.dispose();
-          NavigatorUtil.popAndThenPush('gameFinish', arguments: model);
+         // await _controller.dispose();
+          NavigatorUtil.push('gameFinish', arguments: model);
           // 标记离开游戏页面
           gameUtil.nowISGamePage = false;
           _getStartFlag = false;
@@ -100,12 +104,28 @@ class _GameProcessControllerState extends State<GameProcessController>
         // 哪个灯亮
         _imagePath =
             'images/product/scene${gameUtil.gameScene.index + 1}/model${gameUtil.modelId}/${BluetoothManager().gameData.currentTarget}.png';
-        print('ImagePath=${_imagePath}');
         setState(() {});
       } else {
         setState(() {});
       }
     };
+
+    // 从游戏数据保存页面返回监听
+    subscription = EventBus().stream.listen((event) {
+      if (event == kBackFromFinish) {
+        // 从游戏完成页面返回
+        print('从游戏完成页面返回');
+        gameUtil.nowISGamePage = true;
+        BluetoothManager().gameData.remainTime = 45;
+        BluetoothManager().gameData.millSecond = 0;
+        BluetoothManager().gameData.score = 0;
+        if(mounted){
+          setState(() {
+
+          });
+        }
+      }
+    });
   }
 
   //  生命周期函数
@@ -151,6 +171,7 @@ class _GameProcessControllerState extends State<GameProcessController>
     BluetoothManager().gameData.remainTime = 45;
     BluetoothManager().gameData.millSecond = 0;
     BluetoothManager().gameData.score = 0;
+    subscription.cancel();
     super.dispose();
   }
 }

@@ -3,7 +3,6 @@ import 'package:code/views/airbattle/message_list_view.dart';
 import 'package:code/views/base/no_data_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
-
 import '../../services/http/airbattle.dart';
 
 class MessageController extends StatefulWidget {
@@ -40,16 +39,16 @@ class _MessageControllerState extends State<MessageController> {
         showBack: true,
       ),
       backgroundColor: Constants.darkThemeColor,
-      body: _datas.length == 0 ? NoDataView() : Container(
+      body:  Container(
         margin: EdgeInsets.only(top: 20, left: 16, right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Constants.boldWhiteTextWidget('Notifications', 30),
             SizedBox(
-              height: 30,
+              height:   _datas.length == 0 ? 0 : 30,
             ),
-            Expanded(child: MessageListView(datas: _datas,)),
+              Expanded(child:   _datas.length == 0 ? NoDataView() : MessageListView(datas: _datas,)),
           ],
         ),
       ),

@@ -207,7 +207,6 @@ class _SetUserInfoControllerState extends State<SetUserInfoController> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      print('ApiResponse ApiResponse');
                       bool isvalidName = StringUtil.isValidNickname(_nameText);
                       if (isvalidName == false) {
                         TTToast.showErrorInfo('Please enter a legal nickname');
