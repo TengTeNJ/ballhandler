@@ -39,6 +39,12 @@ class GameJoinCountModel{
   int trainMemberCount = 0; // 日常训练总人数
 }
 
+class SceneModel {
+  String dictKey = '1';
+  String dictValue = 'Digital Stickhandling Trainer';
+  String dictRemark = 'Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials, and push your limits.';
+}
+
 class Participants {
   /*获取首页用户的数据*/
   static Future<ApiResponse<HomeUsermodel>> getHomeUserData() async {
@@ -81,7 +87,7 @@ class Participants {
   }
 
 /*保存游戏数据*/
-  static Future<ApiResponse<String>> saveGameData(GameOverModel data) async {
+  static Future<ApiResponse<String>> saveGameData(GameOverModel data,{double size = 0}) async {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     print('score=${data.score}');
@@ -97,6 +103,7 @@ class Participants {
       "trainVideo": data.videoPath ?? '',
       "trainIntegral": data.Integral,
       "trainType": gameUtil.isFromAirBattle ? 1 : 0,
+      "videoSize": size.toString()
     };
     final response =
         await HttpUtil.post('/api/train/save', _data, showLoading: true);
@@ -238,6 +245,30 @@ class Participants {
       model.activityMemberCount = _map['activityMemberCount'] ?? 0;
       model.trainMemberCount = _map['trainMemberCount'] ?? 0;
       return ApiResponse(success: response.success, data: model);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+  /*查询训练场景列表接口*/
+  static Future<ApiResponse<List<SceneModel>>> querySceneListData() async {
+    final response =
+    await HttpUtil.get('/api/train/scene/list', null, showLoading: false);
+    List<SceneModel> _list = [];
+    if (response.success && response.data['data'] != null) {
+      final _array = response.data['data'] as List;
+      _array.forEach((element) {
+        SceneModel model = SceneModel();
+        final _map = element;
+        model.dictKey =
+        !ISEmpty(_map['dictKey']) ? _map['dictKey'].toString() : '1';
+        model.dictValue =
+        !ISEmpty(_map['dictValue']) ? _map['dictValue'] : '-';
+        model.dictRemark =
+        !ISEmpty(_map['dictRemark']) ? _map['dictRemark'] : '-';
+        _list.add(model);
+      });
+      return ApiResponse(success: response.success, data: _list);
     } else {
       return ApiResponse(success: false);
     }

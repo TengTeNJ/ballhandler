@@ -67,6 +67,7 @@ class _RankingControllerState extends State<RankingController> {
   }
   @override
   Widget build(BuildContext context) {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     return Scaffold(
       backgroundColor: Constants.darkThemeColor,
       appBar: CustomAppBar(),
@@ -91,7 +92,7 @@ class _RankingControllerState extends State<RankingController> {
               child: RankingCardPageView(onChange: _pageViewOnChange),
             ),),
             IndicatorView(
-              count: 3,
+              count: gameUtil.sceneList.length,
               currentPage: _currentPageIndex,
               currentPageColor: Constants.baseStyleColor,
             ),

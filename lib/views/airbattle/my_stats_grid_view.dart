@@ -109,7 +109,7 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: 12, right: 10),
-                      child: Row(
+                      child: SingleChildScrollView(child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -129,7 +129,7 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
                                 height: 0.8),
                           )
                         ],
-                      ),
+                      ),scrollDirection: Axis.horizontal,),
                     ),
                     SizedBox(
                       height: 16,

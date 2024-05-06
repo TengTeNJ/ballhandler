@@ -4,6 +4,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/root_page.dart';
 import 'package:code/route/route.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -32,8 +33,19 @@ void main() async {
   initDeepLinking();
 
   GetIt.I.registerSingleton<GameUtil>(GameUtil()); // 注册GameUtil实例
+  await querySceneListdata();
   runApp(UserProvider(child: const MyApp()));
 }
+
+Future<void> querySceneListdata() async {
+  final _response = await Participants.querySceneListData();
+  if (_response.success && _response.data != null) {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+      gameUtil.sceneList.clear();
+      gameUtil.sceneList.addAll(_response.data!);
+  }
+}
+
 
 /*异常捕获*/
 fireBaseCrashlytics() async{

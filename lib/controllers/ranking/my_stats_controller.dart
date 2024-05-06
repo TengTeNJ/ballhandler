@@ -270,8 +270,8 @@ Widget BarView(List<MyStatsModel> datas) {
   return PageView.builder(
     itemBuilder: (context, index) {
       return MyStatsBarChatView(
-          datas: datas.sublist(index * 10,
-              page > 1 ? (index == 0 ? 10 : datas.length) : datas.length));
+          datas: datas.sublist(index * 20,
+              page > 1 ? (index == 0 ? 20 : datas.length) : datas.length));
     },
     itemCount: page,
   );

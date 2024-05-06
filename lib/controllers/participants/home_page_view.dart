@@ -32,17 +32,13 @@ class _HomePageViewState extends State<HomePageController> {
 
   late PageController _pageController;
   late StreamSubscription subscription;
-  final List<Widget> _pageViews = [
-    HomeBodyView(),
-    HomeBodyView(),
-    HomeBodyView()
-  ];
+   List<Widget> _pageViews = [];
 
   // 获取用户首页的数据
-  getHomeData(BuildContext context) async{
+  getHomeData(BuildContext context) async {
     // 登录了则请求相关数据
     final _token = await NSUserDefault.getValue(kAccessToken);
-    if (_token!=null && _token.length > 0) {
+    if (_token != null && _token.length > 0) {
       Participants.getHomeUserData().then((value) {
         if (value.success && value.data != null) {
           UserProvider.of(context).avgPace = value.data!.avgPace;
@@ -52,7 +48,7 @@ class _HomePageViewState extends State<HomePageController> {
           // 首页弹窗
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           if (value.data!.noticeType != 0) {
-            if(!gameUtil.hasShowNitice){
+            if (!gameUtil.hasShowNitice) {
               TTDialog.championDialog(context, () {
                 NavigatorUtil.push(Routes.awardlist); // 跳转到获奖列表页面
               });
@@ -61,7 +57,7 @@ class _HomePageViewState extends State<HomePageController> {
           }
         }
       });
-    }else{
+    } else {
       DatabaseHelper().getLocalGuestData(context);
     }
   }
@@ -70,6 +66,12 @@ class _HomePageViewState extends State<HomePageController> {
   void initState() {
     super.initState();
     GameUtil gameUtil = GetIt.instance<GameUtil>();
+   // 初始化pageview试图数组
+    gameUtil.sceneList.forEach((element) {
+      _pageViews.add(HomeBodyView(model: element));
+    });
+
+    // 初始化pageView
     _currentIndex = gameUtil.gameScene.index;
     _pageController = PageController(initialPage: _currentIndex);
     _pageController.addListener(() {
@@ -85,7 +87,7 @@ class _HomePageViewState extends State<HomePageController> {
           ][_currentIndex];
         });
         // 延迟100毫秒进行数据请求，防止初始化本地用户信息未完成
-        Future.delayed(Duration(milliseconds: 100),(){
+        Future.delayed(Duration(milliseconds: 100), () {
           getHomeData(context);
         });
         //getHomeData(context);
@@ -102,6 +104,8 @@ class _HomePageViewState extends State<HomePageController> {
 
   @override
   Widget build(BuildContext context) {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+
     getHomeData(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -137,7 +141,7 @@ class _HomePageViewState extends State<HomePageController> {
             Expanded(
               child: PageView.builder(
                   controller: _pageController,
-                  itemCount: 3,
+                  itemCount: gameUtil.sceneList.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.only(left: 16, right: 16),
@@ -152,7 +156,7 @@ class _HomePageViewState extends State<HomePageController> {
                   Container(
                     height: 30,
                     child: IndicatorView(
-                      count: 3,
+                      count: gameUtil.sceneList.length,
                       currentPage: _currentIndex,
                       defaultColor: Color.fromRGBO(204, 204, 204, 1.0),
                       currentPageColor: Constants.baseStyleColor,

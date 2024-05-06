@@ -45,7 +45,7 @@ class AnalyzeDataModel{
     if(this.trainScore == 0 || this.lastTrainScore == 0){
       return '-';
     }
-    bool rise = (this.trainScore - this.lastTrainScore) >= 0;
+    bool rise = (this.trainScore - this.lastTrainScore) > 0;
     double comparedValue = (this.trainScore - this.lastTrainScore).abs()/this.lastTrainScore;
     String somparedString = convertToPercentage(comparedValue);
     return rise ?('+' + somparedString): ('-' + somparedString) ;
@@ -59,7 +59,7 @@ class AnalyzeDataModel{
     if(this.trainTime == 0 || this.lastTrainTime == 0){
       return '-';
     }
-    bool rise = (this.trainTime - this.lastTrainTime) >= 0;
+    bool rise = (this.trainTime - this.lastTrainTime) > 0;
     double comparedValue = (this.trainTime - this.lastTrainTime).abs()/this.lastTrainTime;
     String somparedString = convertToPercentage(comparedValue);
     return rise ?('+' + somparedString): ('-' + somparedString) ;
@@ -74,7 +74,7 @@ class AnalyzeDataModel{
     if(this.trainCount == 0 || this.lastTrainCount == 0){
       return '-';
     }
-    bool rise = (this.trainCount - this.lastTrainCount) >= 0;
+    bool rise = (this.trainCount - this.lastTrainCount) > 0;
     double comparedValue = (this.trainCount - this.lastTrainCount).abs()/this.lastTrainCount;
     String somparedString = convertToPercentage(comparedValue);
     if(somparedString.length >3){
@@ -187,6 +187,8 @@ class Rank {
         model.gameTimer =
             !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
         model.speed = !ISEmpty(_map['avgPace']) ? _map['avgPace'] : 0;
+        model.sceneId = !ISEmpty(_map['sceneId']) ? _map['sceneId'].toString() : '1';
+        model.modeId = !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
         model.rank =
             !ISEmpty(_map['rankNumber']) ? _map['rankNumber'].toString() : '--';
         model.indexString = (_array.indexOf(element) + 1).toString();

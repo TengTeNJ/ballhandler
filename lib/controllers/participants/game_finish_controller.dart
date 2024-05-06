@@ -7,6 +7,7 @@ import 'package:code/services/http/profile.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/video_util.dart';
 import 'package:code/views/participants/fireworks_animation-view.dart';
 import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
@@ -138,14 +139,16 @@ class _GameFinishControllerState extends State<GameFinishController> {
                 if (UserProvider
                     .of(context)
                     .hasLogin) {
+                  final _filePath = widget.dataModel.videoPath;
                   if (widget.dataModel.videoPath.length > 0) {
                     final _urlResponse = await Participants.uploadAsset(
                         widget.dataModel.videoPath);
                     widget.dataModel.videoPath = _urlResponse.data ?? '';
                   }
+                  double size =  await  VideoUtil.getVideoFileSize(_filePath);
                   // 保存游戏数据到云端
                   final _response = await Participants.saveGameData(
-                      widget.dataModel);
+                      widget.dataModel,size: size);
                   if (_response.success) {
                     NavigatorUtil.pop();
                     EventBus().sendEvent(kFinishGame);

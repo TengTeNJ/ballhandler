@@ -1,4 +1,5 @@
 import 'package:code/services/http/airbattle.dart';
+import 'package:code/services/http/participants.dart';
 
 enum GameScene { five, erqiling,threee}
 
@@ -29,5 +30,5 @@ class GameUtil {
     }
     return 0;
   }
-
+  List<SceneModel> sceneList = [SceneModel()]; // 场景列表
 }

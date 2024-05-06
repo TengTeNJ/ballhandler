@@ -1,19 +1,20 @@
 
 import 'package:code/constants/constants.dart';
+import 'package:code/services/http/participants.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/global.dart';
 
 class HomeBodyView extends StatefulWidget {
-  const HomeBodyView({super.key});
+  SceneModel model;
+   HomeBodyView({required this.model});
 
   @override
   State<HomeBodyView> createState() => _HomeBodyViewState();
 }
 
 class _HomeBodyViewState extends State<HomeBodyView> {
-  bool _start = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,8 +42,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 SizedBox(
                   height: 8,
                 ),
-                Constants.boldWhiteTextWidget(
-                  'Digital Stickhandling Trainer',
+                Constants.boldWhiteTextWidget(widget.model.dictValue,
                   26,
                   maxLines: 2,
                   textAlign: TextAlign.center,
@@ -52,7 +52,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 ),
                 Container(
                   // color: Colors.red,
-                  child: Constants.regularWhiteTextWidget('Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials,and push your limits.', 10,height: 1.5),
+                  child: Constants.regularWhiteTextWidget(widget.model.dictRemark,10,height: 1.5),
                 ),
               ],
             ),

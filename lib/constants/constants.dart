@@ -307,15 +307,6 @@ const kSignOut = 'sign_out'; // 退出登录
 const kBackFromFinish = 'back_from_finish'; // 从finish页面返回
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
-  "0" :{
-    "7" : "ZIGZAG Challenge",
-    "1" : "2 Challenge",
-    "2" : "L Challenge",
-    "3" : "OMEGA Challenge",
-    "6" : "Straight line Challenge",
-    "4" : "Pentagon Challenge",
-    "5" : "SMILE Challenge",
-  },
   "1" :{
     "7" : "ZIGZAG Challenge",
     "1" : "2 Challenge",
@@ -326,6 +317,15 @@ const Map<String,Map<String,String>> kGameSceneAndModelMap = {
     "5" : "SMILE Challenge",
   },
   "2" :{
+    "7" : "ZIGZAG Challenge",
+    "1" : "2 Challenge",
+    "2" : "L Challenge",
+    "3" : "OMEGA Challenge",
+    "6" : "Straight line Challenge",
+    "4" : "Pentagon Challenge",
+    "5" : "SMILE Challenge",
+  },
+  "3" :{
     "7" : "ZIGZAG Challenge",
     "1" : "2 Challenge",
     "2" : "L Challenge",

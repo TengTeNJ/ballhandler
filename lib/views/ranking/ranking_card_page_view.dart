@@ -33,9 +33,10 @@ class _RankingCardPageViewState extends State<RankingCardPageView> {
 
   @override
   Widget build(BuildContext context) {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     return PageView.builder(
       itemBuilder: (context,index){
       return Padding(padding: EdgeInsets.only(left: 16,right: 16,top: 16,bottom: 10),child: RankingCardView(index: index,),);
-    },itemCount: 3,controller: _pageController,);
+    },itemCount: gameUtil.sceneList.length,controller: _pageController,);
   }
 }
