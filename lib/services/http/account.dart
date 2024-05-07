@@ -103,7 +103,7 @@ class Account {
     NSUserDefault.setKeyValue<String>(kAccessToken, _response.data!.memberToken);
     NSUserDefault.setKeyValue<String>(kAvatar, _response.data!.avatar);
     NSUserDefault.setKeyValue<String>(kBrithDay, _response.data!.birthday);
-    NSUserDefault.setKeyValue<String>(kCountry, _response.data!.country);
+    NSUserDefault.setKeyValue<String>(kCountry, ISEmpty(_response.data!.country) ? '--' : _response.data!.country);
 
     UserProvider.of(context).userName = ISEmpty(_response.data!.nickName) ? '--' : _response.data!.nickName;
     UserProvider.of(context).token = _response.data!.memberToken;

@@ -29,7 +29,7 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
     String _title = kGameSceneAndModelMap[_scene]![_modelId] ?? 'ZIGZAG Challenge';
 
     return Scaffold(
-      backgroundColor: Constants.darkThemeColor,
+      backgroundColor: Constants.darkControllerColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

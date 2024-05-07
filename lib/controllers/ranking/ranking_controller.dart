@@ -26,7 +26,11 @@ class _RankingControllerState extends State<RankingController> {
   int _page = 1;
   bool _hasMode = false;
 
+  // 卡片页滑动监听
   void _pageViewOnChange(int index) {
+    if(index == _currentPageIndex){
+      return;
+    }
     setState(() {
       _page = 1;
       _datas.clear();
@@ -45,6 +49,7 @@ class _RankingControllerState extends State<RankingController> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    queryRankList();
   }
   /* 获取排行榜数据*/
   queryRankList({bool loadMore = false}) async{
@@ -69,7 +74,7 @@ class _RankingControllerState extends State<RankingController> {
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     return Scaffold(
-      backgroundColor: Constants.darkThemeColor,
+      backgroundColor: Constants.baseControllerColor,
       appBar: CustomAppBar(),
       body: Container(
         child: Column(

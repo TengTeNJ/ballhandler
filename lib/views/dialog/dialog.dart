@@ -739,7 +739,6 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                     _selectIndex = -1;
                     _timeSelectIndex = 0; // 如果时间选择弹窗正在显示，先让收起
                     setState(() {});
-
                     Future.delayed(Duration(milliseconds: 100), () {
                       _selectedDate = StringUtil.stringToDate(endTimer);
                       _timeSelectIndex = 2;
@@ -785,8 +784,19 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
             SizedBox(
               height: 20,
             ),
-            Constants.regularGreyTextWidget(
-                'Only six months of data are available', 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.help,
+                  color: hexStringToColor('#B1B1B1'),
+                  size: 12,
+                ),
+                SizedBox(width: 4,),
+                Constants.regularGreyTextWidget(
+                    'Only six months of data are available', 10),
+              ],
+            ),
             SizedBox(
               height: 32,
             ),

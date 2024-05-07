@@ -146,7 +146,7 @@ class _GameProcessControllerState extends State<GameProcessController>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constants.darkThemeColor,
+      backgroundColor: Constants.baseControllerColor,
       body: OrientationBuilder(
         builder: (context, orientation) {
           return orientation == Orientation.portrait

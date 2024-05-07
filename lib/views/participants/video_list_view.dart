@@ -1,4 +1,5 @@
 import 'package:code/services/http/profile.dart';
+import 'package:code/views/base/no_data_view.dart';
 import 'package:code/views/participants/video_view.dart';
 import 'package:flutter/material.dart';
 import '../../utils/toast.dart';
@@ -52,7 +53,7 @@ class _VideoListViewState extends State<VideoListView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return  _datas.length > 0 ? ListView.separated(
         controller: _scrollController,
         itemBuilder: (context, index) {
           return GestureDetector(
@@ -108,6 +109,6 @@ class _VideoListViewState extends State<VideoListView> {
         separatorBuilder: (context, index) => SizedBox(
               height: 12,
             ),
-        itemCount: _datas.length);
+        itemCount: _datas.length) :Transform.translate(child: NoDataView(),offset: Offset(0,-30),);
   }
 }

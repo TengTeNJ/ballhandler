@@ -11,13 +11,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       leading:  showBack == true ?  GestureDetector(
         onTap: (){
           NavigatorUtil.pop();
         },
-        child: Container(
-          padding: EdgeInsets.all(10), // 可选的，根据需要设置内边距
-          child: Image.asset('images/base/back.png'), // 替换为您的图片路径
+        child: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // 点击返回按钮时的操作
+            Navigator.of(context).pop();
+          },
+          color: Colors.white,
+          iconSize: 30, // 设置图标大小
         ),
       ):null,
       // ),

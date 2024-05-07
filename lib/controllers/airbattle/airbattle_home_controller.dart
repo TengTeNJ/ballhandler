@@ -52,7 +52,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      backgroundColor: Constants.darkThemeColor,
+      backgroundColor: Constants.baseControllerColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

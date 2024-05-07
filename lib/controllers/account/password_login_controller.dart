@@ -1,5 +1,6 @@
 import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/services/http/account.dart';
+import 'package:code/utils/notification_bloc.dart';
 import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
 import '../../utils/navigator_util.dart';
@@ -100,6 +101,8 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
                      // 登录成功
                      if(_response.success == true){
                        Account.handleUserData(_response, context);
+                       // 发送登录成功事件
+                       EventBus().sendEvent(kLoginSucess);
                        NavigatorUtil.popToRoot();
                      }
                     },

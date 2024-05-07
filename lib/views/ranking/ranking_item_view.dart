@@ -89,9 +89,7 @@ class _RankingItemViewState extends State<RankingItemView> {
                       child: Constants.mediumWhiteTextWidget(
                           maxLines: 2,
                           textAlign: TextAlign.start,
-                          widget.model.nickName.toString().length > 7
-                              ? widget.model.nickName.toString().substring(0, 6)
-                              : widget.model.nickName.toString(),
+                          widget.model.nickName.toString(),
                           20),
                     ),
                     SizedBox(

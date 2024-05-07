@@ -139,7 +139,7 @@ class Rank {
         model.avatar =
             !ISEmpty(_map['avatar']) ? _map['avatar'].toString() : '';
         model.country =
-            !ISEmpty(_map['country']) ? _map['country'].toString() : 'China';
+            !ISEmpty(_map['country']) ? _map['country'].toString() : '--';
         model.trainVideo =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
         model.trainScore =

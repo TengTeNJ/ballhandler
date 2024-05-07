@@ -1,9 +1,6 @@
 import 'package:code/constants/constants.dart';
-import 'package:code/services/http/profile.dart';
 import 'package:code/views/participants/video_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_grid_list/responsive_grid_list.dart';
-
 import '../../widgets/navigation/CustomAppBar.dart';
 
 class VideoListController extends StatefulWidget {

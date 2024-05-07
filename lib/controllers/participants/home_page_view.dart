@@ -78,6 +78,7 @@ class _HomePageViewState extends State<HomePageController> {
       // 获取当前滑动页面的索引 (取整)
       int currentpage = _pageController.page!.round();
       if (_currentIndex != currentpage) {
+        print('_currentIndex= ${_currentIndex} currentpage = ${currentpage}');
         setState(() {
           _currentIndex = currentpage;
           gameUtil.gameScene = [
@@ -88,9 +89,8 @@ class _HomePageViewState extends State<HomePageController> {
         });
         // 延迟100毫秒进行数据请求，防止初始化本地用户信息未完成
         Future.delayed(Duration(milliseconds: 100), () {
-          getHomeData(context);
+         getHomeData(context);
         });
-        //getHomeData(context);
       }
     });
     // 监听
@@ -100,13 +100,15 @@ class _HomePageViewState extends State<HomePageController> {
         getHomeData(context);
       }
     });
+    Future.delayed(Duration(milliseconds: 100), () {
+      getHomeData(context);
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-
-    getHomeData(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Constants.baseControllerColor,
