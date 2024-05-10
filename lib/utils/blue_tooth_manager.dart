@@ -50,7 +50,7 @@ class BluetoothManager {
     );
     _scanStream!.listen((DiscoveredDevice event) {
       // 处理扫描到的蓝牙设备
-      //print('event.name=${event.name}');
+      // print('event.name=${event.name}');
       if (kBLEDevice_Names.indexOf(event.name) != -1) {
         // 如果设备列表数组中无，则添加
         if (!hasDevice(event.id)) {
@@ -111,7 +111,9 @@ class BluetoothManager {
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
         EasyLoading.showError('disconected');
-        conectedDeviceCount.value--;
+        if(conectedDeviceCount.value > 0){
+          conectedDeviceCount.value--;
+        }
         // 失去连接
         model.hasConected = false;
         this.deviceList.remove(model);
