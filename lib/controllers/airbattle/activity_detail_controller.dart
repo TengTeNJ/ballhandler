@@ -81,29 +81,6 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                               placeHolderPath: 'images/airbattle/under_way.png',
                               width: Constants.screenWidth(context),
                               height: 270),
-                          Positioned(
-                              left: 16,
-                              top: 60,
-                              child: GestureDetector(
-                                onTap: () {
-                                  NavigatorUtil.pop();
-                                },
-                                child: Container(
-                                  width: 36,
-                                  height: 36,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(18),
-                                      color: hexStringToColor('#65657D')),
-                                  child: Center(
-                                    child: Image(
-                                      image: AssetImage(
-                                          'images/participants/back_grey.png'),
-                                      width: 16,
-                                      height: 12,
-                                    ),
-                                  ),
-                                ),
-                              ))
                         ],
                       ),
                     ),
@@ -279,7 +256,29 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                   ],
                 ),
               )),
-
+          Positioned(
+              left: 16,
+              top: 60,
+              child: GestureDetector(
+                onTap: () {
+                  NavigatorUtil.pop();
+                },
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      color: hexStringToColor('#65657D')),
+                  child: Center(
+                    child: Image(
+                      image: AssetImage(
+                          'images/participants/back_grey.png'),
+                      width: 16,
+                      height: 12,
+                    ),
+                  ),
+                ),
+              )),
         ],
       ),
     );

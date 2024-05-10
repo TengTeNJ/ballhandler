@@ -56,7 +56,6 @@ class LoginUtil {
               redirectUri:
                   Uri.parse('https://hockey.fjcctv.com:4432/api/third/apple')));
 
-      print('credential=====${credential}');
       final _map = {
         "avatarUrl": '',
         "gender": 0,

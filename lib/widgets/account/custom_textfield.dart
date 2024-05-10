@@ -40,6 +40,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: InputDecoration(
         filled: true,
         fillColor: Color.fromRGBO(28, 30, 33, 1.0),
+        suffixIcon:  Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            widget.obscureText != null ? IconButton(
+              icon: Icon(widget.obscureText == true ? Icons.visibility : Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  widget.obscureText = !widget.obscureText!;
+                });
+              },
+            ) :Container(),
+          ],
+        ) ,
         hintText:widget.placeHolder,
         // 占位符文本
         hintStyle: widget.hintStyle == null ? Constants.placeHolderStyle() : widget.hintStyle,

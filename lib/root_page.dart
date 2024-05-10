@@ -13,7 +13,7 @@ import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
-
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 class RootPageController extends StatefulWidget {
   const RootPageController({super.key});
 
@@ -59,12 +59,13 @@ class _RootPageControllerState extends State<RootPageController> {
       });
 
     refreshTokenAndDeleteLocanVideo();
+    fireBaseMessage();
   }
 
   /*刷新token删除本地的存储的视频*/
   refreshTokenAndDeleteLocanVideo() async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
-    print('fcmToken=${fcmToken}');
+    print('fcmToken:\n${fcmToken}');
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     gameUtil.firebaseToken = fcmToken ?? '';
     final _datas =
@@ -72,6 +73,18 @@ class _RootPageControllerState extends State<RootPageController> {
     if (_datas != null && _datas.length > 0) {
       VideoUtil().deleteFileInBackground(_datas);
     }
+  }
+
+  fireBaseMessage() async{
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("Received message: ${message.notification?.body}");
+      // 处理收到的消息，例如显示通知
+     //FlutterAppBadger.updateBadgeCount(2);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print("Message opened: ${message.notification?.body}");
+      // 处理用户点击通知消息打开应用的事件
+    });
   }
 
   @override

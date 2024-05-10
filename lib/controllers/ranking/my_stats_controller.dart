@@ -142,7 +142,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
                         width: 4,
                       ),
                       Constants.mediumWhiteTextWidget(
-                          'RANK  ${_analyzeDataModelmodel.rankNumber}',
+                          'RANK  ${_analyzeDataModelmodel.rankNumber == '0' ? '-' : _analyzeDataModelmodel.rankNumber}',
                           kFontSize(context, 16)),
                     ],
                   )

@@ -52,6 +52,8 @@ class _ProfileControllerState extends State<ProfileController> {
         if (mounted) {
           setState(() {});
         }
+      }else if (event == kLoginSucess){
+        queryMyAccountInfoData();
       }
     });
   }
@@ -60,7 +62,9 @@ class _ProfileControllerState extends State<ProfileController> {
     final _response = await Profile.queryIMyAccountInfoData();
     if (_response.success && _response.data != null) {
       _model = _response.data!;
-      setState(() {});
+      if(mounted){
+        setState(() {});
+      }
     }
   }
 
@@ -197,8 +201,7 @@ class _ProfileControllerState extends State<ProfileController> {
                         width: 18,
                       ),
                       Constants.customTextWidget(
-                          StringUtil.serviceStringToShowDateString(
-                              userModel.brith),
+                              StringUtil.serviceStringToShowDateString(userModel.brith),
                           16,
                           '#B1B1B1'),
                     ],
@@ -208,6 +211,7 @@ class _ProfileControllerState extends State<ProfileController> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      // 积分页面
                       // 未登录的话拦截
                       final _hasLogin = UserProvider.of(context).hasLogin;
                       if (_hasLogin == false) {

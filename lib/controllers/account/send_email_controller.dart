@@ -96,13 +96,15 @@ class _SendEmailControllerState extends State<SendEmailController> {
                       GestureDetector(
                         onTap: () async{
                         final _response =  await Account.sendFogetPwdEmail(_email);
-                        if(_response.success){}
-                        TTDialog.sendEmailDialog(context,(){
-                          Future.delayed(Duration(milliseconds: 100),(){
-                            NavigatorUtil.pop();
+                        if(_response.success){
+                          TTDialog.sendEmailDialog(context,(){
+                            Future.delayed(Duration(milliseconds: 100),(){
+                              NavigatorUtil.pop();
+                            });
                           });
-                        });
-                        print('发送邮件成功');
+                          print('发送邮件成功');
+                        }
+
                         },
                         child: Container(
                           child: Center(

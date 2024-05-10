@@ -84,20 +84,18 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(61),
                       child: Container(
-                        decoration: BoxDecoration(
-                            border: DashedBorder.fromBorderSide(
-                                dashLength: 5,
-                                side: BorderSide(
-                                    color:
-                                    Color.fromRGBO(39, 182, 245, 1.0),
-                                    width: 1)),
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(10))),
+                        // decoration: BoxDecoration(
+                        //     border: DashedBorder.fromBorderSide(
+                        //         dashLength: 5,
+                        //         side: BorderSide(
+                        //             color:
+                        //             Color.fromRGBO(39, 182, 245, 1.0),
+                        //             width: 1)),
+                        //     borderRadius:
+                        //     BorderRadius.all(Radius.circular(10))),
                         width: Constants.screenWidth(context) * 0.76,
                         height: Constants.screenHeight(context) * 0.6,
                         child: SizedBox(
-                          width: Constants.screenWidth(context) * 0.55,
-                          height: Constants.screenHeight(context) * 0.45,
                           child: CameraPreview(
                             _controller,
                           ),
@@ -107,6 +105,7 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                   ),
                   Positioned(
                     left: 24,
+                    right: 24,
                     bottom: 54,
                     child:  GestureDetector(
                     onTap: () async {
@@ -119,7 +118,6 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                       );
                     },
                     child: Container(
-                      width: Constants.screenWidth(context) * 0.813,
                       height: 56,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),

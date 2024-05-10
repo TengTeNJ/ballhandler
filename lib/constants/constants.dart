@@ -273,6 +273,8 @@ const kBLEDevice_Names = [
 const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
 
 const String kBaseUrl_Dev = 'http://120.26.79.141:91'; // 测试环境地址
+// 13.49.0.47:91
+const String kBaseUrl_Pro = 'http://13.49.0.47:91'; // 生产环境地址
 
 const kDataBaseTableName = 'game_data_table'; // 数据库的表名
 const kDataBaseTVideoableName = 'video_table'; // 视频路径数据库的表名

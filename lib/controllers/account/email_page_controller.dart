@@ -107,7 +107,11 @@ class _EmailPageControllerState extends State<EmailPageController> {
                         filled:true,
                         fillColor: Color.fromRGBO(28, 30, 33, 1.0),
                         hintText: 'Please Enter Your Email ', // 占位符文本
-                        hintStyle: TextStyle(color: Colors.grey[400]), // 占位符颜色
+                        hintStyle: TextStyle(
+                            color: Color.fromRGBO(132, 132, 132, 1.0),
+                            fontFamily: 'SanFranciscoDisplay',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600), // 占位符颜色
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none, // 移除边框
                             borderRadius: BorderRadius.circular(10)), // 输入框边框样式

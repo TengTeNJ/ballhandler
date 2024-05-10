@@ -87,6 +87,11 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
                     height: 66,
                     margin: EdgeInsets.only(left: 16, right: 18, top: 9),
                     child: CustomTextField(
+                      hintStyle: TextStyle(
+                          color: Color.fromRGBO(132, 132, 132, 1.0),
+                          fontFamily: 'SanFranciscoDisplay',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
                       obscureText:true,
                       controller: _controller,
                       onTap: (text) {

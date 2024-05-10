@@ -104,7 +104,7 @@ class _SetUserInfoControllerState extends State<SetUserInfoController> {
                           onTap: (text) {
                             _nameText = _nameController.text;
                           },
-                          placeHolder: 'Please Enter Your Name',
+                          placeHolder: 'Please Enter Your User Name',
                         ),
                       ),
                       Container(
@@ -209,7 +209,7 @@ class _SetUserInfoControllerState extends State<SetUserInfoController> {
                     onTap: () async {
                       bool isvalidName = StringUtil.isValidNickname(_nameText);
                       if (isvalidName == false) {
-                        TTToast.showErrorInfo('Please enter a legal nickname');
+                        TTToast.showErrorInfo('Please enter a legal nickname,1 to 16 characters, including letters and numbers');
                         return;
                       }
                       if (_countryText.length == 0) {
@@ -223,8 +223,8 @@ class _SetUserInfoControllerState extends State<SetUserInfoController> {
                       });
                       if(_response.success){
                         // 更新用户信息
-                        UserProvider.of(context).brith = StringUtil.dateToBrithString(selectedDate);
-                        NSUserDefault.setKeyValue(kBrithDay, StringUtil.dateToBrithString(selectedDate));
+                        UserProvider.of(context).brith = StringUtil.dateTimeToString(selectedDate);
+                        NSUserDefault.setKeyValue(kBrithDay, StringUtil.dateTimeToString(selectedDate));
                         UserProvider.of(context).country = _countryText;
                         NSUserDefault.setKeyValue(kCountry, _countryText);
                         UserProvider.of(context).userName = _nameText;

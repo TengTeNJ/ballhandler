@@ -11,21 +11,20 @@ class RankingCardView extends StatefulWidget {
 }
 
 class _RankingCardViewState extends State<RankingCardView> {
-String _avgPace = '--';
-String _rankNumber = '--';
+String _avgPace = '-';
+String _rankNumber = '-';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('--------initState------');
     queryData();
   }
 
   queryData() async{
     final _response = await Participants.queryRankData(widget.index + 1);
-    if(_response.success){
-      _avgPace = _response.data!.avgPace ?? '--';
-      _rankNumber = _response.data!.rankNumber ?? '--';
+    if(_response.success && _response.data != null){
+      _avgPace = _response.data!.avgPace ?? '-';
+      _rankNumber = _response.data!.rankNumber ?? '-';
       setState(() {
 
       });
@@ -68,7 +67,7 @@ String _rankNumber = '--';
             child: Column(
               children: [
                Container(child:  Row(crossAxisAlignment: CrossAxisAlignment.end,children: [
-                  Constants.mediumWhiteTextWidget(_avgPace, 40,height: 0.8),
+                  Constants.mediumWhiteTextWidget(_avgPace == '0' ? '-' : _avgPace, 40,height: 0.8),
                  Constants.regularWhiteTextWidget('sec/pt', 14,height: 1.0)
                ],),),
                 SizedBox(height: 6,),
@@ -78,7 +77,7 @@ String _rankNumber = '--';
                     children: [
                       Image(image: AssetImage('images/ranking/rank.png'),width: 12,height: 15,),
                       SizedBox(width: 4,),
-                      Constants.regularWhiteTextWidget('Rank ' + _rankNumber, 14),
+                      Constants.regularWhiteTextWidget('Rank ' + (_rankNumber == '0' ? '-' : _rankNumber), 14),
                     ],
                   ),
                 ],),
@@ -92,7 +91,6 @@ String _rankNumber = '--';
   @override
   void dispose() {
     // TODO: implement dispose
-    print('--------dispose------');
     super.dispose();
   }
 }

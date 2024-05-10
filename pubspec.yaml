@@ -73,6 +73,7 @@ dependencies:
   firebase_crashlytics: ^3.5.4
   app_links: ^5.0.0
   flutter_to_airplay: ^2.0.4
+  flutter_app_badger: ^1.5.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

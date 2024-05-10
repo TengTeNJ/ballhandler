@@ -37,14 +37,14 @@ class MyAccountDataModel {
   dynamic  avgPace = 0; // 最快速度
   String birthday = ''; // 生日
   String country = ''; // 国家
-  int integral = 1; // 积分
+  int integral = 0; // 积分
   int memberId = 1; // 会员号
   int memberLevel = 1; // 会员等级
   String nickName = ''; // 昵称
-  dynamic trainCount = 1; // 训练次数
-  dynamic trainScore = 1; // 训练总得分
-  dynamic trainTime = 1; // 训练总时常
-  int upperLimit = 1; // 等级积分上限
+  dynamic trainCount = 0; // 训练次数
+  dynamic trainScore = 0; // 训练总得分
+  dynamic trainTime = 0; // 训练总时常
+  int upperLimit = 2000; // 等级积分上限
 }
 class VideoModel{
   String avgPace = '0.0';

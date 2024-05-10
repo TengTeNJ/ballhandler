@@ -68,6 +68,13 @@ class StringUtil {
     return dateTime;
   }
 
+  static DateTime showTimeStringToDateNotMinute(String timeString) {
+    final DateFormat formatter = DateFormat("MMMM dd,yyyy'");
+    DateTime dateTime = formatter.parse(timeString);
+    return dateTime;
+  }
+
+
   /*服务器返回的时间字符串转换为界面上需要展示的时间格式字符串*/
   static String serviceStringToShowDateString(String timeString) {
     try {
@@ -75,7 +82,7 @@ class StringUtil {
       String tempString = dateToBrithString(dateTime);
       return tempString;
     } catch (error) {
-      return '--';
+      return '-';
     }
   }
 
@@ -85,7 +92,7 @@ class StringUtil {
       String formattedDate = DateFormat('MMMM dd,yyyy HH:mm').format(dateTime);
       return formattedDate;
     } catch (error) {
-      return '--';
+      return '-';
     }
   }
 }

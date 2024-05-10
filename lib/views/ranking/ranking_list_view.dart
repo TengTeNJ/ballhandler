@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class RankingListView extends StatefulWidget {
   List<RankModel> datas;
   Function? loadMore;
-   RankingListView({required this.datas,this.loadMore});
+  RankingListView({required this.datas,this.loadMore});
 
   @override
   State<RankingListView> createState() => _RankingListViewState();

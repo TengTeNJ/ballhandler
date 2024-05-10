@@ -69,6 +69,11 @@ class MessageModel {
   int pushId = 0; // 消息推送编号
 }
 
+class  MessageDataModel{
+  List<MessageModel> datas = [];
+  int count = 0;
+}
+
 class AwardDataModel {
   List<AwardModel> data = [];
   int count = 0;
@@ -258,7 +263,7 @@ class AirBattle {
   }
 
   /*查询所有的消息列表*/
-  static Future<ApiResponse<List<MessageModel>>> queryAllMessageListData(
+  static Future<ApiResponse<MessageDataModel>> queryAllMessageListData(
       int page) async {
     final _data = {
       "limit": kPageLimit.toString(),
@@ -266,8 +271,9 @@ class AirBattle {
     };
     final response =
         await HttpUtil.get('/api/message/list', _data, showLoading: true);
-    List<MessageModel> _list = [];
+    MessageDataModel _model = MessageDataModel();
 
+    List<MessageModel> _list = [];
     if (response.success && response.data['data'] != null) {
       final _array = response.data['data'] as List;
       _array.forEach((element) {
@@ -281,9 +287,17 @@ class AirBattle {
         model.messageTitle = !ISEmpty(_map['messageTitle'])
             ? _map['messageTitle'].toString()
             : '--';
+        model.pushId = !ISEmpty(_map['pushId'])
+            ? _map['pushId']
+            : 0;
+        model.isRead = !ISEmpty(_map['isRead'])
+            ? _map['isRead']
+            : 0;
         _list.add(model);
       });
-      return ApiResponse(success: response.success, data: _list);
+      _model.count = ISEmpty( response.data['count']) ? 0 : response.data['count'];
+      _model.datas = _list;
+      return ApiResponse(success: response.success, data: _model);
     } else {
       return ApiResponse(success: false);
     }
@@ -424,8 +438,8 @@ class AirBattle {
 /*消息阅读接口*/
   static Future<ApiResponse> readMessage(int pushId) async {
     final response = await HttpUtil.get(
-        '/api/message/detail', {"pushId": pushId},
-        showLoading: false);
+        '/api/message/detail', {"pushId": pushId.toString()},
+        showLoading: true);
     return ApiResponse(success: response.success);
   }
   /*阅读奖励消息*/

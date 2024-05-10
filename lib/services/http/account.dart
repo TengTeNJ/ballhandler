@@ -93,7 +93,7 @@ class Account {
     Map<String,dynamic> _data = {
       "email":email,
     };
-    final response = await HttpUtil.get('/api/login/sendEmailForget', _data);
+    final response = await HttpUtil.get('/api/login/sendEmailForget', _data,showLoading: true);
     return ApiResponse(success: response.success,);
   }
 

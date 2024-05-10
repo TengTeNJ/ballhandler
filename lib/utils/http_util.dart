@@ -16,7 +16,7 @@ final dio = Dio();
 
 class HttpUtil {
   static final Dio _dio = Dio(BaseOptions(
-    baseUrl: kBaseUrl_Dev, // 设置请求的基础域名
+    baseUrl: kBaseUrl_Pro, // 设置请求的基础域名
     connectTimeout: Duration(seconds: 30), // 连接超时时间，单位是毫秒
     receiveTimeout: Duration(seconds: 30), // 接收超时时间，单位是毫秒
   ));

@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/sqlite/data_base.dart';
@@ -10,6 +10,7 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter_to_airplay/flutter_to_airplay.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/ble_data.dart';
 import '../../utils/global.dart';
@@ -32,6 +33,7 @@ class _GameProcessControllerState extends State<GameProcessController>
   late String _imagePath;
   bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
   late StreamSubscription subscription;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -94,7 +96,13 @@ class _GameProcessControllerState extends State<GameProcessController>
           model.endTime = StringUtil.dateToGameTimeString();
 
           // 释放摄像头控制器
-         // await _controller.dispose();
+          // await _controller.dispose();
+
+          if (gameUtil.isFromAirBattle) {
+            // 从活动来的话 积分为活动积分 不是默认的1
+            model.Integral = gameUtil.activityModel.rewardPoint;
+          }
+          //
           NavigatorUtil.push('gameFinish', arguments: model);
           // 标记离开游戏页面
           gameUtil.nowISGamePage = false;
@@ -119,10 +127,8 @@ class _GameProcessControllerState extends State<GameProcessController>
         BluetoothManager().gameData.remainTime = 45;
         BluetoothManager().gameData.millSecond = 0;
         BluetoothManager().gameData.score = 0;
-        if(mounted){
-          setState(() {
-
-          });
+        if (mounted) {
+          setState(() {});
         }
       }
     });
@@ -326,17 +332,27 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
             recordWidget(),
             GestureDetector(
               onTap: () async {
-                //NavigatorUtil.push(Routes.setting);
                 BluetoothManager().writerDataToDevice(
                     BluetoothManager().deviceList[0], openAllBlueLightData());
               },
               child: Container(
                 child: Center(
-                  child: Image(
-                    image: AssetImage('images/participants/cast.png'),
-                    width: 26,
-                    height: 20,
-                  ),
+                  // child: Image(
+                  //   image: AssetImage('images/participants/cast.png'),
+                  //   width: 26,
+                  //   height: 20,
+                  // ),
+                  child: Platform.isIOS
+                      ? AirPlayRoutePickerView(
+                          tintColor: Colors.white,
+                          activeTintColor: Colors.white,
+                          backgroundColor: Colors.transparent,
+                        )
+                      : Image(
+                          image: AssetImage('images/participants/cast.png'),
+                          width: 26,
+                          height: 20,
+                        ),
                 ),
                 width: 54,
                 height: 54,

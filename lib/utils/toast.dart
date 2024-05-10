@@ -27,12 +27,15 @@ class TTToast {
   }
 
   /*显示错误信息*/
-  static showErrorInfo(String errorInfo) {
+  static showErrorInfo(String errorInfo,{int duration = 2000}) {
+    EasyLoading.instance.displayDuration =  Duration(milliseconds: duration);
     EasyLoading.showError(errorInfo);
   }
 
   /*显示成功信息*/
   static showSuccessInfo(String successInfo) {
+    EasyLoading.instance
+      ..displayDuration = const Duration(milliseconds: 2000);
     EasyLoading.showSuccess(successInfo);
   }
 }

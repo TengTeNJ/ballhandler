@@ -17,8 +17,8 @@ class UserModel extends ChangeNotifier {
   List<String> _overDataList = [];
   String _email = ''; // 用户邮箱
   String _inputEmail = ''; // 用户输入的邮箱
-  String _brith = '--'; // 用户生日
-  String _country = '--'; // 用户区域
+  String _brith = '-'; // 用户生日
+  String _country = '-'; // 用户区域
 
   // get方法
   String get userName => _userName;

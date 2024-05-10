@@ -87,8 +87,8 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                   child: CustomTextField(
                     hintStyle: TextStyle(
                         color: Color.fromRGBO(132, 132, 132, 1.0),
-                        fontFamily: 'SemiBold',
-                        fontSize: 12,
+                        fontFamily: 'SanFranciscoDisplay',
+                        fontSize: 16,
                         fontWeight: FontWeight.w600),
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
@@ -97,7 +97,7 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                       _inputText = _controller.text;
                     },
                     placeHolder:
-                        '8 to 32 characters, including letters and numbers',
+                        'Please Enter Your Password',
                   ),
                 ),
                 Container(
@@ -117,8 +117,8 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                   child: CustomTextField(
                     hintStyle: TextStyle(
                         color: Color.fromRGBO(132, 132, 132, 1.0),
-                        fontFamily: 'SemiBold',
-                        fontSize: 12,
+                        fontFamily: 'SanFranciscoDisplay',
+                        fontSize: 16,
                         fontWeight: FontWeight.w600),
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
@@ -127,7 +127,7 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                       _repeatInputText = _repeatController.text;
                     },
                     placeHolder:
-                        '8 to 32 characters, including letters and numbers',
+                        'Please Enter Your Repeat Password',
                   ),
                 ),
                 GestureDetector(
@@ -136,7 +136,7 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                     bool isvalidPwd = StringUtil.isValidPassword(_inputText);
                     bool pwdEqualToRepeatPwd = (_inputText == _repeatInputText);
                     if (!isvalidPwd) {
-                      TTToast.showErrorInfo('Please enter a valid password');
+                      TTToast.showErrorInfo('Please enter a valid password,8 to 32 characters, including letters and numbers',duration: 5000);
                       return;
                     }
                     if (!pwdEqualToRepeatPwd) {

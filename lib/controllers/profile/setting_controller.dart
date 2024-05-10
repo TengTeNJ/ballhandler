@@ -39,9 +39,9 @@ class _SettingControllerState extends State<SettingController> {
           {"birthday": StringUtil.dateTimeToString(selectedDate)});
       if (_response.success) {
         UserProvider.of(context).brith =
-            StringUtil.dateToBrithString(selectedDate);
+            StringUtil.dateTimeToString(selectedDate);
         NSUserDefault.setKeyValue(
-            kBrithDay, StringUtil.dateToBrithString(selectedDate));
+            kBrithDay, StringUtil.dateTimeToString(selectedDate));
       }
     }
   }
@@ -88,6 +88,7 @@ class _SettingControllerState extends State<SettingController> {
                         }
                       });
                     } else if (index == 2) {
+                      print('------');
                       // 修改生日
                       print('userModel.brith=${userModel.brith}');
                       if (userModel.brith.length < 4) {
