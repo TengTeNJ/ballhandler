@@ -125,6 +125,7 @@ class _SettingControllerState extends State<SettingController> {
                 selectItem: (index) {
                   if (index == 0) {
                     NavigatorUtil.push(Routes.subsetting, arguments: {
+                      "switchCount" : 3,
                       "title": "Private Prpfile",
                       "subTitle":
                           "When your profile is Private,only membersyou approve can see your profile and workout history",

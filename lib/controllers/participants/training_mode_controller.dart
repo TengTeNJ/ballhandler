@@ -13,6 +13,7 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import '../../utils/event_track.dart';
 import '../../utils/global.dart';
 
 class TrainingModeController extends StatefulWidget {
@@ -31,6 +32,11 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       child: TrainingModeListView(
         model: _datas[index],
         scanBleList: () async {
+         // 数据埋点
+          EventTrackUtil.eventTrack(kSelectMode,{
+            'bleCount':BluetoothManager().conectedDeviceCount.value,
+            "selectModeId": index + 1
+          });
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
           if (BluetoothManager().conectedDeviceCount.value == 0) {
             TTDialog.bleListDialog(context);

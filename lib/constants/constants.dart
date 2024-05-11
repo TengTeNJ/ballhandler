@@ -341,3 +341,5 @@ const Map<String,Map<String,String>> kGameSceneAndModelMap = {
 const k270ProductImageScale = 1445/737; // 270产品图片宽高比
 
 const  kUserVideoMaxCount = 100; // 视频的最大数量
+
+const kAppVersion = '202405111203';

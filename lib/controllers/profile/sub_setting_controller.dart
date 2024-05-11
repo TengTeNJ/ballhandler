@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 class SubSettingController extends StatefulWidget {
   String title;
   String? subTitle;
+  int switchCount ;
 
-  SubSettingController({required this.title, this.subTitle});
+  SubSettingController({required this.title, this.subTitle,this.switchCount = 1});
 
   @override
   State<SubSettingController> createState() => _SubSettingControllerState();
@@ -36,6 +37,9 @@ class _SubSettingControllerState extends State<SubSettingController> {
             widget.subTitle != null
                 ? Constants.regularWhiteTextWidget(widget.subTitle!, 16,textAlign: TextAlign.left,height: 1.2)
                 : Container(),
+            widget.subTitle != null ?  SizedBox(
+              height: 20,
+            ) :Container(),
             Expanded(child: ListView.separated(
                 itemBuilder: (context, index) {
                   return Column(
@@ -86,7 +90,7 @@ class _SubSettingControllerState extends State<SubSettingController> {
                     height: 36,
                   );
                 },
-                itemCount: 3))
+                itemCount: widget.switchCount))
           ],
         ),
       ),

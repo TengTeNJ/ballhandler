@@ -11,6 +11,8 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/event_track.dart';
+
 class MyStatsController extends StatefulWidget {
   const MyStatsController({super.key});
 
@@ -178,6 +180,12 @@ class _MyStatsControllerState extends State<MyStatsController> {
 
                           });
                         }
+                        // 数据埋点
+                        EventTrackUtil.eventTrack(kSelectDataTime,{
+                          "index": index,
+                          '_start':_start,
+                          '_start':_end,
+                        });
                         changeTimeArea(
                             endTime, startTime, (index + 1).toString());
                       }, index: _timeIndex,start: _start.length > 0 ? _start : null,end: _end.length > 0 ? _end : null);

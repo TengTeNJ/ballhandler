@@ -7,27 +7,38 @@ import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:app_links/app_links.dart';
+
+import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isAndroid) {
-    // 安卓虽然导入了json文件 可是仍然报错，可能是某方面原因导致不能自动初始化获取参数，所以手动加了参数
-    await Firebase.initializeApp(
-        options: FirebaseOptions(
-      apiKey: 'AIzaSyCsVdT0KIZIbqeQP4B7ISZDK_cne2E7fnA',
-      appId: '1:217693202761:android:3c338005aa9ef70001d298',
-      messagingSenderId: '217693202761',
-      projectId: 'potent-hockey-8bae8',
-      storageBucket: 'potent-hockey-8bae8.appspot.com',
-    ));
-  } else {
-    await Firebase.initializeApp();
-  }
+  // if (Platform.isAndroid) {
+  //   // 安卓虽然导入了json文件 可是仍然报错，可能是某方面原因导致不能自动初始化获取参数，所以手动加了参数
+  //   await Firebase.initializeApp(
+  //       options: FirebaseOptions(
+  //     apiKey: 'AIzaSyCsVdT0KIZIbqeQP4B7ISZDK_cne2E7fnA',
+  //     appId: '1:217693202761:android:3c338005aa9ef70001d298',
+  //     messagingSenderId: '217693202761',
+  //     projectId: 'potent-hockey-8bae8',
+  //     storageBucket: 'potent-hockey-8bae8.appspot.com',
+  //   ));
+  // } else {
+  //   await Firebase.initializeApp();
+  // }
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true); // 启用调试模式
+//  FirebaseAnalytics.instance.set ; // 启用调试模式
+
   fireBaseCrashlytics();
 
   initDeepLinking();
@@ -57,8 +68,8 @@ fireBaseCrashlytics() async{
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-  String userName =  await NSUserDefault.getValue(kUserName) ?? '--';
-  String email =  await NSUserDefault.getValue(kUserEmail) ?? '--';
+  String userName =  await NSUserDefault.getValue(kUserName) ?? 'Unknown';
+  String email =  await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
   if(userName!=null && userName.length > 0){
     FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
     FirebaseCrashlytics.instance.setCustomKey('userName', userName);

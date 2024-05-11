@@ -5,6 +5,7 @@ import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
 import 'package:code/services/sqlite/data_base.dart';
+import 'package:code/utils/event_track.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/system_device.dart';
@@ -46,6 +47,8 @@ class _RootPageControllerState extends State<RootPageController> {
   @override
   void initState() {
     super.initState();
+    // 设置埋点通用参数
+    EventTrackUtil.setDefaultParameters();
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     _pageController = PageController()
       ..addListener(() {

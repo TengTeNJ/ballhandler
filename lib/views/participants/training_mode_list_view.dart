@@ -32,9 +32,11 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
       final _response = await  Participants.queryJoinCount(widget.model.modeId);
       if(_response.success && _response.data != null){
         _joinCount = _response.data!.trainMemberCount;
-        setState(() {
+        if(mounted){
+          setState(() {
 
-        });
+          });
+        }
       }
     }
 
@@ -43,7 +45,6 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('GestureDetector==');
         if (widget.scanBleList != null) {
           widget.scanBleList!();
         }

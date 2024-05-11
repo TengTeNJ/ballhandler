@@ -16,6 +16,7 @@ import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 
 import '../../route/route.dart';
+import '../../utils/event_track.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 
@@ -98,6 +99,10 @@ class _HomePageViewState extends State<HomePageController> {
       if (event == kLoginSucess || event == kFinishGame || event == kSignOut) {
         // 登录成功,完成游戏
         getHomeData(context);
+        if(event == kLoginSucess){
+          // 设置埋点通用参数
+          EventTrackUtil.setDefaultParameters();
+        }
       }
     });
     Future.delayed(Duration(milliseconds: 100), () {

@@ -4,6 +4,7 @@ import 'package:code/models/http/user_model.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -103,30 +104,35 @@ class Account {
     NSUserDefault.setKeyValue<String>(kAccessToken, _response.data!.memberToken);
     NSUserDefault.setKeyValue<String>(kAvatar, _response.data!.avatar);
     NSUserDefault.setKeyValue<String>(kBrithDay, _response.data!.birthday);
-    NSUserDefault.setKeyValue<String>(kCountry, ISEmpty(_response.data!.country) ? '--' : _response.data!.country);
+    NSUserDefault.setKeyValue<String>(kCountry, ISEmpty(_response.data!.country) ? 'Unknown' : _response.data!.country);
 
-    UserProvider.of(context).userName = ISEmpty(_response.data!.nickName) ? '--' : _response.data!.nickName;
+    UserProvider.of(context).userName = ISEmpty(_response.data!.nickName) ? 'Unknown' : _response.data!.nickName;
     UserProvider.of(context).token = _response.data!.memberToken;
     UserProvider.of(context).avatar = _response.data!.avatar;
     UserProvider.of(context).createTime = _response.data!.createTime;
-    UserProvider.of(context).country = ISEmpty(_response.data!.country) ? '--' : _response.data!.country;
+    UserProvider.of(context).country = ISEmpty(_response.data!.country) ? 'Unknown' : _response.data!.country;
     UserProvider.of(context).brith = ISEmpty(_response.data!.birthday) ? '--' : _response.data!.birthday;
 
     final _email = await NSUserDefault.getValue(kUserEmail);
-    UserProvider.of(context).email = _email ?? '';
+    UserProvider.of(context).email = _email ?? 'Unknown';
 
     // 登录成功后绑定用户和推送的token
     GameUtil gameUtil = GetIt.instance<GameUtil>();
+    if(ISEmpty(gameUtil.firebaseToken)){
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      gameUtil.firebaseToken = fcmToken ?? '';
+    }
     updateAccountInfo({
       "firebaseToken" : gameUtil.firebaseToken
     });
 
-    String userName =  await NSUserDefault.getValue(kUserName) ?? '--';
-    String email =  await NSUserDefault.getValue(kUserEmail) ?? '--';
+    String userName =  await NSUserDefault.getValue(kUserName) ?? 'Unknown';
+    String email =  await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
     if(userName!=null && userName.length > 0){
       FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
       FirebaseCrashlytics.instance.setCustomKey('userName', userName);
-      FirebaseCrashlytics.instance.setCustomKey('email', email ?? '--');
+      FirebaseCrashlytics.instance.setCustomKey('email', email ?? 'Unknown');
     }
   }
 }

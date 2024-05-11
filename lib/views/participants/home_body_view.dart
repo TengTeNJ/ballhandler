@@ -1,7 +1,10 @@
 
 import 'package:code/constants/constants.dart';
+import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/utils/event_track.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/global.dart';
@@ -61,6 +64,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
             onTap: () async{
              // TTDialog.timeSelect(context);
              //  TTDialog.airplayDialog(context);
+              EventTrackUtil.eventTrack(kPlayNow,{});
               GameUtil gameUtil = GetIt.instance<GameUtil>();
               gameUtil.isFromAirBattle = false;
               gameUtil.selectRecord = false;

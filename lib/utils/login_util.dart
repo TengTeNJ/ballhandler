@@ -29,14 +29,14 @@ class LoginUtil {
           final _map = {
             "avatarUrl": googleUser.photoUrl ?? '',
             "gender": 0,
-            "nickName": googleUser.displayName ?? '--',
+            "nickName": googleUser.displayName ?? 'Unknown',
             "thirdLoginType": 2,
             "thirdOpenId": googleUser.id,
             "accountNo": googleUser.email
           };
           final _response = await Account.thirdLogin(_map);
           if (_response.success) {
-            NSUserDefault.setKeyValue(kUserEmail, googleUser.email ?? '--');
+            NSUserDefault.setKeyValue(kUserEmail, googleUser.email ?? 'Unknown');
           }
           return _response;
         }
@@ -68,7 +68,7 @@ class LoginUtil {
       };
       final _response = await Account.thirdLogin(_map);
       if (_response.success) {
-        NSUserDefault.setKeyValue(kUserEmail, credential.email ?? '--');
+        NSUserDefault.setKeyValue(kUserEmail, credential.email ?? 'Unknown');
       }
       return _response;
     }
