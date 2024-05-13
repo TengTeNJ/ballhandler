@@ -26,7 +26,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
   }
 
   queryJoinCountData() async{
-    String _token = await NSUserDefault.getValue(kAccessToken);
+    final _token = await NSUserDefault.getValue(kAccessToken);
     // 登录了才进行数据请求
     if(_token!=null && _token.length>0){
       final _response = await  Participants.queryJoinCount(widget.model.modeId);

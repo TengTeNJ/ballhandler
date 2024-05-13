@@ -3,7 +3,7 @@ import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   Function(int index)? onTap;
@@ -75,7 +75,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     return  BottomNavigationBar(
       backgroundColor: Constants.darkThemeColor,
       currentIndex: currentIndex,
-      onTap: (index){
+      onTap: (index) async{
         setState(() {
           // AirBattle页面登录拦截
          if(index != 0){

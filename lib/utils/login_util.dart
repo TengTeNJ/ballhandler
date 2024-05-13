@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/models/http/user_model.dart';
 import 'package:code/services/http/account.dart';
+import 'package:code/utils/android_apple_login.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -46,31 +49,48 @@ class LoginUtil {
         return ApiResponse(success: false, errorMessage: error.toString());
       }
     } else if (type == LoginType.appleID) {
-      final credential = await SignInWithApple.getAppleIDCredential(
-          scopes: [
-            AppleIDAuthorizationScopes.email,
-            AppleIDAuthorizationScopes.fullName,
-          ],
-          webAuthenticationOptions: WebAuthenticationOptions(
-              clientId: 'com.potent.stickhandling',
-              redirectUri:
-                  Uri.parse('https://hockey.fjcctv.com:4432/api/third/apple')));
-
-      final _map = {
-        "avatarUrl": '',
-        "gender": 0,
-        "nickName": credential.givenName.toString() +
-            ' ' +
-            credential.familyName.toString(),
-        "thirdLoginType": 1,
-        "thirdOpenId": credential.userIdentifier,
-        "accountNo": credential.email
-      };
-      final _response = await Account.thirdLogin(_map);
-      if (_response.success) {
-        NSUserDefault.setKeyValue(kUserEmail, credential.email ?? 'Unknown');
+      if(Platform.isAndroid){
+        final _accessToken = await  AndroidAppleLoginUtil.appleIdLogin();
+        final _map = {
+          "avatarUrl": '',
+          "gender": 0,
+          "nickName": '',
+          "thirdLoginType": 1,
+          "thirdOpenId": _accessToken,
+          "accountNo": ''
+        };
+        final _response = await Account.thirdLogin(_map);
+        if (_response.success) {
+          NSUserDefault.setKeyValue(kUserEmail, 'Unknown');
+        }
+        return _response;
+      }else{
+        final credential = await SignInWithApple.getAppleIDCredential(
+            scopes: [
+              AppleIDAuthorizationScopes.email,
+              AppleIDAuthorizationScopes.fullName,
+            ],
+            webAuthenticationOptions: WebAuthenticationOptions(
+                clientId: 'com.potent.stickhandling',
+                redirectUri:
+                Uri.parse('https://potent-hockey-8bae8.firebaseapp.com/__/auth/handler')));
+        final _map = {
+          "avatarUrl": '',
+          "gender": 0,
+          "nickName": credential.givenName.toString() +
+              ' ' +
+              credential.familyName.toString(),
+          "thirdLoginType": 1,
+          "thirdOpenId": credential.userIdentifier,
+          "accountNo": credential.email
+        };
+        final _response = await Account.thirdLogin(_map);
+        if (_response.success) {
+          NSUserDefault.setKeyValue(kUserEmail, credential.email ?? 'Unknown');
+        }
+        return _response;
       }
-      return _response;
+
     }
     return ApiResponse(success: false);
   }

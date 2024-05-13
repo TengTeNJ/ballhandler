@@ -71,7 +71,7 @@ class _ProfileControllerState extends State<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constants.baseControllerColor,
+      backgroundColor: Constants.darkThemeColor,
       appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Container(

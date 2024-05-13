@@ -57,6 +57,13 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
+      decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Constants.darkThemeColor, Constants.baseControllerColor],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    ),
             margin: EdgeInsets.only(left: 16, right: 16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -77,6 +77,13 @@ class _RankingControllerState extends State<RankingController> {
       backgroundColor: Constants.baseControllerColor,
       appBar: CustomAppBar(),
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Constants.darkThemeColor, Constants.baseControllerColor],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -96,11 +103,11 @@ class _RankingControllerState extends State<RankingController> {
               height: 152,
               child: RankingCardPageView(onChange: _pageViewOnChange),
             ),),
-            IndicatorView(
+            gameUtil.sceneList.length > 1 ? IndicatorView(
               count: gameUtil.sceneList.length,
               currentPage: _currentPageIndex,
               currentPageColor: Constants.baseStyleColor,
-            ),
+            ) :Container(),
             SizedBox(
               height: 32,
             ),

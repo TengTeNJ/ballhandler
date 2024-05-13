@@ -8,9 +8,9 @@ part of 'user_model.dart';
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
       nickName: json['nickName'].toString() as String,
-      memberId: json['memberId'] as int,
+      memberId: json['memberId'] ?? 0 ,
       avatar: json['avatar'].toString() as String,
-      memberStatus: json['memberStatus'] as int,
+      memberStatus: json['memberStatus'] ?? 0,
       memberToken: json['memberToken'].toString() as String,
       createTime: json['createTime'].toString() as String,
       realName: json['realName'].toString() as String?,

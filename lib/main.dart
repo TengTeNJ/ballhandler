@@ -1,21 +1,12 @@
-import 'dart:io';
-import 'dart:ui';
-import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/root_page.dart';
 import 'package:code/route/route.dart';
-import 'package:code/services/http/participants.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_it/get_it.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:app_links/app_links.dart';
 
-import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // if (Platform.isAndroid) {
@@ -31,61 +22,8 @@ void main() async {
   // } else {
   //   await Firebase.initializeApp();
   // }
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true); // 启用调试模式
-//  FirebaseAnalytics.instance.set ; // 启用调试模式
-
-  fireBaseCrashlytics();
-
-  initDeepLinking();
-
   GetIt.I.registerSingleton<GameUtil>(GameUtil()); // 注册GameUtil实例
-  await querySceneListdata();
   runApp(UserProvider(child: const MyApp()));
-}
-
-Future<void> querySceneListdata() async {
-  final _response = await Participants.querySceneListData();
-  if (_response.success && _response.data != null) {
-    GameUtil gameUtil = GetIt.instance<GameUtil>();
-      gameUtil.sceneList.clear();
-      gameUtil.sceneList.addAll(_response.data!);
-  }
-}
-
-
-/*异常捕获*/
-fireBaseCrashlytics() async{
-  FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-  String userName =  await NSUserDefault.getValue(kUserName) ?? 'Unknown';
-  String email =  await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
-  if(userName!=null && userName.length > 0){
-    FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
-    FirebaseCrashlytics.instance.setCustomKey('userName', userName);
-    FirebaseCrashlytics.instance.setCustomKey('email', email ?? '--');
-  }
-}
-/*外部web跳转*/
-void initDeepLinking() {
-  final _appLinks = AppLinks();
-
-// Subscribe to all events when app is started.
-// (Use allStringLinkStream to get it as [String])
-  _appLinks.allUriLinkStream.listen((uri) {
-    print('uri=${uri}');
-    // Do something (navigation, ...)
-  });
 }
 
 class MyApp extends StatelessWidget {

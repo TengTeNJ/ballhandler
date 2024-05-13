@@ -14,7 +14,6 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
-
 import '../../route/route.dart';
 import '../../utils/event_track.dart';
 import '../../utils/global.dart';
@@ -33,7 +32,7 @@ class _HomePageViewState extends State<HomePageController> {
 
   late PageController _pageController;
   late StreamSubscription subscription;
-   List<Widget> _pageViews = [];
+  List<Widget> _pageViews = [];
 
   // 获取用户首页的数据
   getHomeData(BuildContext context) async {
@@ -42,6 +41,9 @@ class _HomePageViewState extends State<HomePageController> {
     if (_token != null && _token.length > 0) {
       Participants.getHomeUserData().then((value) {
         if (value.success && value.data != null) {
+          if(!mounted){
+            return;
+          }
           UserProvider.of(context).avgPace = value.data!.avgPace;
           UserProvider.of(context).totalTimes = value.data!.trainCount;
           UserProvider.of(context).totalScore = value.data!.trainScore;
@@ -102,14 +104,36 @@ class _HomePageViewState extends State<HomePageController> {
         if(event == kLoginSucess){
           // 设置埋点通用参数
           EventTrackUtil.setDefaultParameters();
+          querySceneListdata(); // 防止初次安装用户未选择网络
         }
       }
     });
+
     Future.delayed(Duration(milliseconds: 100), () {
       getHomeData(context);
     });
-
+    // 查询场景列表
+    querySceneListdata();
   }
+  Future<void> querySceneListdata() async {
+    final _response = await Participants.querySceneListData();
+    if (_response.success && _response.data != null) {
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      gameUtil.sceneList.clear();
+      gameUtil.sceneList.addAll(_response.data!);
+      _pageViews.clear();
+      gameUtil.sceneList.forEach((element) {
+        _pageViews.add(HomeBodyView(model: element));
+      });
+      if(mounted){
+        setState(() {
+
+        });
+      }
+
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -162,12 +186,12 @@ class _HomePageViewState extends State<HomePageController> {
                 children: [
                   Container(
                     height: 30,
-                    child: IndicatorView(
+                    child: gameUtil.sceneList.length > 1 ? IndicatorView(
                       count: gameUtil.sceneList.length,
                       currentPage: _currentIndex,
                       defaultColor: Color.fromRGBO(204, 204, 204, 1.0),
                       currentPageColor: Constants.baseStyleColor,
-                    ),
+                    ):Container(),
                   )
                 ],
               ),
