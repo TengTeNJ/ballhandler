@@ -39,6 +39,9 @@ class _RankingItemViewState extends State<RankingItemView> {
                       model.videoPath = widget.model.trainVideo.toString();
                       model.avgPace = widget.model.avgPace.toString();
                       model.score = widget.model.trainScore;
+                      model.endTime = widget.model.createTime;
+                      model.modeId = widget.model.modeId;
+                      model.sceneId = widget.model.sceneId;
                       print('model.path=${model.videoPath}');
                       NavigatorUtil.push('videoPlay',
                           arguments: {"model": model, "gameFinish": false});

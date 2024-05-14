@@ -64,8 +64,8 @@ class PlayerBottomView extends StatelessWidget {
             height: 0.5,
           ),
           Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: Padding(padding: EdgeInsets.only(left: 16,right: 16),child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
@@ -78,9 +78,9 @@ class PlayerBottomView extends StatelessWidget {
                       Constants.regularGreyTextWidget(_title, 14),
                     ],
                   ),
-                  Constants.regularGreyTextWidget(model.endTime, 10),
+                  Constants.regularGreyTextWidget(StringUtil.serviceStringToShowMinuteString(model.endTime), 10),
                 ],
-              ))
+              ),))
         ],
       ),
     );

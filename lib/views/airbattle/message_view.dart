@@ -1,6 +1,8 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/message_ytil.dart';
+import 'package:code/utils/notification_bloc.dart';
 import 'package:flutter/material.dart';
 
 // class MessageView extends StatelessWidget {
@@ -93,6 +95,8 @@ class _MessageViewState extends State<MessageView> {
         final _response = await AirBattle.readMessage(widget.model.pushId);
         if(_response.success){
           widget.model.isRead = 1;
+          MessageUtil.readMessage(); // 更新角标信息
+          EventBus().sendEvent(kMessageRead);
           setState(() {
 
           });

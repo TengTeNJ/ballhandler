@@ -262,6 +262,20 @@ class AirBattle {
     }
   }
 
+  /*查询未读消息的数量*/
+  static Future<ApiResponse<int>> queryIUnreadCount() async {
+    final response =
+    await HttpUtil.get('/api/activity/index', null, showLoading: false);
+    if (response.success && response.data['data'] != null) {
+      final element = response.data['data'];
+      int unreadCount =
+      !ISEmpty(element['unreadCount']) ? element['unreadCount'] : 0;
+      return ApiResponse(success: response.success, data: unreadCount);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
   /*查询所有的消息列表*/
   static Future<ApiResponse<MessageDataModel>> queryAllMessageListData(
       int page) async {

@@ -4,6 +4,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/http/user_model.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/android_apple_login.dart';
+import 'package:code/utils/facebook_login.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -91,6 +92,9 @@ class LoginUtil {
         return _response;
       }
 
+    }else {
+      // facebook登录
+      FaceBookLoginUtil.facebookLogin();
     }
     return ApiResponse(success: false);
   }

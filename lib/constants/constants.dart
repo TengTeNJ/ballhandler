@@ -251,6 +251,7 @@ const kInputEmail = 'inputEmail';
 const kUserEmail = 'userEmail';
 const kBrithDay = 'brithDay';
 const kCountry= 'countryArea';
+const kUnreadMessageCount= 'unreadMessageCount'; // 未读消息的数量
 
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';
@@ -307,6 +308,7 @@ const kLoginSucess = 'login_success'; // 登录成功
 const kFinishGame = 'finish_game'; // 游戏完成，保存数据成功
 const kSignOut = 'sign_out'; // 退出登录
 const kBackFromFinish = 'back_from_finish'; // 从finish页面返回
+const kMessageRead = 'read_message'; // 阅读消息
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
   "1" :{
@@ -342,4 +344,4 @@ const k270ProductImageScale = 1445/737; // 270产品图片宽高比
 
 const  kUserVideoMaxCount = 100; // 视频的最大数量
 
-const kAppVersion = '202405111203';
+const kAppVersion = '202405131652';

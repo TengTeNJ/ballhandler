@@ -29,7 +29,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
     queryAirBattleData();
     // 监听
     subscription = EventBus().stream.listen((event) {
-      if ( event == kFinishGame) {
+      if ( event == kFinishGame || event == kMessageRead) {
         // 完成游戏
         queryAirBattleData();
       }

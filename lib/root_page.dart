@@ -4,10 +4,12 @@ import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
+import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/event_track.dart';
 import 'package:code/utils/global.dart';
+import 'package:code/utils/message_ytil.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/system_device.dart';
@@ -91,15 +93,22 @@ class _RootPageControllerState extends State<RootPageController> {
 
   // 处理消息推送
   fireBaseMessage() async{
+    MessageUtil.initMessageNadge();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("Received message: ${message.notification?.body}");
       // 处理收到的消息，例如显示通知
-     //FlutterAppBadger.updateBadgeCount(2);
+     // FlutterAppBadger.updateBadgeCount();
+      MessageUtil.getOneMoreMessage();
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print("Message opened: ${message.notification?.body}");
       // 处理用户点击通知消息打开应用的事件
     });
+    // 更新角标
+    final _countData =  await  AirBattle.queryIUnreadCount();
+    if(_countData != null && _countData.data != null){
+      MessageUtil.handleMessage(_countData.data!);
+    }
   }
 
   /*异常捕获*/

@@ -13,6 +13,9 @@ class RankModel {
   String? country;
   String trainVideo = '';
   String trainScore = '0';
+  String createTime = '';
+  String modeId = '';
+  String sceneId = '';
 }
 
 class AnalyzeDataModel{
@@ -144,6 +147,12 @@ class Rank {
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
         model.trainScore =
         !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '-';
+        model.createTime =
+        !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '-';
+        model.sceneId =
+        !ISEmpty(_map['sceneId']) ? _map['sceneId'].toString() : '1';
+        model.modeId =
+        !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
         _list.add(model);
       });
       _model.data = _list;
