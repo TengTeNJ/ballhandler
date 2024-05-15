@@ -58,6 +58,7 @@ class _ProfileGridViewState extends State<ProfileGridView> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontFamily: 'SanFranciscoDisplay',
+                            fontWeight: FontWeight.bold,
                             fontSize: 40, color: Colors.white, height: 0.8),
                       ),
                     ),
@@ -76,7 +77,7 @@ class _ProfileGridViewState extends State<ProfileGridView> {
                   widget.des ?? 'Best React Time',
                   style: TextStyle(
                       fontFamily: 'SanFranciscoDisplay',
-                      color: hexStringToColor('#B1B1B1'), fontSize: 10),
+                      color: hexStringToColor('#B1B1B1'), fontSize: 14),
                 )
               ],
             ),

@@ -361,7 +361,7 @@ class AirBattle {
       int activityId) async {
     final response = await HttpUtil.get(
         '/api/activity/detail', {"activityId": activityId.toString()},
-        showLoading: false);
+        showLoading: true);
     ActivityDetailModel model = ActivityDetailModel();
     SelfActivityModel self = SelfActivityModel();
     ChampionModel championModel = ChampionModel();

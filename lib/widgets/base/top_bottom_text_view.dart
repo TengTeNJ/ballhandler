@@ -10,6 +10,7 @@ class TBTextView extends StatelessWidget {
   double? titleFontSize;
   double? detailFontSize;
   int ? maxLines;
+  FontWeight? detailFontWeight;
   CrossAxisAlignment crossAxisAlignment;
   TBTextView({
     required this.title,
@@ -19,6 +20,7 @@ class TBTextView extends StatelessWidget {
     this.titleFontSize = 20,
     this.detailFontSize = 12,
     this.crossAxisAlignment = CrossAxisAlignment.start,
+    this.detailFontWeight,
     this.maxLines
   });
 
@@ -44,6 +46,7 @@ class TBTextView extends StatelessWidget {
           maxLines: 3,
           style: TextStyle(
               color: detailColor,
+              fontWeight: detailFontWeight,
               fontFamily: 'SanFranciscoDisplay',
               fontSize: detailFontSize,
               height: 1.0),

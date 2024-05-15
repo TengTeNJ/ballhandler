@@ -39,6 +39,7 @@ class AirBattleGridView extends StatelessWidget {
               detailTitle: detail,
               titleFontSize: 14,
               detailFontSize: 14,
+              detailFontWeight: FontWeight.w500,
               titleColor: hexStringToColor('#B1B1B1'),
               detailColor: hexStringToColor('#FFFFFF'),
             ),)),

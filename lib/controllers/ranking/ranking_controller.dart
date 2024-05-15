@@ -100,7 +100,8 @@ class _RankingControllerState extends State<RankingController> {
               NavigatorUtil.push(Routes.mystats);
             },child: Container(
               width: Constants.screenWidth(context),
-              height: 152,
+              height: 156,
+              // color: Colors.orange,
               child: RankingCardPageView(onChange: _pageViewOnChange),
             ),),
             gameUtil.sceneList.length > 1 ? IndicatorView(

@@ -34,6 +34,7 @@ class _ProgressDataViewState extends State<ProgressDataView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(width: 200,height: 6,child: LinearProgressIndicator(
+                    minHeight: 6,
                     borderRadius: BorderRadius.circular(10),
                     value: widget.model.integral/widget.model.upperLimit,
                     valueColor: AlwaysStoppedAnimation<Color>(

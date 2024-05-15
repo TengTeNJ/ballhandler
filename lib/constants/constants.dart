@@ -309,6 +309,7 @@ const kFinishGame = 'finish_game'; // 游戏完成，保存数据成功
 const kSignOut = 'sign_out'; // 退出登录
 const kBackFromFinish = 'back_from_finish'; // 从finish页面返回
 const kMessageRead = 'read_message'; // 阅读消息
+const kGetMessage = 'get_message'; // 收到消息
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
   "1" :{

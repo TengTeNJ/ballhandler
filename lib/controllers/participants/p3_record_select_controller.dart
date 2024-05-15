@@ -146,7 +146,7 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                         await availableCameras();
                         NavigatorUtil.popAndThenPush(
                           Routes.process270,
-                          arguments: cameras[0],
+                          arguments: cameras[cameras.length >1 ? 1 : 0],
                         );
                       },
                       child: Container(

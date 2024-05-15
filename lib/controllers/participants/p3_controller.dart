@@ -3,11 +3,9 @@ import 'package:code/route/route.dart';
 import 'package:code/utils/toast.dart';
 import 'package:code/views/participants/p3_grid_list_view.dart';
 import 'package:flutter/material.dart';
-
 import '../../constants/constants.dart';
 import '../../utils/color.dart';
 import '../../utils/navigator_util.dart';
-import '../../utils/system_device.dart';
 
 class P3Controller extends StatefulWidget {
   const P3Controller({super.key});
@@ -102,7 +100,7 @@ class _P3ControllerState extends State<P3Controller> {
                     TTToast.showLoading();
                     NavigatorUtil.pop();
                     List<CameraDescription> cameras = await availableCameras();
-                    NavigatorUtil.push(Routes.p3check, arguments: cameras[0]);
+                    NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                     TTToast.hideLoading();
                   },
                   child: Container(

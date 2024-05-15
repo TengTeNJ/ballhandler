@@ -24,9 +24,10 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
 
   @override
   Widget build(BuildContext context) {
-    String _scene = (gameUtil.gameScene.index+1).toString();
+    String _scene = (gameUtil.gameScene.index + 1).toString();
     String _modelId = gameUtil.modelId.toString();
-    String _title = kGameSceneAndModelMap[_scene]![_modelId] ?? 'ZIGZAG Challenge';
+    String _title =
+        kGameSceneAndModelMap[_scene]![_modelId] ?? 'ZIGZAG Challenge';
 
     return Scaffold(
       backgroundColor: Constants.darkControllerColor,
@@ -86,7 +87,7 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
               SizedBox(
                 height: 16,
               ),
-    ( gameUtil.isFromAirBattle || !UserProvider.of(context).hasLogin)
+              (gameUtil.isFromAirBattle || !UserProvider.of(context).hasLogin)
                   ? Container()
                   : Container(
                       height: 36,
@@ -113,12 +114,12 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
                   // 视频check
                   NavigatorUtil.popAndThenPush(
                     Routes.videocheck,
-                    arguments: cameras[0],
+                    arguments: cameras[cameras.length >1 ? 1 : 0],
                   );
                 } else {
                   // 游戏页面
                   NavigatorUtil.popAndThenPush(Routes.gameprocess,
-                      arguments: cameras[0]);
+                      arguments: cameras[cameras.length >1 ? 1 : 0]);
                 }
               },
               child: Container(

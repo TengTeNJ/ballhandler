@@ -11,7 +11,7 @@ class EventTrackUtil{
      FirebaseAnalytics.instance.logEvent(name: key,parameters: parameters);
    }
    /*设置默认参数*/
-   static setDefaultParameters() async{
+   static Future<void> setDefaultParameters() async{
      GameUtil gameUtil = GetIt.instance<GameUtil>();
      final userName = await  NSUserDefault.getValue(kUserName);
      final email = await  NSUserDefault.getValue(kUserEmail);
@@ -19,7 +19,7 @@ class EventTrackUtil{
      final  selectRecord = gameUtil.selectRecord;
      final  modelId = gameUtil.modelId;
      final  sceneId = gameUtil.gameScene.index +1;
-     await FirebaseAnalytics.instance
+    return await FirebaseAnalytics.instance
          .setDefaultEventParameters({
        'version': kAppVersion,
        'userName':userName.toString(),

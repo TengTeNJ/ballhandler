@@ -91,13 +91,19 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   SizedBox(
                     width: 2,
                   ),
-                  Container(
-                      // color: Colors.red,
-                      width: 16,
-                      height: 16,
-                      child: Image(
-                        image: AssetImage('images/participants/question.png'),
-                      ))
+                 GestureDetector(
+                   behavior: HitTestBehavior.opaque,
+                   onTap: (){
+                     print('跳转到视频介绍界面');
+                   },
+                   child:  Container(
+                     // color: Colors.red,
+                       width: 16,
+                       height: 16,
+                       child: Image(
+                         image: AssetImage('images/participants/question.png'),
+                       )),
+                 ),
                 ],
               ),
             ),

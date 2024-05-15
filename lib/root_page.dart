@@ -11,6 +11,7 @@ import 'package:code/utils/event_track.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/message_ytil.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/system_device.dart';
 import 'package:code/utils/video_util.dart';
@@ -67,7 +68,7 @@ class _RootPageControllerState extends State<RootPageController> {
   /*刷新token删除本地的存储的视频*/
   refreshTokenAndDeleteLocanVideo() async {
     await initFirebase(); // 初始化firebase
-    EventTrackUtil.setDefaultParameters();    // 设置埋点通用参数
+   await  EventTrackUtil.setDefaultParameters();    // 设置埋点通用参数
     FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true); // 启用调试模式 数据分析
     final fcmToken = await FirebaseMessaging.instance.getToken(); // 获取token 用于推送通知
     print('fcmToken:\n${fcmToken}');
@@ -99,6 +100,7 @@ class _RootPageControllerState extends State<RootPageController> {
       // 处理收到的消息，例如显示通知
      // FlutterAppBadger.updateBadgeCount();
       MessageUtil.getOneMoreMessage();
+      EventBus().sendEvent(kGetMessage);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print("Message opened: ${message.notification?.body}");

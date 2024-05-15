@@ -163,6 +163,7 @@ class _ProfileControllerState extends State<ProfileController> {
                                   userModel.avatar,
                                   width: 64,
                                   height: 64,
+                                  fit: BoxFit.fill,
                                 )
                               : Container(
                                   width: 54,
