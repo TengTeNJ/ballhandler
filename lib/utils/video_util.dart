@@ -17,13 +17,16 @@ class VideoUtil {
   }
 
   static  Future<double> getVideoFileSize(String filePath) async {
+    if(filePath == null ||  filePath.length == 0){
+      return 0;
+    }
     File file = File(filePath);
     if (await file.exists()) {
       int sizeInBytes = await file.length();
       // 将文件大小转换为 MB
       double sizeInMb = sizeInBytes / (1024 * 1024);
       return sizeInMb;
-    } else {
+    } else{
       throw FileSystemException("File not found");
     }
   }

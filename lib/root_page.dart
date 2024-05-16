@@ -4,6 +4,7 @@ import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
+import 'package:code/services/http/account.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/services/sqlite/data_base.dart';
@@ -68,12 +69,20 @@ class _RootPageControllerState extends State<RootPageController> {
   /*刷新token删除本地的存储的视频*/
   refreshTokenAndDeleteLocanVideo() async {
     await initFirebase(); // 初始化firebase
-   await  EventTrackUtil.setDefaultParameters();    // 设置埋点通用参数
-    FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true); // 启用调试模式 数据分析
+   // await  EventTrackUtil.setDefaultParameters();    // 设置埋点通用参数
+  //  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true); // 启用调试模式 数据分析
     final fcmToken = await FirebaseMessaging.instance.getToken(); // 获取token 用于推送通知
     print('fcmToken:\n${fcmToken}');
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     gameUtil.firebaseToken = fcmToken ?? '';
+    final _accessToken = await NSUserDefault.getValue(kAccessToken);
+    if(!ISEmpty(_accessToken)){
+      // 更新推送token
+      Account.updateAccountInfo({
+        "firebaseToken" : gameUtil.firebaseToken
+      });
+    }
+
     final _datas =
         await DatabaseHelper().getVideoListData(kDataBaseTVideoableName);
     if (_datas != null && _datas.length > 0) {

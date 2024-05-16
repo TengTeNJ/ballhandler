@@ -114,7 +114,7 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                       await availableCameras();
                       NavigatorUtil.popAndThenPush(
                         'gameProcess',
-                        arguments: cameras[0],
+                        arguments: cameras[ cameras.length > 1 ? 1 : 0],
                       );
                     },
                     child: Container(

@@ -24,7 +24,6 @@ class ResponseCMDType {
   static const int remainTime = 0x2C; // 游戏剩余时长
   static const int millisecond = 0x32; // 游戏毫秒时间同步
   static const int targetIn = 0x10; // 目标集中
-
 }
 
 /*蓝牙数据解析类*/
@@ -57,6 +56,7 @@ class BluetoothDataParse {
               break;
             case ResponseCMDType.targetResponse:
               int data = element[2];
+              print('------data=${data}');
               String binaryString = data.toRadixString(2); // 转换成二进制字符串
               if (binaryString != null && binaryString.length == 8) {
                 // 前两位都是1，不区分红灯和蓝灯，截取后边6位，判断哪个灯在亮

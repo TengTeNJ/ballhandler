@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/utils/color.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,13 +12,13 @@ class TrainingModeListView extends StatefulWidget {
 
   TrainingModeListView({this.scanBleList, required this.model});
 
-
   @override
   State<TrainingModeListView> createState() => _TrainingModeListViewState();
 }
 
 class _TrainingModeListViewState extends State<TrainingModeListView> {
   int _joinCount = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -25,22 +26,20 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
     queryJoinCountData();
   }
 
-  queryJoinCountData() async{
+  queryJoinCountData() async {
     final _token = await NSUserDefault.getValue(kAccessToken);
     // 登录了才进行数据请求
-    if(_token!=null && _token.length>0){
-      final _response = await  Participants.queryJoinCount(widget.model.modeId);
-      if(_response.success && _response.data != null){
+    if (_token != null && _token.length > 0) {
+      final _response = await Participants.queryJoinCount(widget.model.modeId);
+      if (_response.success && _response.data != null) {
         _joinCount = _response.data!.trainMemberCount;
-        if(mounted){
-          setState(() {
-
-          });
+        if (mounted) {
+          setState(() {});
         }
       }
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -50,9 +49,11 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
         }
       },
       child: Container(
-        margin: EdgeInsets.only(left: 16, right: 16),
+        margin: EdgeInsets.only(
+            left: (Constants.screenWidth(context) - 343) / 2.0,
+            right: (Constants.screenWidth(context) - 343) / 2.0),
         height: 205,
-        width: Constants.screenWidth(context) - 32,
+        width: 343,
         decoration: BoxDecoration(
           // color: Colors.red,
           borderRadius: BorderRadius.circular(10),
@@ -65,7 +66,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(left: 16, top: 21,right: 4),
+              margin: EdgeInsets.only(left: 16, top: 21, right: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,64 +80,70 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                     width: 8,
                   ),
                   Container(
-                      constraints: BoxConstraints(maxWidth: Constants.screenWidth(context) - 124),
+                      constraints: BoxConstraints(
+                          maxWidth: Constants.screenWidth(context) - 124),
                       child: Text(
-                    widget.model.modeName,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22),
-                  )),
+                        widget.model.modeName,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22),
+                      )),
                   SizedBox(
                     width: 2,
                   ),
-                 GestureDetector(
-                   behavior: HitTestBehavior.opaque,
-                   onTap: (){
-                     print('跳转到视频介绍界面');
-                   },
-                   child:  Container(
-                     // color: Colors.red,
-                       width: 16,
-                       height: 16,
-                       child: Image(
-                         image: AssetImage('images/participants/question.png'),
-                       )),
-                 ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      print('跳转到视频介绍界面');
+                    },
+                    child: Container(
+                        // color: Colors.red,
+                        width: 16,
+                        height: 16,
+                        child: Image(
+                          image: AssetImage('images/participants/question.png'),
+                        )),
+                  ),
                 ],
               ),
             ),
-            widget.model.difficultyLevel >0 ?  Container(
-              width: Constants.screenWidth(context) - 32,
-              height: 20,
-              margin: EdgeInsets.only(top: 10, left: 16, right: 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Constants.regularWhiteTextWidget('Easy -', 12),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Row(
-                    children:
-                        List.generate(widget.model.difficultyLevel, (index) {
-                      return Image(
-                        image: AssetImage('images/participants/five_star.png'),
-                        width: 8,
-                        height: 7.65,
-                      );
-                    }),
+            widget.model.difficultyLevel > 0
+                ? Container(
+                    width: Constants.screenWidth(context) - 32,
+                    height: 20,
+                    margin: EdgeInsets.only(top: 10, left: 16, right: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Constants.regularWhiteTextWidget('Easy -', 12),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Row(
+                          children: List.generate(widget.model.difficultyLevel,
+                              (index) {
+                            return Image(
+                              image: AssetImage(
+                                  'images/participants/five_star.png'),
+                              width: 8,
+                              height: 7.65,
+                            );
+                          }),
+                        )
+                      ],
+                    ),
                   )
-                ],
-              ),
-            ) :SizedBox(height: 14,),
+                : SizedBox(
+                    height: 14,
+                  ),
             Container(
               margin: EdgeInsets.only(left: 16, right: 16, top: 3),
               height: 44,
               child: SingleChildScrollView(
-                child: Constants.regularGreyTextWidget(
-                    widget.model.modeRemark, 14,
+                child: Constants.customTextWidget(
+                    widget.model.modeRemark, 14, '#CBCBCB',
                     height: 1.2, textAlign: TextAlign.start),
               ),
             ),
@@ -169,7 +176,8 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Constants.regularWhiteTextWidget(
-                                      '00:${widget.model.trainTime.padLeft(2, '0')}', 14),
+                                      '00:${widget.model.trainTime.padLeft(2, '0')}',
+                                      14),
                                   Constants.regularWhiteTextWidget('Time', 12),
                                 ],
                               )
@@ -211,11 +219,14 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                       );
                     }),
                   )),
-                  Image(
-                    image: AssetImage('images/participants/next_green.png'),
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.fill,
+                  ClipOval(
+                    child: Image(
+                      image: AssetImage('images/participants/next_green.png'),
+                      filterQuality: FilterQuality.high,
+                      width: 55,
+                      height: 55,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ],
               ),

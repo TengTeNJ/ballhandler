@@ -989,15 +989,16 @@ class _UserNameDialogState extends State<UserNameDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: hexStringToColor('#3E3E55'),
       actionsAlignment: MainAxisAlignment.spaceBetween,
-      title: Constants.boldBlackTextWidget('Enter your text', 20,
+      title: Constants.boldWhiteTextWidget('Enter your text', 20,
           textAlign: TextAlign.left),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _usernameController,
-            decoration: InputDecoration(labelText: 'Username'),
+            decoration: InputDecoration(labelText: 'Username',labelStyle: TextStyle(color: Colors.white)),
           ),
         ],
       ),

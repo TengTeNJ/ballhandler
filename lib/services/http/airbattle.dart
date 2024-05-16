@@ -116,7 +116,7 @@ class ChampionModel {
   String championTrainScore = '0';
   dynamic championRankNumber = '1';
   String championTrainVideo = '';
-  String createTime = '--';
+  String createTime = '-';
 }
 
 class SelfActivityModel {
@@ -127,7 +127,7 @@ class SelfActivityModel {
   String? trainScore = '0';
   dynamic? rankNumber = '-';
   String? trainVideo = '';
-  String createTime = '--';
+  String createTime = '-';
 }
 
 class AirBattle {
@@ -412,7 +412,7 @@ class AirBattle {
         self.trainVideo =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
         self.createTime =
-        !ISEmpty(_map['createTime']) ? StringUtil.serviceStringToShowDateString(_map['createTime'].toString()) : '--';
+        !ISEmpty(_map['createTime']) ? StringUtil.serviceStringToShowDateString(_map['createTime'].toString()) : '-';
         model.self = self;
       }
       if (model.activityStatus == 2) {
@@ -440,7 +440,7 @@ class AirBattle {
             ? _map['championTrainVideo'].toString()
             : '';
         championModel.createTime =
-        !ISEmpty(_map['championCreateTime']) ? StringUtil.serviceStringToShowDateString(_map['championCreateTime'].toString()) : '--';
+        !ISEmpty(_map['championCreateTime']) ? StringUtil.serviceStringToShowDateString(_map['championCreateTime'].toString()) : '-';
         model.champion = championModel;
       }
       return ApiResponse(success: response.success, data: model);

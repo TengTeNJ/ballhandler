@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/profile/Integral_detail_controller.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/profile/exchange_rewards_list_view.dart';
@@ -38,7 +39,15 @@ class _IntegralControllerState extends State<IntegralController> {
               ),
             ),
             SizedBox(
-              height: 48,
+              height: 16,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 16,right: 16),
+              color: hexStringToColor('#565674'),
+              height: 0.5,
+            ),
+            SizedBox(
+              height: 26,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,22 +64,23 @@ class _IntegralControllerState extends State<IntegralController> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    // NavigatorUtil.present(IntegralDetailController());
                     NavigatorUtil.push('integralDetail');
                   },
                   child: Container(
-                    width: 60,
-                    height: 23,
+                    width: 74,
+                    height: 26,
                     decoration: BoxDecoration(
                       color: hexStringToColor('#292936'),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Center(
-                      child: Row(
+                      child: Padding(padding: EdgeInsets.only(left: 8,right: 8),child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Constants.regularBaseTextWidget('Detail', 12),
                           SizedBox(
-                            width: 4,
+                            width: 8,
                           ),
                           Image(
                             image: AssetImage('images/profile/back.png'),
@@ -78,7 +88,7 @@ class _IntegralControllerState extends State<IntegralController> {
                             height: 10,
                           )
                         ],
-                      ),
+                      ),),
                     ),
                   ),
                 ),

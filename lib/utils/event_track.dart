@@ -8,7 +8,7 @@ const kSelectMode = 'selectMode'; // 选择模式
 const kSelectDataTime = 'selectDateTime'; // 选择数据的分析的时间区间
 class EventTrackUtil{
   static  eventTrack(String key,Map<String,Object?> parameters) async{
-     FirebaseAnalytics.instance.logEvent(name: key,parameters: parameters);
+     // FirebaseAnalytics.instance.logEvent(name: key,parameters: parameters);
    }
    /*设置默认参数*/
    static Future<void> setDefaultParameters() async{

@@ -88,7 +88,6 @@ class _SettingControllerState extends State<SettingController> {
                         }
                       });
                     } else if (index == 2) {
-                      print('------');
                       // 修改生日
                       print('userModel.brith=${userModel.brith}');
                       if (userModel.brith.length < 4) {

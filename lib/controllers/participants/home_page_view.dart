@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
@@ -15,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 import '../../route/route.dart';
-import '../../utils/event_track.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 
@@ -103,7 +101,7 @@ class _HomePageViewState extends State<HomePageController> {
         getHomeData(context);
         if(event == kLoginSucess){
           // 设置埋点通用参数
-          EventTrackUtil.setDefaultParameters();
+         // EventTrackUtil.setDefaultParameters();
           querySceneListdata(); // 防止初次安装用户未选择网络
         }
       }

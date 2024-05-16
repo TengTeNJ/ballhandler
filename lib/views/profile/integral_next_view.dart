@@ -106,13 +106,13 @@ class _IntegralNextViewState extends State<IntegralNextView> {
                     Icon(
                       Icons.help,
                       color: hexStringToColor('#B1B1B1'),
-                      size: 16,
+                      size: 12,
                     ),
                     SizedBox(
                       width: 4,
                     ),
                     Constants.regularGreyTextWidget(
-                        'Points will be cleared in January 2025', 10)
+                        'Points will be cleared in January ${DateTime.now().year + 1}', 10)
                   ],
                 ),
               ),

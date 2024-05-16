@@ -4,7 +4,6 @@ import 'package:code/services/http/participants.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:code/views/participants/player_bottom_view.dart';
-import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:code/widgets/video/video_play_view.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';

@@ -27,7 +27,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
     // TODO: implement initState
     super.initState();
     _datas = [
-      widget.dataModel.time,
+      '00:' + widget.dataModel.time,
       widget.dataModel.score.toString(),
       widget.dataModel.Integral
     ];
