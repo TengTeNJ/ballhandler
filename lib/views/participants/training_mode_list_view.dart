@@ -50,8 +50,8 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
       },
       child: Container(
         margin: EdgeInsets.only(
-            left: (Constants.screenWidth(context) - 343) / 2.0,
-            right: (Constants.screenWidth(context) - 343) / 2.0),
+            left: (Constants.screenWidth(context) - 343)/2.0,
+            right: (Constants.screenWidth(context) - 343)/2.0),
         height: 205,
         width: 343,
         decoration: BoxDecoration(
@@ -225,7 +225,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                       filterQuality: FilterQuality.high,
                       width: 55,
                       height: 55,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ],

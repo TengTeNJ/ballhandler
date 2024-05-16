@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-
+import 'package:package_info_plus/package_info_plus.dart';
 class SystemUtil {
   /*锁定屏幕为竖屏*/
   static Future<void> lockScreenDirection() {
@@ -26,5 +26,11 @@ class SystemUtil {
       DeviceOrientation.landscapeRight,
       DeviceOrientation.portraitDown,
     ]);
+  }
+
+  /*获取系统版本*/
+  static Future<String> getApplicationVersion() async{
+    final info = await PackageInfo.fromPlatform();
+    return info.version + '#' + info.buildNumber;
   }
 }

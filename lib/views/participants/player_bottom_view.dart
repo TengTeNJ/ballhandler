@@ -20,7 +20,7 @@ class PlayerBottomView extends StatelessWidget {
       width: Constants.screenWidth(context) - 32,
       height: 120,
       decoration: BoxDecoration(
-          color: hexStringToOpacityColor('#3E3E55', 0.85),
+          color: hexStringToOpacityColor('#3E3E55', 0.5),
           borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [

@@ -96,7 +96,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                             color: hexStringToColor('#3E3E55'),
                             borderRadius: BorderRadius.circular(5)),
                         child: Padding(
-                          padding: EdgeInsets.all(4),
+                          padding: EdgeInsets.all(8),
                           child: Constants.regularBaseTextWidget(
                               detailModel.activityRemark, 12),
                         )),
@@ -106,6 +106,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                       // child: Text('ctivity rules Activity rulesActivity rulesActivity rulesActivity Activity rulesActivity rulesActivity rules',style: TextStyle(color: Colors.red),),
                       child: Constants.regularGreyTextWidget(
                           detailModel.activityRule, 14,
+                          height: 1.5,
                           textAlign: TextAlign.left),
                     ),
                     Container(

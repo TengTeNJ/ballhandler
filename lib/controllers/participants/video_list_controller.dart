@@ -35,7 +35,11 @@ class _VideoListControllerState extends State<VideoListController> {
             Constants.boldWhiteTextWidget('Video list', 30,
                 textAlign: TextAlign.left),
             SizedBox(
-              height: 32,
+              height: 12,
+            ),
+            Constants.regularGreyTextWidget('Slide sideways to delete', 12),
+            SizedBox(
+              height: 16,
             ),
             Expanded(child: VideoListView())
           ],

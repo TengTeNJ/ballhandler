@@ -78,7 +78,7 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
       splitScreenMode: true,
       builder: (context, child) {
         return Container(
-          height: 136,
+          height: 146,
           width: (Constants.screenWidth(context) - 8 - 32) / 2.0,
           decoration: BoxDecoration(
               color: hexStringToColor('#3E3E55'),

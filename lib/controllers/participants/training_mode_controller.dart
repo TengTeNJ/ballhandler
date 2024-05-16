@@ -97,7 +97,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.all(16),
+              margin: EdgeInsets.only(top:16,bottom: 16,left: (Constants.screenWidth(context) - 343)/2.0,right: (Constants.screenWidth(context) - 343)/2.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

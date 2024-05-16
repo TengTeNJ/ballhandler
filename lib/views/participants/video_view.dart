@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/profile.dart';
+import 'package:code/utils/color.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,79 +52,101 @@ class _VideoViewState extends State<VideoView> {
   Widget build(BuildContext context) {
     return Container(
       height: 120,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-      child: Row(
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: hexStringToColor('#3E3E55')),
+      child: Stack(
         children: [
-          Container(
-            width: 150,
-            height: 120,
-            child: Stack(
-              children: [
-                _imageUrl.length > 0
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.memory(
-                          _imageUrl,
-                          height: 120,
-                          width: 150,
-                          fit: BoxFit.fill,
-                        ),
-                      )
-                    : Container(),
-                Align(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: (){
-                      // 跳转到视频播放页面
-                      GameOverModel model = GameOverModel();
-                      model.modeId = widget.videoModel.modeId;
-                      model.sceneId = widget.videoModel.sceneId;
-                      model.videoPath = widget.videoModel.trainVideo;
-                      model.score = widget.videoModel.trainScore;
-                      model.avgPace = widget.videoModel.avgPace;
-                      model.endTime = widget.videoModel.createTime;
-                      NavigatorUtil.push('videoPlay', arguments: {
-                        "model": model,
-                        "gameFinish": false
-                      });
-                    },
-                    child: Icon(
-                      Icons.play_arrow,
-                      size: 64,
-                      color: Colors.white,
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            width: 12,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+          Row(
             children: [
-              Constants.boldWhiteTextWidget(
-                  kGameSceneAndModelMap[widget.videoModel.sceneId]![
-                          widget.videoModel.modeId] ??
-                      'ZIGZAG Challenge',
-                  16),
-              SizedBox(
-                height: 36,
+              Container(
+                color: Colors.transparent,
+                width: 150,
+                height: 120,
+                child: Stack(
+                  children: [
+                    _imageUrl.length > 0
+                        ? ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.memory(
+                        _imageUrl,
+                        height: 120,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                        : Container(),
+                    Align(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: (){
+                          // 跳转到视频播放页面
+                          GameOverModel model = GameOverModel();
+                          model.modeId = widget.videoModel.modeId;
+                          model.sceneId = widget.videoModel.sceneId;
+                          model.videoPath = widget.videoModel.trainVideo;
+                          model.score = widget.videoModel.trainScore;
+                          model.avgPace = widget.videoModel.avgPace;
+                          model.endTime = widget.videoModel.createTime;
+                          NavigatorUtil.push('videoPlay', arguments: {
+                            "model": model,
+                            "gameFinish": false
+                          });
+                        },
+                        child: Icon(
+                          Icons.play_arrow,
+                          size: 48,
+                          color: Colors.white,
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                    )
+                  ],
+                ),
               ),
-              Constants.mediumWhiteTextWidget(
-                  '${widget.videoModel.avgPace}', 16),
               SizedBox(
-                height: 4,
+                width: 12,
               ),
-              Constants.regularGreyTextWidget(
-                  StringUtil.serviceStringToShowMinuteString(
-                      widget.videoModel.createTime),
-                  14),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  widget.videoModel.activityId != null &&  widget.videoModel.activityId!.length > 0 ?Constants.boldWhiteTextWidget( widget.videoModel.activityName.toString(), 16) : Constants.boldWhiteTextWidget(
+                      kGameSceneAndModelMap[widget.videoModel.sceneId]![
+                      widget.videoModel.modeId] ??
+                          'ZIGZAG Challenge',
+                      16),
+                  SizedBox(
+                    height: 36,
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Constants.mediumWhiteTextWidget(
+                          '${widget.videoModel.avgPace}', 16),
+                      SizedBox(width: 6,),
+                      Constants.regularGreyTextWidget(
+                          'sec/pt', 12),
+                    ],
+                  ),
+
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Constants.regularGreyTextWidget(
+                      StringUtil.serviceStringToShowMinuteString(
+                          widget.videoModel.createTime),
+                      12),
+                ],
+              )
             ],
-          )
+          ),
+          widget.videoModel.activityId != null &&  widget.videoModel.activityId!.length > 0 ? Positioned(child: Container(
+              width: 50,
+              height: 18,
+              decoration: BoxDecoration(
+                  color: Constants.baseStyleColor,
+                  borderRadius: BorderRadius.circular(3)),
+              child: Center(
+                  child:
+                  Constants.regularWhiteTextWidget('Air Battle', 8)))):Container()
         ],
       ),
     );

@@ -6,6 +6,7 @@ import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/string_util.dart';
+import 'package:code/utils/system_device.dart';
 import 'package:code/views/profile/setting_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +23,16 @@ class SettingController extends StatefulWidget {
 }
 
 class _SettingControllerState extends State<SettingController> {
+  String _version = '1.0';
   DateTime selectedDate = DateTime.now();
+
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(1900),
+      // barrierColor: hexStringToColor('#3E3E55'),
       lastDate: selectedDate,
     );
     if (picked != null && picked != selectedDate) {
@@ -46,6 +50,18 @@ class _SettingControllerState extends State<SettingController> {
     }
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getApplicationVersion();
+  }
+  getApplicationVersion() async{
+    _version = await SystemUtil.getApplicationVersion();
+    setState(() {
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,10 +133,10 @@ class _SettingControllerState extends State<SettingController> {
                 height: 32,
               ),
               SettingView(
-                showArrows: [true, true],
+                showArrows: [true, true,false],
                 title: 'Privacy',
-                detailTitles: ['', ''],
-                datas: ['Private Profile', 'Activity Feed Privacy'],
+                detailTitles: ['', '', _version],
+                datas: ['Private Profile', 'Activity Feed Privacy','Version'],
                 selectItem: (index) {
                   if (index == 0) {
                     NavigatorUtil.push(Routes.subsetting, arguments: {

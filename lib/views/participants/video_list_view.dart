@@ -1,4 +1,6 @@
+import 'package:code/constants/constants.dart';
 import 'package:code/services/http/profile.dart';
+import 'package:code/utils/color.dart';
 import 'package:code/views/base/no_data_view.dart';
 import 'package:code/views/participants/video_view.dart';
 import 'package:flutter/material.dart';
@@ -78,9 +80,14 @@ class _VideoListViewState extends State<VideoListView> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text('Confirm'),
-                      content: Text('Are you sure you want to delete this video?'),
+                      backgroundColor: hexStringToColor('#3E3E55'),
+                      title: Text('Confirm',style: TextStyle(color: Colors.white),),
+                      content: Text('Are you sure you want to delete this video?',style: TextStyle(color: Colors.white),),
                       actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: Text('Cancel',style: TextStyle(color: Constants.baseGreyStyleColor),),
+                        ),
                         TextButton(
                           onPressed: () async{
                             final _response = await Profile.deleteVideo(_datas[index].trainId);
@@ -88,11 +95,7 @@ class _VideoListViewState extends State<VideoListView> {
                               Navigator.of(context).pop(true);
                             }
                           },
-                          child: Text('Delete'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: Text('Cancel'),
+                          child: Text('Delete',style: TextStyle(color: Constants.baseStyleColor),),
                         ),
                       ],
                     );

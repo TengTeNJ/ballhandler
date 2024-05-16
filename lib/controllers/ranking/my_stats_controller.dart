@@ -10,7 +10,6 @@ import 'package:code/views/base/no_data_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../utils/event_track.dart';
 
 class MyStatsController extends StatefulWidget {

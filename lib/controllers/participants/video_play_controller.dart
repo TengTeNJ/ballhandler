@@ -44,11 +44,6 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
       backgroundColor: Constants.darkThemeColor,
       body: Stack(
         children: [
-          // Align(alignment: Alignment.center,
-          //   child: VideoPlayView(
-          //     videoPath: widget.model.videoPath ?? '',
-          //   ),
-          // ),
           Positioned(
             left: 0,
               right: 0,

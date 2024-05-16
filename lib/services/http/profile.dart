@@ -55,6 +55,9 @@ class VideoModel{
   String trainScore = '0';
   String trainTime = '45';
   String trainVideo = '';
+  String? activityId;
+  String? activityName;
+  String? activityRemark;
 }
 
 class VideoDataModel {
@@ -214,6 +217,12 @@ class Profile {
         !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
         model.trainVideo =
         !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '';
+        model.activityId =
+        !ISEmpty(_map['activityId']) ? _map['activityId'].toString() : '';
+        model.activityName =
+        !ISEmpty(_map['activityName']) ? _map['activityName'].toString() : '';
+        model.activityRemark =
+        !ISEmpty(_map['activityRemark']) ? _map['activityRemark'].toString() : '';
         _list.add(model);
       });
       _model.data = _list;
