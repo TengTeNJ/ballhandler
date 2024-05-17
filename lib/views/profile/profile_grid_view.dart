@@ -62,6 +62,7 @@ class _ProfileGridViewState extends State<ProfileGridView> {
                             fontSize: 40, color: Colors.white, height: 0.8),
                       ),
                     ),
+                    SizedBox(width: 4,),
                     Text(
                       widget.unit ?? 'Sec',
                       style: TextStyle(

@@ -52,11 +52,11 @@ class _SettingViewState extends State<SettingView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Constants.regularGreyTextWidget(widget.datas[index], 16),
+                      Constants.regularGreyTextWidget(widget.datas[index], 18),
                       Row(
                         children: [
                           Constants.regularGreyTextWidget(
-                              widget.detailTitles[index], 16),
+                              widget.detailTitles[index], 18),
                           SizedBox(
                             width: 12,
                           ),

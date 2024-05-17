@@ -59,12 +59,14 @@ class Constants {
   static Text regularGreyTextWidget(String text, double fontSize,
       {int? maxLines,
       TextAlign textAlign = TextAlign.center,
-      double height = 1.0}) {
+      double height = 1.0,
+        TextOverflow? overflow}) {
     return Text(
       maxLines: maxLines ?? null,
       textAlign: textAlign,
       text,
       style: TextStyle(
+        overflow: overflow,
           height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w400,

@@ -72,102 +72,109 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(375, 848),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return Container(
-          height: 146,
-          width: (Constants.screenWidth(context) - 8 - 32) / 2.0,
-          decoration: BoxDecoration(
-              color: hexStringToColor('#3E3E55'),
-              borderRadius: BorderRadius.circular(5)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                margin: EdgeInsets.all(baseMargin(context, 10)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Constants.regularGreyTextWidget(
-                        _titles[widget.index ?? 0], kFontSize(context, 12)),
-                    Image(
-                      image: AssetImage(_imagePaths[widget.index ?? 0]),
-                      width: 20,
-                      height: 20,
-                      fit: BoxFit.contain,
-                    )
-                  ],
+    return Container(
+      height: 146,
+      width: (Constants.screenWidth(context) - 8 - 32) / 2.0,
+      decoration: BoxDecoration(
+          color: hexStringToColor('#3E3E55'),
+          borderRadius: BorderRadius.circular(5)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            margin: EdgeInsets.all(baseMargin(context, 10)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Constants.regularGreyTextWidget(
+                    _titles[widget.index ?? 0], kFontSize(context, 14),
+                    maxLines: 1,
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.ellipsis, // 设置溢出时显示省略号
+                  ),
+                  constraints: BoxConstraints(maxWidth: 126),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: baseMargin(context, 16)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 12, right: 10),
-                      child: SingleChildScrollView(child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            widget.value ?? '-',
-                            style: TextStyle(
-                                fontSize: kFontSize(context, 40),
-                                color: Colors.white,
-                                height: 0.8,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            _desTitles[widget.index ?? 0],
-                            style: TextStyle(
-                                fontSize: kFontSize(context, 10),
-                                color: Colors.white,
-                                height: 0.8),
-                          )
-                        ],
-                      ),scrollDirection: Axis.horizontal,),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    widget.selectType == 3
-                        ? Container()
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                _vsTitles[widget.selectType],
-                                style: TextStyle(
-                                    color: hexStringToColor('#B1B1B1'),
-                                    fontFamily: 'SanFranciscoDisplay',
-                                    fontSize: kFontSize(context, 12)),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Constants.customTextWidget(
-                                      widget.comparevalue,
-                                      kFontSize(context, 12),
-                                      _compareTextColor),
-                                  SizedBox(
-                                    width: 1,
-                                  ),
-                                  RaiseIcon()
-                                ],
-                              ),
-                            ],
-                          ),
-                  ],
-                ),
-              )
-            ],
+                Image(
+                  image: AssetImage(_imagePaths[widget.index ?? 0]),
+                  width: 20,
+                  height: 20,
+                  fit: BoxFit.contain,
+                )
+              ],
+            ),
           ),
-        );
-      },
+          Container(
+            margin: EdgeInsets.only(bottom: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 12, right: 10),
+                  child: SingleChildScrollView(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          widget.value ?? '-',
+                          style: TextStyle(
+                              fontSize: kFontSize(context, 40),
+                              color: Colors.white,
+                              height: 0.8,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          _desTitles[widget.index ?? 0],
+                          style: TextStyle(
+                              fontSize: kFontSize(context, 10),
+                              color: Colors.white,
+                              height: 0.8),
+                        )
+                      ],
+                    ),
+                    scrollDirection: Axis.horizontal,
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                widget.selectType == 3
+                    ? Container()
+                    : Padding(
+                        padding: EdgeInsets.only(left: 12, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              _vsTitles[widget.selectType],
+                              style: TextStyle(
+                                  color: hexStringToColor('#B1B1B1'),
+                                  fontFamily: 'SanFranciscoDisplay',
+                                  fontSize: kFontSize(context, 14)),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Constants.customTextWidget(widget.comparevalue,
+                                    kFontSize(context, 14), _compareTextColor),
+                                SizedBox(
+                                  width: 1,
+                                ),
+                                RaiseIcon()
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 

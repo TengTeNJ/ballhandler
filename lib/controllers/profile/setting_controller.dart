@@ -120,10 +120,10 @@ class _SettingControllerState extends State<SettingController> {
                 height: 32,
               ),
               SettingView(
-                  showArrows: [true, true],
+                  showArrows: [true],
                   title: 'Date',
-                  datas: ['Video', 'Contact'],
-                  detailTitles: ['', ''],
+                  datas: ['Video'],
+                  detailTitles: [''],
                   selectItem: (index) {
                     if(index == 0){
                       NavigatorUtil.push(Routes.videolist);

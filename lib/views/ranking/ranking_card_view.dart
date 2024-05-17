@@ -55,7 +55,7 @@ String _rankNumber = '-';
                       textAlign: TextAlign.left),
                 ),
                 Image(
-                  image: AssetImage('images/ranking/next.png'),
+                  image: AssetImage('images/participants/next.png'),
                   width: 20,
                   height: 20,
                 ),

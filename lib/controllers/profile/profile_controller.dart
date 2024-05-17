@@ -62,8 +62,19 @@ class _ProfileControllerState extends State<ProfileController> {
     final _response = await Profile.queryIMyAccountInfoData();
     if (_response.success && _response.data != null) {
       _model = _response.data!;
+
       if(mounted){
         setState(() {});
+        // 同步用户信息
+        NSUserDefault.setKeyValue<String>(kAvatar, _model.avatar);
+        UserProvider.of(context).avatar = _model.avatar;
+
+        NSUserDefault.setKeyValue<String>(kCountry, _model.country);
+        UserProvider.of(context).country = _model.country;
+
+        NSUserDefault.setKeyValue<String>(kBrithDay, _model.birthday);
+        UserProvider.of(context).brith = _model.birthday;
+
       }
     }
   }

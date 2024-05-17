@@ -45,21 +45,20 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
       plotAreaBorderColor: Colors.transparent,
       // 控制和Y交叉方向的直线的样式
       primaryYAxis: NumericAxis(
-        maximum: 52,
+        maximum: 22,
           axisLine: AxisLine(width: 2, color: Colors.transparent), // 设置 X 轴轴线颜色和宽度
           labelPosition: ChartDataLabelPosition.outside,
           plotOffset: 0,
-          interval: 5,
+          interval: 3,
           majorTickLines: MajorTickLines(color: Colors.yellow, size: 0),
           // 超出坐标系部分的线条设置
           majorGridLines: MajorGridLines(
               color: Color.fromRGBO(112, 112, 112, 1.0),
               dashArray: [5, 5]) // 设置Y轴网格竖线为虚线,
       ),
-      backgroundColor: Color.fromRGBO(41, 41, 54, 1.0),
+      // backgroundColor: Color.fromRGBO(41, 41, 54, 1.0),
       onSelectionChanged: (SelectionArgs args) {
         //selectedIndexes.clear(); // 清空之前选中的索引
-        print('------------ ${args.pointIndex}');
       },
       primaryXAxis: CategoryAxis(
         axisLine: AxisLine(width: 1, color: Color.fromRGBO(112, 112, 112, 1.0)), // 设置 X 轴轴线颜色和宽度
@@ -107,7 +106,7 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
             dataSource: widget.datas,
             pointColorMapper: (MyStatsModel data, _) => Colors.yellow,
             xValueMapper: (MyStatsModel data, _) => data.indexString,
-            yValueMapper: (MyStatsModel data, _) => data.speed > 50 ? 50 : data.speed),
+            yValueMapper: (MyStatsModel data, _) => data.speed > 20 ? 20 : data.speed),
         // AreaSeries(
         //   color: Colors.red,
         //     borderColor: Colors.blue, // 设置边界线颜色
