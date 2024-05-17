@@ -16,11 +16,13 @@ class MyStatsBarChatView extends StatefulWidget {
 class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
   late TooltipBehavior _tooltipBehavior;
   bool _disposed = false;
+
   void _callback(Duration duration) {
-    if(!_disposed){
+    if (!_disposed) {
       setState(() {});
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -50,12 +52,19 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
+        margin:EdgeInsets.only(left: 0,right: 0,top: 10),
         plotAreaBorderWidth: 0,
         // 设置绘图区域的边框宽度为0，隐藏边框
         plotAreaBorderColor: Colors.transparent,
         // 设置绘图区域的边框颜色为透明色
         primaryYAxis: NumericAxis(
-          maximum: 20,
+          labelStyle: TextStyle(
+            color: hexStringToColor('#B1B1B1'),
+            fontSize: 14,
+            fontFamily: 'SanFranciscoDisplay',
+            fontWeight: FontWeight.w400,
+          ),
+          maximum: 24,
           labelAlignment: LabelAlignment.center,
           interval: 3,
           axisLine: AxisLine(width: 1, color: Colors.transparent),
@@ -63,7 +72,8 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
           plotOffset: 0,
           labelPosition: ChartDataLabelPosition.outside,
           // labelStyle: TextStyle(fontSize: 12, color: Colors.black), // 设置标签样式
-          majorGridLines: MajorGridLines(dashArray: [5, 5]),
+          majorGridLines: MajorGridLines(
+              color: Color.fromRGBO(112, 112, 112, 1.0), dashArray: [5, 5]),
           majorTickLines: MajorTickLines(width: 0),
 
           //opposedPosition: true, // 将 Y 轴放置在图表的右侧
@@ -73,6 +83,19 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
           //  edgeLabelPlacement: EdgeLabelPlacement.shift, // 调整标签位置，使得第一个数据和 Y 轴有间隔
         ),
         primaryXAxis: CategoryAxis(
+          labelStyle: widget.datas.length > 20
+              ? TextStyle(
+                  color: hexStringToColor('#B1B1B1'),
+                  fontSize: 10,
+                  fontFamily: 'SanFranciscoDisplay',
+                  fontWeight: FontWeight.w400,
+                )
+              : TextStyle(
+                  color: hexStringToColor('#B1B1B1'),
+                  fontSize: 14,
+                  fontFamily: 'SanFranciscoDisplay',
+                  fontWeight: FontWeight.w400,
+                ),
           plotOffset: 1,
           interval: 1,
           axisLine:
@@ -91,10 +114,10 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
           // Renders column chart
           ColumnSeries<MyStatsModel, num>(
               selectionBehavior: SelectionBehavior(
-                  enable: true, // 这个设置为true,会在选中时，其他的置灰
-                  // toggleSelection: false,
-                  //  overlayMode: ChartSelectionOverlayMode.top, // 设置选中视图显示在柱状图上面
-                  ),
+                enable: true, // 这个设置为true,会在选中时，其他的置灰
+                // toggleSelection: false,
+                //  overlayMode: ChartSelectionOverlayMode.top, // 设置选中视图显示在柱状图上面
+              ),
               borderRadius: BorderRadius.circular(5),
               // 设置柱状图的圆角
               dataSource: widget.datas,
@@ -104,8 +127,10 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
               //
               xValueMapper: (MyStatsModel data, _) =>
                   int.parse(data.indexString),
-              yValueMapper: (MyStatsModel data, _) => data.speed > 50 ? 50 : data.speed,
-              pointColorMapper: (MyStatsModel data, _) => hexStringToColor('#F8850B'))
+              yValueMapper: (MyStatsModel data, _) =>
+                  data.speed > 24 ? 24 : data.speed,
+              pointColorMapper: (MyStatsModel data, _) =>
+                  hexStringToColor('#F8850B'))
         ]);
   }
 

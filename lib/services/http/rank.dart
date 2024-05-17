@@ -163,7 +163,7 @@ class Rank {
   }
 
   /*折线图数据*/
-  static Future<ApiResponse<List<MyStatsModel>>> queryLineViewData(String? startTime, String? endTime) async {
+  static Future<ApiResponse<List<MyStatsModel>>> queryLineViewData(String? startTime, String? endTime,{bool isWeek = false}) async {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
 
@@ -188,6 +188,7 @@ class Rank {
     final response = await HttpUtil.get('/api/statistic/trainLine', _data,
         showLoading: false);
     List<MyStatsModel> _list = [];
+    List<String> _weekText = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
     if (response.success && response.data['data'] != null) {
       final _array = response.data['data'] as List;
       _array.forEach((element) {

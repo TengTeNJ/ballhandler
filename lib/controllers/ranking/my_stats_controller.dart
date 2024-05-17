@@ -30,7 +30,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
     'Custom'
   ];
   int _timeIndex = 0;
-  num temp = 2;
+  num temp = 24;
   String _start = '';
   String _end = '';
 
@@ -45,7 +45,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
   initData() async {
     final List<Future<dynamic>> futures = [];
     futures.add(Rank.queryComparetData(null, null, '1'));
-    futures.add(Rank.queryLineViewData(null, null));
+    futures.add(Rank.queryLineViewData(null, null,isWeek: true));
     futures.add(Rank.queryBarViewData());
     final _responses = await Future.wait(futures);
     // 对比数据
@@ -74,7 +74,11 @@ class _MyStatsControllerState extends State<MyStatsController> {
   changeTimeArea(String? startTime, String? endTime, String selectType) async {
     final List<Future<dynamic>> futures = [];
     futures.add(Rank.queryComparetData(startTime, endTime, selectType));
-    futures.add(Rank.queryLineViewData(startTime, endTime));
+    if(selectType == '1'){
+      futures.add(Rank.queryLineViewData(startTime, endTime,isWeek: true));
+    }else{
+      futures.add(Rank.queryLineViewData(startTime, endTime));
+    }
     final _responses = await Future.wait(futures);
     // 对比数据
     final _compareResponse = _responses[0];
@@ -121,50 +125,17 @@ class _MyStatsControllerState extends State<MyStatsController> {
                     children: [
                       Image(
                         image:
-                            AssetImage('images/participants/icon_orange.png'),
-                        width: 32,
-                        height: 32,
+                            AssetImage('images/ranking/top_rank.png'),
+                        width: 14,
+                        height: 17,
                       ),
                       SizedBox(
-                        width: 12,
+                        width: 6,
                       ),
-                      Constants.mediumWhiteTextWidget(
-                          'Training Model', kFontSize(context, 16)),
+                      Constants.regularWhiteTextWidget(
+                          ' TOP RANK  ${_analyzeDataModelmodel.rankNumber == '0' ? '-' : _analyzeDataModelmodel.rankNumber}', kFontSize(context, 16)),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Image(
-                        image: AssetImage('images/participants/rank.png'),
-                        width: 12,
-                        height: 16,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Constants.mediumWhiteTextWidget(
-                          'RANK  ${_analyzeDataModelmodel.rankNumber == '0' ? '-' : _analyzeDataModelmodel.rankNumber}',
-                          kFontSize(context, 16)),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              MyStatsGridListView(
-                model: _analyzeDataModelmodel,
-                selectType: _timeIndex,
-              ),
-              // grid view
-              SizedBox(
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Constants.regularWhiteTextWidget(
-                      'Training Growth', kFontSize(context, 14)),
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
@@ -217,10 +188,28 @@ class _MyStatsControllerState extends State<MyStatsController> {
                 ],
               ),
               SizedBox(
+                height: 28,
+              ),
+              MyStatsGridListView(
+                model: _analyzeDataModelmodel,
+                selectType: _timeIndex,
+              ),
+              // grid view
+              SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Constants.regularWhiteTextWidget(
+                      'Training Growth', kFontSize(context, 14)),
+                ],
+              ),
+              SizedBox(
                 height: 36,
               ),
               Container(
-                height: (temp / 0.2).ceil() * 36 + 36,
+                height: 8* 36 + 36,
                 child: LineAreaView(datas),
               ),
               SizedBox(
@@ -232,7 +221,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
                 height: 36,
               ),
               Container(
-                height: (2 / 0.2).ceil() * 36 + 36,
+                height: 8 * 36 + 36 ,
                 child: BarView(barViewDatas),
               ),
             ],
