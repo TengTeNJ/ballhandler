@@ -6,10 +6,7 @@ import 'package:code/utils/string_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-import 'dart:io';
-import 'dart:convert';
 import 'dart:typed_data';
-
 import '../../utils/navigator_util.dart';
 
 class VideoView extends StatefulWidget {

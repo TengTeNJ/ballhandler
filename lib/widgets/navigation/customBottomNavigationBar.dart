@@ -104,6 +104,14 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       selectedItemColor: Constants.baseStyleColor,
       unselectedItemColor: Constants.baseGreyStyleColor,
       type: BottomNavigationBarType.fixed,
+      selectedLabelStyle: TextStyle(
+        fontFamily: 'SanFranciscoDisplay',
+        fontWeight: FontWeight.w400,
+      ),
+      unselectedLabelStyle: TextStyle(
+        fontFamily: 'SanFranciscoDisplay',
+        fontWeight: FontWeight.w400,
+      ),
       items: _items.map((item) {
         return BottomNavigationBarItem(
           icon: _buildIcon(  _items.indexOf(item) == this.currentIndex ? _selectedImages[_items.indexOf(item)]: item.icon, item.label.toString(), _items.indexOf(item) == this.currentIndex ? Constants.baseStyleColor : Constants.baseGreyStyleColor),

@@ -169,4 +169,20 @@ class TTDialog {
       return AirPlayView();
     });
   }
+
+  /* 视频引导页*/
+  static videiGuideAidlog(BuildContext context,String videoPath){
+
+    showModalBottomSheet(
+      backgroundColor: hexStringToColor('#3E3E55'),
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.9,
+          child: VideoGuideDialog(videoPath: videoPath),
+        );
+      },
+    );
+  }
 }

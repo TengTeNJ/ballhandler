@@ -12,9 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io' show Platform;
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
-
 import '../../utils/nsuserdefault_util.dart';
 import 'package:flutter_to_airplay/flutter_to_airplay.dart';
+import 'package:chewie/chewie.dart';
+import 'package:video_player/video_player.dart';
+import 'dart:io';
+import 'package:fijkplayer/fijkplayer.dart';
 /**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
   Function? confirm;
@@ -792,7 +795,9 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                   color: hexStringToColor('#B1B1B1'),
                   size: 12,
                 ),
-                SizedBox(width: 4,),
+                SizedBox(
+                  width: 4,
+                ),
                 Constants.regularGreyTextWidget(
                     'Only six months of data are available', 10),
               ],
@@ -851,7 +856,8 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                   return;
                 }
                 if (widget.confirm != null) {
-                  widget.confirm!(startTime.replaceAll('/', '-'), endTimer.replaceAll('/', '-'), _selectIndex);
+                  widget.confirm!(startTime.replaceAll('/', '-'),
+                      endTimer.replaceAll('/', '-'), _selectIndex);
                 }
                 NavigatorUtil.pop();
               },
@@ -998,7 +1004,9 @@ class _UserNameDialogState extends State<UserNameDialog> {
         children: [
           TextField(
             controller: _usernameController,
-            decoration: InputDecoration(labelText: 'Username',labelStyle: TextStyle(color: Colors.white)),
+            decoration: InputDecoration(
+                labelText: 'Username',
+                labelStyle: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -1061,3 +1069,96 @@ class AirPlayView extends StatelessWidget {
   }
 }
 
+class VideoGuideDialog extends StatefulWidget {
+  String videoPath;
+
+  VideoGuideDialog({required this.videoPath});
+
+  @override
+  State<VideoGuideDialog> createState() => _VideoGuideDialogState();
+}
+
+class _VideoGuideDialogState extends State<VideoGuideDialog> {
+  late final VideoPlayerController _controller;
+  late ChewieController _chewieController;
+  bool _loading = true;
+
+  final FijkPlayer player = FijkPlayer();
+
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    player.setDataSource(widget.videoPath, autoPlay: true);
+
+    // if (widget.videoPath.contains('http')) {
+    //   _controller =
+    //       VideoPlayerController.networkUrl(Uri.parse(widget.videoPath))
+    //         ..initialize().then((value) {
+    //           print('加载完成');
+    //           // 加载完成
+    //           //_controller.play();
+    //           _loading = false;
+    //           setState(() {});
+    //         });
+    // } else {
+    //   File file = File(widget.videoPath);
+    //   _controller = VideoPlayerController.file(file)
+    //     ..initialize().then((value) {
+    //       // 加载完成
+    //       // _controller.play();
+    //       _loading = false;
+    //       setState(() {});
+    //     });
+    // }
+    // _chewieController = ChewieController(
+    //   videoPlayerController: _controller,
+    // );
+    // _controller.play();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return  Container(
+      color: Colors.transparent,
+      alignment: Alignment.center,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(26),
+        child:  FijkView(
+        fit: FijkFit.cover,
+        player: player,
+          color: Colors.red,
+      ),),
+    );
+    // return Container(
+    //   width: Constants.screenWidth(context),
+    //   height: 400,
+    //   child: ClipRRect(
+    //     // child: AspectRatio(
+    //     //   aspectRatio: 1,
+    //     //   child: _loading
+    //     //       ? Center(
+    //     //           child: CircularProgressIndicator(),
+    //     //         )
+    //     //       : Chewie(controller: _chewieController),
+    //     // ),
+    //     child: _loading
+    //         ? Center(
+    //       child: CircularProgressIndicator(),
+    //     )
+    //         : Chewie(controller: _chewieController),
+    //     borderRadius: BorderRadius.circular(12),
+    //   ),
+    //   decoration: BoxDecoration(
+    //     borderRadius: BorderRadius.circular(12),
+    //   ),
+    // );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    player.release();
+  }
+}

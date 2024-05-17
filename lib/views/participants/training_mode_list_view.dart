@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -96,6 +97,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
+                      TTDialog.videiGuideAidlog(context, 'https://potent-hockey.s3.eu-north-1.amazonaws.com/images/20240515/9a68e5b5153143388f74e84f6005fa14.mp4');
                       print('跳转到视频介绍界面');
                     },
                     child: Container(
