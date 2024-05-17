@@ -91,11 +91,12 @@ class _VideoViewState extends State<VideoView> {
                             "gameFinish": false
                           });
                         },
-                        child: Icon(
-                          Icons.play_arrow,
-                          size: 48,
-                          color: Colors.white,
-                        ),
+                        // child: Icon(
+                        //   Icons.play_arrow,
+                        //   size: 48,
+                        //   color: Colors.white,
+                        // ),
+                        child: Image(image: AssetImage('images/participants/play.png'),width: 36,height: 36,),
                       ),
                       alignment: Alignment.center,
                     )

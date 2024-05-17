@@ -140,16 +140,17 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   ),
             Container(
               margin: EdgeInsets.only(left: 16, right: 16, top: 3),
-              height: 44,
+              height: 47,
               child: SingleChildScrollView(
                 child: Constants.customTextWidget(
                     widget.model.modeRemark, 14, '#CBCBCB',
-                    height: 1.2, textAlign: TextAlign.start),
+                    height: 1.3, textAlign: TextAlign.start),
               ),
             ),
             Expanded(
                 child: Container(
-              margin: EdgeInsets.only(left: 16, right: 16),
+                  // color: Colors.green,
+              margin: EdgeInsets.only(left: 16, right: 17),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -231,6 +232,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                 ],
               ),
             )),
+           // SizedBox(height: 8,),
           ],
         ),
       ),
