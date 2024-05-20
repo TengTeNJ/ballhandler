@@ -52,15 +52,15 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
       },
       child: Container(
         margin: EdgeInsets.only(
-            left: (Constants.screenWidth(context) - 343) / 2.0,
-            right: (Constants.screenWidth(context) - 343) / 2.0),
-        height: 205,
-        width: 343,
+            left: 16,
+            right: 16),
+        height: (Constants.screenWidth(context) - 32)*205/343,
+        width: Constants.screenWidth(context) - 32,
         decoration: BoxDecoration(
           // color: Colors.red,
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-            image: AssetImage('images/ble/ble_bg.png'),
+            image: AssetImage('images/ble/ble_bg_new.png'),
             fit: BoxFit.fill,
           ),
         ),
@@ -228,15 +228,15 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                       );
                     }),
                   )),
-                  ClipOval(
-                    child: Image(
-                      image: AssetImage('images/participants/next_green.png'),
-                      filterQuality: FilterQuality.high,
-                      width: 55,
-                      height: 55,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  // ClipOval(
+                  //   child: Image(
+                  //     image: AssetImage('images/participants/next_green.png'),
+                  //     filterQuality: FilterQuality.high,
+                  //     width: 55,
+                  //     height: 55,
+                  //     fit: BoxFit.fill,
+                  //   ),
+                  // ),
                 ],
               ),
             )),
