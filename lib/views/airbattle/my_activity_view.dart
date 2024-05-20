@@ -48,7 +48,7 @@ class _MyActivityDataViewState extends State<MyActivityDataView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TTNetImage(url: widget.activityModel.activityIcon, placeHolderPath: 'images/airbattle/gold.png', width: 48, height: 48,borderRadius: BorderRadius.circular(24),),
+                  TTNetImage(url: widget.activityModel.activityIcon, placeHolderPath: 'images/airbattle/airbattle_little.png', width: 48, height: 48,borderRadius: BorderRadius.circular(24),),
                   SizedBox(width: 16,),
                   Expanded(child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

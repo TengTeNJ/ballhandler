@@ -86,6 +86,17 @@ class StringUtil {
     }
   }
 
+  /*服务器返回的时间字符串转换为我的活动界面上需要展示的时间格式字符串*/
+  static String serviceStringToShowMyActivityDateString(String timeString) {
+    try {
+      DateTime dateTime = stringToDate(timeString);
+      String formattedDate = DateFormat('MMMM yyyy').format(dateTime);
+      return formattedDate;
+    } catch (error) {
+      return '-';
+    }
+  }
+
   static String serviceStringToShowMinuteString(String timeString) {
     try {
       DateTime dateTime = stringToDate(timeString);

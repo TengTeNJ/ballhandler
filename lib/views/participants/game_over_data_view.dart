@@ -102,63 +102,38 @@ class _GameOverDataViewState extends State<GameOverDataView> {
             height: 1,
             width: Constants.screenWidth(context) - 96,
           ),
-          (gameUtil.selectRecord  || gameUtil.isFromAirBattle) ? Expanded(
+         Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
+                    onTap: () {
+                      if((gameUtil.selectRecord  || gameUtil.isFromAirBattle)){
+                        NavigatorUtil.push('videoPlay', arguments: {
+                          "model": widget.dataModel,
+                          "gameFinish": true
+                        });
+                      }
+                    },
                     child: Container(
-                      width: 24,
-                      height: 24,
-                      child: Stack(
+                      child: Row(
+                        mainAxisAlignment:  MainAxisAlignment.center,
                         children: [
-                          Positioned.fill(
-                            child: FutureBuilder<String?>(
-                              future: VideoThumbnail.thumbnailFile(
-                                video: widget.dataModel.videoPath ?? '',
-                                imageFormat: ImageFormat.PNG,
-                                maxWidth: 24,
-                                quality: 50,
-                              ),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.done &&
-                                    snapshot.data != null) {
-                                  return Image.file(
-                                      width: 24,
-                                      height: 24,
-                                      File(snapshot.data!));
-                                } else if (snapshot.error != null) {
-                                  return Text('Error: ${snapshot.error}');
-                                } else {
-                                  return CircularProgressIndicator();
-                                }
-                              },
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Image(
-                              image:
-                              AssetImage('images/participants/play.png'),
-                            ),
-                          )
+                          Icon(Icons.play_arrow_rounded,color:  (gameUtil.selectRecord  || gameUtil.isFromAirBattle) ? Colors.white : Constants.baseGreyStyleColor,size: 18,),
+                          SizedBox(width: 4,),
+                          (gameUtil.selectRecord  || gameUtil.isFromAirBattle) ? Constants.regularWhiteTextWidget('Training video', 14) :  Constants.regularGreyTextWidget('Training video', 14),
                         ],
                       ),
+                      height: 35,
+                      width: 185,
+                      decoration: BoxDecoration(
+                        borderRadius:    BorderRadius.circular(18),
+                        color:(gameUtil.selectRecord  || gameUtil.isFromAirBattle) ?  hexStringToColor('#3A3A51') : hexStringToColor('#848484'),
+                      ),
                     ),
-                    onTap: () {
-                      NavigatorUtil.push('videoPlay', arguments: {
-                        "model": widget.dataModel,
-                        "gameFinish": true
-                      });
-                    },
                   ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Constants.regularWhiteTextWidget('Training video', 14),
                 ],
-              )) :Container(),
+              )) ,
         ],
       ),
     );

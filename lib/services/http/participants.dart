@@ -31,6 +31,7 @@ class GameModel {
   String modeRemark = ''; // 模式描述
   String trainTime = ''; // 游戏时间
   int difficultyLevel = 1; // 难易程度
+  String modeVideo = ''; // 指导视频
 }
 
 class GameJoinCountModel{
@@ -217,9 +218,10 @@ class Participants {
         model.modeName = !ISEmpty(_map['modeName']) ? _map['modeName'] : '--';
         model.modeRemark =
             !ISEmpty(_map['modeRemark']) ? _map['modeRemark'].toString() : '--';
-
         model.trainTime =
             !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
+        model.modeVideo =
+        !ISEmpty(_map['modeVideo']) ? _map['modeVideo'].toString() : '';
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);

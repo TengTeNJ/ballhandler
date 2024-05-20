@@ -4,6 +4,7 @@ import 'package:code/services/http/participants.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:code/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,8 +52,8 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
       },
       child: Container(
         margin: EdgeInsets.only(
-            left: (Constants.screenWidth(context) - 343)/2.0,
-            right: (Constants.screenWidth(context) - 343)/2.0),
+            left: (Constants.screenWidth(context) - 343) / 2.0,
+            right: (Constants.screenWidth(context) - 343) / 2.0),
         height: 205,
         width: 343,
         decoration: BoxDecoration(
@@ -87,6 +88,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                         widget.model.modeName,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
+                            height: 0.7,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 22),
@@ -97,11 +99,15 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      TTDialog.videiGuideAidlog(context, 'https://potent-hockey.s3.eu-north-1.amazonaws.com/images/20240515/9a68e5b5153143388f74e84f6005fa14.mp4');
-                      print('跳转到视频介绍界面');
+                      if (widget.model.modeVideo.contains('http')) {
+                        TTDialog.videiGuideAidlog(
+                            context, widget.model.modeVideo);
+                        print('跳转到视频介绍界面');
+                      } else {
+                        TTToast.showToast('No instruction video yet');
+                      }
                     },
                     child: Container(
-                        // color: Colors.red,
                         width: 16,
                         height: 16,
                         child: Image(
@@ -151,7 +157,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
             ),
             Expanded(
                 child: Container(
-                  // color: Colors.green,
+              // color: Colors.green,
               margin: EdgeInsets.only(left: 16, right: 17),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,7 +240,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                 ],
               ),
             )),
-           // SizedBox(height: 8,),
+            // SizedBox(height: 8,),
           ],
         ),
       ),

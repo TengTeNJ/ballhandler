@@ -163,7 +163,7 @@ class AirBattle {
                 _map['endDate'].toString())
             : '--';
         model.startDate = !ISEmpty(_map['startDate'])
-            ? StringUtil.serviceStringToShowDateString(
+            ? StringUtil.serviceStringToShowMyActivityDateString(
                     _map['startDate'].toString())
                 .toString()
             : '--';

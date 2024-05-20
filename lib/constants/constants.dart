@@ -348,3 +348,11 @@ const k270ProductImageScale = 1445/737; // 270产品图片宽高比
 const  kUserVideoMaxCount = 100; // 视频的最大数量
 
 const kAppVersion = '202405131652';
+
+const Map<int,int> kLighMap = {
+  1:4,
+  2:5,
+  3:1,
+  4:2,
+  5:3
+} ; // 灯光映射表

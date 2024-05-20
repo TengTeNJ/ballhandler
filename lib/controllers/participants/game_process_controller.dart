@@ -127,6 +127,9 @@ class _GameProcessControllerState extends State<GameProcessController>
         BluetoothManager().gameData.remainTime = 45;
         BluetoothManager().gameData.millSecond = 0;
         BluetoothManager().gameData.score = 0;
+        BluetoothManager().gameData.currentTarget = 3;
+        _imagePath =
+        'images/product/scene${gameUtil.gameScene.index + 1}/model${gameUtil.modelId}/${BluetoothManager().gameData.currentTarget}.png';
         if (mounted) {
           setState(() {});
         }
