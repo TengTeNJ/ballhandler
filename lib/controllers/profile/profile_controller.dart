@@ -99,7 +99,7 @@ class _ProfileControllerState extends State<ProfileController> {
                         onTap: () {
                           final _hasLogin = UserProvider.of(context).hasLogin;
                           if (_hasLogin == false) {
-                            NavigatorUtil.present(LoginPageController());
+                            NavigatorUtil.present(LoginPageController(),routesName: Routes.login);
                             return;
                           }
                           NavigatorUtil.push(Routes.setting);
@@ -232,7 +232,7 @@ class _ProfileControllerState extends State<ProfileController> {
                       }
                       NavigatorUtil.present(IntegralController(
                         model: _model,
-                      ));
+                      ),routesName: Routes.integral,arguments:_model);
                     },
                     child: ProgressDataView(
                       model: _model,

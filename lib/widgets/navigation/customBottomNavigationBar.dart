@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/route/route.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -82,7 +83,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
            // 判断登录的拦截
            final _hasLogin =  UserProvider.of(context).hasLogin ;
            if(_hasLogin == false){
-             NavigatorUtil.present(LoginPageController());
+             //Navigator.pushNamed(NavigatorUtil.utilContext, Routes.login);
+             print('Routes.login=${Routes.login}');
+            NavigatorUtil.present(LoginPageController(),routesName: Routes.login);
            }else{
              this.currentIndex = index;
              if(widget.onTap != null){

@@ -12,7 +12,6 @@ import 'package:code/views/participants/fireworks_animation-view.dart';
 import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../utils/global.dart';
 import '../../utils/notification_bloc.dart';
@@ -188,7 +187,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
-                  child: Constants.boldBlackTextWidget('SAVE', 16),),
+                  child: gameUtil.isFromAirBattle ? Constants.boldWhiteTextWidget('SAVE', 16) : Constants.boldWhiteTextWidget('SAVE', 16),),
               ),
             ),
           ],

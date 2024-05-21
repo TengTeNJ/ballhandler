@@ -1,4 +1,5 @@
 // routes.dart
+import 'package:code/controllers/account/email_page_controller.dart';
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
 import 'package:code/controllers/account/send_email_controller.dart';
@@ -17,14 +18,17 @@ import 'package:code/controllers/participants/p3_record_select_controller.dart';
 import 'package:code/controllers/participants/record_select_controller.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
 import 'package:code/controllers/participants/video_check_controller.dart';
+import 'package:code/controllers/participants/video_guide_controller.dart';
 import 'package:code/controllers/participants/video_list_controller.dart';
 import 'package:code/controllers/participants/video_play_controller.dart';
 import 'package:code/controllers/profile/Integral_detail_controller.dart';
+import 'package:code/controllers/profile/integral_controller.dart';
 import 'package:code/controllers/profile/setting_controller.dart';
 import 'package:code/controllers/profile/sub_setting_controller.dart';
 import 'package:code/controllers/ranking/my_stats_controller.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/airbattle.dart';
+import 'package:code/services/http/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
@@ -54,6 +58,9 @@ class Routes {
   static const String p3check = 'p3Check';
   static const String process270 = '270Process';
   static const String videolist = 'videoList'; // 视频列表页面
+  static const String videoguide = 'videoGuide'; // 游戏视频指导页面
+  static const String emailpage = 'emailPage'; //
+  static const String integral= 'integral'; //
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -125,6 +132,19 @@ class Routes {
       }
       case videolist:
         return MaterialPageRoute(builder: (_) => VideoListController());
+      case videoguide:{
+        final  String _videoPath = settings.arguments as String;
+        return MaterialPageRoute(builder: (_)=> VideoGuideController(videoPath: _videoPath));
+      }
+      case emailpage:
+        return MaterialPageRoute(builder: (_) => EmailPageController());
+      case integral:{
+        final  MyAccountDataModel _model = settings.arguments as MyAccountDataModel;
+        return MaterialPageRoute(builder: (_)=> IntegralController(model: _model));
+      }
+
+      // EmailPageController
+     // IntegralController MyAccountDataModel
       default:
         return _errorRoute();
     }

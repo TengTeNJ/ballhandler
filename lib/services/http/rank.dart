@@ -36,7 +36,14 @@ class AnalyzeDataModel{
     bool rise = (this.avgPace - this.lastAvgPace) < 0; // 速度越小 成绩越好
     double comparedValue = (this.avgPace - this.lastAvgPace).abs()/this.lastAvgPace;
     String somparedString = convertToPercentage(comparedValue);
-    return rise ?('+' + somparedString): ('-' + somparedString) ;
+    if(somparedString.length >4){
+      somparedString = somparedString.substring(0,4);
+    }
+    if(somparedString.lastIndexOf('.') > 0){
+      somparedString = somparedString.replaceAll('.', '');
+    }
+    print('somparedString=${somparedString}');
+    return (rise ?('+' + somparedString): ('-' + somparedString)) + '%' ;
   }
   bool get avgRise {
     bool rise = (this.avgPace - this.lastAvgPace) < 0;
@@ -51,7 +58,14 @@ class AnalyzeDataModel{
     bool rise = (this.trainScore - this.lastTrainScore) > 0;
     double comparedValue = (this.trainScore - this.lastTrainScore).abs()/this.lastTrainScore;
     String somparedString = convertToPercentage(comparedValue);
-    return rise ?('+' + somparedString): ('-' + somparedString) ;
+    if(somparedString.length >4){
+      somparedString = somparedString.substring(0,4);
+    }
+    print('somparedString.lastIndexOf(\'.\')=${somparedString.lastIndexOf('.')}');
+    if(somparedString.lastIndexOf('.') >0){
+      somparedString = somparedString.replaceAll('.', '');
+    }
+    return (rise ?('+' + somparedString): ('-' + somparedString)) + '%' ;
   }
   bool get scoreRise {
     bool rise = (this.trainScore - this.lastTrainScore) > 0;
@@ -65,7 +79,13 @@ class AnalyzeDataModel{
     bool rise = (this.trainTime - this.lastTrainTime) > 0;
     double comparedValue = (this.trainTime - this.lastTrainTime).abs()/this.lastTrainTime;
     String somparedString = convertToPercentage(comparedValue);
-    return rise ?('+' + somparedString): ('-' + somparedString) ;
+    if(somparedString.length >4){
+      somparedString = somparedString.substring(0,4);
+    }
+    if(somparedString.lastIndexOf('.') >0){
+      somparedString = somparedString.replaceAll('.', '');
+    }
+    return (rise ?('+' + somparedString): ('-' + somparedString)) + '%' ;
   }
   bool get timeRise {
     bool rise = (this.trainTime - this.lastTrainTime) > 0;
@@ -80,10 +100,13 @@ class AnalyzeDataModel{
     bool rise = (this.trainCount - this.lastTrainCount) > 0;
     double comparedValue = (this.trainCount - this.lastTrainCount).abs()/this.lastTrainCount;
     String somparedString = convertToPercentage(comparedValue);
-    if(somparedString.length >3){
+    if(somparedString.length >4){
       somparedString = somparedString.substring(0,4);
     }
-    return rise ?('+' + somparedString): ('-' + somparedString) ;
+    if(somparedString.lastIndexOf('.') >0){
+      somparedString = somparedString.replaceAll('.', '');
+    }
+    return (rise ?('+' + somparedString): ('-' + somparedString)) + '%' ;
   }
   bool get countRise {
     bool rise = (this.trainCount - this.lastTrainCount) > 0;
@@ -94,7 +117,7 @@ class AnalyzeDataModel{
 String convertToPercentage(double value) {
   String percentValue = (value * 100).toStringAsFixed(2);
   String _temp = formatNumber(double.parse(percentValue));
-  return '${_temp}%';
+  return '${_temp}';
 }
 
 String formatNumber(double number) {

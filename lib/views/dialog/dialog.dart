@@ -17,7 +17,6 @@ import 'package:flutter_to_airplay/flutter_to_airplay.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
-import 'package:fijkplayer/fijkplayer.dart';
 /**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
   Function? confirm;
@@ -1083,82 +1082,69 @@ class _VideoGuideDialogState extends State<VideoGuideDialog> {
   late ChewieController _chewieController;
   bool _loading = true;
 
-  final FijkPlayer player = FijkPlayer();
-
-
   void initState() {
     // TODO: implement initState
     super.initState();
-    player.setDataSource(widget.videoPath, autoPlay: true);
 
-    // if (widget.videoPath.contains('http')) {
-    //   _controller =
-    //       VideoPlayerController.networkUrl(Uri.parse(widget.videoPath))
-    //         ..initialize().then((value) {
-    //           print('加载完成');
-    //           // 加载完成
-    //           //_controller.play();
-    //           _loading = false;
-    //           setState(() {});
-    //         });
-    // } else {
-    //   File file = File(widget.videoPath);
-    //   _controller = VideoPlayerController.file(file)
-    //     ..initialize().then((value) {
-    //       // 加载完成
-    //       // _controller.play();
-    //       _loading = false;
-    //       setState(() {});
-    //     });
-    // }
-    // _chewieController = ChewieController(
-    //   videoPlayerController: _controller,
-    // );
-    // _controller.play();
+    if (widget.videoPath.contains('http')) {
+      _controller =
+          VideoPlayerController.networkUrl(Uri.parse(widget.videoPath))
+            ..initialize().then((value) {
+              print('加载完成');
+              // 加载完成
+              //_controller.play();
+              _loading = false;
+              setState(() {});
+            });
+    } else {
+      File file = File(widget.videoPath);
+      _controller = VideoPlayerController.file(file)
+        ..initialize().then((value) {
+          // 加载完成
+          // _controller.play();
+          _loading = false;
+          setState(() {});
+        });
+    }
+    _chewieController = ChewieController(
+      looping: true,
+      videoPlayerController: _controller,
+    );
+    _controller.play();
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      color: Colors.transparent,
-      alignment: Alignment.center,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(26),
-        child:  FijkView(
-        fit: FijkFit.cover,
-        player: player,
-          color: Colors.red,
-      ),),
+    return Column(
+      children: [
+        SizedBox(height: 64,),
+        Container(
+          width: Constants.screenWidth(context),
+          child: ClipRRect(
+            child: AspectRatio(
+              aspectRatio: Constants.screenWidth(context)/(Constants.screenHeight(context)*0.95 - 128),
+              child: _loading
+                  ? Center(
+                child: CircularProgressIndicator(),
+              )
+                  : Chewie(controller: _chewieController),
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        SizedBox(height: 64,)
+      ],
     );
-    // return Container(
-    //   width: Constants.screenWidth(context),
-    //   height: 400,
-    //   child: ClipRRect(
-    //     // child: AspectRatio(
-    //     //   aspectRatio: 1,
-    //     //   child: _loading
-    //     //       ? Center(
-    //     //           child: CircularProgressIndicator(),
-    //     //         )
-    //     //       : Chewie(controller: _chewieController),
-    //     // ),
-    //     child: _loading
-    //         ? Center(
-    //       child: CircularProgressIndicator(),
-    //     )
-    //         : Chewie(controller: _chewieController),
-    //     borderRadius: BorderRadius.circular(12),
-    //   ),
-    //   decoration: BoxDecoration(
-    //     borderRadius: BorderRadius.circular(12),
-    //   ),
-    // );
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    player.release();
+    _controller.dispose();
+    _chewieController.dispose();
   }
 }

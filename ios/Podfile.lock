@@ -1,13 +1,10 @@
 PODS:
-  - app_links (0.0.1):
-    - Flutter
   - AppAuth (1.7.5):
     - AppAuth/Core (= 1.7.5)
     - AppAuth/ExternalUserAgent (= 1.7.5)
   - AppAuth/Core (1.7.5)
   - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
-  - BIJKPlayer (0.7.16)
   - camera_avfoundation (0.0.1):
     - Flutter
   - device_info_plus (0.0.1):
@@ -20,9 +17,6 @@ PODS:
   - FBSDKCoreKit_Basics (16.3.1)
   - FBSDKLoginKit (16.3.1):
     - FBSDKCoreKit (= 16.3.1)
-  - fijkplayer (0.11.0):
-    - BIJKPlayer (~> 0.7.16)
-    - Flutter
   - Firebase/Analytics (10.25.0):
     - Firebase/Core
   - Firebase/Auth (10.25.0):
@@ -269,10 +263,8 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - app_links (from `.symlinks/plugins/app_links/ios`)
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
-  - fijkplayer (from `.symlinks/plugins/fijkplayer/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -301,7 +293,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
-    - BIJKPlayer
     - FBAEMKit
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
@@ -336,14 +327,10 @@ SPEC REPOS:
     - TOCropViewController
 
 EXTERNAL SOURCES:
-  app_links:
-    :path: ".symlinks/plugins/app_links/ios"
   camera_avfoundation:
     :path: ".symlinks/plugins/camera_avfoundation/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
-  fijkplayer:
-    :path: ".symlinks/plugins/fijkplayer/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_auth:
@@ -394,16 +381,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/wakelock_plus/ios"
 
 SPEC CHECKSUMS:
-  app_links: e70ca16b4b0f88253b3b3660200d4a10b4ea9795
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
-  BIJKPlayer: 4c5d66e5cb99ae5bade6f22a4fcc031722a81c64
   camera_avfoundation: 759172d1a77ae7be0de08fc104cfb79738b8a59e
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
   FBSDKCoreKit: 5e4dd478947ab1bcc887e8cfadeae0727af1a942
   FBSDKCoreKit_Basics: cd7b5f5d1e8868c26706917919d058999ca672c3
   FBSDKLoginKit: 572cca0bc6c90067ef197187697cb3b584310c52
-  fijkplayer: 8b6d864948dc28e6e07248ed4fce61a7467db4df
   Firebase: 0312a2352584f782ea56f66d91606891d4607f06
   firebase_analytics: 0b2b459312872129295c3f9c44225eda552fd8f3
   firebase_auth: 76ea642e91a9e914b3af751a416046ce1a965cf4

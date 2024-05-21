@@ -91,7 +91,7 @@ class _IntegralNextViewState extends State<IntegralNextView> {
                 ),
               ],
             ),
-          ),top: 20,left: 32,),
+          ),top: 20,left: 32,right: 32,),
           Positioned(
               left: 0,
               right: 0,

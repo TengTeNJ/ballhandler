@@ -154,17 +154,18 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
                               style: TextStyle(
                                   color: hexStringToColor('#B1B1B1'),
                                   fontFamily: 'SanFranciscoDisplay',
-                                  fontSize: kFontSize(context, 14)),
+                                  fontSize: widget.comparevalue.length > 1 ?  kFontSize(context, 12) : kFontSize(context, 14),
+                              ),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Constants.customTextWidget(widget.comparevalue,
-                                    kFontSize(context, 14), _compareTextColor),
+                                    widget.comparevalue.length > 1 ?  kFontSize(context, 12) : kFontSize(context, 14), _compareTextColor),
                                 SizedBox(
                                   width: 1,
                                 ),
-                                RaiseIcon()
+                               RaiseIcon()
                               ],
                             ),
                           ],

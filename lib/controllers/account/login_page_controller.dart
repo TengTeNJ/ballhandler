@@ -3,6 +3,7 @@ import 'package:code/controllers/account/email_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
 import 'package:code/controllers/account/set_user_info_controller.dart';
 import 'package:code/models/http/user_model.dart';
+import 'package:code/route/route.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/login_util.dart';
@@ -43,6 +44,7 @@ class _LoginPageControllerState extends State<LoginPageController> with SingleTi
         body: ClipRRect(
           borderRadius: BorderRadius.circular(26),
           child: Container(
+            width:Constants.screenWidth(context),
             color: Constants.darkControllerColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

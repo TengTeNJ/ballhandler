@@ -1,8 +1,10 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/material.dart';
@@ -89,9 +91,10 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             height: 0.7,
+                            fontFamily: 'SanFranciscoDisplay',
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 22),
+                            fontSize: 24),
                       )),
                   SizedBox(
                     width: 2,
@@ -100,8 +103,8 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       if (widget.model.modeVideo.contains('http')) {
-                        TTDialog.videiGuideAidlog(
-                            context, widget.model.modeVideo);
+                        // TTDialog.videiGuideAidlog(context, widget.model.modeVideo);
+                        NavigatorUtil.push(Routes.videoguide,arguments: widget.model.modeVideo);
                         print('跳转到视频介绍界面');
                       } else {
                         TTToast.showToast('No instruction video yet');

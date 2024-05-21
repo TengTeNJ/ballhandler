@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:code/route/route.dart';
 import 'package:code/services/http/airbattle.dart';import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/airbattle/activity_list_view.dart';

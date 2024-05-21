@@ -114,7 +114,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
               SizedBox(
                 height: 16,
               ),
-              Constants.boldWhiteTextWidget('My Stats', kFontSize(context, 30)),
+              Constants.boldWhiteTextWidget('My Stats', 30),
               SizedBox(
                 height: 32,
               ),
@@ -133,7 +133,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
                         width: 6,
                       ),
                       Constants.regularWhiteTextWidget(
-                          ' TOP RANK  ${_analyzeDataModelmodel.rankNumber == '0' ? '-' : _analyzeDataModelmodel.rankNumber}', kFontSize(context, 16)),
+                          ' TOP RANK  ${_analyzeDataModelmodel.rankNumber == '0' ? '-' : _analyzeDataModelmodel.rankNumber}', 16),
                     ],
                   ),
                   GestureDetector(
@@ -202,7 +202,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Constants.regularWhiteTextWidget(
-                      'Training Growth', kFontSize(context, 14)),
+                      'Training Growth', 14),
                 ],
               ),
               SizedBox(
@@ -216,7 +216,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
                 height: 40,
               ),
               Constants.regularWhiteTextWidget(
-                  'Best In History', kFontSize(context, 14)),
+                  'Best In History',14),
               SizedBox(
                 height: 36,
               ),

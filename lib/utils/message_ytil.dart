@@ -8,6 +8,7 @@ class MessageUtil {
      NSUserDefault.setKeyValue(kUnreadMessageCount, unreadCount);
     // 更新角标
     if(unreadCount>=0){
+      print('更新角标unreadCount=${unreadCount}');
       FlutterAppBadger.updateBadgeCount(unreadCount);
     }
   }

@@ -285,13 +285,13 @@ const kDataBaseTVideoableName = 'video_table'; // 视频路径数据库的表名
 const kGameDuration = 45; // 游戏时常
 
 double kFontSize(BuildContext context, double size) {
-  double font =Constants.screenWidth(context) / 375 * size;
-  return font;
+  // double font =Constants.screenWidth(context) / 375 * size;
+  return size;
 }
 
 double baseMargin(BuildContext context,double size) {
-  double scale =Constants.screenWidth(context) / 375 ;
-  return scale*size;
+  // double scale =Constants.screenWidth(context) / 375 ;
+  return size;
 }
 
 //*判断对象是否为空以及字符串长度为0*/

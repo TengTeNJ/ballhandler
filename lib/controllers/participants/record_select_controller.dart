@@ -6,7 +6,6 @@ import 'package:code/views/participants/record_select_view.dart';
 import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-
 import '../../utils/color.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
@@ -146,7 +145,7 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
                           ),
                   ),
                   child: Center(
-                    child: Constants.boldBlackTextWidget('Continue', 16),
+                    child:  gameUtil.isFromAirBattle ? Constants.boldWhiteTextWidget('Continue', 16) : Constants.boldBlackTextWidget('Continue', 16),
                   )),
             ),
           )

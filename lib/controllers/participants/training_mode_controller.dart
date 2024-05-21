@@ -97,11 +97,11 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(top:16,bottom: 16,left: 16,right: 16),
+              margin: EdgeInsets.only(top:16,bottom: 32,left: 16,right: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Constants.mediumWhiteTextWidget('Training Mode', 30),
+                 Constants.boldWhiteTextWidget('Training Mode', 30,height: 0.8),
                   GestureDetector(
                     onTap: () {
                       TTDialog.bleListDialog(context);

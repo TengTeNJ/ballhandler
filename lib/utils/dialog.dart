@@ -174,12 +174,13 @@ class TTDialog {
   static videiGuideAidlog(BuildContext context,String videoPath){
 
     showModalBottomSheet(
+      // backgroundColor: Colors.transparent,
       backgroundColor: hexStringToColor('#3E3E55'),
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
       context: context,
       builder: (BuildContext context) {
         return FractionallySizedBox(
-          heightFactor: 0.9,
+          heightFactor: 0.95,
           child: VideoGuideDialog(videoPath: videoPath),
         );
       },

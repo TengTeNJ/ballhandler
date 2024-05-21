@@ -1,11 +1,9 @@
 import 'package:code/constants/constants.dart';
-import 'package:code/models/global/game_data.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
-import 'package:code/utils/record.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:provider/provider.dart';
