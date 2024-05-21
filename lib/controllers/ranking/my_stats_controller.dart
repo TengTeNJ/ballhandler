@@ -3,6 +3,7 @@ import 'package:code/models/mystats/my_stats_model.dart';
 import 'package:code/services/http/rank.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/system_device.dart';
 import 'package:code/views/airbattle/my_stats_bar_chart_view.dart';
 import 'package:code/views/airbattle/my_stats_grid_list_view.dart';
 import 'package:code/views/airbattle/my_stats_line_area_view.dart';
@@ -138,27 +139,49 @@ class _MyStatsControllerState extends State<MyStatsController> {
                   ),
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    onTap: () {
+                    onTap: () async{
                       // 时间选择弹窗
-                      TTDialog.timeSelect(context, (startTime, endTime, index) {
-                        _timeIndex = index;
-                        _start = startTime;
-                        _end = endTime;
-                        if(index==3){
-                          _titles[_titles.length-1] = "${_start.replaceAll('-', '/')}-${_end.replaceAll('-', '/')}";
-                          setState(() {
+                      if(await SystemUtil.isIPad()){
+                        TTDialog.iPadTimeSelect(context, (startTime, endTime, index) {
+                          _timeIndex = index;
+                          _start = startTime;
+                          _end = endTime;
+                          if(index==3){
+                            _titles[_titles.length-1] = "${_start.replaceAll('-', '/')}-${_end.replaceAll('-', '/')}";
+                            setState(() {
 
+                            });
+                          }
+                          // 数据埋点
+                          EventTrackUtil.eventTrack(kSelectDataTime,{
+                            "index": index,
+                            '_start':_start,
+                            '_start':_end,
                           });
+                          changeTimeArea(
+                              endTime, startTime, (index + 1).toString());
+                        }, index: _timeIndex,start: _start.length > 0 ? _start : null,end: _end.length > 0 ? _end : null);
+                      }else {
+                          TTDialog.timeSelect(context, (startTime, endTime, index) {
+                            _timeIndex = index;
+                            _start = startTime;
+                            _end = endTime;
+                            if(index==3){
+                              _titles[_titles.length-1] = "${_start.replaceAll('-', '/')}-${_end.replaceAll('-', '/')}";
+                              setState(() {
+
+                              });
+                            }
+                            // 数据埋点
+                            EventTrackUtil.eventTrack(kSelectDataTime,{
+                              "index": index,
+                              '_start':_start,
+                              '_start':_end,
+                            });
+                            changeTimeArea(
+                                endTime, startTime, (index + 1).toString());
+                          }, index: _timeIndex,start: _start.length > 0 ? _start : null,end: _end.length > 0 ? _end : null);
                         }
-                        // 数据埋点
-                        EventTrackUtil.eventTrack(kSelectDataTime,{
-                          "index": index,
-                          '_start':_start,
-                          '_start':_end,
-                        });
-                        changeTimeArea(
-                            endTime, startTime, (index + 1).toString());
-                      }, index: _timeIndex,start: _start.length > 0 ? _start : null,end: _end.length > 0 ? _end : null);
                     },
                     child: Container(
                       decoration: BoxDecoration(

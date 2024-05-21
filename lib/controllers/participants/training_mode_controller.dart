@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/event_track.dart';
 import '../../utils/global.dart';
+import '../../utils/system_device.dart';
 
 class TrainingModeController extends StatefulWidget {
   const TrainingModeController({super.key});
@@ -39,7 +40,15 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
           });
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
           if (BluetoothManager().conectedDeviceCount.value == 0) {
-            TTDialog.bleListDialog(context);
+           // TTDialog.bleListDialog(context);
+            if(await SystemUtil.isIPad()){
+              print('ipad-----');
+              TTDialog.ipadbleListDialog(context);
+            }else{
+              print('not ipad-----');
+              TTDialog.bleListDialog(context);
+            }
+
             print('没有连接的蓝牙设备，先蓝牙连接');
           } else {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
@@ -103,8 +112,16 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                 children: [
                  Constants.boldWhiteTextWidget('Training Mode', 30,height: 0.8),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async{
+                       //  TTDialog.bleListDialog(context);
+                      if(await SystemUtil.isIPad()){
+                      print('ipad-----');
+                      TTDialog.ipadbleListDialog(context);
+                      }else{
+                      print('not ipad-----');
                       TTDialog.bleListDialog(context);
+                      }
+
                       print('蓝牙连接');
                     },
                     child: Container(

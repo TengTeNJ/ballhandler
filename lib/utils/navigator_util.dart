@@ -1,3 +1,4 @@
+import 'package:code/utils/system_device.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
@@ -26,7 +27,7 @@ class NavigatorUtil {
 
   //  模态效果
   static present(Widget widget,{String routesName = '',Object arguments = const Object()}) async{
-    if( await isIPad() && routesName.length > 0){
+    if( await  SystemUtil.isIPad() && routesName.length > 0){
       // iPad的话 showModalBottomSheet不能全屏幕 有问题
       print('routesName=${routesName}');
       push(routesName,arguments: arguments);
@@ -42,7 +43,6 @@ class NavigatorUtil {
         },
       );
     }
-
   }
 
   // 跳转到根试图
@@ -51,17 +51,3 @@ class NavigatorUtil {
   }
 }
 
-Future<bool> isIPad() async {
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-
-  // 根据平台获取设备信息
-  if (Platform.isIOS) {
-    var iosDeviceInfo = await deviceInfo.iosInfo;
-    // 这里可以通过 iosDeviceInfo.model 来判断是否为 iPad
-    // 例如，检查 model 是否包含 "iPad" 字符串
-    return iosDeviceInfo.model.toLowerCase().contains('ipad');
-  } else {
-    // 对于非 iOS 设备，可以返回 false 或者进行其他检查
-    return false;
-  }
-}

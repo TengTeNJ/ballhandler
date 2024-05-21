@@ -18,6 +18,20 @@ class TTDialog {
     );
   }
 
+  static sendIpadEmailDialog(BuildContext context,Function confirm) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.42,
+          child: IpadSendEmailDiaog(confirm: confirm,),
+        );
+      },
+    );
+  }
+
   /**蓝牙列表**/
   static bleListDialog(BuildContext context) {
     showModalBottomSheet(
@@ -28,6 +42,20 @@ class TTDialog {
         return FractionallySizedBox(
           heightFactor: 0.42,
           child: BLEListDialog(),
+        );
+      },
+    );
+  }
+
+  static ipadbleListDialog(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.42,
+          child: IpadBLEListDialog(),
         );
       },
     );
@@ -142,7 +170,41 @@ class TTDialog {
 
     );
   }
+  static iPadTimeSelect(BuildContext context,Function confirm,{int index = 0,String? start,String? end}) {
+    showModalBottomSheet(
+      backgroundColor: hexStringToColor('#3E3E55'),
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        double _height = 0.5;
+        return StatefulBuilder(builder: (BuildContext context,StateSetter setState){
+          return FractionallySizedBox(
+            heightFactor: _height,
+            child: IpadTimeSelectDialog( startTime: start, endTime: end, selectIndex: index, datePickerSelect: (value){
+              if(value){
+                _height = 0.80;
+                setState(() {
+                });
+              }else{
+                _height = 0.5;
+                setState(() {
+                });
+              }
+            },confirm: (startTime,endTime,selectIndex){
+              if(confirm!=null){
+                int _index = selectIndex;
+                if(selectIndex == -1){
+                  _index = 3;
+                }
+                confirm(startTime,endTime,_index);
+              }
+            },),
+          );
+        });
+      },
 
+    );
+  }
   static joinAirBattle(BuildContext context,Function continueClick,Function goToSetting) {
     showModalBottomSheet(
       backgroundColor: hexStringToColor('#39394B'),

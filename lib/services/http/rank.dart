@@ -18,6 +18,8 @@ class RankModel {
   String sceneId = '';
 }
 
+const int compareLength = 3;
+
 class AnalyzeDataModel{
   dynamic avgPace = 0;
   dynamic trainCount = 0;
@@ -36,8 +38,8 @@ class AnalyzeDataModel{
     bool rise = (this.avgPace - this.lastAvgPace) < 0; // 速度越小 成绩越好
     double comparedValue = (this.avgPace - this.lastAvgPace).abs()/this.lastAvgPace;
     String somparedString = convertToPercentage(comparedValue);
-    if(somparedString.length >4){
-      somparedString = somparedString.substring(0,4);
+    if(somparedString.length >compareLength){
+      somparedString = somparedString.substring(0,compareLength);
     }
     if(somparedString.lastIndexOf('.') > 0){
       somparedString = somparedString.replaceAll('.', '');
@@ -58,8 +60,8 @@ class AnalyzeDataModel{
     bool rise = (this.trainScore - this.lastTrainScore) > 0;
     double comparedValue = (this.trainScore - this.lastTrainScore).abs()/this.lastTrainScore;
     String somparedString = convertToPercentage(comparedValue);
-    if(somparedString.length >4){
-      somparedString = somparedString.substring(0,4);
+    if(somparedString.length >compareLength){
+      somparedString = somparedString.substring(0,compareLength);
     }
     print('somparedString.lastIndexOf(\'.\')=${somparedString.lastIndexOf('.')}');
     if(somparedString.lastIndexOf('.') >0){
@@ -79,8 +81,8 @@ class AnalyzeDataModel{
     bool rise = (this.trainTime - this.lastTrainTime) > 0;
     double comparedValue = (this.trainTime - this.lastTrainTime).abs()/this.lastTrainTime;
     String somparedString = convertToPercentage(comparedValue);
-    if(somparedString.length >4){
-      somparedString = somparedString.substring(0,4);
+    if(somparedString.length >compareLength){
+      somparedString = somparedString.substring(0,compareLength);
     }
     if(somparedString.lastIndexOf('.') >0){
       somparedString = somparedString.replaceAll('.', '');
@@ -100,8 +102,8 @@ class AnalyzeDataModel{
     bool rise = (this.trainCount - this.lastTrainCount) > 0;
     double comparedValue = (this.trainCount - this.lastTrainCount).abs()/this.lastTrainCount;
     String somparedString = convertToPercentage(comparedValue);
-    if(somparedString.length >4){
-      somparedString = somparedString.substring(0,4);
+    if(somparedString.length >compareLength){
+      somparedString = somparedString.substring(0,compareLength);
     }
     if(somparedString.lastIndexOf('.') >0){
       somparedString = somparedString.replaceAll('.', '');

@@ -29,7 +29,7 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Constants.darkControllerColor,
+        backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           // controller: _scrollController,
           child: GestureDetector(

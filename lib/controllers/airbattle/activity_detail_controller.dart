@@ -3,6 +3,7 @@ import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/system_device.dart';
 import 'package:code/views/airbattle/airbattle_data_view.dart';
 import 'package:code/views/airbattle/airbattle_detail_grid_view.dart';
 import 'package:flutter/material.dart';
@@ -201,7 +202,13 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                               });
                               // 如果未连接设备 则先提示连接设备
                               if (BluetoothManager().conectedDeviceCount.value == 0) {
-                                TTDialog.bleListDialog(context);
+                                if(await SystemUtil.isIPad()){
+                                  print('ipad-----');
+                                  TTDialog.ipadbleListDialog(context);
+                                }else{
+                                  print('not ipad-----');
+                                  TTDialog.bleListDialog(context);
+                                }
                                 return;
                               }
                               GameUtil gameUtil = GetIt.instance<GameUtil>();
@@ -219,7 +226,13 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                           // 已经报名过 直接跳转到确认页面
                           // 如果未连接设备 则先提示连接设备
                           if (BluetoothManager().conectedDeviceCount.value == 0) {
-                            TTDialog.bleListDialog(context);
+                            if(await SystemUtil.isIPad()){
+                              print('ipad-----');
+                              TTDialog.ipadbleListDialog(context);
+                            }else{
+                              print('not ipad-----');
+                              TTDialog.bleListDialog(context);
+                            }
                             return;
                           }
                           GameUtil gameUtil = GetIt.instance<GameUtil>();

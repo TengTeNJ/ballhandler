@@ -209,7 +209,7 @@ class _SetUserInfoControllerState extends State<SetUserInfoController> {
                     onTap: () async {
                       bool isvalidName = StringUtil.isValidNickname(_nameText);
                       if (isvalidName == false) {
-                        TTToast.showErrorInfo('Please enter a legal nickname,1 to 16 characters, including letters and numbers');
+                        TTToast.showErrorInfo('Please enter a legal nickname,1 to 16 characters, including letters or numbers',duration: 5000);
                         return;
                       }
                       if (_countryText.length == 0) {

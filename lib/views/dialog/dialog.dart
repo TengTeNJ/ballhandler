@@ -117,6 +117,112 @@ class _SendEmailDiaogState extends State<SendEmailDiaog> {
   }
 }
 
+/**发送邮件弹窗**/
+class IpadSendEmailDiaog extends StatefulWidget {
+  Function? confirm;
+
+  IpadSendEmailDiaog({this.confirm});
+
+  @override
+  State<IpadSendEmailDiaog> createState() => _IpadSendEmailDiaogState();
+}
+
+class _IpadSendEmailDiaogState extends State<IpadSendEmailDiaog> {
+  String _email = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getInputEmailText();
+  }
+
+  getInputEmailText() async {
+    final _text = await NSUserDefault.getValue<String>(kInputEmail);
+    _email = _text ?? '';
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(26),
+          color: Constants.darkControllerColor),
+      child: Stack(
+        children: [
+          Positioned(
+              top: 8,
+              left: 32,
+              right: 32,
+              child: Container(
+                  width: 80,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Color.fromRGBO(89, 105, 138, 0.4),
+                  ))),
+          Positioned(
+              child: Container(
+                width: 300,
+                child: Center(
+                  child:
+                  Constants.mediumWhiteTextWidget('Check your email', 20,textAlign: TextAlign.center),
+                ),
+              ),
+              top: 73,
+            left: 32,
+            right: 32,
+              ),
+          Positioned(
+            child: Container(
+              width: Constants.screenWidth(context),
+              child: Padding(
+                padding: EdgeInsets.only(left: 16, right: 16),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  'We sent an email to ${_email} help You log in',
+                  style: TextStyle(
+                    fontFamily: 'SanFranciscoDisplay',
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16, // 设置文本水平居中对齐
+                  ),
+                ),
+              ),
+            ),
+            top: 118,
+            left: 32,
+            right: 32,
+          ),
+          Positioned(
+            child: GestureDetector(
+              onTap: () {
+                NavigatorUtil.pop();
+                if (widget.confirm != null) {
+                  widget.confirm!();
+                }
+              },
+              child: Container(
+                child: Center(
+                  child: Constants.regularWhiteTextWidget('Cancel', 16),
+                ),
+                decoration: BoxDecoration(
+                    color: Constants.baseStyleColor,
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+            ),
+            left: 83,
+            right: 83,
+            bottom: 42,
+            height: 40,
+          )
+        ],
+      ),
+    );
+  }
+}
+
 /**蓝牙列表弹窗**/
 class BLEListDialog extends StatefulWidget {
   const BLEListDialog({super.key});
@@ -208,6 +314,99 @@ class _BLEListDialogState extends State<BLEListDialog> {
     );
   }
 }
+
+class IpadBLEListDialog extends StatefulWidget {
+  const IpadBLEListDialog({super.key});
+
+  @override
+  State<IpadBLEListDialog> createState() => _IpadBLEListDialogState();
+}
+
+class _IpadBLEListDialogState extends State<IpadBLEListDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(26),
+          color: Constants.darkControllerColor),
+      child: Stack(
+        children: [
+          Positioned(
+              top: 8,
+              left: 32,
+              right: 32,
+              child: Container(
+                  width: 80,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Color.fromRGBO(89, 105, 138, 0.4),
+                  ))),
+          Positioned(
+              top: 16,
+              right: 16,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  print('begain scan');
+                  if (Platform.isAndroid) {
+                    PermissionStatus locationPermission =
+                    await Permission.location.request();
+                    PermissionStatus bleScan =
+                    await Permission.bluetoothScan.request();
+                    PermissionStatus bleConnect =
+                    await Permission.bluetoothConnect.request();
+                    if (locationPermission == PermissionStatus.granted &&
+                        bleScan == PermissionStatus.granted &&
+                        bleConnect == PermissionStatus.granted) {
+                      BluetoothManager().startScan();
+                    }
+                  } else {
+                    BluetoothManager().startScan();
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 20,
+                      child: Constants.regularBaseTextWidget('Scan', 16,
+                          textAlign: TextAlign.end),
+                    )
+                  ],
+                ),
+              )),
+          Positioned(
+            child: BLEListView(),
+            top: 45,
+            bottom: 99,
+          ),
+          Positioned(
+            child: GestureDetector(
+              onTap: () {
+                NavigatorUtil.pop();
+              },
+              child: Container(
+                child: Center(
+                  child: Constants.regularWhiteTextWidget('Cancel', 16),
+                ),
+                decoration: BoxDecoration(
+                    color: Constants.baseStyleColor,
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+            ),
+            left: 83,
+            right: 83,
+            bottom: 42,
+            height: 40,
+          )
+        ],
+      ),
+    );
+  }
+}
+
 
 /*积分兑换弹窗 ExchangeIntegralDialog*/
 class ExchangeIntegralDialog extends StatelessWidget {
@@ -881,6 +1080,441 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
   }
 }
 
+
+/*时间选择弹窗*/
+class IpadTimeSelectDialog extends StatefulWidget {
+  String? startTime;
+  String? endTime;
+  int selectIndex; // 标识选择的时7,30 还是90days
+  Function? datePickerSelect;
+  Function? confirm;
+
+  IpadTimeSelectDialog(
+      {this.datePickerSelect,
+        this.confirm,
+        this.selectIndex = 0,
+        this.startTime,
+        this.endTime});
+
+  @override
+  State<IpadTimeSelectDialog> createState() => _IpadTimeSelectDialogState();
+}
+
+class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
+  int _selectIndex = 0;
+  int _timeSelectIndex = 0; // 当选择自定义时，标记选择的时开始还是结束 1开始 2结束
+  DateTime _selectedDate = DateTime.now();
+  DateTime _maxDate = DateTime.now();
+  late DateTime _yesterdayDate;
+
+  late String startTime;
+  late String endTimer;
+
+  // 计算90天前的时间
+  late DateTime _minDate;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _selectIndex = widget.selectIndex;
+    _minDate = _selectedDate.subtract(Duration(days: 180));
+    // 昨天的时间
+    DateTime yesterday = _selectedDate.subtract(Duration(days: 1));
+    _yesterdayDate = yesterday;
+    endTimer = widget.endTime != null
+        ? widget.endTime!
+        : StringUtil.dateToString(yesterday);
+    // 过去七天的第一天的时间
+    DateTime beforeSeven = yesterday.subtract(Duration(days: 7));
+    startTime = widget.startTime != null
+        ? widget.startTime!
+        : StringUtil.dateToString(beforeSeven);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(left: 16, right: 16),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [CancelButton()],
+            ),
+            SizedBox(
+              height: 28,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      // Last 7days
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
+                      }
+                      _timeSelectIndex = 0;
+                      _selectIndex = 0;
+
+                      DateTime yesterday =
+                      _selectedDate.subtract(Duration(days: 1));
+                      _yesterdayDate = yesterday;
+                      endTimer = StringUtil.dateToString(yesterday);
+                      // 过去七天的第一天的时间
+                      DateTime beforeSeven =
+                      _yesterdayDate.subtract(Duration(days: 7));
+                      startTime = StringUtil.dateToString(beforeSeven);
+                      setState(() {});
+                    },
+                    child: Container(
+                        height: 28,
+                        decoration: BoxDecoration(
+                            border: _selectIndex == 0
+                                ? Border.all(
+                              color: hexStringToColor('#707070'),
+                              width: 0.0, // 设置边框宽度
+                            )
+                                : Border.all(
+                              color: hexStringToColor('#707070'),
+                              width: 1.0, // 设置边框宽度
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            color: _selectIndex == 0
+                                ? Constants.baseStyleColor
+                                : hexStringToColor('#3E3E55')),
+                        child: Center(
+                          child: _selectIndex == 0
+                              ? Constants.regularWhiteTextWidget(
+                              'Last 7 days', 14)
+                              : Constants.regularGreyTextWidget(
+                              'Last 7 days', 14),
+                        )),
+                  ),
+                  flex: 1,
+                ),
+                SizedBox(
+                  width: 6,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      // Last 30days
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
+                      }
+                      _timeSelectIndex = 0;
+                      _selectIndex = 1;
+                      DateTime yesterday =
+                      _selectedDate.subtract(Duration(days: 1));
+                      _yesterdayDate = yesterday;
+                      endTimer = StringUtil.dateToString(yesterday);
+                      // 过去30天的第一天的时间
+                      DateTime beforeSeven =
+                      _yesterdayDate.subtract(Duration(days: 30));
+                      startTime = StringUtil.dateToString(beforeSeven);
+                      setState(() {});
+                    },
+                    child: Container(
+                        height: 28,
+                        decoration: BoxDecoration(
+                            border: _selectIndex == 1
+                                ? Border.all(
+                              color: hexStringToColor('#707070'),
+                              width: 0.0, // 设置边框宽度
+                            )
+                                : Border.all(
+                              color: hexStringToColor('#707070'),
+                              width: 1.0, // 设置边框宽度
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            color: _selectIndex == 1
+                                ? Constants.baseStyleColor
+                                : hexStringToColor('#3E3E55')),
+                        child: Center(
+                          child: _selectIndex == 1
+                              ? Constants.regularWhiteTextWidget(
+                              'Last 30 days', 14)
+                              : Constants.regularGreyTextWidget(
+                              'Last 30 days', 14),
+                        )),
+                  ),
+                  flex: 1,
+                ),
+                SizedBox(
+                  width: 6,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      // Last 90days
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
+                      }
+                      _timeSelectIndex = 0;
+                      _selectIndex = 2;
+                      DateTime yesterday =
+                      _selectedDate.subtract(Duration(days: 1));
+                      _yesterdayDate = yesterday;
+                      endTimer = StringUtil.dateToString(yesterday);
+                      // 过去90天的第一天的时间
+                      DateTime beforeSeven =
+                      _yesterdayDate.subtract(Duration(days: 90));
+                      startTime = StringUtil.dateToString(beforeSeven);
+                      setState(() {});
+                    },
+                    child: Container(
+                        height: 28,
+                        decoration: BoxDecoration(
+                            border: _selectIndex == 2
+                                ? Border.all(
+                              color: hexStringToColor('#707070'),
+                              width: 0.0, // 设置边框宽度
+                            )
+                                : Border.all(
+                              color: hexStringToColor('#707070'),
+                              width: 1.0, // 设置边框宽度
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            color: _selectIndex == 2
+                                ? Constants.baseStyleColor
+                                : hexStringToColor('#3E3E55')),
+                        child: Center(
+                          child: _selectIndex == 2
+                              ? Constants.regularWhiteTextWidget(
+                              'Last 90 days', 14)
+                              : Constants.regularGreyTextWidget(
+                              'Last 90 days', 14),
+                        )),
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 48,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    if (_timeSelectIndex == 1) {
+                      _timeSelectIndex = 0;
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
+                      }
+                      setState(() {});
+                      return;
+                    }
+                    _selectIndex = -1;
+                    _timeSelectIndex = 0; // 如果时间选择弹窗正在显示，先让收起
+                    setState(() {});
+
+                    Future.delayed(Duration(milliseconds: 100), () {
+                      _selectedDate = StringUtil.stringToDate(startTime);
+                      _timeSelectIndex = 1;
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(true);
+                      }
+                      setState(() {});
+                    });
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Constants.regularWhiteTextWidget(startTime, 16),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          _timeSelectIndex == 1
+                              ? Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Constants.baseStyleColor,
+                          )
+                              : Icon(
+                            Icons.chevron_right,
+                            color: Constants.baseGreyStyleColor,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        color: hexStringToColor('#707070'),
+                        height: 0.5,
+                        width: 160,
+                      )
+                    ],
+                  ),
+                ),
+                Constants.regularGreyTextWidget('To', 14, height: 0.8),
+                GestureDetector(
+                  onTap: () {
+                    if (_timeSelectIndex == 2) {
+                      _timeSelectIndex = 0;
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(false);
+                      }
+                      setState(() {});
+                      return;
+                    }
+                    _selectIndex = -1;
+                    _timeSelectIndex = 0; // 如果时间选择弹窗正在显示，先让收起
+                    setState(() {});
+                    Future.delayed(Duration(milliseconds: 100), () {
+                      _selectedDate = StringUtil.stringToDate(endTimer);
+                      _timeSelectIndex = 2;
+                      if (widget.datePickerSelect != null) {
+                        widget.datePickerSelect!(true);
+                      }
+                      setState(() {});
+                    });
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Constants.regularWhiteTextWidget(endTimer, 16),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          _timeSelectIndex == 2
+                              ? Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Constants.baseStyleColor,
+                          )
+                              : Icon(
+                            Icons.chevron_right,
+                            color: Constants.baseGreyStyleColor,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        color: hexStringToColor('#707070'),
+                        height: 0.5,
+                        width: 160
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.help,
+                  color: hexStringToColor('#B1B1B1'),
+                  size: 12,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Constants.regularGreyTextWidget(
+                    'Only six months of data are available', 10),
+              ],
+            ),
+            SizedBox(
+              height: 32,
+            ),
+            _timeSelectIndex >= 1
+                ? Container(
+              color: Colors.red,
+              height: 220,
+              child: Center(
+                  child: DateTimePickerWidget(
+                    onChange: (DateTime dateTime, List<int> selectedIndex) {
+                      if (_timeSelectIndex == 1) {
+                        startTime = StringUtil.dateToString(dateTime);
+                      } else if (_timeSelectIndex == 2) {
+                        endTimer = StringUtil.dateToString(dateTime);
+                      }
+                      setState(() {});
+                    },
+                    pickerTheme: DateTimePickerTheme(
+                        itemTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontFamily: 'SanFranciscoDisplay'),
+                        backgroundColor: hexStringToColor('#3E3E55'),
+                        titleHeight: 0,
+                        itemHeight: 44,
+                        pickerHeight: 220),
+                    minDateTime: _minDate,
+                    maxDateTime: _maxDate,
+                    initDateTime: _selectedDate,
+                    locale: DateTimePickerLocale.en_us,
+                    dateFormat:
+                    'MMMM-dd-yyyy', // 这里的MMMM需要有4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
+                  )),
+            ) // 时间弹窗
+                : Container(),
+            _timeSelectIndex >= 1
+                ? SizedBox(
+              height: 16,
+            )
+                : SizedBox(
+              height: 0,
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                DateTime startDate = StringUtil.stringToDate(startTime);
+                DateTime endDate = StringUtil.stringToDate(endTimer);
+                if (endDate.isBefore(startDate)) {
+                  // 结束时间不能早于开始时间
+                  TTToast.showToast(
+                      'End time cannot be earlier than start time');
+                  return;
+                }
+                if (widget.confirm != null) {
+                  widget.confirm!(startTime.replaceAll('/', '-'),
+                      endTimer.replaceAll('/', '-'), _selectIndex);
+                }
+                NavigatorUtil.pop();
+              },
+              child: Container(
+                width: 210,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Constants.baseStyleColor,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Center(
+                  child: Constants.regularWhiteTextWidget('Confirm', 14),
+                ),
+              ),
+            ), // Confirm按钮
+            SizedBox(
+              height: 32,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /*加入Airbattle对战*/
 class JoinAirBattleDialog extends StatelessWidget {
   Function continueClick;
@@ -1002,6 +1636,7 @@ class _UserNameDialogState extends State<UserNameDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
+            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
             controller: _usernameController,
             decoration: InputDecoration(
                 labelText: 'Username',
