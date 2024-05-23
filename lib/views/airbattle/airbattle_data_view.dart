@@ -43,14 +43,20 @@ class AirBattleDataView extends StatelessWidget {
               ? Positioned(
                   top: 8,
                   right: 8,
-                  child: Container(
-                      width: 32,
-                      height: 14,
-                      decoration: BoxDecoration(
-                          color: Constants.baseStyleColor,
-                          borderRadius: BorderRadius.circular(3)),
-                      child: Center(
-                          child: Constants.regularWhiteTextWidget('View', 10))))
+                  child: GestureDetector(
+                    onTap: (){
+                      print('-----------');
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                        width: 32,
+                        height: 14,
+                        decoration: BoxDecoration(
+                            color: Constants.baseStyleColor,
+                            borderRadius: BorderRadius.circular(3)),
+                        child: Center(
+                            child: Constants.regularWhiteTextWidget('View', 10))),
+                  ))
               : Container(),
           Positioned(
             left: 24,

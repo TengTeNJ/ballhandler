@@ -52,7 +52,7 @@ class _ProfileControllerState extends State<ProfileController> {
         if (mounted) {
           setState(() {});
         }
-      }else if (event == kLoginSucess){
+      }else if (event == kLoginSucess || event == kIntegralChange){
         queryMyAccountInfoData();
       }
     });

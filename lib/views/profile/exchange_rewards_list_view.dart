@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/notification_bloc.dart';
 import 'package:code/views/profile/exchange_rewards_view.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +45,8 @@ class _ExchangeRewardListViewState extends State<ExchangeRewardListView> {
               onTap: () {
                 TTDialog.integralExchangeDialog(context, () async{
                   final _response = await Profile.exchange(_datas[index].goodsId);
+                  // 积分兑换通知
+                  EventBus().sendEvent(kIntegralChange);
                   if(_response.success){
                     NavigatorUtil.pop();
                     TTDialog.integralExchangeSuccessDialog(context);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/profile/Integral_detail_controller.dart';
 import 'package:code/utils/color.dart';
@@ -8,6 +10,7 @@ import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/http/profile.dart';
+import '../../utils/notification_bloc.dart';
 
 class IntegralController extends StatefulWidget {
   MyAccountDataModel model;
@@ -19,6 +22,27 @@ class IntegralController extends StatefulWidget {
 }
 
 class _IntegralControllerState extends State<IntegralController> {
+
+  late StreamSubscription subscription;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    subscription = EventBus().stream.listen((event) async{
+    if(event == kIntegralChange){
+      final _response =  await Profile.queryIMyIntegralData();
+      if(_response.success){
+       widget.model.integral = _response.data ?? 0;
+       if(mounted){
+         setState(() {
+         });
+       }
+      }
+    }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,5 +147,12 @@ class _IntegralControllerState extends State<IntegralController> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    subscription.cancel();
   }
 }

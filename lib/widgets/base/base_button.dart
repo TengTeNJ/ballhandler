@@ -7,9 +7,10 @@ class BaseButton extends StatelessWidget {
   String title;
   Function? onTap;
   double height;
+  BorderRadiusGeometry? borderRadius;
   LinearGradient? linearGradient;
 
-  BaseButton({required this.title, this.height = 44,this.onTap,this.linearGradient});
+  BaseButton({required this.title, this.height = 44,this.onTap,this.linearGradient,this.borderRadius});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class BaseButton extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
           gradient:  linearGradient,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius:  borderRadius ?? BorderRadius.circular(10),
           color: Constants.baseStyleColor,),
       child: Center(
         child: Constants.regularWhiteTextWidget(title, 16),

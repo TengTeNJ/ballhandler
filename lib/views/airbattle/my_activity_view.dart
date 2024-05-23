@@ -3,6 +3,9 @@ import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/game/game_over_model.dart';
+import '../../utils/navigator_util.dart';
 class MyActivityDataView extends StatefulWidget {
   MyActivityModel  activityModel;
   MyActivityDataView({required this.activityModel});
@@ -29,15 +32,31 @@ class _MyActivityDataViewState extends State<MyActivityDataView> {
               child: Positioned(
                   top: 8,
                   right: 8,
-                  child: Container(
-                    width: 34,
-                    height: 14,
-                    decoration: BoxDecoration(
-                      color: Constants.baseStyleColor,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: Center(
-                      child: Constants.regularWhiteTextWidget('VIEW', 10),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: (){
+                      GameOverModel model = GameOverModel();
+                      model.rank = widget.activityModel.rankNumber.toString();
+                      model.videoPath = widget.activityModel.trainVideo.toString();
+                      model.avgPace = widget.activityModel.avgPace.toString();
+                      model.score = widget.activityModel.trainScore;
+                      model.endTime = widget.activityModel.createTime;
+                      // model.modeId = widget.activityModel.modeId;
+                      // model.sceneId = widget.activityModel.sceneId;
+                      print('model.path=${model.videoPath}');
+                      NavigatorUtil.push('videoPlay',
+                          arguments: {"model": model, "gameFinish": false});
+                    },
+                    child: Container(
+                      width: 34,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: Constants.baseStyleColor,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: Center(
+                        child: Constants.regularWhiteTextWidget('VIEW', 10),
+                      ),
                     ),
                   ))),
           Positioned(

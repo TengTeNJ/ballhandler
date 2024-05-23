@@ -184,6 +184,20 @@ class Profile {
     }
   }
 
+/*查询我的积分信息*/
+  static Future<ApiResponse<int>>
+  queryIMyIntegralData() async {
+    final response = await HttpUtil.get(
+        '/api/member/index', null, showLoading: false);
+    if (response.success && response.data['data'] != null) {
+      final element = response.data['data'];
+      final _map = element;
+      return ApiResponse(success: response.success, data:  !ISEmpty(_map['integral']) ? _map['integral'] : 0);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
   /*查询用户下的视频列表*/
   static Future<ApiResponse> queryUserVideoListData(int page) async {
     final _data = {

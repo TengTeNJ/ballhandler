@@ -111,13 +111,11 @@ class Routes {
       case awardlist:
         return MaterialPageRoute(builder: (_) => AwardListController());
       case setting:
-        print('------------------');
         return MaterialPageRoute(builder: (_) => SettingController());
       case recordselect:
         return MaterialPageRoute(builder: (_) => RecordSelectController());
       case subsetting:{
         final  Map _map = settings.arguments as Map;
-        print('_map=${_map}');
         return MaterialPageRoute(builder: (_)=> SubSettingController(title: _map['title'] ?? '',subTitle: _map['subTitle'] ,switchCount: _map['switchCount'] ?? 1,));
       }
       case p1:

@@ -432,13 +432,14 @@ class ExchangeIntegralDialog extends StatelessWidget {
           SizedBox(
             height: 97,
           ),
-          BaseButton(
+          Padding(padding: EdgeInsets.only(left: 24,right: 24),child: BaseButton(
+              borderRadius: BorderRadius.circular(5),
               title: 'Confirm',
               height: 40,
               onTap: () {
                 print('确认兑换');
                 this.exchange();
-              }),
+              }),),
           SizedBox(
             height: 32,
           ),
@@ -466,7 +467,7 @@ class ExchangeIntegralSuccessDialog extends StatelessWidget {
           SizedBox(
             height: 66,
           ),
-          Constants.regularWhiteTextWidget('Exchange Successful', 20),
+          Constants.boldWhiteTextWidget('Exchange Successful', 20),
           SizedBox(
             height: 20,
           ),
@@ -476,12 +477,13 @@ class ExchangeIntegralSuccessDialog extends StatelessWidget {
           SizedBox(
             height: 60,
           ),
-          BaseButton(
+          Padding(padding: EdgeInsets.only(left: 24,right: 24),child: BaseButton(
+            borderRadius:  BorderRadius.circular(5),
               title: 'Close',
               height: 40,
               onTap: () {
                 NavigatorUtil.pop();
-              }),
+              }),),
           SizedBox(
             height: 32,
           ),
