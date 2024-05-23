@@ -120,7 +120,7 @@ class _GameProcessControllerState extends State<GameProcessController>
 
     // 从游戏数据保存页面返回监听
     subscription = EventBus().stream.listen((event) {
-      if (event == kBackFromFinish) {
+      if (event == kBackFromFinish || event == kFinishGame) {
         // 从游戏完成页面返回
         print('从游戏完成页面返回');
         gameUtil.nowISGamePage = true;

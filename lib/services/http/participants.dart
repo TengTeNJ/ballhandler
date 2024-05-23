@@ -178,8 +178,7 @@ class Participants {
         model.score =
             !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '--';
         model.endTime = !ISEmpty(_map['createTime'])
-            ? StringUtil.serviceStringToShowMinuteString(
-                _map['createTime'].toString())
+            ? _map['createTime'].toString()
             : '--';
         model.videoPath =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '--';

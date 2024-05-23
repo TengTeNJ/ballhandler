@@ -97,7 +97,19 @@ class StringUtil {
     }
   }
 
+  /*数据分析页面自定义时间展示*/
+  static String serviceStringMyStatuDateString(String timeString) {
+    try {
+      DateTime dateTime = stringToDate(timeString);
+      String formattedDate = DateFormat('MMMM dd').format(dateTime);
+      return formattedDate;
+    } catch (error) {
+      return '-';
+    }
+  }
+
   static String serviceStringToShowMinuteString(String timeString) {
+    print('timeString = ${timeString}');
     try {
       DateTime dateTime = stringToDate(timeString);
       String formattedDate = DateFormat('MMMM dd,yyyy HH:mm').format(dateTime);

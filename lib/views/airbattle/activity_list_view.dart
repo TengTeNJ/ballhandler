@@ -45,7 +45,9 @@ class _ActivityListViewState extends State<ActivityListView> {
     if (_response.success && _response.data != null) {
       _datas.addAll(_response.data!.data);
       _hasMore = _datas.length < _response.data!.count;
-      setState(() {});
+      if(mounted){
+        setState(() {});
+      }
     }
     if(loadMore){
       TTToast.hideLoading();

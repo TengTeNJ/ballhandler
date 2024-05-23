@@ -3,6 +3,7 @@ import 'package:code/models/mystats/my_stats_model.dart';
 import 'package:code/services/http/rank.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/utils/system_device.dart';
 import 'package:code/views/airbattle/my_stats_bar_chart_view.dart';
 import 'package:code/views/airbattle/my_stats_grid_list_view.dart';
@@ -147,7 +148,8 @@ class _MyStatsControllerState extends State<MyStatsController> {
                           _start = startTime;
                           _end = endTime;
                           if(index==3){
-                            _titles[_titles.length-1] = "${_start.replaceAll('-', '/')}-${_end.replaceAll('-', '/')}";
+                            // _titles[_titles.length-1] = "${_start.replaceAll('-', '/')}-${_end.replaceAll('-', '/')}";
+                            _titles[_titles.length-1] = "${StringUtil.serviceStringMyStatuDateString(_start)}-${StringUtil.serviceStringMyStatuDateString(_end)}";
                             setState(() {
 
                             });
@@ -167,7 +169,8 @@ class _MyStatsControllerState extends State<MyStatsController> {
                             _start = startTime;
                             _end = endTime;
                             if(index==3){
-                              _titles[_titles.length-1] = "${_start.replaceAll('-', '/')}-${_end.replaceAll('-', '/')}";
+                              //_titles[_titles.length-1] = "${_start.replaceAll('-', '/')}-${_end.replaceAll('-', '/')}";
+                              _titles[_titles.length-1] = "${StringUtil.serviceStringMyStatuDateString(_start)}-${StringUtil.serviceStringMyStatuDateString(_end)}";
                               setState(() {
 
                               });

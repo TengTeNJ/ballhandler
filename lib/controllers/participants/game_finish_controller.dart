@@ -187,7 +187,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
-                  child: gameUtil.isFromAirBattle ? Constants.boldWhiteTextWidget('SAVE', 16) : Constants.boldWhiteTextWidget('SAVE', 16),),
+                  child: gameUtil.isFromAirBattle ? Constants.boldWhiteTextWidget('SAVE', 16) : Constants.boldBlackTextWidget('SAVE', 16),),
               ),
             ),
           ],

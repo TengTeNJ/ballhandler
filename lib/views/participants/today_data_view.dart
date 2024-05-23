@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -85,7 +86,7 @@ class _TodayDataViewState extends State<TodayDataView> {
                             constraints:BoxConstraints(maxWidth: 110),
                             child: Constants.customTextWidget(_title, 14, '#B1B1B1',maxLines: 1,overflow: TextOverflow.ellipsis),
                           ),
-                          Constants.regularWhiteTextWidget(widget.gameOverModel.endTime, 10),
+                          Constants.regularWhiteTextWidget(StringUtil.serviceStringToShowMinuteString(widget.gameOverModel.endTime), 10),
                         ],
                       ),
                       Row(
