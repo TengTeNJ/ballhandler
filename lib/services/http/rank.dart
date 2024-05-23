@@ -32,10 +32,14 @@ class AnalyzeDataModel{
   String rankNumber = '-';
   // 速度对比
   String get avgPaceCompared {
-    if(this.avgPace == 0 || this.lastAvgPace == 0){
+    if(this.lastAvgPace == 0){
       return '-';
     }
     bool rise = (this.avgPace - this.lastAvgPace) < 0; // 速度越小 成绩越好
+    if(this.avgPace <= 0){
+      // 如果本周无成绩 也是下降
+      rise=  false;
+    }
     double comparedValue = (this.avgPace - this.lastAvgPace).abs()/this.lastAvgPace;
     String somparedString = convertToPercentage(comparedValue);
     if(somparedString.length >compareLength){
@@ -48,13 +52,17 @@ class AnalyzeDataModel{
     return (rise ?('+' + somparedString): ('-' + somparedString)) + '%' ;
   }
   bool get avgRise {
+    if(this.avgPace <= 0){
+      // 如果本周无成绩 也是下降
+     return false;
+    }
     bool rise = (this.avgPace - this.lastAvgPace) < 0;
    return rise;
   }
 
   // 得分对比
   String get scoreCompared {
-    if(this.trainScore == 0 || this.lastTrainScore == 0){
+    if(this.lastTrainScore == 0){
       return '-';
     }
     bool rise = (this.trainScore - this.lastTrainScore) > 0;
@@ -63,7 +71,6 @@ class AnalyzeDataModel{
     if(somparedString.length >compareLength){
       somparedString = somparedString.substring(0,compareLength);
     }
-    print('somparedString.lastIndexOf(\'.\')=${somparedString.lastIndexOf('.')}');
     if(somparedString.lastIndexOf('.') >0){
       somparedString = somparedString.replaceAll('.', '');
     }
@@ -75,7 +82,7 @@ class AnalyzeDataModel{
   }
 // 时间对比
   String get timeCompared {
-    if(this.trainTime == 0 || this.lastTrainTime == 0){
+    if(this.lastTrainTime == 0){
       return '-';
     }
     bool rise = (this.trainTime - this.lastTrainTime) > 0;
@@ -96,7 +103,7 @@ class AnalyzeDataModel{
 
   // 次数对比
   String get countCompared {
-    if(this.trainCount == 0 || this.lastTrainCount == 0){
+    if(this.lastTrainCount == 0){
       return '-';
     }
     bool rise = (this.trainCount - this.lastTrainCount) > 0;
@@ -291,7 +298,7 @@ class Rank {
       "sceneId": (gameUtil.gameScene.index + 1).toString(),
     };
     final response = await HttpUtil.get('/api/statistic/trainData', _data,
-        showLoading: false);
+        showLoading: true);
     AnalyzeDataModel _model = AnalyzeDataModel();
 
     if (response.success && response.data['data'] != null) {

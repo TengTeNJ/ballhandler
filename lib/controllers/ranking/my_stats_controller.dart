@@ -90,10 +90,10 @@ class _MyStatsControllerState extends State<MyStatsController> {
     // 折线图数据
     final _lineResponse = _responses[1];
     if (_lineResponse.success) {
+      if (datas.length > 0) {
+        datas.clear();
+      }
       if (_lineResponse.data != null && _lineResponse.data!.length > 0) {
-        if (datas.length > 0) {
-          datas.clear();
-        }
         datas.addAll(_lineResponse.data!);
       }
     }

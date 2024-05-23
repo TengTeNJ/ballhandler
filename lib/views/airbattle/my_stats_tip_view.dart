@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/mystats/my_stats_model.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:flutter/material.dart';
 
 class MyStatsTipView extends StatefulWidget {
@@ -35,7 +36,7 @@ class _MyStatsTipViewState extends State<MyStatsTipView> {
               ],
             ),
             Constants.customTextWidget('Rank '+ widget.dataModel.rank, 10, '#B1B1B1'),
-            Constants.customTextWidget( widget.dataModel.gameTimer, 10, '#B1B1B1'),
+            Constants.customTextWidget( StringUtil.serviceStringToShowDateString(widget.dataModel.gameTimer), 10, '#B1B1B1'),
             Constants.customTextWidget( widget.dataModel.trainingMode, 10, '#B1B1B1'),
           ],
         ),
