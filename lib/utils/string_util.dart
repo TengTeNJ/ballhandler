@@ -43,7 +43,7 @@ class StringUtil {
 
   static String dateToGameTimeString() {
     DateTime now = DateTime.now();
-    String formattedDate = DateFormat('MMMM.dd.yyyy HH:mm').format(now);
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(now);
     return formattedDate;
   }
 
@@ -54,6 +54,7 @@ class StringUtil {
 
   /*时间字符串转换为日期*/
   static DateTime stringToDate(String timeString) {
+    print('timeString=${timeString}');
     if(timeString.contains('/')){
       timeString = timeString.replaceAll('/', '-');
     }

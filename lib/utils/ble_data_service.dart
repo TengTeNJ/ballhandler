@@ -1,9 +1,6 @@
 /*响应数据的CMD*/
 import 'package:code/constants/constants.dart';
-import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
-import 'package:code/utils/navigator_util.dart';
-import 'package:provider/provider.dart';
 
 enum BLEDataType {
   none,
@@ -15,7 +12,6 @@ enum BLEDataType {
   millisecond,
   targetIn,
 }
-
 class ResponseCMDType {
   static const int deviceInfo = 0x20; // 设备信息，包含开机状态、电量等
   static const int targetResponse = 0x26; // 标靶响应
@@ -26,6 +22,8 @@ class ResponseCMDType {
   static const int targetIn = 0x10; // 目标集中
 }
 
+List<int> bleNotAllData = []; // 不完整数据 被分包发送的蓝牙数据
+bool isNew = true;
 /*蓝牙数据解析类*/
 class BluetoothDataParse {
   // 数据解析
@@ -33,78 +31,112 @@ class BluetoothDataParse {
     if (data.contains(kBLEDataFrameHeader)) {
       List<List<int>> _datas = splitData(data);
       _datas.forEach((element) {
-        if (element == null || element.length <= 3) {
+        if (element == null || element.length == 0) {
           // 空数组
-          // print('问题数据');
+         // print('问题数据${element}');
         } else {
-          int cmd = element[1];
-         // print('cmd====${cmd}');
-          if(cmd == 0x24){
-            print('element====${element}');
+          // 先获取长度
+          int length = element[0] - 1; // 获取长度 去掉了枕头
+          if(length != element.length ){
+            // 说明不是完整数据
+            bleNotAllData.addAll(element);
+            if(bleNotAllData[0] - 1 == bleNotAllData.length){
+              print('组包1----${element}');
+              handleData(bleNotAllData);
+              isNew = true;
+              bleNotAllData.clear();
+            }else{
+              isNew = false;
+              Future.delayed(Duration(milliseconds: 10),(){
+                if(!isNew){
+                  bleNotAllData.clear();
+                }
+              });
+            }
+          }else{
+            handleData(element);
           }
-          switch (cmd) {
-            case ResponseCMDType.deviceInfo:
-              int parameter_data = element[2];
-              int statu_data = element[3];
-              if (parameter_data == 0x01) {
-                // 开关机
-                BluetoothManager().gameData.powerOn = (statu_data == 0x01);
-              } else if (parameter_data == 0x02) {
-                // 电量
-                BluetoothManager().gameData.powerValue = statu_data;
-              }
-              break;
-            case ResponseCMDType.targetResponse:
-              int data = element[2];
-              print('------data=${data}');
-              String binaryString = data.toRadixString(2); // 转换成二进制字符串
-              if (binaryString != null && binaryString.length == 8) {
-                // 前两位都是1，不区分红灯和蓝灯，截取后边6位，判断哪个灯在亮
-                final sub_string = binaryString.substring(2, 8);
-                //print('sub_string=${sub_string}');
-                final ligh_index = sub_string.indexOf('1');
-                final actual_index = 5 - ligh_index + 1;
-                BluetoothManager().gameData.currentTarget = kLighMap[actual_index] ?? 1;
-                 print('${kLighMap[actual_index]}号灯亮了');
-                // print('binaryString=${binaryString}');
-                BluetoothManager().triggerCallback(type: BLEDataType.targetResponse);
-              }
-              break;
-            case ResponseCMDType.score:
-              int data = element[2];
-              BluetoothManager().gameData.score = data;
-              // 通知
-              print(
-                  'BluetoothManager().dataChange=${BluetoothManager().dataChange}');
-              BluetoothManager().triggerCallback(type: BLEDataType.score);
-             // print('${data}:得分');
-              break;
-            case ResponseCMDType.gameStatu:
-              int data = element[2];
-              BluetoothManager().gameData.gameStart = (data == 0x01);
-             // print('游戏状态---${data}');
-              BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
-              break;
-            case ResponseCMDType.remainTime:
-              int data = element[2];
-              BluetoothManager().gameData.remainTime = data;
-              BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
-              break;
-            case ResponseCMDType.millisecond:
-              int data = element[2];
-             BluetoothManager().gameData.millSecond = data;
-             //  print('毫秒刷新---${data}');
-             BluetoothManager().triggerCallback(type: BLEDataType.millisecond);
-              break;
-            case ResponseCMDType.targetIn:
-              int data = element[2];
-              print('目标击中--${data}');
-              break;
-          }
+
         }
       });
     } else {
+        bleNotAllData.addAll(data);
+        if(bleNotAllData[0] - 1 == bleNotAllData.length){
+          print('组包2----${data}');
+          handleData(bleNotAllData);
+          isNew = true;
+          bleNotAllData.clear();
+        }else{
+          isNew = false;
+          Future.delayed(Duration(milliseconds: 10),(){
+            if(!isNew){
+              bleNotAllData.clear();
+            }
+          });
+        }
       print('蓝牙设备响应数据不合法=${data}');
+    }
+  }
+  static handleData(List<int> element){
+    int cmd = element[1];
+    switch (cmd) {
+      case ResponseCMDType.deviceInfo:
+        int parameter_data = element[2];
+        int statu_data = element[3];
+        if (parameter_data == 0x01) {
+          // 开关机
+          BluetoothManager().gameData.powerOn = (statu_data == 0x01);
+        } else if (parameter_data == 0x02) {
+          // 电量
+          BluetoothManager().gameData.powerValue = statu_data;
+        }
+        break;
+      case ResponseCMDType.targetResponse:
+        int data = element[2];
+       // print('------data=${element}');
+        String binaryString = data.toRadixString(2); // 转换成二进制字符串
+        if (binaryString != null && binaryString.length == 8) {
+          // 前两位都是1，不区分红灯和蓝灯，截取后边6位，判断哪个灯在亮
+          final sub_string = binaryString.substring(2, 8);
+          //print('sub_string=${sub_string}');
+          final ligh_index = sub_string.indexOf('1');
+          final actual_index = 5 - ligh_index + 1;
+          BluetoothManager().gameData.currentTarget = kLighMap[actual_index] ?? 1;
+          print('${kLighMap[actual_index]}号灯亮了');
+          // print('binaryString=${binaryString}');
+          BluetoothManager().triggerCallback(type: BLEDataType.targetResponse);
+        }
+        break;
+      case ResponseCMDType.score:
+        int data = element[2];
+        BluetoothManager().gameData.score = data;
+        // 通知
+        print(
+            'BluetoothManager().dataChange=${BluetoothManager().dataChange}');
+        BluetoothManager().triggerCallback(type: BLEDataType.score);
+        // print('${data}:得分');
+        break;
+      case ResponseCMDType.gameStatu:
+        int data = element[2];
+        BluetoothManager().gameData.gameStart = (data == 0x01);
+        // print('游戏状态---${data}');
+        BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
+        break;
+      case ResponseCMDType.remainTime:
+        int data = element[2];
+        BluetoothManager().gameData.remainTime = data;
+        BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
+        break;
+      case ResponseCMDType.millisecond:
+        int data = element[2];
+        BluetoothManager().gameData.millSecond = data;
+        //  print('毫秒刷新---${data}');
+        BluetoothManager().triggerCallback(type: BLEDataType.millisecond);
+        break;
+      case ResponseCMDType.targetIn:
+        int data = element[2];
+        print('目标击中--${data}');
+        break;
     }
   }
 }
