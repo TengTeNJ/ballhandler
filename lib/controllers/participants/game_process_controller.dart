@@ -121,6 +121,7 @@ class _GameProcessControllerState extends State<GameProcessController>
     // 从游戏数据保存页面返回监听
     subscription = EventBus().stream.listen((event) {
       if (event == kBackFromFinish || event == kFinishGame) {
+        SystemUtil.resetScreenDirection(); // 锁定屏幕方向
         // 从游戏完成页面返回
         print('从游戏完成页面返回');
         gameUtil.nowISGamePage = true;
@@ -129,7 +130,7 @@ class _GameProcessControllerState extends State<GameProcessController>
         BluetoothManager().gameData.score = 0;
         BluetoothManager().gameData.currentTarget = 3;
         _imagePath =
-        'images/product/scene${gameUtil.gameScene.index + 1}/model${gameUtil.modelId}/${BluetoothManager().gameData.currentTarget}.png';
+            'images/product/scene${gameUtil.gameScene.index + 1}/model${gameUtil.modelId}/${BluetoothManager().gameData.currentTarget}.png';
         if (mounted) {
           setState(() {});
         }
@@ -156,12 +157,20 @@ class _GameProcessControllerState extends State<GameProcessController>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Constants.baseControllerColor,
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          return orientation == Orientation.portrait
-              ? VerticalScreenWidget(context, _imagePath)
-              : HorizontalScreenWidget(context, _imagePath);
-        },
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/participants/game_background.png'),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: OrientationBuilder(
+          builder: (context, orientation) {
+            return orientation == Orientation.portrait
+                ? VerticalScreenWidget(context, _imagePath)
+                : HorizontalScreenWidget(context, _imagePath);
+          },
+        ),
       ),
     );
   }
@@ -202,7 +211,7 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
           SizedBox(
             height: 85,
           ),
-          Constants.boldWhiteTextWidget(_title, 24),
+          Constants.boldBlackTextWidget(_title, 24),
           SizedBox(
             height: 32,
           ),
@@ -397,78 +406,86 @@ Widget HorizontalScreenWidget(BuildContext context, String path) {
           child: Stack(
         children: [
           Positioned(
-            child: Constants.boldWhiteTextWidget(_title, 24),
+            child: Constants.boldBlackTextWidget(_title, 24),
             top: 24,
             right: 0,
             left: 0,
           ),
-          Positioned(child: Container(
-            width: 180,
-            height: 105,
-            decoration: gameUtil.isFromAirBattle
-                ? BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    hexStringToColor('#EF8914'),
-                    hexStringToColor('#CF391A'),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(10))
-                : BoxDecoration(
-                color: hexStringToColor('#204DD1'),
-                borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Constants.mediumWhiteTextWidget('TIME LEFT', 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Constants.digiRegularWhiteTextWidget('00:', 60),
-                    Constants.digiRegularWhiteTextWidget(
-                        BluetoothManager()
-                            .gameData
-                            .remainTime
-                            .toString()
-                            .padLeft(2, '0'),
-                        60),
-                  ],
-                )
-              ],
-            ),
-          ),left: 24,top: 24,),
-          Positioned(child:  Container(
-            width: 180,
-            height: 105,
-            decoration: gameUtil.isFromAirBattle
-                ? BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    hexStringToColor('#EF8914'),
-                    hexStringToColor('#CF391A'),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(10))
-                : BoxDecoration(
-                color: hexStringToColor('#204DD1'),
-                borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Constants.mediumWhiteTextWidget('SCORE', 16),
-                Constants.digiRegularWhiteTextWidget(
-                    BluetoothManager().gameData.score.toString(), 60)
-              ],
-            ),
-          ),right: 24,top: 24,),
           Positioned(
-            top: 60,
+            child: Container(
+              width: 180,
+              height: 105,
+              decoration: gameUtil.isFromAirBattle
+                  ? BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          hexStringToColor('#EF8914'),
+                          hexStringToColor('#CF391A'),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(10))
+                  : BoxDecoration(
+                      color: hexStringToColor('#204DD1'),
+                      borderRadius: BorderRadius.circular(10)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Constants.mediumWhiteTextWidget('TIME LEFT', 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Constants.digiRegularWhiteTextWidget('00:', 60),
+                      Constants.digiRegularWhiteTextWidget(
+                          BluetoothManager()
+                              .gameData
+                              .remainTime
+                              .toString()
+                              .padLeft(2, '0'),
+                          60),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            left: 24,
+            top: 24,
+          ),
+          Positioned(
+            child: Container(
+              width: 180,
+              height: 105,
+              decoration: gameUtil.isFromAirBattle
+                  ? BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          hexStringToColor('#EF8914'),
+                          hexStringToColor('#CF391A'),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(10))
+                  : BoxDecoration(
+                      color: hexStringToColor('#204DD1'),
+                      borderRadius: BorderRadius.circular(10)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Constants.mediumWhiteTextWidget('SCORE', 16),
+                  Constants.digiRegularWhiteTextWidget(
+                      BluetoothManager().gameData.score.toString(), 60)
+                ],
+              ),
+            ),
+            right: 24,
+            top: 24,
+          ),
+          Positioned(
+              top: 60,
               bottom: 0,
               left: 0,
               right: 0,

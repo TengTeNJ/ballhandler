@@ -15,6 +15,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import '../../utils/global.dart';
 import '../../utils/notification_bloc.dart';
+import '../../utils/system_device.dart';
 
 class GameFinishController extends StatefulWidget {
   final GameOverModel dataModel;
@@ -32,6 +33,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     queryVideoCount();
   }
 
@@ -198,4 +200,5 @@ class _GameFinishControllerState extends State<GameFinishController> {
       // body: Center(child: GameOverDataView(dataModel: widget.dataModel,),),
     );
   }
+
 }
