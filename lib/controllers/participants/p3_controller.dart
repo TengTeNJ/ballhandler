@@ -34,16 +34,13 @@ class _P3ControllerState extends State<P3Controller> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 68,
-                      ),
                       Constants.mediumWhiteTextWidget('Free Mode Training', 22),
                       SizedBox(
                         height: 40,
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 16, right: 16),
-                        child: Constants.regularGreyTextWidget(
+                        child: Constants.mediumGreyTextWidget(
                             'Please select 3-5 training modes and combine them into one free mode for training',
                             14,
                             height: 1.2,

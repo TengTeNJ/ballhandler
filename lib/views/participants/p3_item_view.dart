@@ -75,12 +75,12 @@ class _P3ItemViewState extends State<P3ItemView> {
                 left: 10,
                 right: 10,
                 child:
-                    Constants.regularWhiteTextWidget(widget.model.title, 14)),
+                    Constants.mediumWhiteTextWidget(widget.model.title, 14)),
             Positioned(
                 top: 150,
                 left: 10,
                 right: 10,
-                child: Constants.regularWhiteTextWidget(
+                child: Constants.mediumWhiteTextWidget(
                     widget.model.timeString, 14))
           ],
         ),

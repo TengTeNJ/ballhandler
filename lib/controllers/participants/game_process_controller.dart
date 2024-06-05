@@ -582,7 +582,7 @@ Widget recordWidget() {
           height: 26,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: hexStringToColor('#1C1E21')),
+              color: hexStringToOpacityColor('#1C1E21', 0.6)),
           child: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

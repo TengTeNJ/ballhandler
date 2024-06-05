@@ -8,7 +8,10 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+
+import '../../utils/global.dart';
 
 class TrainingModeListView extends StatefulWidget {
   GameModel model;
@@ -22,12 +25,16 @@ class TrainingModeListView extends StatefulWidget {
 
 class _TrainingModeListViewState extends State<TrainingModeListView> {
   int _joinCount = 0;
-
+  int _sceneId = 1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     queryJoinCountData();
+   setState(() {
+     GameUtil gameUtil = GetIt.instance<GameUtil>();
+     _sceneId = gameUtil.gameScene.index + 1;
+   });
   }
 
   queryJoinCountData() async {
@@ -62,7 +69,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
           // color: Colors.red,
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-            image: AssetImage('images/ble/ble_bg_new.png'),
+            image: AssetImage('images/ble/ble_bg_new${_sceneId}.png'),
             fit: BoxFit.fill,
           ),
         ),
@@ -111,6 +118,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                       }
                     },
                     child: Container(
+                      margin: EdgeInsets.all(6),
                         width: 16,
                         height: 16,
                         child: Image(
@@ -128,7 +136,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Constants.regularWhiteTextWidget('Easy -', 12),
+                        Constants.regularWhiteTextWidget('Difficulty -', 12),
                         SizedBox(
                           width: 4,
                         ),

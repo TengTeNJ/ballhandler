@@ -110,7 +110,7 @@ class Constants {
   }
 
   static Text mediumGreyTextWidget(String text, double fontSize,
-      {int maxLines = 1,
+      {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
@@ -259,6 +259,9 @@ const kUnreadMessageCount= 'unreadMessageCount'; // 未读消息的数量
 const kBLEDevice_Name = 'Myspeedz';
 const kBLEDevice_NewName = 'StarShots';
 const kFiveBallHandler_Name = 'Stickhandling'; // 五节控球器的名称
+const kThreeBallHandler_Name = 'Razor Dangler 2.0'; // 三节控球器的名称
+const k270_Name = 'Ultimater Dangler'; // 270度
+
 const kBLEDevice_OldName = 'Tv511u-E4247823';
 const kBLE_SERVICE_NOTIFY_UUID = "ffe0";
 const kBLE_SERVICE_WRITER_UUID = "ffe5";
@@ -270,7 +273,15 @@ const kPageLimit = 10; // 数据分页每页显示的数据量
 const kBLEDevice_Names = [
   kBLEDevice_Name,
   kBLEDevice_NewName,
-  kFiveBallHandler_Name
+  kFiveBallHandler_Name,
+  kThreeBallHandler_Name,
+  k270_Name
+];
+
+const kBLEDevice_ReleaseNames = [
+  kFiveBallHandler_Name,
+  k270_Name,
+  kThreeBallHandler_Name,
 ];
 
 const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头

@@ -34,10 +34,10 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
         model: _datas[index],
         scanBleList: () async {
          // 数据埋点
-          EventTrackUtil.eventTrack(kSelectMode,{
-            'bleCount':BluetoothManager().conectedDeviceCount.value,
-            "selectModeId": index + 1
-          });
+         //  EventTrackUtil.eventTrack(kSelectMode,{
+         //    'bleCount':BluetoothManager().conectedDeviceCount.value,
+         //    "selectModeId": index + 1
+         //  });
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
           if (BluetoothManager().conectedDeviceCount.value == 0) {
            // TTDialog.bleListDialog(context);
@@ -48,7 +48,6 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               print('not ipad-----');
               TTDialog.bleListDialog(context);
             }
-
             print('没有连接的蓝牙设备，先蓝牙连接');
           } else {
             GameUtil gameUtil = GetIt.instance<GameUtil>();

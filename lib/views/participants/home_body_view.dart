@@ -24,7 +24,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: AssetImage('images/participants/background.png'),
+          image: AssetImage('images/participants/background${widget.model.dictKey}.png'),
           fit: BoxFit.fill,
         ),
       ),

@@ -25,6 +25,35 @@ class BluetoothManager {
 
   // 蓝牙列表
   List<BLEModel> deviceList = [];
+  List<BLEModel> get showDeviceList {
+    List<BLEModel> virtualList = [];
+    kBLEDevice_ReleaseNames.forEach((element) {
+      BLEModel model =  BLEModel(deviceName: element);
+      virtualList.add(model);
+    });
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    gameUtil.gameScene;
+    // 获取到当前游戏的场景模式 并置顶
+    final _topDeviceName = kBLEDevice_ReleaseNames[gameUtil.gameScene.index];
+    // 置顶当前场景的元素
+    final _model =  virtualList.firstWhere((virtual) => virtual.deviceName == _topDeviceName);
+    if(_model != null){
+      virtualList.remove(_model);
+      virtualList.insert(0, _model);
+    }
+    // 如果搜索到的设备列表中已经有了这样的设备 就移除虚拟设备
+    this.deviceList.forEach((element) {
+      if(kBLEDevice_ReleaseNames.contains(element.device!.name)){
+       final _model =  virtualList.firstWhere((virtual) => virtual.deviceName == element.device!.name);
+       virtualList.remove(_model);
+      }
+      // 把已连接的放到前面
+      virtualList.insert(0, element);
+    });
+    // 最后需要把搜索到的设备置顶
+    return virtualList;
+  } // 页面上展示的蓝牙列表
+
 
   // 游戏数据
   GameData gameData = GameData();
@@ -54,7 +83,7 @@ class BluetoothManager {
       if (kBLEDevice_Names.indexOf(event.name) != -1) {
         // 如果设备列表数组中无，则添加
         if (!hasDevice(event.id)) {
-          this.deviceList.add(BLEModel(device: event));
+          this.deviceList.add(BLEModel(deviceName: event.name, device: event));
           deviceListLength.value = this.deviceList.length;
         } else {
           // 设备列表数组中已有，则忽略
@@ -72,7 +101,7 @@ class BluetoothManager {
     EasyLoading.show();
     _ble
         .connectToDevice(
-            id: model.device.id, connectionTimeout: Duration(seconds: 10))
+            id: model.device!.id, connectionTimeout: Duration(seconds: 10))
         .listen((ConnectionStateUpdate connectionStateUpdate) {
       print('connectionStateUpdate = ${connectionStateUpdate.connectionState}');
       if (connectionStateUpdate.connectionState ==
@@ -85,11 +114,11 @@ class BluetoothManager {
         final notifyCharacteristic = QualifiedCharacteristic(
             serviceId: Uuid.parse(kBLE_SERVICE_NOTIFY_UUID),
             characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_NOTIFY_UUID),
-            deviceId: model.device.id);
+            deviceId: model.device!.id );
         final writerCharacteristic = QualifiedCharacteristic(
             serviceId: Uuid.parse(kBLE_SERVICE_WRITER_UUID),
             characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_WRITER_UUID),
-            deviceId: model.device.id);
+            deviceId: model.device!.id);
         model.notifyCharacteristic = notifyCharacteristic;
         model.writerCharacteristic = writerCharacteristic;
        //writerDataToDevice(model, onLineData());
@@ -97,7 +126,7 @@ class BluetoothManager {
         EasyLoading.showSuccess('Bluetooth connection successful');
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((data) {
-          print("deviceId =${model.device.id}---上报来的数据data = $data");
+          print("deviceId =${model.device!.id}---上报来的数据data = $data");
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           // 在游戏页面 才处理数据
           if (gameUtil.nowISGamePage) {
@@ -141,7 +170,7 @@ class BluetoothManager {
   /*判断是否已经被添加设备列表*/
   bool hasDevice(String id) {
     Iterable<BLEModel> filteredDevice =
-        this.deviceList.where((element) => element.device.id == id);
+        this.deviceList.where((element) => element.device!.id == id);
     return filteredDevice != null && filteredDevice.length > 0;
   }
 

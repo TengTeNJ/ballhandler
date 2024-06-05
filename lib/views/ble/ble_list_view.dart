@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/models/ble/ble_model.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,37 +41,45 @@ class _BLEListViewState extends State<BLEListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // /color: Colors.orange,
       margin: EdgeInsets.only(left: 16, right: 16),
       width: Constants.screenWidth(context) - 32,
-      height: Constants.screenHeight(context) * 0.42 - 99 - 44,
+      height: Constants.screenHeight(context) * 0.45 - 99 - 44,
       child: ListView.separated(
           itemBuilder: (BuildContext context, int index) {
-            return index != (BluetoothManager().deviceList.length)
+            return index != (BluetoothManager().showDeviceList.length)
                 ? InkWell(
                     child: Container(
                       height: 60,
                       width: Constants.screenWidth(context),
-                      child: Row(
+                      child: Container(child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image(
-                            image: AssetImage(_imageNames[index]),
-                            width: 60,
-                            height: 30,
-                          ),
+                          BluetoothManager().showDeviceList[index].hasConected == true ? Image(
+                            image: AssetImage('images/participants/point.png'),
+                            width: 14,
+                            height: 14,
+                          ):Container(),
                           SizedBox(
-                            width: 22,
+                            width: 8,
                           ),
-                          Constants.mediumWhiteTextWidget(
-                              BluetoothManager().deviceList[index].device.name,
-                              14),
+                          BluetoothManager().showDeviceList[index].modelStatu != BLEModelStatu.virtual ? Constants.mediumWhiteTextWidget(
+                            BluetoothManager().showDeviceList[index].deviceName,
+                            16,) : Constants.customTextWidget(BluetoothManager().showDeviceList[index].deviceName, 16, '#65657D'),
                         ],
-                      ),
+                      )),
                     ),
                     onTap: () {
                       print('连接蓝牙设备');
-                      BluetoothManager()
-                          .conectToDevice(BluetoothManager().deviceList[index]);
+                      if(BluetoothManager().showDeviceList[index].hasConected == true || BluetoothManager().showDeviceList[index].modelStatu == BLEModelStatu.virtual){
+                        // 虚拟设备和已连接设备不需要连接
+                        print('虚拟设备和已连接设备不需要连接');
+                      }else{
+                        BluetoothManager()
+                            .conectToDevice(BluetoothManager().showDeviceList[index]);
+                      }
+
                     },
                   )
                 : SizedBox();
@@ -79,7 +88,7 @@ class _BLEListViewState extends State<BLEListView> {
                 thickness: 2,
                 color: Color.fromRGBO(86, 86, 116, 1.0),
               ),
-          itemCount: BluetoothManager().deviceListLength.value + 1),
+          itemCount: BluetoothManager().showDeviceList.length + 1),
     );
   }
 

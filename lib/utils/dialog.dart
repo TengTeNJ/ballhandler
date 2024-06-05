@@ -40,7 +40,7 @@ class TTDialog {
       context: context,
       builder: (BuildContext context) {
         return FractionallySizedBox(
-          heightFactor: 0.42,
+          heightFactor: 0.5,
           child: BLEListDialog(),
         );
       },
