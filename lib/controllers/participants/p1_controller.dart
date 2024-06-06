@@ -1,8 +1,11 @@
+import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../../route/route.dart';
 import '../../utils/color.dart';
 import '../../utils/navigator_util.dart';
+import '../../utils/toast.dart';
 
 class P1Controller extends StatelessWidget {
   const P1Controller({super.key});
@@ -195,23 +198,33 @@ class P1Controller extends StatelessWidget {
             Positioned(
                 bottom: 44,
                 left: 24,
-                child: Container(
-                    width: Constants.screenWidth(context) - 48,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color.fromRGBO(182, 246, 29, 1.0),
-                          Color.fromRGBO(219, 219, 20, 1.0)
-                        ],
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async{
+                    TTToast.showLoading();
+                    NavigatorUtil.pop();
+                    List<CameraDescription> cameras = await availableCameras();
+                    NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
+                    TTToast.hideLoading();
+                  },
+                  child: Container(
+                      width: Constants.screenWidth(context) - 48,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromRGBO(182, 246, 29, 1.0),
+                            Color.fromRGBO(219, 219, 20, 1.0)
+                          ],
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Constants.boldBlackTextWidget('Continue', 16),
-                    )))
+                      child: Center(
+                        child: Constants.boldBlackTextWidget('Continue', 16),
+                      )),
+                ))
           ],
         ),
       ),

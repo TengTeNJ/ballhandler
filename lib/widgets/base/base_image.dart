@@ -2,7 +2,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/color.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 class TTNetImage extends StatefulWidget {
   String url;
   String placeHolderPath;
@@ -23,7 +23,6 @@ class TTNetImage extends StatefulWidget {
 }
 
 class _TTNetImageState extends State<TTNetImage> {
-  bool _isLoading = true;
   @override
   void initState() {
     // TODO: implement initState
@@ -38,41 +37,14 @@ class _TTNetImageState extends State<TTNetImage> {
         child:   Stack(
           alignment: Alignment.center,
           children: [
-            Image.network(
-              widget.url,
-              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                print('loadingProgress=${loadingProgress}');
-                if (loadingProgress == null) {
-                  return child;
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-                }
-
-              },
-              errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                print('error---');
-                if(!widget.placeHolderPath.contains('png')){
-                  return Container(
-                    width: widget.width,
-                    height: widget.height,
-                    color: hexStringToColor('#AA9155'),
-                  );
-                }
-                return Center(
-                  child: Image(image: AssetImage(widget.placeHolderPath),width: widget.width,height: widget.height,),
-                );
-              },
-              fit: widget.fit,
+            CachedNetworkImage(
+              fit: BoxFit.fill,
               width: widget.width,
               height: widget.height,
-            ),
-            // _isLoading ? CircularProgressIndicator() :Container(), // Loading indicator
+              imageUrl: widget.url, // 网络图片URL
+              placeholder: (context, url) => placeHolderImage()  , // 加载中的占位符
+              errorWidget: (context, url, error) =>placeHolderImage() , // 加载失败的占位符
+            )
           ],
         ),
       );
@@ -101,6 +73,20 @@ class _TTNetImageState extends State<TTNetImage> {
 
     }
   }
+  Widget placeHolderImage(){
+    if(!widget.placeHolderPath.contains('png')){
+      return Container(
+        width: widget.width,
+        height: widget.height,
+        color: hexStringToColor('#AA9155'),
+      );
+    }else{
+     return  Center(
+        child: Image(image: AssetImage(widget.placeHolderPath),width: widget.width,height: widget.height,),
+      );
+    }
+  }
+
 }
 
 
