@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
+import 'package:wakelock_plus/wakelock_plus.dart';
 class SystemUtil {
   /*锁定屏幕为竖屏*/
   static Future<void> lockScreenDirection() {
@@ -36,6 +37,7 @@ class SystemUtil {
     return info.version + '#' + info.buildNumber;
   }
 
+  /*判断是否是iPad*/
   static Future<bool> isIPad() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
@@ -50,4 +52,16 @@ class SystemUtil {
       return false;
     }
   }
+
+  /*唤醒屏幕*/
+  static wakeUpDevice(){
+    WakelockPlus.enable();
+  }
+
+/*接触唤醒屏幕*/
+  static disableWakeUpDevice(){
+    WakelockPlus.disable();
+  }
+
+
 }

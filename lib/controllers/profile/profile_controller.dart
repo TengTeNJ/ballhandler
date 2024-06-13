@@ -129,6 +129,10 @@ class _ProfileControllerState extends State<ProfileController> {
                           final picker = ImagePicker();
                           final pickedFile = await picker.pickImage(
                               source: ImageSource.gallery);
+                          // 如果取消 则不进行编辑操作
+                          if(pickedFile == null){
+                            return;
+                          }
                           final croppedFile = await ImageCropper().cropImage(
                             maxHeight: 64,
                             maxWidth: 64,

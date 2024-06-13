@@ -39,6 +39,7 @@ class _GameProcessControllerState extends State<GameProcessController>
     // TODO: implement initState
     super.initState();
     SystemUtil.resetScreenDirection(); // 锁定屏幕方向
+    SystemUtil.wakeUpDevice(); // 保持屏幕活跃
     GameUtil gameUtil = GetIt.instance<GameUtil>();
 
     _imagePath =
@@ -180,6 +181,7 @@ class _GameProcessControllerState extends State<GameProcessController>
     // TODO: implement dispose
     _controller.dispose();
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
+    SystemUtil.disableWakeUpDevice();
     BluetoothManager().dataChange = null;
     // print('dataChange=null');
     // 标记离开游戏页面

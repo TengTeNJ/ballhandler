@@ -74,14 +74,14 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 270,
+                      height: Constants.screenWidth(context)/1.8,
                       child: Stack(
                         children: [
                           TTNetImage(
                               url: detailModel.activityBackground,
                               placeHolderPath: 'images/airbattle/under_way.png',
                               width: Constants.screenWidth(context),
-                              height: 270),
+                              height: Constants.screenWidth(context)/1.8),
                         ],
                       ),
                     ),
@@ -89,7 +89,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                       margin: EdgeInsets.all(16),
                       child: Constants.boldWhiteTextWidget(
                           detailModel.activityName, 30,
-                          textAlign: TextAlign.left),
+                          textAlign: TextAlign.left,height: 1.2),
                     ),
                     Container(
                         margin: EdgeInsets.only(left: 16, top: 16),
