@@ -40,12 +40,12 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
             fontFamily: 'SanFranciscoDisplay',
             fontWeight: FontWeight.w400,
           ),
-          maximum: 24,
+          maximum: 5,
           axisLine: AxisLine(width: 2, color: Colors.transparent),
           // 设置 X 轴轴线颜色和宽度
           labelPosition: ChartDataLabelPosition.outside,
           plotOffset: 0,
-          interval: 3,
+          interval: 0.5,
           majorTickLines: MajorTickLines(color: Colors.yellow, size: 0),
           // 超出坐标系部分的线条设置
           majorGridLines: MajorGridLines(
@@ -112,7 +112,7 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
             pointColorMapper: (MyStatsModel data, _) => Colors.yellow,
             xValueMapper: (MyStatsModel data, _) => data.indexString,
             yValueMapper: (MyStatsModel data, _) =>
-                data.speed > 24 ? 24 : data.speed),
+                data.speed > 5 ? 5 : data.speed),
         // AreaSeries(
         //   color: Colors.red,
         //     borderColor: Colors.blue, // 设置边界线颜色

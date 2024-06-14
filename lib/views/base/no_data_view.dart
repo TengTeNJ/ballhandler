@@ -19,7 +19,7 @@ class NoDataView extends StatelessWidget {
             SizedBox(
               height: 24,
             ),
-            Constants.mediumWhiteTextWidget('Nothing to see here yet', 20),
+            Constants.mediumGreyTextWidget('Nothing to see here yet', 20),
           ],
         ),
       ),

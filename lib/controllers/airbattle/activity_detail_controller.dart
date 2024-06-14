@@ -170,7 +170,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                 margin: EdgeInsets.only(
                                     left: 16, right: 16, bottom: 16),
                                 child: AirBattleDataView(
-                                    grade: Grade.gold,
+                                    grade: Grade.silver,
                                     userName:
                                         detailModel.self.nickName ?? 'Guest',
                                     area: detailModel.self.country ?? '',

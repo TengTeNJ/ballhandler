@@ -16,6 +16,7 @@ class MyStatsBarChatView extends StatefulWidget {
 class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
   late TooltipBehavior _tooltipBehavior;
   bool _disposed = false;
+  double _width = 0.3; // 柱状图宽度
 
   void _callback(Duration duration) {
     if (!_disposed) {
@@ -27,6 +28,7 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    calculateWidthBaseDatas();
     _tooltipBehavior = TooltipBehavior(
       // shouldAlwaysShow: true,
       canShowMarker: false,
@@ -37,6 +39,23 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
         return MyStatsTipView(dataModel: model);
       },
     );
+  }
+
+/*根据数据量计算宽度*/
+  calculateWidthBaseDatas(){
+    if(widget.datas.length == 1){
+      _width = 0.05;
+    } else if(widget.datas.length >1 && widget.datas.length <= 6){
+      _width = 0.15;
+    }else  if(widget.datas.length >6 && widget.datas.length <= 9){
+      _width = 0.2;
+    }else  if(widget.datas.length >9 && widget.datas.length <= 13){
+      _width = 0.3;
+    }else if(widget.datas.length >13 && widget.datas.length <= 17){
+      _width = 0.5;
+    }else{
+      _width = 0.6;
+    }
   }
 
   /*选中柱形图*/
@@ -64,9 +83,9 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
             fontFamily: 'SanFranciscoDisplay',
             fontWeight: FontWeight.w400,
           ),
-          maximum: 24,
+          maximum: 5,
           labelAlignment: LabelAlignment.center,
-          interval: 3,
+          interval: 0.5,
           axisLine: AxisLine(width: 1, color: Colors.transparent),
           // 设置 X 轴轴线颜色和宽度
           plotOffset: 0,
@@ -83,10 +102,10 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
           //  edgeLabelPlacement: EdgeLabelPlacement.shift, // 调整标签位置，使得第一个数据和 Y 轴有间隔
         ),
         primaryXAxis: CategoryAxis(
-          labelStyle: widget.datas.length > 20
+          labelStyle: widget.datas.length >= 20
               ? TextStyle(
                   color: hexStringToColor('#B1B1B1'),
-                  fontSize: 10,
+                  fontSize: 12,
                   fontFamily: 'SanFranciscoDisplay',
                   fontWeight: FontWeight.w400,
                 )
@@ -121,14 +140,14 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
               borderRadius: BorderRadius.circular(5),
               // 设置柱状图的圆角
               dataSource: widget.datas,
-              width: 0.1,
+              width: _width,
               // 设置柱状图的宽度，值为 0.0 到 1.0 之间，表示相对于间距的比例
               spacing: 0.0,
               //
               xValueMapper: (MyStatsModel data, _) =>
                   int.parse(data.indexString),
               yValueMapper: (MyStatsModel data, _) =>
-                  data.speed > 24 ? 24 : data.speed,
+                  data.speed > 5 ? 5 : data.speed,
               pointColorMapper: (MyStatsModel data, _) =>
                   hexStringToColor('#F8850B'))
         ]);

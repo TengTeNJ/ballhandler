@@ -24,7 +24,7 @@ class _IconTextViewState extends State<IconTextView> {
         Image(
             image: AssetImage(widget.iconPath != null
                 ? widget.iconPath!
-                : 'images/profile/dark_blue_icon.png'),
+                : 'images/profile/dark_grey_icon.png'),
             width: widget.size != null ? widget.size! : 48,
             height: widget.size != null ? widget.size! : 48),
         SizedBox(height: 10,),

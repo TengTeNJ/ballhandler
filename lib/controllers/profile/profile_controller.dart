@@ -52,7 +52,7 @@ class _ProfileControllerState extends State<ProfileController> {
         if (mounted) {
           setState(() {});
         }
-      }else if (event == kLoginSucess || event == kIntegralChange){
+      } else if (event == kLoginSucess || event == kIntegralChange) {
         queryMyAccountInfoData();
       }
     });
@@ -63,7 +63,7 @@ class _ProfileControllerState extends State<ProfileController> {
     if (_response.success && _response.data != null) {
       _model = _response.data!;
 
-      if(mounted){
+      if (mounted) {
         setState(() {});
         // 同步用户信息
         NSUserDefault.setKeyValue<String>(kAvatar, _model.avatar);
@@ -74,7 +74,6 @@ class _ProfileControllerState extends State<ProfileController> {
 
         NSUserDefault.setKeyValue<String>(kBrithDay, _model.birthday);
         UserProvider.of(context).brith = _model.birthday;
-
       }
     }
   }
@@ -99,7 +98,8 @@ class _ProfileControllerState extends State<ProfileController> {
                         onTap: () {
                           final _hasLogin = UserProvider.of(context).hasLogin;
                           if (_hasLogin == false) {
-                            NavigatorUtil.present(LoginPageController(),routesName: Routes.login);
+                            NavigatorUtil.present(LoginPageController(),
+                                routesName: Routes.login);
                             return;
                           }
                           NavigatorUtil.push(Routes.setting);
@@ -130,7 +130,7 @@ class _ProfileControllerState extends State<ProfileController> {
                           final pickedFile = await picker.pickImage(
                               source: ImageSource.gallery);
                           // 如果取消 则不进行编辑操作
-                          if(pickedFile == null){
+                          if (pickedFile == null) {
                             return;
                           }
                           final croppedFile = await ImageCropper().cropImage(
@@ -217,7 +217,8 @@ class _ProfileControllerState extends State<ProfileController> {
                         width: 18,
                       ),
                       Constants.customTextWidget(
-                              StringUtil.serviceStringToShowDateString(userModel.brith),
+                          StringUtil.serviceStringToShowDateString(
+                              userModel.brith),
                           16,
                           '#B1B1B1'),
                     ],
@@ -234,9 +235,12 @@ class _ProfileControllerState extends State<ProfileController> {
                         NavigatorUtil.present(LoginPageController());
                         return;
                       }
-                      NavigatorUtil.present(IntegralController(
-                        model: _model,
-                      ),routesName: Routes.integral,arguments:_model);
+                      NavigatorUtil.present(
+                          IntegralController(
+                            model: _model,
+                          ),
+                          routesName: Routes.integral,
+                          arguments: _model);
                     },
                     child: ProgressDataView(
                       model: _model,
@@ -259,7 +263,15 @@ class _ProfileControllerState extends State<ProfileController> {
                   SizedBox(
                     height: 12,
                   ),
-                  RewardiconsView(),
+                  RewardiconsView(
+                    titles: ['First Trains', '100 pts', '200pts'],
+                    currentLevel: 1,
+                  ),
+                  SizedBox(height: 24,),
+                  RewardiconsView(
+                    titles: ['First Trains', '0.1 sec', '0.2sec','0.5sec'],
+                    currentLevel: 2,
+                  ),
                 ],
               );
             },

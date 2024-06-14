@@ -4,7 +4,10 @@ import 'package:code/views/profile/icon_text_view.dart';
 import 'package:flutter/material.dart';
 
 class RewardiconsView extends StatefulWidget {
-  const RewardiconsView({super.key});
+  List<String> titles = [];
+  int currentLevel;
+
+  RewardiconsView({required this.titles, this.currentLevel = 1});
 
   @override
   State<RewardiconsView> createState() => _RewardiconsViewState();
@@ -22,12 +25,24 @@ class _RewardiconsViewState extends State<RewardiconsView> {
           borderRadius: BorderRadius.circular(5)),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 8,
+        itemCount: widget.titles.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            child: IconTextView(title: 'qwertyuio'),
-            margin: EdgeInsets.only(right: 20)
-          );
+          if (index <= widget.currentLevel) {
+            return Container(
+                child: IconTextView(
+                  title: widget.titles[index],
+                  iconPath: 'images/profile/dark_blue_icon.png',
+                  titleColor: '#FFFFFF',
+                ),
+                margin: EdgeInsets.only(right: 20));
+          } else {
+            return Container(
+                child: IconTextView(
+                  title: widget.titles[index],
+                  titleColor: '#B1B1B1',
+                ),
+                margin: EdgeInsets.only(right: 20));
+          }
         },
       ),
     );

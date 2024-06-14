@@ -126,6 +126,23 @@ class Constants {
     );
   }
 
+  static Text mediumBaseGreyTextWidget(String text, double fontSize,
+      {int? maxLines,
+        TextAlign textAlign = TextAlign.center,
+        double height = 1.0}) {
+    return Text(
+      maxLines: maxLines,
+      textAlign: textAlign,
+      text,
+      style: TextStyle(
+          height: height,
+          fontFamily: 'SanFranciscoDisplay',
+          fontWeight: FontWeight.w500,
+          color: Constants.baseControllerColor,
+          fontSize: fontSize),
+    );
+  }
+
   static Text mediumWhiteTextWidget(String text, double fontSize,
       {int maxLines = 1,
       TextAlign textAlign = TextAlign.center,
