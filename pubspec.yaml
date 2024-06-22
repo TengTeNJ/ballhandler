@@ -121,6 +121,8 @@ flutter:
     - images/product//scene1/model5/
     - images/product//scene1/model6/
     - images/product//scene1/model7/
+    - images/launch/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -107,8 +107,8 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
                      if(_response.success == true){
                        Account.handleUserData(_response, context);
                        // 发送登录成功事件
-                       EventBus().sendEvent(kLoginSucess);
                        NavigatorUtil.popToRoot();
+                       EventBus().sendEvent(kLoginSucess);
                      }
                     },
                     child: Container(

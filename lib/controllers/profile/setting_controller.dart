@@ -11,7 +11,6 @@ import 'package:code/views/profile/setting_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../utils/color.dart';
 import '../../utils/notification_bloc.dart';
 

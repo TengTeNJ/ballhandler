@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tt_grey">
+
+
+    <!-- 你可以添加其他元素，如进度条或文本 -->
+
+</RelativeLayout>

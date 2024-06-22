@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
+import 'package:code/route/route.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
@@ -25,6 +27,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 
 import 'firebase_options.dart';
+
 class RootPageController extends StatefulWidget {
   const RootPageController({super.key});
 
@@ -35,6 +38,7 @@ class RootPageController extends StatefulWidget {
 class _RootPageControllerState extends State<RootPageController> {
   int _currentIndex = 0;
   late PageController _pageController;
+  late StreamSubscription subscription;
   final List<StatefulWidget> _pageViews = [
     HomePageController(),
     AirBattleHomeController(),
@@ -58,29 +62,48 @@ class _RootPageControllerState extends State<RootPageController> {
       });
 
     refreshTokenAndDeleteLocanVideo();
+    subscription = EventBus().stream.listen((event) {
+      if (event == kLoginSucess) {
+        loadLaunchPage();
+      }
+    });
   }
 
-  Future<FirebaseApp> initFirebase() async{
+  Future<FirebaseApp> initFirebase() async {
     return await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
 
+  /*加载启动页*/
+  loadLaunchPage() async {
+    final _token = await NSUserDefault.getValue(kAccessToken);
+    if (_token != null && _token.length > 0) {
+      String? _launchFlag = await NSUserDefault.getValue<String>(kShowLaunch);
+      if (_launchFlag != null && _launchFlag == 'done') {
+        // 已经加载过启动页 不需要重新加载
+      } else {
+       Future.delayed(Duration(milliseconds: 500),(){
+         NavigatorUtil.push(Routes.launch1);
+       });
+      }
+    }
+  }
+
   /*刷新token删除本地的存储的视频*/
   refreshTokenAndDeleteLocanVideo() async {
     await initFirebase(); // 初始化firebase
-   // await  EventTrackUtil.setDefaultParameters();    // 设置埋点通用参数
-  //  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true); // 启用调试模式 数据分析
-    final fcmToken = await FirebaseMessaging.instance.getToken(); // 获取token 用于推送通知
+    // await  EventTrackUtil.setDefaultParameters();    // 设置埋点通用参数
+    //  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true); // 启用调试模式 数据分析
+    final fcmToken =
+        await FirebaseMessaging.instance.getToken(); // 获取token 用于推送通知
     print('fcmToken:\n${fcmToken}');
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     gameUtil.firebaseToken = fcmToken ?? '';
     final _accessToken = await NSUserDefault.getValue(kAccessToken);
-    if(!ISEmpty(_accessToken)){
+    if (!ISEmpty(_accessToken)) {
       // 更新推送token
-      Account.updateAccountInfo({
-        "firebaseToken" : gameUtil.firebaseToken
-      });
+      Account.updateAccountInfo({"firebaseToken": gameUtil.firebaseToken});
     }
 
     final _datas =
@@ -89,7 +112,7 @@ class _RootPageControllerState extends State<RootPageController> {
       VideoUtil().deleteFileInBackground(_datas);
     }
     fireBaseMessage();
-    fireBaseCrashlytics();// 监听推送通知
+    fireBaseCrashlytics(); // 监听推送通知
   }
 
   Future<void> querySceneListdata() async {
@@ -102,12 +125,12 @@ class _RootPageControllerState extends State<RootPageController> {
   }
 
   // 处理消息推送
-  fireBaseMessage() async{
+  fireBaseMessage() async {
     MessageUtil.initMessageNadge();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("Received message: ${message.notification?.body}");
       // 处理收到的消息，例如显示通知
-     // FlutterAppBadger.updateBadgeCount();
+      // FlutterAppBadger.updateBadgeCount();
       MessageUtil.getOneMoreMessage();
       EventBus().sendEvent(kGetMessage);
     });
@@ -116,14 +139,14 @@ class _RootPageControllerState extends State<RootPageController> {
       // 处理用户点击通知消息打开应用的事件
     });
     // 更新角标
-    final _countData =  await  AirBattle.queryIUnreadCount();
-    if(_countData != null && _countData.data != null){
+    final _countData = await AirBattle.queryIUnreadCount();
+    if (_countData != null && _countData.data != null) {
       MessageUtil.handleMessage(_countData.data!);
     }
   }
 
   /*异常捕获*/
-  fireBaseCrashlytics() async{
+  fireBaseCrashlytics() async {
     FlutterError.onError = (errorDetails) {
       FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
     };
@@ -132,9 +155,9 @@ class _RootPageControllerState extends State<RootPageController> {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
     };
-    String userName =  await NSUserDefault.getValue(kUserName) ?? 'Unknown';
-    String email =  await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
-    if(userName!=null && userName.length > 0){
+    String userName = await NSUserDefault.getValue(kUserName) ?? 'Unknown';
+    String email = await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
+    if (userName != null && userName.length > 0) {
       FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
       FirebaseCrashlytics.instance.setCustomKey('userName', userName);
       FirebaseCrashlytics.instance.setCustomKey('email', email ?? '--');
@@ -167,6 +190,7 @@ class _RootPageControllerState extends State<RootPageController> {
   @override
   void dispose() {
     _pageController.dispose();
+    subscription.cancel();
     super.dispose();
   }
 }

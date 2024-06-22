@@ -105,7 +105,6 @@ class _LoginPageControllerState extends State<LoginPageController> with SingleTi
                           if (_response.success == true) {
                             // 登录成功
                             Account.handleUserData(_response, context);
-                            EventBus().sendEvent(kLoginSucess);
                             final _checkResponse = await Account.checkeSetUserInfoStatu();
                             if(_checkResponse.data == false){
                               // 跳转到设置用户信息页面
@@ -113,6 +112,7 @@ class _LoginPageControllerState extends State<LoginPageController> with SingleTi
                               NavigatorUtil.present(SetUserInfoController());
                             }else{
                               NavigatorUtil.pop();
+                              EventBus().sendEvent(kLoginSucess);
                             }
                           };
                         },

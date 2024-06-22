@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../../models/global/user_info.dart';
+import '../../utils/notification_bloc.dart';
 import '../../utils/nsuserdefault_util.dart';
 import '../../utils/string_util.dart';
 import '../../utils/toast.dart';
@@ -230,6 +231,7 @@ class _SetUserInfoControllerState extends State<SetUserInfoController> {
                         UserProvider.of(context).userName = _nameText;
                         NSUserDefault.setKeyValue(kUserName, _nameText);
                         NavigatorUtil.pop();
+                        EventBus().sendEvent(kLoginSucess);
                       }else{
                         NSUserDefault.clearUserInfo(context);
                       }

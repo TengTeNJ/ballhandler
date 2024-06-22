@@ -161,7 +161,7 @@ class Constants {
   }
 
   static Text boldWhiteTextWidget(String text, double fontSize,
-      {int maxLines = 1,
+      {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
@@ -216,6 +216,7 @@ class Constants {
       {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0,
+        FontWeight? fontWeight,
         TextOverflow? overflow}) {
     return Text(
       textAlign: textAlign,
@@ -225,7 +226,7 @@ class Constants {
          overflow: overflow,
           height: height,
           fontFamily: 'SanFranciscoDisplay',
-          fontWeight: FontWeight.bold,
+          fontWeight: fontWeight,
           color: hexStringToColor(color),
           fontSize: fontSize),
     );
@@ -271,6 +272,7 @@ const kUserEmail = 'userEmail';
 const kBrithDay = 'brithDay';
 const kCountry= 'countryArea';
 const kUnreadMessageCount= 'unreadMessageCount'; // 未读消息的数量
+const kShowLaunch= 'showLaunchPage'; // 是否展示启动介绍页的标识
 
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';

@@ -7,6 +7,9 @@ import 'package:code/controllers/airbattle/activity_detail_controller.dart';
 import 'package:code/controllers/airbattle/award_list_controller.dart';
 import 'package:code/controllers/airbattle/message_controller.dart';
 import 'package:code/controllers/airbattle/my_activity_controller.dart';
+import 'package:code/controllers/launch/launch_one_controller.dart';
+import 'package:code/controllers/launch/launch_three_controller.dart';
+import 'package:code/controllers/launch/launch_two_controller.dart';
 import 'package:code/controllers/participants/TodayDataController.dart';
 import 'package:code/controllers/participants/game_finish_controller.dart';
 import 'package:code/controllers/participants/game_process_controller.dart';
@@ -61,7 +64,9 @@ class Routes {
   static const String videoguide = 'videoGuide'; // 游戏视频指导页面
   static const String emailpage = 'emailPage'; //
   static const String integral= 'integral'; //
-
+  static const String launch1= 'launch1'; //
+  static const String launch2= 'launch2'; //
+  static const String launch3= 'launch3'; //
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
@@ -140,7 +145,12 @@ class Routes {
         final  MyAccountDataModel _model = settings.arguments as MyAccountDataModel;
         return MaterialPageRoute(builder: (_)=> IntegralController(model: _model));
       }
-
+      case launch1:
+        return MaterialPageRoute(builder: (_) => LaunchOneController());
+      case launch2:
+        return MaterialPageRoute(builder: (_) => LaunchTwoController());
+      case launch3:
+        return MaterialPageRoute(builder: (_) => LaunchThreeController());
       // EmailPageController
      // IntegralController MyAccountDataModel
       default:

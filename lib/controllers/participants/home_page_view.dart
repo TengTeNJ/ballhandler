@@ -132,7 +132,6 @@ class _HomePageViewState extends State<HomePageController> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
