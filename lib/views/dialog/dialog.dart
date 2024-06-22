@@ -1835,7 +1835,12 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
             SizedBox(
               height: 8,
             ),
-            Text(
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: (){
+                NavigatorUtil.push(Routes.membership);
+              },
+              child: Text(
               ' See More',
               style: TextStyle(
                   decoration: TextDecoration.underline,
@@ -1847,7 +1852,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
                   fontFamily: 'SanFranciscoDisplay',
                   color: hexStringToColor('#B1B1B1'),
                   fontSize: 16),
-            ),
+            ),),
             SizedBox(
               height: 24,
             ),

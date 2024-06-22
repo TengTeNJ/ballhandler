@@ -27,6 +27,7 @@ import 'package:code/controllers/participants/video_list_controller.dart';
 import 'package:code/controllers/participants/video_play_controller.dart';
 import 'package:code/controllers/profile/Integral_detail_controller.dart';
 import 'package:code/controllers/profile/integral_controller.dart';
+import 'package:code/controllers/profile/membership_detail_controller.dart';
 import 'package:code/controllers/profile/setting_controller.dart';
 import 'package:code/controllers/profile/sub_setting_controller.dart';
 import 'package:code/controllers/ranking/my_stats_controller.dart';
@@ -69,6 +70,8 @@ class Routes {
   static const String launch2= 'launch2'; //
   static const String launch3= 'launch3'; //
   static const String webview= 'webView'; //
+  static const String membership= 'membershipDetail'; //
+
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
@@ -155,6 +158,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => LaunchThreeController());
       case webview:
         return MaterialPageRoute(builder: (_) => TTWebViewController());
+      case membership:
+        return MaterialPageRoute(builder: (_) => MemberShipDetailController());
       // EmailPageController
      // IntegralController MyAccountDataModel
       default:

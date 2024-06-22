@@ -3,6 +3,7 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 class TTWebViewController extends StatefulWidget {
   const TTWebViewController({super.key});
 
@@ -12,6 +13,7 @@ class TTWebViewController extends StatefulWidget {
 
 class _TTWebViewControllerState extends State<TTWebViewController> {
   late WebViewController controller;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,17 +39,24 @@ class _TTWebViewControllerState extends State<TTWebViewController> {
           },
         ),
       )
-      ..loadRequest(Uri.parse('https://potent-hockey.s3.eu-north-1.amazonaws.com/h5/service.html'));
+      ..loadRequest(Uri.parse(
+          'https://potent-hockey.s3.eu-north-1.amazonaws.com/h5/service.html'));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(showBack: true,),
+      appBar: CustomAppBar(
+        showBack: true,
+        customBackgroundColor: Constants.baseControllerColor,
+      ),
       body: Container(
         color: Constants.baseControllerColor,
         child: Column(
           children: [
-            SizedBox(height: 16,),
+            SizedBox(
+              height: 16,
+            ),
             Expanded(child: WebViewWidget(controller: controller))
           ],
         ),

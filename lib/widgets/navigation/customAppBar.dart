@@ -5,8 +5,8 @@ import '../../constants/constants.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   String? title;
   bool? showBack;
-
-  CustomAppBar({this.title = '', this.showBack = false,});
+  Color? customBackgroundColor;
+  CustomAppBar({this.title = '', this.showBack = false,this.customBackgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ):null,
       // ),
       title: Text(title.toString(),style: TextStyle(color: Colors.white),),
-      backgroundColor: Constants.darkThemeColor,
+      backgroundColor: customBackgroundColor ??  Constants.darkThemeColor,
       centerTitle: true,
     );
   }
