@@ -248,4 +248,19 @@ class TTDialog {
       },
     );
   }
+
+  /**订阅弹窗列表**/
+  static subscribeDialog(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: hexStringToColor('#3E3E55'),
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.81,
+          child: SubscribeDialog(),
+        );
+      },
+    );
+  }
 }

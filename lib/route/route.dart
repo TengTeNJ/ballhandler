@@ -7,6 +7,7 @@ import 'package:code/controllers/airbattle/activity_detail_controller.dart';
 import 'package:code/controllers/airbattle/award_list_controller.dart';
 import 'package:code/controllers/airbattle/message_controller.dart';
 import 'package:code/controllers/airbattle/my_activity_controller.dart';
+import 'package:code/controllers/base/tt_webview_controller.dart';
 import 'package:code/controllers/launch/launch_one_controller.dart';
 import 'package:code/controllers/launch/launch_three_controller.dart';
 import 'package:code/controllers/launch/launch_two_controller.dart';
@@ -67,6 +68,7 @@ class Routes {
   static const String launch1= 'launch1'; //
   static const String launch2= 'launch2'; //
   static const String launch3= 'launch3'; //
+  static const String webview= 'webView'; //
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
@@ -151,6 +153,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => LaunchTwoController());
       case launch3:
         return MaterialPageRoute(builder: (_) => LaunchThreeController());
+      case webview:
+        return MaterialPageRoute(builder: (_) => TTWebViewController());
       // EmailPageController
      // IntegralController MyAccountDataModel
       default:

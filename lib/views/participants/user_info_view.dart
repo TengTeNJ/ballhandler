@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserInfoView extends StatefulWidget {
-  const UserInfoView({super.key});
+  Function?subscribeTap;
+   UserInfoView({this.subscribeTap});
 
   @override
   State<UserInfoView> createState() => _UserInfoViewState();
@@ -16,48 +17,68 @@ class _UserInfoViewState extends State<UserInfoView> {
   Widget build(BuildContext context) {
     return Consumer<UserModel>(builder: (context, userModel, child) {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(27),
-            child: userModel.avatar.length > 0
-                ? Image.network(
-                    userModel.avatar,
-                    width: 54,
-                    height: 54,
-                    fit: BoxFit.fill,
-                  )
-                : Container(
-                    width: 54,
-                    height: 54,
-                    color: hexStringToColor('#AA9155'),
-                  ),
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Consumer<UserModel>(builder: (context, user, child) {
-                return Text(user.userName,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(27),
+                child: userModel.avatar.length > 0
+                    ? Image.network(
+                        userModel.avatar,
+                        width: 54,
+                        height: 54,
+                        fit: BoxFit.fill,
+                      )
+                    : Container(
+                        width: 54,
+                        height: 54,
+                        color: hexStringToColor('#AA9155'),
+                      ),
+              ),
+              SizedBox(
+                width: 16,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Consumer<UserModel>(builder: (context, user, child) {
+                    return Text(user.userName,
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white,
+                            fontFamily: 'SanFranciscoDisplay',
+                            fontWeight: FontWeight.w500));
+                  }),
+                  Text(
+                    'welcome to use  POTENT HOCKEY',
                     style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
+                        color: Constants.baseGreyStyleColor,
                         fontFamily: 'SanFranciscoDisplay',
-                        fontWeight: FontWeight.w500));
-              }),
-              Text(
-                'welcome to use  POTENT HOCKEY',
-                style: TextStyle(
-                    color: Constants.baseGreyStyleColor,
-                    fontFamily: 'SanFranciscoDisplay',
-                    fontWeight: FontWeight.w400),
-              )
+                        fontWeight: FontWeight.w400),
+                  )
+                ],
+              ),
             ],
           ),
+          GestureDetector(
+            child: Image(
+              image: AssetImage('images/participants/subscribe.png'),
+              width: 20,
+              height: 25,
+            ),
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              print('订阅弹窗');
+              if(widget.subscribeTap != null){
+                widget.subscribeTap!();
+              }
+            },
+          )
         ],
       );
     });

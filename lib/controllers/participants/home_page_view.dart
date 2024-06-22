@@ -154,7 +154,11 @@ class _HomePageViewState extends State<HomePageController> {
           children: [
             Container(
               margin: EdgeInsets.only(left: 16, right: 16),
-              child: UserInfoView(),
+              child: UserInfoView(
+                subscribeTap: (){
+                  TTDialog.subscribeDialog(context);
+                },
+              ),
             ),
             SizedBox(
               height: 24,
