@@ -1,6 +1,11 @@
 /*响应数据的CMD*/
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
+import 'package:code/utils/notification_bloc.dart';
+import 'package:get_it/get_it.dart';
+
+import '../models/ble/ble_model.dart';
+import 'global.dart';
 
 enum BLEDataType {
   none,
@@ -27,7 +32,7 @@ bool isNew = true;
 /*蓝牙数据解析类*/
 class BluetoothDataParse {
   // 数据解析
-  static parseData(List<int> data) {
+  static parseData(List<int> data, BLEModel model) {
     if (data.contains(kBLEDataFrameHeader)) {
       List<List<int>> _datas = splitData(data);
       _datas.forEach((element) {
@@ -42,7 +47,7 @@ class BluetoothDataParse {
             bleNotAllData.addAll(element);
             if(bleNotAllData[0] - 1 == bleNotAllData.length){
               print('组包1----${element}');
-              handleData(bleNotAllData);
+              handleData(bleNotAllData,model);
               isNew = true;
               bleNotAllData.clear();
             }else{
@@ -54,7 +59,7 @@ class BluetoothDataParse {
               });
             }
           }else{
-            handleData(element);
+            handleData(element,model);
           }
 
         }
@@ -63,7 +68,7 @@ class BluetoothDataParse {
         bleNotAllData.addAll(data);
         if(bleNotAllData[0] - 1 == bleNotAllData.length){
           print('组包2----${data}');
-          handleData(bleNotAllData);
+          handleData(bleNotAllData,model);
           isNew = true;
           bleNotAllData.clear();
         }else{
@@ -77,21 +82,39 @@ class BluetoothDataParse {
       print('蓝牙设备响应数据不合法=${data}');
     }
   }
-  static handleData(List<int> element){
+  static handleData(List<int> element,BLEModel mode){
     int cmd = element[1];
     switch (cmd) {
       case ResponseCMDType.deviceInfo:
         int parameter_data = element[2];
         int statu_data = element[3];
+        print('设备信息=======${statu_data}');
+        // 获取是哪个已连接的设备
+        List<BLEModel>_list = BluetoothManager().hasConnectedDeviceList.where((element) =>   element.device!= null && (element.device!.id == mode.device!.id)).toList();
+        BLEModel currentDevice = _list.first;
         if (parameter_data == 0x01) {
           // 开关机
           BluetoothManager().gameData.powerOn = (statu_data == 0x01);
+          currentDevice.powerOn = (statu_data == 0x01);
         } else if (parameter_data == 0x02) {
           // 电量
           BluetoothManager().gameData.powerValue = statu_data;
+          currentDevice.powerValue = statu_data;
+          print('电量=======${statu_data}');
         }
+        GameUtil gameUtil = GetIt.instance<GameUtil>();
+        // 说明是当前选择的游戏设备
+        if(gameUtil.selectedDeviceModel.device != null && gameUtil.selectedDeviceModel.device!.id == mode.device!.id){
+          EventBus().sendEvent(kCurrentDeviceInfoChange);
+        }
+
         break;
       case ResponseCMDType.targetResponse:
+      // 在游戏页面 才处理数据
+        GameUtil gameUtil = GetIt.instance<GameUtil>();
+        if (!gameUtil.nowISGamePage) {
+          return;
+        }
         int data = element[2];
        // print('------data=${element}');
         String binaryString = data.toRadixString(2); // 转换成二进制字符串
@@ -108,6 +131,11 @@ class BluetoothDataParse {
         }
         break;
       case ResponseCMDType.score:
+      // 在游戏页面 才处理数据
+        GameUtil gameUtil = GetIt.instance<GameUtil>();
+        if (!gameUtil.nowISGamePage) {
+          return;
+        }
         int data = element[2];
         BluetoothManager().gameData.score = data;
         // 通知
@@ -117,17 +145,32 @@ class BluetoothDataParse {
         // print('${data}:得分');
         break;
       case ResponseCMDType.gameStatu:
+      // 在游戏页面 才处理数据
+        GameUtil gameUtil = GetIt.instance<GameUtil>();
+        if (!gameUtil.nowISGamePage) {
+          return;
+        }
         int data = element[2];
         BluetoothManager().gameData.gameStart = (data == 0x01);
         // print('游戏状态---${data}');
         BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
         break;
       case ResponseCMDType.remainTime:
+      // 在游戏页面 才处理数据
+        GameUtil gameUtil = GetIt.instance<GameUtil>();
+        if (!gameUtil.nowISGamePage) {
+          return;
+        }
         int data = element[2];
         BluetoothManager().gameData.remainTime = data;
         BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
         break;
       case ResponseCMDType.millisecond:
+      // 在游戏页面 才处理数据
+        GameUtil gameUtil = GetIt.instance<GameUtil>();
+        if (!gameUtil.nowISGamePage) {
+          return;
+        }
         int data = element[2];
         BluetoothManager().gameData.millSecond = data;
         //  print('毫秒刷新---${data}');

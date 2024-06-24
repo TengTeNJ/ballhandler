@@ -11,6 +11,7 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:get_it/get_it.dart';
 import '../models/ble/ble_model.dart';
 import 'global.dart';
+import 'notification_bloc.dart';
 
 class BluetoothManager {
   static final BluetoothManager _instance = BluetoothManager._internal();
@@ -25,10 +26,12 @@ class BluetoothManager {
 
   // 蓝牙列表
   List<BLEModel> deviceList = [];
+
+  // 页面上展示的蓝牙列表
   List<BLEModel> get showDeviceList {
     List<BLEModel> virtualList = [];
     kBLEDevice_ReleaseNames.forEach((element) {
-      BLEModel model =  BLEModel(deviceName: element);
+      BLEModel model = BLEModel(deviceName: element);
       virtualList.add(model);
     });
     GameUtil gameUtil = GetIt.instance<GameUtil>();
@@ -36,24 +39,36 @@ class BluetoothManager {
     // 获取到当前游戏的场景模式 并置顶
     final _topDeviceName = kBLEDevice_ReleaseNames[gameUtil.gameScene.index];
     // 置顶当前场景的元素
-    final _model =  virtualList.firstWhere((virtual) => virtual.deviceName == _topDeviceName);
-    if(_model != null){
+    final _model = virtualList
+        .firstWhere((virtual) => virtual.deviceName == _topDeviceName);
+    if (_model != null) {
       virtualList.remove(_model);
       virtualList.insert(0, _model);
     }
     // 如果搜索到的设备列表中已经有了这样的设备 就移除虚拟设备
     this.deviceList.forEach((element) {
-      if(kBLEDevice_ReleaseNames.contains(element.device!.name)){
-       final _model =  virtualList.firstWhere((virtual) => virtual.deviceName == element.device!.name);
-       virtualList.remove(_model);
+      if (kBLEDevice_ReleaseNames.contains(element.device!.name)) {
+        final _model = virtualList.firstWhere(
+            (virtual) => virtual.deviceName == element.device!.name);
+        virtualList.remove(_model);
       }
       // 把已连接的放到前面
       virtualList.insert(0, element);
     });
     // 最后需要把搜索到的设备置顶
     return virtualList;
-  } // 页面上展示的蓝牙列表
+  }
 
+  // 已经完成蓝牙连接的设备列表
+  List<BLEModel> get hasConnectedDeviceList {
+    List<BLEModel> connectedDeviceList = [];
+    this.deviceList.forEach((element) {
+      if(element.device != null){
+        connectedDeviceList.add(element);
+      }
+    });
+    return connectedDeviceList;
+  }
 
   // 游戏数据
   GameData gameData = GameData();
@@ -114,36 +129,37 @@ class BluetoothManager {
         final notifyCharacteristic = QualifiedCharacteristic(
             serviceId: Uuid.parse(kBLE_SERVICE_NOTIFY_UUID),
             characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_NOTIFY_UUID),
-            deviceId: model.device!.id );
+            deviceId: model.device!.id);
         final writerCharacteristic = QualifiedCharacteristic(
             serviceId: Uuid.parse(kBLE_SERVICE_WRITER_UUID),
             characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_WRITER_UUID),
             deviceId: model.device!.id);
         model.notifyCharacteristic = notifyCharacteristic;
         model.writerCharacteristic = writerCharacteristic;
-       //writerDataToDevice(model, onLineData());
+        //writerDataToDevice(model, onLineData());
         // 连接成功弹窗
         EasyLoading.showSuccess('Bluetooth connection successful');
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((data) {
           print("deviceId =${model.device!.id}---上报来的数据data = $data");
-          GameUtil gameUtil = GetIt.instance<GameUtil>();
-          // 在游戏页面 才处理数据
-          if (gameUtil.nowISGamePage) {
-            BluetoothDataParse.parseData(data);
-          }
+          BluetoothDataParse.parseData(data,model);
         });
         // 连接成功，则设备列表页面弹窗消失
         NavigatorUtil.pop();
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
         EasyLoading.showError('disconected');
-        if(conectedDeviceCount.value > 0){
+        if (conectedDeviceCount.value > 0) {
           conectedDeviceCount.value--;
         }
         // 失去连接
         model.hasConected = false;
         this.deviceList.remove(model);
+        // 说明是当前选择的游戏设备 并且断开了连接
+        GameUtil gameUtil = GetIt.instance<GameUtil>();
+        if(gameUtil.selectedDeviceModel.device != null && gameUtil.selectedDeviceModel.device!.id == model.device!.id){
+          EventBus().sendEvent(kCurrentDeviceDisconnected);
+        }
         deviceListLength.value = this.deviceList.length;
       }
     });

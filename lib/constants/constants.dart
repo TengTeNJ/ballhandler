@@ -343,6 +343,8 @@ const kBackFromFinish = 'back_from_finish'; // 从finish页面返回
 const kMessageRead = 'read_message'; // 阅读消息
 const kGetMessage = 'get_message'; // 收到消息
 const kIntegralChange = 'change_integral'; // 积分兑换
+const kCurrentDeviceInfoChange = 'current_device_info_change'; // 当前游戏设备信息改变
+const kCurrentDeviceDisconnected = 'current_device_disconnected'; // 当前游戏设备断开连接
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
   "1" :{

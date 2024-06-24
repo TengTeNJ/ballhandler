@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/controllers/participants/p1_controller.dart';
 import 'package:code/controllers/participants/p2_controller.dart';
 import 'package:code/controllers/participants/p3_controller.dart';
+import 'package:code/models/ble/ble_model.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
@@ -33,24 +34,29 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       child: TrainingModeListView(
         model: _datas[index],
         scanBleList: () async {
-         // 数据埋点
-         //  EventTrackUtil.eventTrack(kSelectMode,{
-         //    'bleCount':BluetoothManager().conectedDeviceCount.value,
-         //    "selectModeId": index + 1
-         //  });
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
           if (BluetoothManager().conectedDeviceCount.value == 0) {
            // TTDialog.bleListDialog(context);
             if(await SystemUtil.isIPad()){
-              print('ipad-----');
               TTDialog.ipadbleListDialog(context);
             }else{
-              print('not ipad-----');
               TTDialog.bleListDialog(context);
             }
-            print('没有连接的蓝牙设备，先蓝牙连接');
           } else {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
+            List<String> bleNames = [kBLEDevice_NewName,k270_Name,kThreeBallHandler_Name];
+            // 确认已连接的设备中是否有和当前模式匹配的,有的话则取第一个
+            List<BLEModel> devices =  BluetoothManager().hasConnectedDeviceList.where((element) => element.deviceName ==bleNames[ gameUtil.gameScene.index] ).toList();
+            if(devices.length == 0){
+              // 没有和当前模式相匹配的设备
+              if(await SystemUtil.isIPad()){
+                TTDialog.ipadbleListDialog(context);
+              }else{
+                TTDialog.bleListDialog(context);
+              }
+              return;
+            }
+            gameUtil.selectedDeviceModel = devices.first;
             gameUtil.modelId = index + 1;
             if (gameUtil.gameScene == GameScene.five) {
               NavigatorUtil.push(Routes.recordselect);
@@ -114,10 +120,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                     onTap: () async{
                        //  TTDialog.bleListDialog(context);
                       if(await SystemUtil.isIPad()){
-                      print('ipad-----');
                       TTDialog.ipadbleListDialog(context);
                       }else{
-                      print('not ipad-----');
                       TTDialog.bleListDialog(context);
                       }
 

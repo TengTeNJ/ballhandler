@@ -8,6 +8,8 @@ import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
+import 'package:code/views/base/battery_view.dart';
+import 'package:code/views/base/ble_view.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_to_airplay/flutter_to_airplay.dart';
@@ -211,7 +213,17 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
           child: Column(
         children: [
           SizedBox(
-            height: 85,
+            height: 40,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 16, right: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [BatteryView(), BLEView()],
+            ),
+          ),
+          SizedBox(
+            height: 28,
           ),
           Constants.boldBlackTextWidget(_title, 24),
           SizedBox(
@@ -537,11 +549,7 @@ Widget HorizontalScreenWidget(BuildContext context, String path) {
             ),
             recordWidget(),
             GestureDetector(
-              onTap: () async {
-                //NavigatorUtil.push(Routes.setting);
-                BluetoothManager().writerDataToDevice(
-                    BluetoothManager().deviceList[0], openAllBlueLightData());
-              },
+              onTap: () async {},
               child: Container(
                 child: Center(
                   child: Image(

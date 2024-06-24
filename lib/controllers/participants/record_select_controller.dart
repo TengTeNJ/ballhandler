@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
+import 'package:code/views/base/battery_view.dart';
 import 'package:code/views/participants/record_select_view.dart';
 import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
               Padding(
                 padding: EdgeInsets.only(left: 16, right: 16, top: 60),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                       onTap: () {
@@ -58,7 +60,8 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    BatteryView()
                   ],
                 ),
               ),

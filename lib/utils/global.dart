@@ -1,3 +1,4 @@
+import 'package:code/models/ble/ble_model.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
 
@@ -12,6 +13,7 @@ class GameUtil {
   String firebaseToken = ''; // firebase 推送的token
   ActivityModel activityModel = ActivityModel(); // 当前的ActivityModel
   bool hasShowNitice = false; // 是否已经展示首页获奖弹窗
+  BLEModel selectedDeviceModel = BLEModel(deviceName: 'deviceName'); // 选择的游戏设备
   double get imageWidth {
     if(this.modelId == 1){
       return 200;
