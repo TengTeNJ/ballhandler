@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/account/set_email_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/account.dart';
@@ -83,7 +84,7 @@ class _SettingControllerState extends State<SettingController> {
               ),
               Consumer<UserModel>(builder: (context, userModel, child) {
                 return SettingView(
-                  showArrows: [true, false, true],
+                  showArrows:  ISEmpty(UserProvider.of(context).email) ?  [true, true, true] : [true, false, true],
                   title: 'Edit Profile',
                   datas: ['Username', 'Email', 'Birthday'],
                   detailTitles: [
@@ -102,6 +103,10 @@ class _SettingControllerState extends State<SettingController> {
                           NSUserDefault.setKeyValue(kUserName, value);
                         }
                       });
+                    }else if(index == 1){
+                       if(ISEmpty(UserProvider.of(context).email)){
+                         NavigatorUtil.present(SetEmailController());
+                       }
                     } else if (index == 2) {
                       // 修改生日
                       print('userModel.brith=${userModel.brith}');

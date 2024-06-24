@@ -1815,6 +1815,13 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
     // TODO: implement initState
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
+    _pageController.addListener(() {
+      int currentpage = _pageController.page!.round();
+      _currentIndex = currentpage;
+      setState(() {
+        
+      });
+    });
   }
 
   @override

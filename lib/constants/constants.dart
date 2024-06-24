@@ -345,7 +345,7 @@ const kGetMessage = 'get_message'; // 收到消息
 const kIntegralChange = 'change_integral'; // 积分兑换
 const kCurrentDeviceInfoChange = 'current_device_info_change'; // 当前游戏设备信息改变
 const kCurrentDeviceDisconnected = 'current_device_disconnected'; // 当前游戏设备断开连接
-
+const kPopSubscribeDialog= 'pop_subscribe_dialog'; // 主动弹出订阅弹窗
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
   "1" :{
     "7" : "ZIGZAG Challenge",

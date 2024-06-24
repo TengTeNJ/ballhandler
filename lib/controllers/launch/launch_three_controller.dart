@@ -1,3 +1,4 @@
+import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -203,6 +204,7 @@ class LaunchThreeController extends StatelessWidget {
                       onTap: (){
                         print('Join Now');
                         NavigatorUtil.popToRoot();
+                        EventBus().sendEvent(kPopSubscribeDialog);
                       },
                       child: Container(
                         height: 40,
@@ -224,6 +226,7 @@ class LaunchThreeController extends StatelessWidget {
                         child: Center(child: Constants.mediumGreyTextWidget('Maybe later', 16),),
                       ),
                     ),
+                    SizedBox(height: 58,),
                   ],
                 ),
               )),

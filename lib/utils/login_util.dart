@@ -40,7 +40,7 @@ class LoginUtil {
           };
           final _response = await Account.thirdLogin(_map);
           if (_response.success) {
-            NSUserDefault.setKeyValue(kUserEmail, googleUser.email ?? 'Unknown');
+            NSUserDefault.setKeyValue(kUserEmail, googleUser.email ?? '');
           }
           return _response;
         }
@@ -62,7 +62,7 @@ class LoginUtil {
         };
         final _response = await Account.thirdLogin(_map);
         if (_response.success) {
-          NSUserDefault.setKeyValue(kUserEmail, 'Unknown');
+          NSUserDefault.setKeyValue(kUserEmail, '');
         }
         return _response;
       }else{

@@ -114,7 +114,7 @@ class Account {
     UserProvider.of(context).brith = ISEmpty(_response.data!.birthday) ? '--' : _response.data!.birthday;
 
     final _email = await NSUserDefault.getValue(kUserEmail);
-    UserProvider.of(context).email = _email ?? 'Unknown';
+    UserProvider.of(context).email = _email ?? '';
 
     // 登录成功后绑定用户和推送的token
     GameUtil gameUtil = GetIt.instance<GameUtil>();

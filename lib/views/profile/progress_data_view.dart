@@ -17,7 +17,7 @@ class _ProgressDataViewState extends State<ProgressDataView> {
   Widget build(BuildContext context) {
     return Container(
       height: 91,
-      padding: EdgeInsets.only(left: 12,right: 12),
+      padding: EdgeInsets.only(left: 12,right: 36),
       decoration: BoxDecoration(
           color: hexStringToColor('#3E3E55'),
           borderRadius: BorderRadius.circular(5)),
@@ -33,7 +33,7 @@ class _ProgressDataViewState extends State<ProgressDataView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(width: 200,height: 6,child: LinearProgressIndicator(
+                  Container(width: Constants.screenWidth(context) * 0.53,height: 6,child: LinearProgressIndicator(
                     minHeight: 6,
                     borderRadius: BorderRadius.circular(10),
                     value: widget.model.integral/widget.model.upperLimit,

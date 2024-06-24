@@ -37,7 +37,6 @@ class MemberShipDetailController extends StatelessWidget {
                     width: 8,
                   ),
                   Container(
-                    color: Colors.red,
                     width: Constants.screenWidth(context) - 72,
                     child: Constants.boldWhiteTextWidget(
                         textAlign: TextAlign.start,
@@ -71,13 +70,17 @@ class MemberShipDetailController extends StatelessWidget {
               ),
               SizedBox(height: 97,),
               Image(
-                image: AssetImage("images/launch/launch_3.png"),
-                width: 246,
-                height: 221,
-                // fit: BoxFit.,
+                  image: AssetImage("images/launch/launch_3.png"),
+                  width: 246,
+                  height: 221,
+                  fit: BoxFit.contain
               ),
               SizedBox(height: 56,),
-              Constants.boldWhiteTextWidget('Full Privilege to\nPotent Hockey DanglerStar App', 20,textAlign: TextAlign.start,height: 1.25),
+              Row(
+                children: [
+                  Constants.boldWhiteTextWidget('Full Privilege to\nPotent Hockey DanglerStar App', 20,textAlign: TextAlign.start,height: 1.25)
+                ],
+              ),
               SizedBox(height: 20,),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,

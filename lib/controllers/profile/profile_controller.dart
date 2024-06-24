@@ -134,6 +134,7 @@ class _ProfileControllerState extends State<ProfileController> {
                             return;
                           }
                           final croppedFile = await ImageCropper().cropImage(
+                            cropStyle: CropStyle.circle,
                             maxHeight: 64,
                             maxWidth: 64,
                             sourcePath:

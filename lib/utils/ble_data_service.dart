@@ -88,7 +88,6 @@ class BluetoothDataParse {
       case ResponseCMDType.deviceInfo:
         int parameter_data = element[2];
         int statu_data = element[3];
-        print('设备信息=======${statu_data}');
         // 获取是哪个已连接的设备
         List<BLEModel>_list = BluetoothManager().hasConnectedDeviceList.where((element) =>   element.device!= null && (element.device!.id == mode.device!.id)).toList();
         BLEModel currentDevice = _list.first;

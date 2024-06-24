@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserInfoView extends StatefulWidget {
+  bool hasLogin;
   Function?subscribeTap;
-   UserInfoView({this.subscribeTap});
+   UserInfoView({this.subscribeTap,this.hasLogin = false});
 
   @override
   State<UserInfoView> createState() => _UserInfoViewState();
@@ -65,7 +66,7 @@ class _UserInfoViewState extends State<UserInfoView> {
               ),
             ],
           ),
-          GestureDetector(
+          widget.hasLogin ? GestureDetector(
             child: Image(
               image: AssetImage('images/participants/subscribe.png'),
               width: 20,
@@ -78,7 +79,7 @@ class _UserInfoViewState extends State<UserInfoView> {
                 widget.subscribeTap!();
               }
             },
-          )
+          ) : Container()
         ],
       );
     });

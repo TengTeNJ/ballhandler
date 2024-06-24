@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/account/set_email_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/services/sqlite/data_base.dart';
@@ -27,7 +28,7 @@ class HomePageController extends StatefulWidget {
 class _HomePageViewState extends State<HomePageController> {
   int _currentIndex = 0;
   late final initialPage;
-
+  bool haslogin = false;
   late PageController _pageController;
   late StreamSubscription subscription;
   List<Widget> _pageViews = [];
@@ -37,6 +38,7 @@ class _HomePageViewState extends State<HomePageController> {
     // 登录了则请求相关数据
     final _token = await NSUserDefault.getValue(kAccessToken);
     if (_token != null && _token.length > 0) {
+      haslogin = true;
       Participants.getHomeUserData().then((value) {
         if (value.success && value.data != null) {
           if(!mounted){
@@ -59,6 +61,8 @@ class _HomePageViewState extends State<HomePageController> {
         }
       });
     } else {
+      // 未登录状态
+      haslogin = false;
       DatabaseHelper().getLocalGuestData(context);
     }
   }
@@ -95,7 +99,7 @@ class _HomePageViewState extends State<HomePageController> {
       }
     });
     // 监听
-    subscription = EventBus().stream.listen((event) {
+    subscription = EventBus().stream.listen((event) async{
       if (event == kLoginSucess || event == kFinishGame || event == kSignOut) {
         // 登录成功,完成游戏
         getHomeData(context);
@@ -103,7 +107,16 @@ class _HomePageViewState extends State<HomePageController> {
           // 设置埋点通用参数
          // EventTrackUtil.setDefaultParameters();
           querySceneListdata(); // 防止初次安装用户未选择网络
+          final _email =  UserProvider.of(context).email;
+          print('_email======' + _email);
+          if(ISEmpty(_email)){
+            // 如果邮箱为空，则提示用户去绑定
+            NavigatorUtil.present(SetEmailController());
+          }
         }
+      }else if(event == kPopSubscribeDialog){
+        // 订阅弹窗
+        TTDialog.subscribeDialog(context);
       }
     });
 
@@ -155,6 +168,7 @@ class _HomePageViewState extends State<HomePageController> {
             Container(
               margin: EdgeInsets.only(left: 16, right: 16),
               child: UserInfoView(
+                hasLogin: haslogin,
                 subscribeTap: (){
                   TTDialog.subscribeDialog(context);
                 },
