@@ -137,10 +137,10 @@ class _SettingControllerState extends State<SettingController> {
                 height: 32,
               ),
               SettingView(
-                showArrows: [true, true,false],
-                title: 'Privacy',
-                detailTitles: ['', '', _version],
-                datas: ['Private Profile', 'Activity Feed Privacy','Version'],
+                showArrows: [true, true,true,false],
+                title: 'More',
+                detailTitles: ['', '', '',_version],
+                datas: ['Private Profile', 'Activity Feed Privacy' ,'Terms of Service','Version'],
                 selectItem: (index) {
                   if (index == 0) {
                     NavigatorUtil.push(Routes.subsetting, arguments: {
@@ -149,10 +149,12 @@ class _SettingControllerState extends State<SettingController> {
                       "subTitle":
                           "When your profile is Private,only membersyou approve can see your profile and workout history",
                     });
-                  } else {
+                  } else if (index == 1){
                     NavigatorUtil.push(Routes.subsetting, arguments: {
                       "title": "Argument",
                     });
+                  }else if (index == 2){
+                    NavigatorUtil.push(Routes.webview);
                   }
                 },
               ),

@@ -63,7 +63,7 @@ class BluetoothManager {
   List<BLEModel> get hasConnectedDeviceList {
     List<BLEModel> connectedDeviceList = [];
     this.deviceList.forEach((element) {
-      if(element.device != null){
+      if(element.hasConected != null && element.hasConected == true ){
         connectedDeviceList.add(element);
       }
     });

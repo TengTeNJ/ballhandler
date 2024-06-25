@@ -221,6 +221,7 @@ class LaunchThreeController extends StatelessWidget {
                       onTap: (){
                         print('Maybe later');
                         NavigatorUtil.popToRoot();
+                        EventBus().sendEvent(kPopSubscribeLate);
                       },
                       child: Container(
                         child: Center(child: Constants.mediumGreyTextWidget('Maybe later', 16),),

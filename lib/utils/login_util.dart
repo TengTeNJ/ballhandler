@@ -87,7 +87,7 @@ class LoginUtil {
         };
         final _response = await Account.thirdLogin(_map);
         if (_response.success) {
-          NSUserDefault.setKeyValue(kUserEmail, credential.email ?? 'Unknown');
+          NSUserDefault.setKeyValue(kUserEmail, credential.email ?? '');
         }
         return _response;
       }

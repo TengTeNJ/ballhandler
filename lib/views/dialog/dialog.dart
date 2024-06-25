@@ -547,7 +547,7 @@ class ChampionDialog extends StatelessWidget {
           SizedBox(
             height: 36,
           ),
-          Constants.customTextWidget('CHAMPION', 24, '#FBBA00'),
+          Constants.customTextWidget('CHAMPION', 24, '#FBBA00',fontWeight: FontWeight.bold),
           SizedBox(
             height: 18,
           ),

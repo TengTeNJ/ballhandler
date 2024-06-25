@@ -108,7 +108,6 @@ class _HomePageViewState extends State<HomePageController> {
          // EventTrackUtil.setDefaultParameters();
           querySceneListdata(); // 防止初次安装用户未选择网络
           final _email =  UserProvider.of(context).email;
-          print('_email======' + _email);
           if(ISEmpty(_email)){
             // 如果邮箱为空，则提示用户去绑定
             NavigatorUtil.present(SetEmailController());
@@ -117,6 +116,19 @@ class _HomePageViewState extends State<HomePageController> {
       }else if(event == kPopSubscribeDialog){
         // 订阅弹窗
         TTDialog.subscribeDialog(context);
+        // 防止首次调用poproroot后把设置邮箱的弹窗dismiss
+        final _email =  UserProvider.of(context).email;
+        if(ISEmpty(_email)){
+          // 如果邮箱为空，则提示用户去绑定
+          NavigatorUtil.present(SetEmailController());
+        }
+      }else if(event == kPopSubscribeLate){
+        // 防止首次调用poproroot后把设置邮箱的弹窗dismiss
+        final _email =  UserProvider.of(context).email;
+        if(ISEmpty(_email)){
+          // 如果邮箱为空，则提示用户去绑定
+          NavigatorUtil.present(SetEmailController());
+        }
       }
     });
 

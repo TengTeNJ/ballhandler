@@ -25,7 +25,11 @@ class _TTWebViewControllerState extends State<TTWebViewController> {
         NavigationDelegate(
           onProgress: (int progress) {
             // Update loading bar.
-            EasyLoading.showProgress(progress.toDouble());
+            if(progress>=100){
+              EasyLoading.dismiss();
+            }else{
+              EasyLoading.showProgress(progress.toDouble()/100);
+            }
           },
           onPageStarted: (String url) {},
           onPageFinished: (String url) {},
