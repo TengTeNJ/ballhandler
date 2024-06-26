@@ -36,7 +36,6 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
         scanBleList: () async {
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
           if (BluetoothManager().conectedDeviceCount.value == 0) {
-           // TTDialog.bleListDialog(context);
             if(await SystemUtil.isIPad()){
               TTDialog.ipadbleListDialog(context);
             }else{
@@ -44,7 +43,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             }
           } else {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
-            List<String> bleNames = [kBLEDevice_NewName,k270_Name,kThreeBallHandler_Name];
+            List<String> bleNames = [kFiveBallHandler_Name  ,k270_Name,kThreeBallHandler_Name];
             // 确认已连接的设备中是否有和当前模式匹配的,有的话则取第一个
             List<BLEModel> devices =  BluetoothManager().hasConnectedDeviceList.where((element) => element.deviceName ==bleNames[ gameUtil.gameScene.index] ).toList();
             if(devices.length == 0){

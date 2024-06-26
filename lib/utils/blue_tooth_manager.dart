@@ -136,7 +136,6 @@ class BluetoothManager {
             deviceId: model.device!.id);
         model.notifyCharacteristic = notifyCharacteristic;
         model.writerCharacteristic = writerCharacteristic;
-        //writerDataToDevice(model, onLineData());
         // 连接成功弹窗
         EasyLoading.showSuccess('Bluetooth connection successful');
         // 监听数据
@@ -144,6 +143,7 @@ class BluetoothManager {
           print("deviceId =${model.device!.id}---上报来的数据data = $data");
           BluetoothDataParse.parseData(data,model);
         });
+        writerDataToDevice(model,questDeviceInfoData());
         // 连接成功，则设备列表页面弹窗消失
         NavigatorUtil.pop();
       } else if (connectionStateUpdate.connectionState ==

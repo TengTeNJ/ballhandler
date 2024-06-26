@@ -10,6 +10,7 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C80F4294D02FB00263BE5 /* RunnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 331C80F3294D02FB00263BE5 /* RunnerTests.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		556130DA2C2AC902007D91F3 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556130D92C2AC902007D91F3 /* StoreKit.framework */; };
 		557A49492BC77365007334DB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 557A49482BC77365007334DB /* GoogleService-Info.plist */; };
 		55B5B0A82BC943CD00B6EA73 /* AuthKey_MZMC6DG9X5.p8 in Resources */ = {isa = PBXBuildFile; fileRef = 55B5B0A72BC943CD00B6EA73 /* AuthKey_MZMC6DG9X5.p8 */; };
 		807F55EC2F07ACE34BDFB1AD /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5349877573EE1A1BABEE9461 /* Pods_RunnerTests.framework */; };
@@ -58,6 +59,7 @@
 		4F801936C2B04A1A74DA292B /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5349877573EE1A1BABEE9461 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		554712D92BB9472C00756D79 /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
+		556130D92C2AC902007D91F3 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		557A49472BC7720F007334DB /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		557A49482BC77365007334DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		55A65DED2BAEAB3000351129 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECF6A47CF6F6629FF08E756D /* Pods_Runner.framework in Frameworks */,
+				556130DA2C2AC902007D91F3 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +187,7 @@
 		F144FC1132783DE44F60C747 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				556130D92C2AC902007D91F3 /* StoreKit.framework */,
 				4F801936C2B04A1A74DA292B /* Pods_Runner.framework */,
 				5349877573EE1A1BABEE9461 /* Pods_RunnerTests.framework */,
 			);

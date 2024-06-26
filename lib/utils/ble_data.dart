@@ -21,3 +21,9 @@ List<int> milleEnableData(){
   List<int> values = [0xA5,0x06,0x34,0x01,v,0xAA];
   return values;
 }
+
+List<int> questDeviceInfoData(){
+  int v = 0xA5 + 0x05 + 0x36;
+  List<int> values = [0xA5,0x05,0x36,v,0xAA];
+  return values;
+}
