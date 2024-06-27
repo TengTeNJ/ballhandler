@@ -11,6 +11,7 @@ import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/string_util.dart';
+import 'package:code/views/profile/membership_scb_view.dart';
 import 'package:code/views/profile/profile_grid_list_view.dart';
 import 'package:code/views/profile/progress_data_view.dart';
 import 'package:code/views/profile/reward_icons_view.dart';
@@ -224,9 +225,11 @@ class _ProfileControllerState extends State<ProfileController> {
                           '#B1B1B1'),
                     ],
                   ),
-                  SizedBox(
-                    height: 32,
-                  ),
+                  UserProvider.of(context).hasLogin
+                      ? MemberShipScbView()
+                      : SizedBox(
+                          height: 32,
+                        ),
                   GestureDetector(
                     onTap: () {
                       // 积分页面
@@ -268,9 +271,11 @@ class _ProfileControllerState extends State<ProfileController> {
                     titles: ['First Trains', '100 pts', '200pts'],
                     currentLevel: 1,
                   ),
-                  SizedBox(height: 24,),
+                  SizedBox(
+                    height: 24,
+                  ),
                   RewardiconsView(
-                    titles: ['First Trains', '0.1 sec', '0.2sec','0.5sec'],
+                    titles: ['First Trains', '0.1 sec', '0.2sec', '0.5sec'],
                     currentLevel: 2,
                   ),
                 ],

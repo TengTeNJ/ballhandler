@@ -13,6 +13,7 @@ import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:status_bar_control/status_bar_control.dart';
 import '../../utils/global.dart';
 import '../../utils/notification_bloc.dart';
 import '../../utils/system_device.dart';
@@ -33,6 +34,8 @@ class _GameFinishControllerState extends State<GameFinishController> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // 隐藏状态栏
+    StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     queryVideoCount();
   }

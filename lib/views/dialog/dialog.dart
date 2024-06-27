@@ -1820,6 +1820,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
       _currentIndex = currentpage;
       setState(() {
         
+
       });
     });
   }
@@ -1867,10 +1868,11 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
               height: 153,
               child: PageView.builder(
                   controller: _pageController,
-                  itemCount: 3,
+                  itemCount: 2,
                   itemBuilder: (context, index) {
                     return Container(
-                      color: _colors[index],
+                      // color: _colors[index],
+                      child: Image(image: AssetImage('images/launch/subscribe_${index+1}.png'),fit: BoxFit.fitHeight,),
                     );
                   }),
             ),
@@ -1878,7 +1880,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
               height: 16,
             ),
             IndicatorView(
-              count: 3,
+              count: 2,
               currentPage: _currentIndex,
               defaultColor: Color.fromRGBO(204, 204, 204, 1.0),
               currentPageColor: Constants.baseStyleColor,

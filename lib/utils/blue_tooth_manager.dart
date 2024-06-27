@@ -15,14 +15,13 @@ import 'notification_bloc.dart';
 
 class BluetoothManager {
   static final BluetoothManager _instance = BluetoothManager._internal();
+  final _ble = FlutterReactiveBle();
 
   factory BluetoothManager() {
+    _instance.listenBLEStatu();
     return _instance;
   }
-
   BluetoothManager._internal();
-
-  final _ble = FlutterReactiveBle();
 
   // 蓝牙列表
   List<BLEModel> deviceList = [];
@@ -81,30 +80,34 @@ class BluetoothManager {
   final ValueNotifier<int> conectedDeviceCount = ValueNotifier(0);
 
   Stream<DiscoveredDevice>? _scanStream;
-
+  StreamSubscription? _bleListen;
+  StreamSubscription? _bleStatuListen;
   /*开始扫描*/
   Future<void> startScan() async {
     // 不能重复扫描
     if (_scanStream != null) {
       return;
     }
-    _scanStream = _ble.scanForDevices(
-      withServices: [],
-      scanMode: ScanMode.lowLatency,
-    );
-    _scanStream!.listen((DiscoveredDevice event) {
-      // 处理扫描到的蓝牙设备
-      // print('event.name=${event.name}');
-      if (kBLEDevice_Names.indexOf(event.name) != -1) {
-        // 如果设备列表数组中无，则添加
-        if (!hasDevice(event.id)) {
-          this.deviceList.add(BLEModel(deviceName: event.name, device: event));
-          deviceListLength.value = this.deviceList.length;
-        } else {
-          // 设备列表数组中已有，则忽略
+
+    if(_scanStream == null){
+      _scanStream = _ble.scanForDevices(
+        withServices: [],
+        scanMode: ScanMode.lowLatency,
+      );
+      _bleListen =_scanStream!.listen((DiscoveredDevice event) {
+        // 处理扫描到的蓝牙设备
+        // print('event.name=${event.name}');
+        if (kBLEDevice_Names.indexOf(event.name) != -1) {
+          // 如果设备列表数组中无，则添加
+          if (!hasDevice(event.id)) {
+            this.deviceList.add(BLEModel(deviceName: event.name, device: event));
+            deviceListLength.value = this.deviceList.length;
+          } else {
+            // 设备列表数组中已有，则忽略
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   /*连接设备*/
@@ -151,6 +154,13 @@ class BluetoothManager {
         EasyLoading.showError('disconected');
         if (conectedDeviceCount.value > 0) {
           conectedDeviceCount.value--;
+          if(conectedDeviceCount.value == 0){
+            // 所有设备断开
+            print('---------++++++=========');
+            _instance._bleListen?.cancel();
+            _instance._bleListen = null;
+            _instance._scanStream = null;
+          }
         }
         // 失去连接
         model.hasConected = false;
@@ -193,6 +203,29 @@ class BluetoothManager {
   /*停止扫描*/
   stopScan() {
     //_scanStream = null;
+  }
+
+  listenBLEStatu(){
+    if(_bleStatuListen == null){
+      print('这个代码会执行几次-----');
+      _bleStatuListen =  FlutterReactiveBle().statusStream.listen((status) {
+        print('蓝牙状态status===${status}');
+        //code for handling status updatei
+        if(status == BleStatus.poweredOff){
+          // 蓝牙开关关闭
+          _instance._bleListen?.cancel();
+          _instance._bleListen = null;
+          _instance._scanStream = null;
+        }else if(status == BleStatus.locationServicesDisabled){
+          // 安卓位置权限不允许
+        }else if(status == BleStatus.unauthorized){
+          // 未授权蓝牙权限
+        }else if(status == BleStatus.ready){
+
+        }
+      });
+    }
+
   }
 
   triggerCallback({BLEDataType type = BLEDataType.none}) {

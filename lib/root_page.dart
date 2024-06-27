@@ -83,9 +83,9 @@ class _RootPageControllerState extends State<RootPageController> {
       if (_launchFlag != null && _launchFlag == 'done') {
         // 已经加载过启动页 不需要重新加载
       } else {
-       Future.delayed(Duration(milliseconds: 500),(){
-         NavigatorUtil.push(Routes.launch1);
-       });
+        Future.delayed(Duration(milliseconds: 500), () {
+          NavigatorUtil.push(Routes.launch1);
+        });
       }
     }
   }
@@ -95,22 +95,26 @@ class _RootPageControllerState extends State<RootPageController> {
     await initFirebase(); // 初始化firebase
     // await  EventTrackUtil.setDefaultParameters();    // 设置埋点通用参数
     //  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true); // 启用调试模式 数据分析
+    // 推送token
     final fcmToken =
         await FirebaseMessaging.instance.getToken(); // 获取token 用于推送通知
-    print('fcmToken:\n${fcmToken}');
-    GameUtil gameUtil = GetIt.instance<GameUtil>();
-    gameUtil.firebaseToken = fcmToken ?? '';
-    final _accessToken = await NSUserDefault.getValue(kAccessToken);
-    if (!ISEmpty(_accessToken)) {
-      // 更新推送token
-      Account.updateAccountInfo({"firebaseToken": gameUtil.firebaseToken});
+    if (!ISEmpty(fcmToken)) {
+      print('fcmToken:\n${fcmToken}');
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      gameUtil.firebaseToken = fcmToken ?? '';
+      final _accessToken = await NSUserDefault.getValue(kAccessToken);
+      if (!ISEmpty(_accessToken)) {
+        // 更新推送token
+        Account.updateAccountInfo({"firebaseToken": gameUtil.firebaseToken});
+      }
     }
-
+    // 删除本地存储的视频
     final _datas =
         await DatabaseHelper().getVideoListData(kDataBaseTVideoableName);
     if (_datas != null && _datas.length > 0) {
       VideoUtil().deleteFileInBackground(_datas);
     }
+    // 消息推送处理
     fireBaseMessage();
     fireBaseCrashlytics(); // 监听推送通知
   }

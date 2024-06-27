@@ -17,7 +17,8 @@ import 'package:get_it/get_it.dart';
 import '../../utils/event_track.dart';
 import '../../utils/global.dart';
 import '../../utils/system_device.dart';
-
+import 'package:flutter/services.dart';
+import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 class TrainingModeController extends StatefulWidget {
   const TrainingModeController({super.key});
 
@@ -88,6 +89,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     // 连接的设备的数量
     BluetoothManager().conectedDeviceCount.addListener(_listener);
     queryModeListData();
+    // 隐藏状态栏和底部导航栏
+    // FlutterStatusbarcolor.setStatusBarColor(Colors.green);
   }
 
   queryModeListData() async {

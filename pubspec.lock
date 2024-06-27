@@ -606,6 +606,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.2.1"
+  flutter_statusbarcolor_ns:
+    dependency: "direct main"
+    description:
+      name: flutter_statusbarcolor_ns
+      sha256: "28ad644daac2d692b6d0d576458b7967f1aaeaf212eddfcb40ec8b5e68621abc"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.5.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -1357,6 +1365,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.11.1"
+  status_bar_control:
+    dependency: "direct main"
+    description:
+      name: status_bar_control
+      sha256: "7f2c1f3f7fd13b85ed284eb7ca3f74ceb8dcfdd25636d3a84186d0a687d36693"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.2.1"
   stream_channel:
     dependency: transitive
     description:
