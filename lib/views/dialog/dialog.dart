@@ -20,6 +20,7 @@ import 'package:flutter_to_airplay/flutter_to_airplay.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 /**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
@@ -547,7 +548,8 @@ class ChampionDialog extends StatelessWidget {
           SizedBox(
             height: 36,
           ),
-          Constants.customTextWidget('CHAMPION', 24, '#FBBA00',fontWeight: FontWeight.bold),
+          Constants.customTextWidget('CHAMPION', 24, '#FBBA00',
+              fontWeight: FontWeight.bold),
           SizedBox(
             height: 18,
           ),
@@ -1818,10 +1820,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
     _pageController.addListener(() {
       int currentpage = _pageController.page!.round();
       _currentIndex = currentpage;
-      setState(() {
-        
-
-      });
+      setState(() {});
     });
   }
 
@@ -1839,40 +1838,48 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [CancelButton()],
             ),
-            Constants.boldWhiteTextWidget('Membership Options', 20),
+            SizedBox(
+              height: 20,
+            ),
+            Constants.boldWhiteTextWidget('Membership Options', 30),
             SizedBox(
               height: 8,
             ),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: (){
+              onTap: () {
                 NavigatorUtil.push(Routes.membership);
               },
               child: Text(
-              ' See More',
-              style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  // 添加下划线
-                  decorationColor: hexStringToColor('#B1B1B1'),
-                  // 下划线颜色
-                  decorationThickness: 2,
-                  // 下划线厚度
-                  fontFamily: 'SanFranciscoDisplay',
-                  color: hexStringToColor('#B1B1B1'),
-                  fontSize: 16),
-            ),),
+                ' See More',
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    // 添加下划线
+                    decorationColor: hexStringToColor('#B1B1B1'),
+                    // 下划线颜色
+                    decorationThickness: 2,
+                    // 下划线厚度
+                    fontFamily: 'SanFranciscoDisplay',
+                    color: hexStringToColor('#B1B1B1'),
+                    fontSize: 16),
+              ),
+            ),
             SizedBox(
               height: 24,
             ),
             Container(
+              width: 446/306 * 153,
               height: 153,
               child: PageView.builder(
                   controller: _pageController,
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     return Container(
-                      // color: _colors[index],
-                      child: Image(image: AssetImage('images/launch/subscribe_${index+1}.png'),fit: BoxFit.fitHeight,),
+                      child: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image(
+                        image: AssetImage(
+                            'images/launch/subscribe_${index + 1}.png'),
+                        fit: BoxFit.contain,
+                      ),),
                     );
                   }),
             ),
@@ -1892,6 +1899,23 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
               leftTitle: 'Annual',
               rightTitle: '14.99',
               rightDes: '179.99',
+              onTap: () async {
+                final bool available = await InAppPurchase.instance.isAvailable();
+                if (!available) {
+                  // The store cannot be reached or accessed. Update the UI accordingly.
+                }
+
+                const Set<String> _kIds = <String>{'level_001'};
+                final ProductDetailsResponse response =
+                    await InAppPurchase.instance.queryProductDetails(_kIds);
+                print('response====${response}');
+                print('productDetails====${response.productDetails}');
+
+                if (response.notFoundIDs.isNotEmpty) {
+                  // Handle the error.
+                }
+                List<ProductDetails> products = response.productDetails;
+              },
             ),
             SizedBox(
               height: 24,

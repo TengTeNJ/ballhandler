@@ -58,10 +58,6 @@ class _IntegralDetailControllerState extends State<IntegralDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    // ClipRRect(
-    //   borderRadius: BorderRadius.circular(26),
-    //
-    // ),
     return ClipRRect(
       child: Scaffold(
         backgroundColor: Constants.darkThemeColor,

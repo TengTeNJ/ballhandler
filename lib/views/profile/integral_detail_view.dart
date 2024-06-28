@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/services/http/profile.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:flutter/material.dart';
 class IntegralView extends StatefulWidget {
   IntegralModel model;
@@ -33,9 +34,9 @@ class _IntegralViewState extends State<IntegralView> {
               SizedBox(height: 8,),
              SingleChildScrollView(child:  Row(
                children: [
-                 Constants.regularGreyTextWidget(widget.model.modelName, 14),
-                 SizedBox(width: 8,),
-                 Constants.regularGreyTextWidget(widget.model.createTime, 14),
+                 widget.model.integralType == 1 ? Constants.regularGreyTextWidget(widget.model.modelName, 14) :Container() ,
+                 SizedBox(width: widget.model.integralType == 1 ? 8 : 0,),
+                 Constants.regularGreyTextWidget(StringUtil.serviceStringToShowMinuteString(widget.model.createTime), 14),
                ],
              ),scrollDirection: Axis.horizontal,)
             ],
