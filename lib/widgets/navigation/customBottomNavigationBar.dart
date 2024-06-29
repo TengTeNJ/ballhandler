@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
+import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -78,6 +79,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       currentIndex: currentIndex,
       onTap: (index) async{
         setState(() {
+          print(controBlueLightBoard(3, [1,1,0,1]));
           // AirBattle页面登录拦截
          if(index != 0){
            // 判断登录的拦截
