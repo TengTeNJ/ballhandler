@@ -3,6 +3,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
+import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
@@ -144,7 +145,13 @@ class BluetoothManager {
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((data) {
           print("deviceId =${model.device!.id}---上报来的数据data = $data");
-          BluetoothDataParse.parseData(data,model);
+          if(model.deviceName ==  k270_Name) {
+            // 解析270
+            BluetoothUltTimateDataParse.parseData(data, model);
+          }else{
+            // 解析五节
+            BluetoothDataParse.parseData(data,model);
+          }
         });
         writerDataToDevice(model,questDeviceInfoData());
         // 连接成功，则设备列表页面弹窗消失

@@ -34,7 +34,7 @@ List<int> bleNotAllData = []; // 不完整数据 被分包发送的蓝牙数据
 bool isNew = true;
 
 /*蓝牙数据解析类*/
-class BluetoothDataParse {
+class BluetoothUltTimateDataParse {
   // 数据解析
   static parseData(List<int> data, BLEModel model) {
     if (data.contains(kBLEDataFrameHeader)) {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class GameData extends ChangeNotifier {
   bool _powerOn = false; // 开机状态
   int _currentTarget = 0; // 当前响应标靶,如果是270设备，则代表响应的几个板子的索引，0-5(0为主控板，1-5为从控板)
+  int sendCurrentTarget = 0; // P3模式下 app端发送的控制的当前的板子的索引0-5(0为主控板，1-5为从控板)
   int _score = 0; // 得分
   bool _gameStart = false; // 游戏状态
   int _powerValue = 100; // 电量值
@@ -33,6 +34,12 @@ class GameData extends ChangeNotifier {
     BleULTimateLighStatu.close
   ]; // 当前面板的四个灯的状态,仅仅270设备有效
 
+  List<BleULTimateLighStatu> sendLightStatus = [
+    BleULTimateLighStatu.close,
+    BleULTimateLighStatu.close,
+    BleULTimateLighStatu.close,
+    BleULTimateLighStatu.close
+  ]; // P3模式下  app端发送当前面板的四个灯的状态,仅仅270设备有效
   String get showRemainTime => _showRemainTime;
 
   /* set方法*/
