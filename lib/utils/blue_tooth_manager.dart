@@ -156,7 +156,6 @@ class BluetoothManager {
           conectedDeviceCount.value--;
           if(conectedDeviceCount.value == 0){
             // 所有设备断开
-            print('---------++++++=========');
             _instance._bleListen?.cancel();
             _instance._bleListen = null;
             _instance._scanStream = null;
@@ -207,7 +206,6 @@ class BluetoothManager {
 
   listenBLEStatu(){
     if(_bleStatuListen == null){
-      print('这个代码会执行几次-----');
       _bleStatuListen =  FlutterReactiveBle().statusStream.listen((status) {
         print('蓝牙状态status===${status}');
         //code for handling status updatei

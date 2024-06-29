@@ -1,3 +1,4 @@
+import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart'; // 导入intl包
 
@@ -118,5 +119,25 @@ class StringUtil {
     } catch (error) {
       return '-';
     }
+  }
+
+  /*灯光掩码转为状态
+  上面每个掩码占据2BITS，
+  取值：
+  0b00-关灯;
+  0b01-红灯;
+  0b10-蓝灯;
+  0b11-红灯+蓝灯。*/
+  static BleULTimateLighStatu lightToStatu(String lightStatu){
+   if(lightStatu == '00'){
+     return BleULTimateLighStatu.close;
+   }else if(lightStatu == '01'){
+     return BleULTimateLighStatu.red;
+   }else if(lightStatu == '10'){
+     return BleULTimateLighStatu.blue;
+   }else if(lightStatu == '11'){
+     return BleULTimateLighStatu.redAndBlue;
+   }
+   return BleULTimateLighStatu.close;
   }
 }
