@@ -70,7 +70,7 @@ class _SendEmailDiaogState extends State<SendEmailDiaog> {
               child: Container(
                 child: Center(
                   child:
-                      Constants.mediumWhiteTextWidget('Check your email', 20),
+                  Constants.mediumWhiteTextWidget('Check your email', 20),
                 ),
               ),
               top: 73,
@@ -264,11 +264,11 @@ class _BLEListDialogState extends State<BLEListDialog> {
                   print('begain scan');
                   if (Platform.isAndroid) {
                     PermissionStatus locationPermission =
-                        await Permission.location.request();
+                    await Permission.location.request();
                     PermissionStatus bleScan =
-                        await Permission.bluetoothScan.request();
+                    await Permission.bluetoothScan.request();
                     PermissionStatus bleConnect =
-                        await Permission.bluetoothConnect.request();
+                    await Permission.bluetoothConnect.request();
                     if (locationPermission == PermissionStatus.granted &&
                         bleScan == PermissionStatus.granted &&
                         bleConnect == PermissionStatus.granted) {
@@ -356,11 +356,11 @@ class _IpadBLEListDialogState extends State<IpadBLEListDialog> {
                   print('begain scan');
                   if (Platform.isAndroid) {
                     PermissionStatus locationPermission =
-                        await Permission.location.request();
+                    await Permission.location.request();
                     PermissionStatus bleScan =
-                        await Permission.bluetoothScan.request();
+                    await Permission.bluetoothScan.request();
                     PermissionStatus bleConnect =
-                        await Permission.bluetoothConnect.request();
+                    await Permission.bluetoothConnect.request();
                     if (locationPermission == PermissionStatus.granted &&
                         bleScan == PermissionStatus.granted &&
                         bleConnect == PermissionStatus.granted) {
@@ -479,7 +479,9 @@ class ExchangeIntegralSuccessDialog extends StatelessWidget {
             height: 20,
           ),
           Constants.regularWhiteTextWidget(
-              'We sent an email to ${UserProvider.of(context).email} help You Receive a reward.',
+              'We sent an email to ${UserProvider
+                  .of(context)
+                  .email} help You Receive a reward.',
               14),
           SizedBox(
             height: 60,
@@ -624,7 +626,9 @@ class AwardDialog extends StatelessWidget {
                 padding: EdgeInsets.only(left: 16, right: 16),
                 child: Constants.customTextWidget(
                     'Congratulations on winning the championshipin this Air Battle We sent an email to ' +
-                        UserProvider.of(context).email +
+                        UserProvider
+                            .of(context)
+                            .email +
                         ' help You Receive a reward',
                     16,
                     '#FFFFFF',
@@ -667,12 +671,11 @@ class TimeSelectDialog extends StatefulWidget {
   Function? datePickerSelect;
   Function? confirm;
 
-  TimeSelectDialog(
-      {this.datePickerSelect,
-      this.confirm,
-      this.selectIndex = 0,
-      this.startTime,
-      this.endTime});
+  TimeSelectDialog({this.datePickerSelect,
+    this.confirm,
+    this.selectIndex = 0,
+    this.startTime,
+    this.endTime});
 
   @override
   State<TimeSelectDialog> createState() => _TimeSelectDialogState();
@@ -743,12 +746,12 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                       _selectIndex = 0;
 
                       DateTime yesterday =
-                          _selectedDate.subtract(Duration(days: 1));
+                      _selectedDate.subtract(Duration(days: 1));
                       _yesterdayDate = yesterday;
                       endTimer = StringUtil.dateToString(yesterday);
                       // 过去七天的第一天的时间
                       DateTime beforeSeven =
-                          _yesterdayDate.subtract(Duration(days: 7));
+                      _yesterdayDate.subtract(Duration(days: 7));
                       startTime = StringUtil.dateToString(beforeSeven);
                       setState(() {});
                     },
@@ -757,13 +760,13 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                         decoration: BoxDecoration(
                             border: _selectIndex == 0
                                 ? Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 0.0, // 设置边框宽度
-                                  )
+                              color: hexStringToColor('#707070'),
+                              width: 0.0, // 设置边框宽度
+                            )
                                 : Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 1.0, // 设置边框宽度
-                                  ),
+                              color: hexStringToColor('#707070'),
+                              width: 1.0, // 设置边框宽度
+                            ),
                             borderRadius: BorderRadius.circular(20),
                             color: _selectIndex == 0
                                 ? Constants.baseStyleColor
@@ -771,9 +774,9 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                         child: Center(
                           child: _selectIndex == 0
                               ? Constants.regularWhiteTextWidget(
-                                  'Last 7 days', 14)
+                              'Last 7 days', 14)
                               : Constants.regularGreyTextWidget(
-                                  'Last 7 days', 14),
+                              'Last 7 days', 14),
                         )),
                   ),
                   flex: 1,
@@ -792,12 +795,12 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                       _timeSelectIndex = 0;
                       _selectIndex = 1;
                       DateTime yesterday =
-                          _selectedDate.subtract(Duration(days: 1));
+                      _selectedDate.subtract(Duration(days: 1));
                       _yesterdayDate = yesterday;
                       endTimer = StringUtil.dateToString(yesterday);
                       // 过去30天的第一天的时间
                       DateTime beforeSeven =
-                          _yesterdayDate.subtract(Duration(days: 30));
+                      _yesterdayDate.subtract(Duration(days: 30));
                       startTime = StringUtil.dateToString(beforeSeven);
                       setState(() {});
                     },
@@ -806,13 +809,13 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                         decoration: BoxDecoration(
                             border: _selectIndex == 1
                                 ? Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 0.0, // 设置边框宽度
-                                  )
+                              color: hexStringToColor('#707070'),
+                              width: 0.0, // 设置边框宽度
+                            )
                                 : Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 1.0, // 设置边框宽度
-                                  ),
+                              color: hexStringToColor('#707070'),
+                              width: 1.0, // 设置边框宽度
+                            ),
                             borderRadius: BorderRadius.circular(20),
                             color: _selectIndex == 1
                                 ? Constants.baseStyleColor
@@ -820,9 +823,9 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                         child: Center(
                           child: _selectIndex == 1
                               ? Constants.regularWhiteTextWidget(
-                                  'Last 30 days', 14)
+                              'Last 30 days', 14)
                               : Constants.regularGreyTextWidget(
-                                  'Last 30 days', 14),
+                              'Last 30 days', 14),
                         )),
                   ),
                   flex: 1,
@@ -841,12 +844,12 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                       _timeSelectIndex = 0;
                       _selectIndex = 2;
                       DateTime yesterday =
-                          _selectedDate.subtract(Duration(days: 1));
+                      _selectedDate.subtract(Duration(days: 1));
                       _yesterdayDate = yesterday;
                       endTimer = StringUtil.dateToString(yesterday);
                       // 过去90天的第一天的时间
                       DateTime beforeSeven =
-                          _yesterdayDate.subtract(Duration(days: 90));
+                      _yesterdayDate.subtract(Duration(days: 90));
                       startTime = StringUtil.dateToString(beforeSeven);
                       setState(() {});
                     },
@@ -855,13 +858,13 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                         decoration: BoxDecoration(
                             border: _selectIndex == 2
                                 ? Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 0.0, // 设置边框宽度
-                                  )
+                              color: hexStringToColor('#707070'),
+                              width: 0.0, // 设置边框宽度
+                            )
                                 : Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 1.0, // 设置边框宽度
-                                  ),
+                              color: hexStringToColor('#707070'),
+                              width: 1.0, // 设置边框宽度
+                            ),
                             borderRadius: BorderRadius.circular(20),
                             color: _selectIndex == 2
                                 ? Constants.baseStyleColor
@@ -869,9 +872,9 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                         child: Center(
                           child: _selectIndex == 2
                               ? Constants.regularWhiteTextWidget(
-                                  'Last 90 days', 14)
+                              'Last 90 days', 14)
                               : Constants.regularGreyTextWidget(
-                                  'Last 90 days', 14),
+                              'Last 90 days', 14),
                         )),
                   ),
                   flex: 1,
@@ -919,13 +922,13 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                           ),
                           _timeSelectIndex == 1
                               ? Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Constants.baseStyleColor,
-                                )
+                            Icons.keyboard_arrow_down,
+                            color: Constants.baseStyleColor,
+                          )
                               : Icon(
-                                  Icons.chevron_right,
-                                  color: Constants.baseGreyStyleColor,
-                                ),
+                            Icons.chevron_right,
+                            color: Constants.baseGreyStyleColor,
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -973,13 +976,13 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                           ),
                           _timeSelectIndex == 2
                               ? Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Constants.baseStyleColor,
-                                )
+                            Icons.keyboard_arrow_down,
+                            color: Constants.baseStyleColor,
+                          )
                               : Icon(
-                                  Icons.chevron_right,
-                                  color: Constants.baseGreyStyleColor,
-                                ),
+                            Icons.chevron_right,
+                            color: Constants.baseGreyStyleColor,
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -1018,43 +1021,43 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
             ),
             _timeSelectIndex >= 1
                 ? Container(
-                    color: Colors.red,
-                    height: 220,
-                    child: Center(
-                        child: DateTimePickerWidget(
-                      onChange: (DateTime dateTime, List<int> selectedIndex) {
-                        if (_timeSelectIndex == 1) {
-                          startTime = StringUtil.dateToString(dateTime);
-                        } else if (_timeSelectIndex == 2) {
-                          endTimer = StringUtil.dateToString(dateTime);
-                        }
-                        setState(() {});
-                      },
-                      pickerTheme: DateTimePickerTheme(
-                          itemTextStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: 'SanFranciscoDisplay'),
-                          backgroundColor: hexStringToColor('#3E3E55'),
-                          titleHeight: 0,
-                          itemHeight: 44,
-                          pickerHeight: 220),
-                      minDateTime: _minDate,
-                      maxDateTime: _maxDate,
-                      initDateTime: _selectedDate,
-                      locale: DateTimePickerLocale.en_us,
-                      dateFormat:
-                          'MMMM-dd-yyyy', // 这里的MMMM需要有4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
-                    )),
-                  ) // 时间弹窗
+              color: Colors.red,
+              height: 220,
+              child: Center(
+                  child: DateTimePickerWidget(
+                    onChange: (DateTime dateTime, List<int> selectedIndex) {
+                      if (_timeSelectIndex == 1) {
+                        startTime = StringUtil.dateToString(dateTime);
+                      } else if (_timeSelectIndex == 2) {
+                        endTimer = StringUtil.dateToString(dateTime);
+                      }
+                      setState(() {});
+                    },
+                    pickerTheme: DateTimePickerTheme(
+                        itemTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontFamily: 'SanFranciscoDisplay'),
+                        backgroundColor: hexStringToColor('#3E3E55'),
+                        titleHeight: 0,
+                        itemHeight: 44,
+                        pickerHeight: 220),
+                    minDateTime: _minDate,
+                    maxDateTime: _maxDate,
+                    initDateTime: _selectedDate,
+                    locale: DateTimePickerLocale.en_us,
+                    dateFormat:
+                    'MMMM-dd-yyyy', // 这里的MMMM需要有4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
+                  )),
+            ) // 时间弹窗
                 : Container(),
             _timeSelectIndex >= 1
                 ? SizedBox(
-                    height: 16,
-                  )
+              height: 16,
+            )
                 : SizedBox(
-                    height: 0,
-                  ),
+              height: 0,
+            ),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
@@ -1101,12 +1104,11 @@ class IpadTimeSelectDialog extends StatefulWidget {
   Function? datePickerSelect;
   Function? confirm;
 
-  IpadTimeSelectDialog(
-      {this.datePickerSelect,
-      this.confirm,
-      this.selectIndex = 0,
-      this.startTime,
-      this.endTime});
+  IpadTimeSelectDialog({this.datePickerSelect,
+    this.confirm,
+    this.selectIndex = 0,
+    this.startTime,
+    this.endTime});
 
   @override
   State<IpadTimeSelectDialog> createState() => _IpadTimeSelectDialogState();
@@ -1177,12 +1179,12 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                       _selectIndex = 0;
 
                       DateTime yesterday =
-                          _selectedDate.subtract(Duration(days: 1));
+                      _selectedDate.subtract(Duration(days: 1));
                       _yesterdayDate = yesterday;
                       endTimer = StringUtil.dateToString(yesterday);
                       // 过去七天的第一天的时间
                       DateTime beforeSeven =
-                          _yesterdayDate.subtract(Duration(days: 7));
+                      _yesterdayDate.subtract(Duration(days: 7));
                       startTime = StringUtil.dateToString(beforeSeven);
                       setState(() {});
                     },
@@ -1191,13 +1193,13 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                         decoration: BoxDecoration(
                             border: _selectIndex == 0
                                 ? Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 0.0, // 设置边框宽度
-                                  )
+                              color: hexStringToColor('#707070'),
+                              width: 0.0, // 设置边框宽度
+                            )
                                 : Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 1.0, // 设置边框宽度
-                                  ),
+                              color: hexStringToColor('#707070'),
+                              width: 1.0, // 设置边框宽度
+                            ),
                             borderRadius: BorderRadius.circular(20),
                             color: _selectIndex == 0
                                 ? Constants.baseStyleColor
@@ -1205,9 +1207,9 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                         child: Center(
                           child: _selectIndex == 0
                               ? Constants.regularWhiteTextWidget(
-                                  'Last 7 days', 14)
+                              'Last 7 days', 14)
                               : Constants.regularGreyTextWidget(
-                                  'Last 7 days', 14),
+                              'Last 7 days', 14),
                         )),
                   ),
                   flex: 1,
@@ -1226,12 +1228,12 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                       _timeSelectIndex = 0;
                       _selectIndex = 1;
                       DateTime yesterday =
-                          _selectedDate.subtract(Duration(days: 1));
+                      _selectedDate.subtract(Duration(days: 1));
                       _yesterdayDate = yesterday;
                       endTimer = StringUtil.dateToString(yesterday);
                       // 过去30天的第一天的时间
                       DateTime beforeSeven =
-                          _yesterdayDate.subtract(Duration(days: 30));
+                      _yesterdayDate.subtract(Duration(days: 30));
                       startTime = StringUtil.dateToString(beforeSeven);
                       setState(() {});
                     },
@@ -1240,13 +1242,13 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                         decoration: BoxDecoration(
                             border: _selectIndex == 1
                                 ? Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 0.0, // 设置边框宽度
-                                  )
+                              color: hexStringToColor('#707070'),
+                              width: 0.0, // 设置边框宽度
+                            )
                                 : Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 1.0, // 设置边框宽度
-                                  ),
+                              color: hexStringToColor('#707070'),
+                              width: 1.0, // 设置边框宽度
+                            ),
                             borderRadius: BorderRadius.circular(20),
                             color: _selectIndex == 1
                                 ? Constants.baseStyleColor
@@ -1254,9 +1256,9 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                         child: Center(
                           child: _selectIndex == 1
                               ? Constants.regularWhiteTextWidget(
-                                  'Last 30 days', 14)
+                              'Last 30 days', 14)
                               : Constants.regularGreyTextWidget(
-                                  'Last 30 days', 14),
+                              'Last 30 days', 14),
                         )),
                   ),
                   flex: 1,
@@ -1275,12 +1277,12 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                       _timeSelectIndex = 0;
                       _selectIndex = 2;
                       DateTime yesterday =
-                          _selectedDate.subtract(Duration(days: 1));
+                      _selectedDate.subtract(Duration(days: 1));
                       _yesterdayDate = yesterday;
                       endTimer = StringUtil.dateToString(yesterday);
                       // 过去90天的第一天的时间
                       DateTime beforeSeven =
-                          _yesterdayDate.subtract(Duration(days: 90));
+                      _yesterdayDate.subtract(Duration(days: 90));
                       startTime = StringUtil.dateToString(beforeSeven);
                       setState(() {});
                     },
@@ -1289,13 +1291,13 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                         decoration: BoxDecoration(
                             border: _selectIndex == 2
                                 ? Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 0.0, // 设置边框宽度
-                                  )
+                              color: hexStringToColor('#707070'),
+                              width: 0.0, // 设置边框宽度
+                            )
                                 : Border.all(
-                                    color: hexStringToColor('#707070'),
-                                    width: 1.0, // 设置边框宽度
-                                  ),
+                              color: hexStringToColor('#707070'),
+                              width: 1.0, // 设置边框宽度
+                            ),
                             borderRadius: BorderRadius.circular(20),
                             color: _selectIndex == 2
                                 ? Constants.baseStyleColor
@@ -1303,9 +1305,9 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                         child: Center(
                           child: _selectIndex == 2
                               ? Constants.regularWhiteTextWidget(
-                                  'Last 90 days', 14)
+                              'Last 90 days', 14)
                               : Constants.regularGreyTextWidget(
-                                  'Last 90 days', 14),
+                              'Last 90 days', 14),
                         )),
                   ),
                   flex: 1,
@@ -1353,13 +1355,13 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                           ),
                           _timeSelectIndex == 1
                               ? Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Constants.baseStyleColor,
-                                )
+                            Icons.keyboard_arrow_down,
+                            color: Constants.baseStyleColor,
+                          )
                               : Icon(
-                                  Icons.chevron_right,
-                                  color: Constants.baseGreyStyleColor,
-                                ),
+                            Icons.chevron_right,
+                            color: Constants.baseGreyStyleColor,
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -1407,13 +1409,13 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                           ),
                           _timeSelectIndex == 2
                               ? Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Constants.baseStyleColor,
-                                )
+                            Icons.keyboard_arrow_down,
+                            color: Constants.baseStyleColor,
+                          )
                               : Icon(
-                                  Icons.chevron_right,
-                                  color: Constants.baseGreyStyleColor,
-                                ),
+                            Icons.chevron_right,
+                            color: Constants.baseGreyStyleColor,
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -1451,43 +1453,43 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
             ),
             _timeSelectIndex >= 1
                 ? Container(
-                    color: Colors.red,
-                    height: 220,
-                    child: Center(
-                        child: DateTimePickerWidget(
-                      onChange: (DateTime dateTime, List<int> selectedIndex) {
-                        if (_timeSelectIndex == 1) {
-                          startTime = StringUtil.dateToString(dateTime);
-                        } else if (_timeSelectIndex == 2) {
-                          endTimer = StringUtil.dateToString(dateTime);
-                        }
-                        setState(() {});
-                      },
-                      pickerTheme: DateTimePickerTheme(
-                          itemTextStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: 'SanFranciscoDisplay'),
-                          backgroundColor: hexStringToColor('#3E3E55'),
-                          titleHeight: 0,
-                          itemHeight: 44,
-                          pickerHeight: 220),
-                      minDateTime: _minDate,
-                      maxDateTime: _maxDate,
-                      initDateTime: _selectedDate,
-                      locale: DateTimePickerLocale.en_us,
-                      dateFormat:
-                          'MMMM-dd-yyyy', // 这里的MMMM需要有4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
-                    )),
-                  ) // 时间弹窗
+              color: Colors.red,
+              height: 220,
+              child: Center(
+                  child: DateTimePickerWidget(
+                    onChange: (DateTime dateTime, List<int> selectedIndex) {
+                      if (_timeSelectIndex == 1) {
+                        startTime = StringUtil.dateToString(dateTime);
+                      } else if (_timeSelectIndex == 2) {
+                        endTimer = StringUtil.dateToString(dateTime);
+                      }
+                      setState(() {});
+                    },
+                    pickerTheme: DateTimePickerTheme(
+                        itemTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontFamily: 'SanFranciscoDisplay'),
+                        backgroundColor: hexStringToColor('#3E3E55'),
+                        titleHeight: 0,
+                        itemHeight: 44,
+                        pickerHeight: 220),
+                    minDateTime: _minDate,
+                    maxDateTime: _maxDate,
+                    initDateTime: _selectedDate,
+                    locale: DateTimePickerLocale.en_us,
+                    dateFormat:
+                    'MMMM-dd-yyyy', // 这里的MMMM需要有4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
+                  )),
+            ) // 时间弹窗
                 : Container(),
             _timeSelectIndex >= 1
                 ? SizedBox(
-                    height: 16,
-                  )
+              height: 16,
+            )
                 : SizedBox(
-                    height: 0,
-                  ),
+              height: 0,
+            ),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
@@ -1535,7 +1537,9 @@ class JoinAirBattleDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String group = UserProvider.of(context).group;
+    String group = UserProvider
+        .of(context)
+        .group;
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -1734,14 +1738,14 @@ class _VideoGuideDialogState extends State<VideoGuideDialog> {
 
     if (widget.videoPath.contains('http')) {
       _controller =
-          VideoPlayerController.networkUrl(Uri.parse(widget.videoPath))
-            ..initialize().then((value) {
-              print('加载完成');
-              // 加载完成
-              //_controller.play();
-              _loading = false;
-              setState(() {});
-            });
+      VideoPlayerController.networkUrl(Uri.parse(widget.videoPath))
+        ..initialize().then((value) {
+          print('加载完成');
+          // 加载完成
+          //_controller.play();
+          _loading = false;
+          setState(() {});
+        });
     } else {
       File file = File(widget.videoPath);
       _controller = VideoPlayerController.file(file)
@@ -1774,8 +1778,8 @@ class _VideoGuideDialogState extends State<VideoGuideDialog> {
                   (Constants.screenHeight(context) * 0.95 - 128),
               child: _loading
                   ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                child: CircularProgressIndicator(),
+              )
                   : Chewie(controller: _chewieController),
             ),
             borderRadius: BorderRadius.circular(12),
@@ -1843,43 +1847,24 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
             ),
             Constants.boldWhiteTextWidget('Membership Options', 30),
             SizedBox(
-              height: 8,
-            ),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                NavigatorUtil.push(Routes.membership);
-              },
-              child: Text(
-                ' See More',
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    // 添加下划线
-                    decorationColor: hexStringToColor('#B1B1B1'),
-                    // 下划线颜色
-                    decorationThickness: 2,
-                    // 下划线厚度
-                    fontFamily: 'SanFranciscoDisplay',
-                    color: hexStringToColor('#B1B1B1'),
-                    fontSize: 16),
-              ),
-            ),
-            SizedBox(
-              height: 24,
+              height: 40,
             ),
             Container(
-              width: 446/306 * 153,
+              width: 446 / 306 * 153,
               height: 153,
               child: PageView.builder(
                   controller: _pageController,
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     return Container(
-                      child: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image(
-                        image: AssetImage(
-                            'images/launch/subscribe_${index + 1}.png'),
-                        fit: BoxFit.contain,
-                      ),),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Image(
+                          image: AssetImage(
+                              'images/launch/subscribe_${index + 1}.png'),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     );
                   }),
             ),
@@ -1900,14 +1885,14 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
               rightTitle: '14.99',
               rightDes: '179.99',
               onTap: () async {
-                final bool available = await InAppPurchase.instance.isAvailable();
+                final bool available =
+                await InAppPurchase.instance.isAvailable();
                 if (!available) {
                   // The store cannot be reached or accessed. Update the UI accordingly.
                 }
-
                 const Set<String> _kIds = <String>{'level_001'};
                 final ProductDetailsResponse response =
-                    await InAppPurchase.instance.queryProductDetails(_kIds);
+                await InAppPurchase.instance.queryProductDetails(_kIds);
                 print('response====${response}');
                 print('productDetails====${response.productDetails}');
 
@@ -1927,19 +1912,44 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
             SizedBox(
               height: 8,
             ),
-            Constants.regularGreyTextWidget(
+            Constants.regularWhiteTextWidget(
                 'Get a free Digital Stickhandling Trainer with a one-year membership',
                 14,
                 height: 1.25),
             SizedBox(
               height: 28,
             ),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                NavigatorUtil.push(Routes.webview);
-              },
-              child: Constants.mediumBaseTextWidget('Terms of Service', 16),
+            Row(
+              children: [
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    NavigatorUtil.push(Routes.membership);
+                  },
+                  child: Constants.mediumBaseTextWidget('Member Service', 16),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  height: 16,
+                  width: 1,
+                  decoration: BoxDecoration(
+                      color: hexStringToColor('#707070'),
+                      border: Border.all(
+                          width: 1, color: hexStringToColor('#707070'))),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    NavigatorUtil.push(Routes.webview);
+                  },
+                  child: Constants.mediumBaseTextWidget('Terms of Service', 16),
+                ),
+              ],
             )
           ],
         ),
