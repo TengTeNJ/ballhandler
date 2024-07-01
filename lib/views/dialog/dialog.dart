@@ -1920,13 +1920,14 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
               height: 28,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
                     NavigatorUtil.push(Routes.membership);
                   },
-                  child: Constants.mediumBaseTextWidget('Member Service', 16),
+                  child:  Constants.mediumBaseTextWidget('Member Service', 16,textAlign: TextAlign.end),
                 ),
                 SizedBox(
                   width: 20,
@@ -1947,7 +1948,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
                   onTap: () {
                     NavigatorUtil.push(Routes.webview);
                   },
-                  child: Constants.mediumBaseTextWidget('Terms of Service', 16),
+                  child: Constants.mediumBaseTextWidget('Terms of Service', 16,textAlign: TextAlign.end),
                 ),
               ],
             )
