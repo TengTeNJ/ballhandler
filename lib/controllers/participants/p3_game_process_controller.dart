@@ -1,6 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/views/base/battery_view.dart';
+import 'package:code/views/base/ble_view.dart';
+import 'package:code/views/participants/ultimate_lights_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -19,7 +23,7 @@ class P3GameProcesController extends StatefulWidget {
 }
 
 class _P3GameProcesControllerState extends State<P3GameProcesController> {
-  double _left = 70; // 产品图片距离左右的间距
+  double _left = 45; // 产品图片距离左右的间距
   double _height = 0;
   double _width = 0;
   double _top = 0;
@@ -29,7 +33,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration(milliseconds: 100), () async {
-      await SystemUtil.lockScreenHorizontalDirection();
+     // await SystemUtil.lockScreenHorizontalDirection();
       emulateSpace(context);
     });
   }
@@ -38,11 +42,11 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     // 先让高度为屏幕高度。然后按照图片比例计算宽度
     double _tempHeight = Constants.screenHeight(context);
     double _tempWidth = _tempHeight * k270ProductImageScale;
-    if (_tempWidth > Constants.screenWidth(context) - 40) {
+    if (_tempWidth > Constants.screenWidth(context) - 90) {
       //  如果宽度大于了最大的宽度，则重新计算高度,根据宽度计算高度
-      _tempWidth = Constants.screenWidth(context) - 40;
+      _tempWidth = Constants.screenWidth(context) - 90;
       _tempHeight =
-          (Constants.screenWidth(context) - 40) / k270ProductImageScale;
+          (Constants.screenWidth(context) - 90) / k270ProductImageScale;
     }
     _height = _tempHeight;
     _top = (Constants.screenHeight(context) - _tempHeight) / 2.0;
@@ -54,15 +58,15 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       print('_left=${_left}');
       print('_width=${_width}');
       print('_width1=${Constants.screenWidth(context)}');
-
     });
   }
 
   @override
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
+
     return Scaffold(
-      body: Container(
+      body:  Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('images/product/270_bg.png'), // 设置背景图片
@@ -75,31 +79,50 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                 left: _left,
                 top: _top,
                 child: Container(
-                  child: Image(
-                    image: AssetImage('images/product/270.png'),
-                    fit: BoxFit.contain,
-                    height: _height,
+                  child: Stack(
+                    children: [
+                      Image(
+                        image: AssetImage('images/product/270.png'),
+                        fit: BoxFit.fill,
+                        height: _height,
+                      ),
+                      Positioned(
+                        child: UltimateLightsView(
+                          datas: initUltimateLightModels(),
+                          width: _width,
+                          height: _height,
+                        ),
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                      )
+                    ],
                   ),
                 )),
             Positioned(
                 left: 24,
                 top: 16,
-                child:GestureDetector(child: Container(
-                  child: Center(
-                    child: Image(
-                      image: AssetImage('images/participants/game_back.png'),
-                      width: 24,
-                      height: 21,
+                child: GestureDetector(
+                  child: Container(
+                    child: Center(
+                      child: Image(
+                        image: AssetImage('images/participants/game_back.png'),
+                        width: 24,
+                        height: 21,
+                      ),
                     ),
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                        color: hexStringToColor('#204DD1'),
+                        borderRadius: BorderRadius.circular(22)),
                   ),
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                      color: hexStringToColor('#204DD1'),
-                      borderRadius: BorderRadius.circular(22)),
-                ),onTap: (){
-                  NavigatorUtil.pop();
-                },behavior: HitTestBehavior.opaque,)),
+                  onTap: () {
+                    NavigatorUtil.pop();
+                  },
+                  behavior: HitTestBehavior.opaque,
+                )),
             Positioned(
                 right: 24,
                 top: 16,
@@ -117,16 +140,46 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                       color: hexStringToColor('#204DD1'),
                       borderRadius: BorderRadius.circular(22)),
                 )),
-            recordWidget(context),
+            Positioned(
+              left: _left + _width * 0.245,
+              right: _left + _width * 0.245,
+              bottom: 0,
+              top: Constants.screenHeight(context) -
+                  45,
+              child: Container(
+                margin: EdgeInsets.only(
+                  left: ((Constants.screenWidth(context) - (_left + _width * 0.245) * 2) -
+                      _width * 0.49 * 0.88 -
+                      8) / 2.0,
+                  right: ((Constants.screenWidth(context) - (_left + _width * 0.245) * 2) -
+                      _width * 0.49 * 0.88 -
+                      8) / 2.0,
+                ),
+                child: SingleChildScrollView(child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        BatteryView(),
+                        SizedBox(width: 12,),
+                        BLEView()
+                      ],
+                    ),
+                    recordWidget(context),
+                  ],
+                ),scrollDirection: Axis.horizontal,),
+
+              ),
+            ),
             Positioned(
                 left: _left + _width * 0.245,
                 right: _left + _width * 0.245,
-                bottom: _top + 32,
+                bottom: 45,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: _width*0.49 * 0.56,
+                      width: _width * 0.49 * 0.56,
                       height: 133,
                       decoration: gameUtil.isFromAirBattle
                           ? BoxDecoration(
@@ -165,8 +218,11 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      width: 8,
+                    ),
                     Container(
-                      width: _width*0.49 * 0.32,
+                      width: _width * 0.49 * 0.32,
                       height: 133,
                       decoration: gameUtil.isFromAirBattle
                           ? BoxDecoration(
@@ -214,15 +270,12 @@ Widget recordWidget(BuildContext context) {
   // 用户选择了视频录制 则显示Record图标
   GameUtil gameUtil = GetIt.instance<GameUtil>();
   return gameUtil.selectRecord
-      ? Positioned(
-          left: (Constants.screenWidth(context) - 112) / 2.0,
-          bottom: 4,
-          child: Container(
+      ? Container(
             width: 112,
             height: 26,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: hexStringToColor('#1C1E21')),
+                color: hexStringToOpacityColor('#1C1E21', 0.6)),
             child: Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -239,6 +292,5 @@ Widget recordWidget(BuildContext context) {
                 ],
               ),
             ),
-          ))
-      : Container();
+          ) : Container();
 }
