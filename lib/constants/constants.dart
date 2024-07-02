@@ -38,6 +38,8 @@ class Constants {
   static Color baseGreyStyleColor = Color.fromRGBO(177, 177, 177, 1);
   static Color darkControllerColor = Color.fromRGBO(57, 57, 75, 1);
   static Color baseControllerColor = Color.fromRGBO(41, 41, 54, 1);
+  static Color baseLightBlueColor = Color.fromRGBO(52, 59, 247, 1);
+  static Color baseLightRedColor = Color.fromRGBO(255, 45, 55, 1);
 
   static Text regularBaseTextWidget(String text, double fontSize,
       {int maxLines = 1,
