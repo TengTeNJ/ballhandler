@@ -1862,7 +1862,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
                         child: Image(
                           image: AssetImage(
                               'images/launch/subscribe_${index + 1}.png'),
-                          fit: BoxFit.contain,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     );

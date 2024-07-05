@@ -32,7 +32,9 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
     // TODO: implement initState
     super.initState();
     // 锁定屏幕为横屏
+    Future.delayed(Duration(milliseconds: 500),(){
      SystemUtil.lockScreenHorizontalDirection();
+    });
     _controller = CameraController(
       widget.camera,
       ResolutionPreset.high,

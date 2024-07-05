@@ -52,7 +52,7 @@ class _P3GridListViewState extends State<P3GridListView> {
   Widget build(BuildContext context) {
     return Container(
       height: 1141,
-      child: Column(
+      child: SingleChildScrollView(child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -98,21 +98,19 @@ class _P3GridListViewState extends State<P3GridListView> {
             ],
           ),
           SizedBox(height: 4,),
-         SingleChildScrollView(
-           child:  Row(
-             mainAxisAlignment: MainAxisAlignment.center,
-             children: [
-               P3ItemView(model: _datas[8],selectItem: _selectItem),
-               SizedBox(
-                 width: 4,
-               ),
-               P3ItemView(model: _datas[9],selectItem: _selectItem)
-             ],
-           ),
-         ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              P3ItemView(model: _datas[8],selectItem: _selectItem),
+              SizedBox(
+                width: 4,
+              ),
+              P3ItemView(model: _datas[9],selectItem: _selectItem)
+            ],
+          ),
           SizedBox(height: 4,),
         ],
-      ),
+      ),),
     );
   }
 }
