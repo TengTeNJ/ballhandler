@@ -1,3 +1,4 @@
+import 'package:code/constants/constants.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/views/dialog/dialog.dart';
 import 'package:flutter/material.dart';
@@ -259,6 +260,21 @@ class TTDialog {
         return FractionallySizedBox(
           heightFactor: 0.81,
           child: SubscribeDialog(),
+        );
+      },
+    );
+  }
+
+  /**投屏提醒弹窗**/
+  static mirrorScreenDialog(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Constants.darkControllerColor,
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.45,
+          child: MirrorScreenDialog(),
         );
       },
     );

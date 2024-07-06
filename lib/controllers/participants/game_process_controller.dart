@@ -6,6 +6,7 @@ import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/views/base/battery_view.dart';
@@ -366,23 +367,11 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
             recordWidget(),
             GestureDetector(
               onTap: () async {
-                BluetoothManager().writerDataToDevice(
-                    BluetoothManager().deviceList[0], openAllBlueLightData());
+             TTDialog.mirrorScreenDialog(context);
               },
               child: Container(
                 child: Center(
-                  // child: Image(
-                  //   image: AssetImage('images/participants/cast.png'),
-                  //   width: 26,
-                  //   height: 20,
-                  // ),
-                  child: Platform.isIOS
-                      ? AirPlayRoutePickerView(
-                          tintColor: Colors.white,
-                          activeTintColor: Colors.white,
-                          backgroundColor: Colors.transparent,
-                        )
-                      : Image(
+                  child: Image(
                           image: AssetImage('images/participants/cast.png'),
                           width: 26,
                           height: 20,
@@ -557,7 +546,9 @@ Widget HorizontalScreenWidget(BuildContext context, String path) {
             ),
             recordWidget(),
             GestureDetector(
-              onTap: () async {},
+              onTap: () async {
+                TTDialog.mirrorScreenDialog(context);
+              },
               child: Container(
                 child: Center(
                   child: Image(

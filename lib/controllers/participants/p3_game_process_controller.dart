@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/base/battery_view.dart';
@@ -8,6 +9,7 @@ import 'package:code/views/participants/ultimate_lights_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../models/game/light_ball_model.dart';
 import '../../utils/blue_tooth_manager.dart';
 import '../../utils/color.dart';
 import '../../utils/global.dart';
@@ -27,15 +29,36 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   double _height = 0;
   double _width = 0;
   double _top = 0;
+  List<LightBallModel> datas = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration(milliseconds: 100), () async {
-     // await SystemUtil.lockScreenHorizontalDirection();
+      // await SystemUtil.lockScreenHorizontalDirection();
       emulateSpace(context);
     });
+
+    setState(() {
+      datas = initUltimateLightModels();
+    });
+
+    // Timer.periodic(Duration(seconds: 3), (timer) {
+    //   print('Timer tick every second!');
+    //   datas.clear();
+    //   datas = simulatorLighs();
+    //   setState(() {});
+    //   //
+    // });
+
+    // Timer.periodic(Duration(seconds: 1), (timer) {
+    //   print('Timer tick every second!');
+    //   setState(() {
+    //     BluetoothManager().gameData.remainTime--;
+    //   });
+    //   //
+    // });
   }
 
   emulateSpace(BuildContext context) {
@@ -66,7 +89,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
 
     return Scaffold(
-      body:  Container(
+      body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('images/product/270_bg.png'), // 设置背景图片
@@ -88,7 +111,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                       ),
                       Positioned(
                         child: UltimateLightsView(
-                          datas: initUltimateLightModels(),
+                          datas: datas,
                           width: _width,
                           height: _height,
                         ),
@@ -126,93 +149,105 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
             Positioned(
                 right: 24,
                 top: 16,
-                child: Container(
-                  child: Center(
-                    child: Image(
-                      image: AssetImage('images/participants/cast.png'),
-                      width: 26,
-                      height: 20,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: (){
+                    TTDialog.mirrorScreenDialog(context);
+                  },
+                  child: Container(
+                    child: Center(
+                      child: Image(
+                        image: AssetImage('images/participants/cast.png'),
+                        width: 26,
+                        height: 20,
+                      ),
                     ),
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                        color: hexStringToColor('#204DD1'),
+                        borderRadius: BorderRadius.circular(22)),
                   ),
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                      color: hexStringToColor('#204DD1'),
-                      borderRadius: BorderRadius.circular(22)),
                 )),
             Positioned(
               left: _left + _width * 0.245,
               right: _left + _width * 0.245,
-              bottom: 0,
-              top: Constants.screenHeight(context) -
-                  45,
+              bottom:
+                  ((Constants.screenHeight(context) - _height).abs()) / 2.0 + 6,
+              // top: Constants.screenHeight(context) - 45,
               child: Container(
-                margin: EdgeInsets.only(
-                  left: ((Constants.screenWidth(context) - (_left + _width * 0.245) * 2) -
-                      _width * 0.49 * 0.88 -
-                      8) / 2.0,
-                  right: ((Constants.screenWidth(context) - (_left + _width * 0.245) * 2) -
-                      _width * 0.49 * 0.88 -
-                      8) / 2.0,
-                ),
-                child: SingleChildScrollView(child: Row(
+                // color: Colors.red,
+                margin: EdgeInsets.only(left: 12, right: 12
+                    // left: ((Constants.screenWidth(context) -
+                    //             (_left + _width * 0.245) * 2) -
+                    //         _width * 0.49 * 0.88 -
+                    //         8) /
+                    //     2.0,
+                    // right: ((Constants.screenWidth(context) -
+                    //             (_left + _width * 0.245) * 2) -
+                    //         _width * 0.49 * 0.88 -
+                    //         8) /
+                    //     2.0,
+                    ),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
                         BatteryView(),
-                        SizedBox(width: 12,),
+                        SizedBox(
+                          width: 12,
+                        ),
                         BLEView()
                       ],
                     ),
                     recordWidget(context),
                   ],
-                ),scrollDirection: Axis.horizontal,),
-
+                ),
               ),
             ),
             Positioned(
                 left: _left + _width * 0.245,
                 right: _left + _width * 0.245,
-                bottom: 45,
+                bottom: 53,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       width: _width * 0.49 * 0.56,
-                      height: 133,
+                      height: 117,
                       decoration: gameUtil.isFromAirBattle
                           ? BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              hexStringToColor('#EF8914'),
-                              hexStringToColor('#CF391A'),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(10))
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  hexStringToColor('#EF8914'),
+                                  hexStringToColor('#CF391A'),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(10))
                           : BoxDecoration(
-                          color: hexStringToColor('#204DD1'),
-                          borderRadius: BorderRadius.circular(10)),
+                              color: hexStringToColor('#204DD1'),
+                              borderRadius: BorderRadius.circular(10)),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Constants.mediumWhiteTextWidget('TIME LEFT', 16),
+                          Constants.mediumWhiteTextWidget('TIME LEFT', 13),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Constants.digiRegularWhiteTextWidget('00:', 76),
+                              Constants.digiRegularWhiteTextWidget('00:', 76,
+                                  height: 1.0),
                               Constants.digiRegularWhiteTextWidget(
                                   BluetoothManager()
                                       .gameData
                                       .remainTime
                                       .toString()
                                       .padLeft(2, '0'),
-                                  76),
+                                  72,
+                                  height: 1.0),
                             ],
                           )
                         ],
@@ -223,30 +258,30 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                     ),
                     Container(
                       width: _width * 0.49 * 0.32,
-                      height: 133,
+                      height: 117,
                       decoration: gameUtil.isFromAirBattle
                           ? BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              hexStringToColor('#EF8914'),
-                              hexStringToColor('#CF391A'),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(10))
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  hexStringToColor('#EF8914'),
+                                  hexStringToColor('#CF391A'),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(10))
                           : BoxDecoration(
-                          color: hexStringToColor('#204DD1'),
-                          borderRadius: BorderRadius.circular(10)),
+                              color: hexStringToColor('#204DD1'),
+                              borderRadius: BorderRadius.circular(10)),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Constants.mediumWhiteTextWidget('SCORE', 16),
+                          Constants.mediumWhiteTextWidget('SCORE', 13,
+                              height: 1.0),
                           Constants.digiRegularWhiteTextWidget(
-                              BluetoothManager().gameData.score.toString(), 76)
+                              BluetoothManager().gameData.score.toString(), 72,
+                              height: 1.0)
                         ],
                       ),
                     ),
@@ -271,26 +306,27 @@ Widget recordWidget(BuildContext context) {
   GameUtil gameUtil = GetIt.instance<GameUtil>();
   return gameUtil.selectRecord
       ? Container(
-            width: 112,
-            height: 26,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: hexStringToOpacityColor('#1C1E21', 0.6)),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image(
-                    image: AssetImage('images/participants/point.png'),
-                    width: 14,
-                    height: 14,
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Constants.regularWhiteTextWidget('Recording', 14)
-                ],
-              ),
+          width: 112,
+          height: 26,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: hexStringToOpacityColor('#1C1E21', 0.6)),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  image: AssetImage('images/participants/point.png'),
+                  width: 14,
+                  height: 14,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Constants.regularWhiteTextWidget('Recording', 14)
+              ],
             ),
-          ) : Container();
+          ),
+        )
+      : Container();
 }
