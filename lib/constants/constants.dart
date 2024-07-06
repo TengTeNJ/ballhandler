@@ -287,6 +287,9 @@ const kBLE_SERVICE_NOTIFY_UUID = "ffe0";
 const kBLE_SERVICE_WRITER_UUID = "ffe5";
 const kBLE_CHARACTERISTIC_NOTIFY_UUID = "ffe4";
 const kBLE_CHARACTERISTIC_WRITER_UUID = "ffe9";
+const kBLE_270_SERVICE_UUID = "fff0";
+const kBLE_270_CHARACTERISTIC_NOTIFY_UUID = "fff1";
+const kBLE_270_CHARACTERISTIC_WRITER_UUID = "fff2";
 
 const kPageLimit = 10; // 数据分页每页显示的数据量
 

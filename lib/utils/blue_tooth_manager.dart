@@ -129,17 +129,34 @@ class BluetoothManager {
         conectedDeviceCount.value++;
         // 已连接
         model.hasConected = true;
-        // 保存读写特征值
-        final notifyCharacteristic = QualifiedCharacteristic(
-            serviceId: Uuid.parse(kBLE_SERVICE_NOTIFY_UUID),
-            characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_NOTIFY_UUID),
-            deviceId: model.device!.id);
-        final writerCharacteristic = QualifiedCharacteristic(
-            serviceId: Uuid.parse(kBLE_SERVICE_WRITER_UUID),
-            characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_WRITER_UUID),
-            deviceId: model.device!.id);
-        model.notifyCharacteristic = notifyCharacteristic;
-        model.writerCharacteristic = writerCharacteristic;
+        final notifyCharacteristic;
+        final writerCharacteristic;
+        if(model.deviceName == k270_Name){
+          // 保存读写特征值 270设备
+          notifyCharacteristic = QualifiedCharacteristic(
+              serviceId: Uuid.parse(kBLE_270_SERVICE_UUID),
+              characteristicId: Uuid.parse(kBLE_270_CHARACTERISTIC_NOTIFY_UUID),
+              deviceId: model.device!.id);
+          writerCharacteristic = QualifiedCharacteristic(
+              serviceId: Uuid.parse(kBLE_270_SERVICE_UUID),
+              characteristicId: Uuid.parse(kBLE_270_CHARACTERISTIC_WRITER_UUID),
+              deviceId: model.device!.id);
+          model.notifyCharacteristic = notifyCharacteristic;
+          model.writerCharacteristic = writerCharacteristic;
+        }else{
+          // 保存读写特征值
+          notifyCharacteristic = QualifiedCharacteristic(
+              serviceId: Uuid.parse(kBLE_SERVICE_NOTIFY_UUID),
+              characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_NOTIFY_UUID),
+              deviceId: model.device!.id);
+          writerCharacteristic = QualifiedCharacteristic(
+              serviceId: Uuid.parse(kBLE_SERVICE_WRITER_UUID),
+              characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_WRITER_UUID),
+              deviceId: model.device!.id);
+          model.notifyCharacteristic = notifyCharacteristic;
+          model.writerCharacteristic = writerCharacteristic;
+        }
+
         // 连接成功弹窗
         EasyLoading.showSuccess('Bluetooth connection successful');
         // 监听数据
