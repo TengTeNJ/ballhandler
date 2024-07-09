@@ -127,6 +127,7 @@ flutter:
     - images/product//scene1/model7/
     - images/launch/
     - images/battery/
+    - images/p3/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,70 +1,72 @@
 import 'package:camera/camera.dart';
-import 'package:code/controllers/participants/p3_guide_controller.dart';
-import 'package:code/route/route.dart';
-import 'package:code/utils/toast.dart';
-import 'package:code/views/participants/p3_grid_list_view.dart';
 import 'package:flutter/material.dart';
+
 import '../../constants/constants.dart';
 import '../../models/airbattle/p3_item_model.dart';
+import '../../route/route.dart';
 import '../../utils/color.dart';
 import '../../utils/navigator_util.dart';
+import '../../utils/toast.dart';
 
-class P3Controller extends StatefulWidget {
-  const P3Controller({super.key});
+class P3GuideController extends StatefulWidget {
+  List<P3ItemModel> selectModels = [];
+
+  P3GuideController({required this.selectModels});
 
   @override
-  State<P3Controller> createState() => _P3ControllerState();
+  State<P3GuideController> createState() => _P3GuideControllerState();
 }
 
-class _P3ControllerState extends State<P3Controller> {
-  List<P3ItemModel> _selectModels = [];
+class _P3GuideControllerState extends State<P3GuideController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
-          color: Constants.darkControllerColor,
+          color: Constants.darkThemeColor,
           borderRadius: BorderRadius.circular(26),
         ),
         child: Stack(
           children: [
             Positioned(
-                top: 42,
+                top: 0,
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Constants.mediumWhiteTextWidget('Free Mode Training', 22),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        child: Constants.mediumGreyTextWidget(
-                            'Please select 3-5 training modes and combine them into one free mode for training',
-                            14,
-                            height: 1.2,
-                            textAlign: TextAlign.start),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      P3GridListView(selectItem: (List<P3ItemModel> selectModels){
-                        _selectModels.clear();
-                        _selectModels.addAll(selectModels);
-                        setState(() {
-
-                        });
-                      },),
-                      SizedBox(
-                        height: 156,
-                      ),
-                    ],
-                  ),
-                )),
+               child: Column(
+                 children: [
+                   SizedBox(height: 59,),
+                   Constants.mediumWhiteTextWidget('P3 Free Mode Training', 24),
+                   SizedBox(height: 62,),
+                   Expanded(child: ListView.separated(
+                       itemBuilder: (context, index) {
+                         return Padding(
+                           padding: EdgeInsets.only(left: 42, right: 42),
+                           child:  (widget.selectModels.length ) == index  ? SizedBox(height: 338,) : Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Image(
+                                 image: AssetImage(
+                                     'images/p3/${p3Maps[widget.selectModels[index].index]!['image']}.png'),
+                                 width: Constants.screenWidth(context) - 84,
+                               ),
+                               SizedBox(height: 34,),
+                               Constants.regularWhiteTextWidget( '${p3Maps[widget.selectModels[index].index]!['title']}' + '(' + widget.selectModels[index].timeString + ' seconds' +  ')', 14,height: 1.2),
+                             Constants.regularGreyTextWidget( '${p3Maps[widget.selectModels[index].index]!['des']}' ,14,textAlign: TextAlign.start,height: 1.2),
+                             ],
+                           ),
+                         );
+                       },
+                       separatorBuilder: (context, index) {
+                         return SizedBox(
+                           height: 45,
+                         );
+                       },
+                       itemCount: widget.selectModels.length + 1)),
+                 ],
+               ),
+                ),
             Positioned(
               top: 16,
               left: 0,
@@ -103,30 +105,27 @@ class _P3ControllerState extends State<P3Controller> {
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {
-                    if(_selectModels.length > 0){
-                      NavigatorUtil.present(P3GuideController(selectModels: _selectModels,));
-                    }
+                    TTToast.showLoading();
+                    NavigatorUtil.pop();
+                    List<CameraDescription> cameras = await availableCameras();
+                    NavigatorUtil.push(Routes.p3check,
+                        arguments: cameras[cameras.length > 1 ? 1 : 0]);
+                    TTToast.hideLoading();
                   },
                   child: Container(
                       width: Constants.screenWidth(context) - 48,
                       height: 56,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        gradient:  _selectModels.length > 0 ? LinearGradient(
+                        gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
                             Color.fromRGBO(182, 246, 29, 1.0),
                             Color.fromRGBO(219, 219, 20, 1.0)
                           ],
-                        ) : LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          hexStringToColor('#B5B5B5'),
-                          hexStringToColor('#717171'),
-                        ] ,
-                      )),
+                        ),
+                      ),
                       child: Center(
                         child: Constants.boldBlackTextWidget('Continue', 16),
                       )),

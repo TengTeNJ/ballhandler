@@ -23,6 +23,9 @@ class _P3ItemViewState extends State<P3ItemView> {
         if(widget.selectItem != null){
           widget.model.selected = !widget.model.selected;
           widget.selectItem!(widget.model.index);
+          setState(() {
+            _selected = widget.model.selected;
+          });
         }
       },
       child: Container(
@@ -66,7 +69,7 @@ class _P3ItemViewState extends State<P3ItemView> {
                 left: 10,
                 right: 10,
                 child: Image(
-                  image: AssetImage('images/participants/p3_1.png'),
+                  image: AssetImage('images/p3/${widget.model.imagePath}.png'),
                   height: 60,
                   fit: BoxFit.fitHeight,
                 )),
@@ -75,12 +78,13 @@ class _P3ItemViewState extends State<P3ItemView> {
                 left: 10,
                 right: 10,
                 child:
-                    Constants.mediumWhiteTextWidget(widget.model.title, 14)),
+                    _selected ? Constants.mediumWhiteTextWidget(widget.model.title, 14) : Constants.mediumGreyTextWidget(widget.model.title, 14)),
             Positioned(
                 top: 150,
                 left: 10,
                 right: 10,
-                child: Constants.mediumWhiteTextWidget(
+                child: _selected ? Constants.mediumWhiteTextWidget(
+                    widget.model.timeString, 14) : Constants.mediumGreyTextWidget(
                     widget.model.timeString, 14))
           ],
         ),

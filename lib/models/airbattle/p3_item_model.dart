@@ -4,4 +4,5 @@ class P3ItemModel{
     int selectedIndex = 1;
     int index = 0;
     bool selected = false;
+    String imagePath = 'images/p3/dekes.png'; // 图片路径
 }
