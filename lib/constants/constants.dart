@@ -396,3 +396,46 @@ const Map<int,int> kLighMap = {
   4:2,
   5:3
 } ; // 灯光映射表
+
+const Map<int,Map<String,String>> p3Maps = {
+  0:{
+    'image': 'WideDekes.apng',
+    'title': 'Wide Dekes',
+    'des': 'Navigate 15 seconds in each of the three two-pad zones , engaging with 1 or 2 red lights randomly up across two pads, each worth 2 points, and dodging a single blue \'defender\' light, demanding quick reactions and agile decision-making.'
+  },
+  1:{
+    'image': 'WideDekes.apng',
+    'title': 'Ziazag',
+    'des': 'Navigate 15 seconds in each of the three two-pad zones , engaging with 1 or 2 red lights randomly up across two pads, each worth 2 points, and dodging a single blue \'defender\' light, demanding quick reactions and agile decision-making.'
+  },
+  2:{
+    'image': 'ToeDrag.apng',
+    'title': 'Toe Drag',
+    'des': 'Master the full workout area, applying a wide array of advanced techniques to outmaneuver defenders and navigate complex scenarios, mirroring the unpredictability of real-game situations..'
+  },
+  3:{
+    'image': 'ToeDrag.apng',
+    'title': 'Toe Drag',
+    'des': 'Master the full workout area, applying a wide array of advanced techniques to outmaneuver defenders and navigate complex scenarios, mirroring the unpredictability of real-game situations..'
+  },
+  4:{
+    'image': 'Backhand.apng',
+    'title': 'Backhand',
+    'des': 'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
+  },
+  5:{
+    'image': 'TTL.apng',
+    'title': 'Through the legs',
+    'des': 'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
+  },
+  6:{
+    'image': 'TTL.apng',
+    'title': 'Figure 8',
+    'des': 'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
+  },
+  7:{
+    'image': 'TTL.apng',
+    'title': 'One handed',
+    'des': 'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
+  },
+}; // 270 P3模式 guide数据map映射表
