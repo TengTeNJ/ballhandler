@@ -1,4 +1,4 @@
-package com.potent.stickhandling;
+package com.potent.dangle;
 
 import io.flutter.embedding.android.FlutterActivity;
 

@@ -1,26 +1,51 @@
 {
   "project_info": {
-    "project_number": "217693202761",
-    "project_id": "potent-hockey-8bae8",
-    "storage_bucket": "potent-hockey-8bae8.appspot.com"
+    "project_number": "940248126378",
+    "project_id": "potent-hockey",
+    "storage_bucket": "potent-hockey.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:217693202761:android:3c338005aa9ef70001d298",
+        "mobilesdk_app_id": "1:940248126378:android:b35d853f703f61b10291d3",
         "android_client_info": {
-          "package_name": "com.potent.stickhandling"
+          "package_name": "com.potent.dangle"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "940248126378-0qgcr7uodv3k55hg39o2br2tn3afn2hk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potent.dangle",
+            "certificate_hash": "f8cddeff68a2fd259d27a4a6292943de1f464bad"
+          }
+        },
+        {
+          "client_id": "940248126378-5hi3jnk1ibh9gqe9dulmttpif119lorc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCsVdT0KIZIbqeQP4B7ISZDK_cne2E7fnA"
+          "current_key": "AIzaSyDyqPG_JbmS7TaEtDAmitgfsVImxzqNRaQ"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940248126378-5hi3jnk1ibh9gqe9dulmttpif119lorc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "940248126378-21i2rjscftt3ph9qne0p2dvbhpt72ov6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.potent.dangleios"
+              }
+            }
+          ]
         }
       }
     }

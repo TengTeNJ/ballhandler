@@ -72,7 +72,7 @@ class LoginUtil {
               AppleIDAuthorizationScopes.fullName,
             ],
             webAuthenticationOptions: WebAuthenticationOptions(
-                clientId: 'com.potent.stickhandling',
+                clientId: 'com.potent.dangle',
                 redirectUri:
                 Uri.parse('https://potent-hockey-8bae8.firebaseapp.com/__/auth/handler')));
         final _map = {
