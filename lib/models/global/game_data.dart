@@ -40,6 +40,10 @@ class GameData extends ChangeNotifier {
     BleULTimateLighStatu.close,
     BleULTimateLighStatu.close
   ]; // P3模式下  app端发送当前面板的四个灯的状态,仅仅270设备有效
+
+  List<int> p3DeviceBatteryValues = []; // p3模式下 所有板子的电量，板子的序号为0 1 2 3 4 5
+  bool ultimateIsGaming = false; // 270设备的是否在游戏状态 0x00-不在游戏状态，0x01-游戏状态
+
   String get showRemainTime => _showRemainTime;
 
   /* set方法*/

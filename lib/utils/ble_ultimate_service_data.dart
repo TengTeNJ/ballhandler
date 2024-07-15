@@ -1,5 +1,6 @@
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
+import 'package:code/utils/game_util.dart';
 import 'package:code/utils/string_util.dart';
 
 import '../constants/constants.dart';
@@ -20,14 +21,16 @@ enum BleULTimateLighStatu { close, red, blue, redAndBlue }
 
 class ResponseCMDType {
   static const int targetIn =
-      0x64; // 目标集中 灯板ID(1BYTE,0-3)+灯掩码（1字节，使用BIT1-BIT0，取值：0b00-NA; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯）
+      0x64; // 目标击中 灯板ID(1BYTE,0-3)+灯掩码（1字节，使用BIT1-BIT0，取值：0b00-NA; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯）
   /*灯板状态字节定义：
   BIT7-BIT6:灯板3选灯掩码
   BIT5-BIT4:灯板2选灯掩码
   BIT3-BIT2:灯板1选灯掩码
   BIT1-BIT0:灯板0选灯掩码
   上面每个掩码占据2BITS，取值：0b00-关灯; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯。*/
-  static const int statuSyn = 0x66; // 状态同步 所属灯板状态(1字节，按BIT分别表示)+电池电量（0-100，%）
+  static const int statuSyn =
+      0x66; // 状态同步 仅仅供子板向主板报告 所属灯板状态(1字节，按BIT分别表示)+电池电量（0-100，%）
+  static const int newStatuSyn = 0x68; // 状态同步，供APP使用
 }
 
 List<int> bleNotAllData = []; // 不完整数据 被分包发送的蓝牙数据
@@ -158,8 +161,47 @@ class BluetoothUltTimateDataParse {
           ];
           print(
               '${targetIndex}号控制板有状态更新，所对应的4个灯的状态为3号:${board3} 2号:${board2} 1号:${board3} 0号:${board0}');
-          BluetoothManager().triggerCallback(type:BLEDataType.statuSynchronize);
+          BluetoothManager()
+              .triggerCallback(type: BLEDataType.statuSynchronize);
           break;
+        case ResponseCMDType.newStatuSyn:
+          // 新状态同步(APP用)
+          // 主板MASTER向上状态同步，主要用于MASTER向APP同步
+          // 所有板的在线状态(1字节)+所有板的LED状态(6字节)+所有板的电池状态(6字节)+游戏状态(1字节)+游戏模式(1字节)+倒计时(2字节)+分值(2字节)
+          // 在线标志与协议结构中的发送设备编码一样，BIT0表示MASTER，BIT1表示SLAVE1，以此类推；bit值为1表示设备在线；
+          // 每个板的LED状态使用1个字节，按照BIT0-BIT1表示灯板0，BIT1-BIT2表示灯板1，以此类推；
+          // 每个板的电池状态占据1字节，为百分比，如90表示90%；
+          // 游戏状态占据1字节：0x00-不在游戏状态，0x01-游戏状态
+          // 游戏模式占据1字节：0x01-P1模式，0x02-P2模式，0x03-P3模式；
+          // 倒计时占据2字节：以秒为单位的倒计时；
+          // 分值占据2字节：
+          // 在线状态
+          int onLineStatu = element[4]; // 在线状态 0x01 在线
+          //  解析灯的状态
+          parseAllLedStatu(element);
+          // 所有板子的电池的电量 为百分比，如90表示90%
+          int battery0 = element[16];
+          int battery1 = element[15];
+          int battery2 = element[14];
+          int battery3 = element[13];
+          int battery4 = element[12];
+          int battery5 = element[11];
+          BluetoothManager().gameData.p3DeviceBatteryValues.clear();
+          BluetoothManager().gameData.p3DeviceBatteryValues.addAll(
+              [battery0, battery1, battery2, battery3, battery4, battery5]);
+          //  游戏状态
+          int gameStatu = element[17]; // 0x00-不在游戏状态，0x01-游戏状态
+          BluetoothManager().gameData.ultimateIsGaming = gameStatu == 1;
+
+          // 游戏时长倒计时
+          int remainTime = element[19]; // 游戏时长倒计时
+          BluetoothManager().gameData.remainTime = remainTime;
+          // 游戏得分
+          int score = element[20]; // 游戏时长倒计时
+          BluetoothManager().gameData.score = score;
+          // 设备状态信息变化 通知刷新页面
+          BluetoothManager()
+              .triggerCallback(type: BLEDataType.statuSynchronize);
       }
     } else {
       // 代表数据发送方不符合条件 APP端忽略

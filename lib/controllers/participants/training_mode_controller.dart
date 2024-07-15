@@ -19,6 +19,7 @@ import '../../utils/global.dart';
 import '../../utils/system_device.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
+
 class TrainingModeController extends StatefulWidget {
   const TrainingModeController({super.key});
 
@@ -35,23 +36,42 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       child: TrainingModeListView(
         model: _datas[index],
         scanBleList: () async {
+          const List<Widget> _controllers = [
+            P1Controller(),
+            P2Controller(),
+            P3Controller()
+          ];
+          NavigatorUtil.present(_controllers[index]);
+          return;
+          // GameUtil gameUtil = GetIt.instance<GameUtil>();
+          // gameUtil.modelId = index + 1;
+          // NavigatorUtil.push(Routes.recordselect);
+          // return;
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
           if (BluetoothManager().conectedDeviceCount.value == 0) {
-            if(await SystemUtil.isIPad()){
+            if (await SystemUtil.isIPad()) {
               TTDialog.ipadbleListDialog(context);
-            }else{
+            } else {
               TTDialog.bleListDialog(context);
             }
           } else {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
-            List<String> bleNames = [kFiveBallHandler_Name  ,k270_Name,kThreeBallHandler_Name];
+            List<String> bleNames = [
+              kFiveBallHandler_Name,
+              k270_Name,
+              kThreeBallHandler_Name
+            ];
             // 确认已连接的设备中是否有和当前模式匹配的,有的话则取第一个
-            List<BLEModel> devices =  BluetoothManager().hasConnectedDeviceList.where((element) => element.deviceName ==bleNames[ gameUtil.gameScene.index] ).toList();
-            if(devices.length == 0){
+            List<BLEModel> devices = BluetoothManager()
+                .hasConnectedDeviceList
+                .where((element) =>
+                    element.deviceName == bleNames[gameUtil.gameScene.index])
+                .toList();
+            if (devices.length == 0) {
               // 没有和当前模式相匹配的设备
-              if(await SystemUtil.isIPad()){
+              if (await SystemUtil.isIPad()) {
                 TTDialog.ipadbleListDialog(context);
-              }else{
+              } else {
                 TTDialog.bleListDialog(context);
               }
               return;
@@ -113,18 +133,19 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(top:16,bottom: 32,left: 16,right: 16),
+              margin: EdgeInsets.only(top: 16, bottom: 32, left: 16, right: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 Constants.boldWhiteTextWidget('Training Mode', 30,height: 0.8),
+                  Constants.boldWhiteTextWidget('Training Mode', 30,
+                      height: 0.8),
                   GestureDetector(
-                    onTap: () async{
-                       //  TTDialog.bleListDialog(context);
-                      if(await SystemUtil.isIPad()){
-                      TTDialog.ipadbleListDialog(context);
-                      }else{
-                      TTDialog.bleListDialog(context);
+                    onTap: () async {
+                      //  TTDialog.bleListDialog(context);
+                      if (await SystemUtil.isIPad()) {
+                        TTDialog.ipadbleListDialog(context);
+                      } else {
+                        TTDialog.bleListDialog(context);
                       }
 
                       print('蓝牙连接');

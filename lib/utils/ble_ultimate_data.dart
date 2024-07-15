@@ -10,7 +10,7 @@
 import 'package:code/constants/constants.dart';
 
 /*
-* 控制某面板灯光
+* 控制某面板灯光-红色
 * boradIndex为灯光索引，0为主控板 1-5为从板
 * lightStatu为灯板对应的四个灯光的的开关状态 顺序为 0 ，1，2，3
 * */
@@ -64,7 +64,7 @@ List<int> controRedLightBoard(int boradIndex, List<int> lightStatu) {
 }
 
 /*
-* 控制某面板灯光
+* 控制某面板灯光-蓝色
 * boradIndex为灯光索引，0为主控板 1-5为从板
 * lightStatu为灯板对应的四个灯光的的开关状态
 * */
@@ -125,7 +125,7 @@ List<int> closeAllBoardLight() {
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00111111', radix: 2);
   int length = 7;
-  int cmd = 0x36;
+  int cmd = 0x60;
   int data1 = int.parse('00001111', radix: 2);
   int data2 = int.parse('00000000', radix: 2);
 
@@ -155,7 +155,7 @@ List<int> closeSomeOneBoardLight(int boardIndex) {
     destinationInt = int.parse(destination, radix: 2);
   }
   int length = 7;
-  int cmd = 0x36;
+  int cmd = 0x60;
   int data1 = int.parse('00001111', radix: 2);
   int data2 = int.parse('00000000', radix: 2);
   int cs = start + source + destinationInt + length + cmd + data1 + data2;
@@ -171,7 +171,7 @@ List<int> openAllBoardLight({bool isRed = true}) {
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00111111', radix: 2);
   int length = 7;
-  int cmd = 0x36;
+  int cmd = 0x60;
   int data1;
   int data2;
   if (isRed) {
@@ -209,7 +209,7 @@ List<int> openSomeOneBoardLight(int boardIndex, {bool isRed = true}) {
     destinationInt = int.parse(destination, radix: 2);
   }
   int length = 7;
-  int cmd = 0x36;
+  int cmd = 0x60;
   int data1;
   int data2;
   if (isRed) {
@@ -286,7 +286,9 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
     length,
     cmd,
     data1,
-    data2 + data3 + data4,
+    data2,
+    data3,
+    data4,
     cs,
     end
   ];
@@ -330,8 +332,48 @@ List<int> scoreShow(int value) {
     length,
     cmd,
     data1,
-    data2 + data3 + data4,
+    data2,
+    data3,
+    data4,
     cs,
     end
   ];
+}
+
+/*APP 上线
+* 默认为上线，如果传入参数onLine = false 则代表下线
+* */
+List<int>appOnLine({bool onLine = true}){
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00111111', radix: 2);
+  int length = 7;
+  int cmd = 0x0A;
+  int data1 = 0x01;
+  int data2 = 0x01;
+  if(!onLine){
+    data2 = 0x00; // APP下线
+  }
+  int cs = start + source + destination + length + cmd + data1 + data2;
+  return [start, source, destination, length, cmd, data1,data2, cs, end];
+}
+/*
+* 游戏开始
+* 默认为游戏开始，如果传入onStart = false,则代表游戏结束
+* */
+List<int>gameStart({bool onStart = true}){
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00111111', radix: 2);
+  int length = 7;
+  int cmd = 0x0A;
+  int data1 = 0x02; //  代表游戏开始/结束
+  int data2 = 0x01;
+  if(!onStart){
+    data2 = 0x00; // 游戏结束
+  }
+  int cs = start + source + destination + length + cmd + data1 + data2;
+  return [start, source, destination, length, cmd, data1,data2, cs, end];
 }
