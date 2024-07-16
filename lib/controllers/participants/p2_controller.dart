@@ -48,7 +48,7 @@ class P2Controller extends StatelessWidget {
                         height: 40,
                       ),
                       Image(
-                        image: AssetImage('images/participants/p2_1.png'),
+                        image: AssetImage('images/participants/p2_1.apng.png'),
                         height: 148,
                         fit: BoxFit.fitHeight,
                       ),
@@ -76,7 +76,7 @@ class P2Controller extends StatelessWidget {
                       ),
                       SizedBox(height: 54,),
                       Image(
-                        image: AssetImage('images/participants/p2_2.png'),
+                        image: AssetImage('images/participants/p2_2.apng.png'),
                         height: 148,
                         fit: BoxFit.fitHeight,
                       ),
@@ -104,7 +104,7 @@ class P2Controller extends StatelessWidget {
                       ),
                       SizedBox(height: 54,),
                       Image(
-                        image: AssetImage('images/participants/p2_3.png'),
+                        image: AssetImage('images/participants/p2_3.apng.png'),
                         height: 148,
                         fit: BoxFit.fitHeight,
                       ),

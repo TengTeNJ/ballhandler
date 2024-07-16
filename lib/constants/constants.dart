@@ -404,7 +404,7 @@ const Map<int,Map<String,String>> p3Maps = {
     'des': 'Navigate 15 seconds in each of the three two-pad zones , engaging with 1 or 2 red lights randomly up across two pads, each worth 2 points, and dodging a single blue \'defender\' light, demanding quick reactions and agile decision-making.'
   },
   1:{
-    'image': 'WideDekes.apng',
+    'image': 'zigzag.apng',
     'title': 'Ziazag',
     'des': 'Navigate 15 seconds in each of the three two-pad zones , engaging with 1 or 2 red lights randomly up across two pads, each worth 2 points, and dodging a single blue \'defender\' light, demanding quick reactions and agile decision-making.'
   },
@@ -414,8 +414,8 @@ const Map<int,Map<String,String>> p3Maps = {
     'des': 'Master the full workout area, applying a wide array of advanced techniques to outmaneuver defenders and navigate complex scenarios, mirroring the unpredictability of real-game situations..'
   },
   3:{
-    'image': 'ToeDrag.apng',
-    'title': 'Toe Drag',
+    'image': 'Triangles.apng',
+    'title': 'Triangles',
     'des': 'Master the full workout area, applying a wide array of advanced techniques to outmaneuver defenders and navigate complex scenarios, mirroring the unpredictability of real-game situations..'
   },
   4:{
@@ -426,16 +426,16 @@ const Map<int,Map<String,String>> p3Maps = {
   5:{
     'image': 'TTL.apng',
     'title': 'Through the legs',
-    'des': 'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
+    'des': 'For through-the-legs hockey drill, there will be 3 blue defender dots and 1 red target. You will need to weave through the legs, in and around the blue defenders to score points. This will enhance your ability to stickhandle between defenders legs or blade. Improve precision and reaction time in game-like situations.To add complexity, try adding a fake to one direction and through the legs in the other.'
   },
   6:{
-    'image': 'TTL.apng',
+    'image': 'Figure8.apng',
     'title': 'Figure 8',
     'des': 'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
   },
   7:{
-    'image': 'TTL.apng',
+    'image': 'onehand.apng',
     'title': 'One handed',
-    'des': 'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
+    'des': 'For one-handed training,practice from positional puck control to figure 8,use top hand on your stick,keeping it close to your body to maximize control.Focus on wrist strength by dribbling the puck with varying speeds and directions.Incorporate cone weaving to enhance dexterity and stick handling precision,ensuring to switch hands periodically for balanced training'
   },
 }; // 270 P3模式 guide数据map映射表

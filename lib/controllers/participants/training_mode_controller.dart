@@ -36,6 +36,14 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
         model: _datas[index],
         scanBleList: () async {
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
+          const List<Widget> _controllers = [
+            P1Controller(),
+            P2Controller(),
+            P3Controller()
+          ];
+          NavigatorUtil.present(_controllers[index]);
+          return;
+
           if (BluetoothManager().conectedDeviceCount.value == 0) {
             if(await SystemUtil.isIPad()){
               TTDialog.ipadbleListDialog(context);
