@@ -281,7 +281,9 @@ const kBLEDevice_Name = 'Myspeedz';
 const kBLEDevice_NewName = 'StarShots';
 const kFiveBallHandler_Name = 'Stickhandling'; // 五节控球器的名称
 const kThreeBallHandler_Name = 'Razor Dangler 2.0'; // 三节控球器的名称
-const k270_Name = 'Ultimater Dangler'; // 270度
+// const k270_Name = 'Ultimater Dangler'; // 270度
+const k270_Name = 'Dangler-M-00'; // 270度
+
 const kBLEDevice_OldName = 'Tv511u-E4247823';
 const kBLE_SERVICE_NOTIFY_UUID = "ffe0";
 const kBLE_SERVICE_WRITER_UUID = "ffe5";

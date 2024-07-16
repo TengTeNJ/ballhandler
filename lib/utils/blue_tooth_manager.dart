@@ -161,7 +161,7 @@ class BluetoothManager {
         EasyLoading.showSuccess('Bluetooth connection successful');
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((data) {
-          print("deviceId =${model.device!.id}---上报来的数据data = $data");
+          print("deviceId =${model.device!.id}---上报来的数据data = ${data.map((toElement)=>toElement.toRadixString(16)).toList()}");
           if(model.deviceName ==  k270_Name) {
             // 解析270
             BluetoothUltTimateDataParse.parseData(data, model);

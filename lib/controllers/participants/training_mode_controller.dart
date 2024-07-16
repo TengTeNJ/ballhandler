@@ -5,6 +5,7 @@ import 'package:code/controllers/participants/p3_controller.dart';
 import 'package:code/models/ble/ble_model.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -36,13 +37,13 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       child: TrainingModeListView(
         model: _datas[index],
         scanBleList: () async {
-          const List<Widget> _controllers = [
-            P1Controller(),
-            P2Controller(),
-            P3Controller()
-          ];
-          NavigatorUtil.present(_controllers[index]);
-          return;
+          // const List<Widget> _controllers = [
+          //   P1Controller(),
+          //   P2Controller(),
+          //   P3Controller()
+          // ];
+          // NavigatorUtil.present(_controllers[index]);
+          // return;
           // GameUtil gameUtil = GetIt.instance<GameUtil>();
           // gameUtil.modelId = index + 1;
           // NavigatorUtil.push(Routes.recordselect);
@@ -81,6 +82,12 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             if (gameUtil.gameScene == GameScene.five) {
               NavigatorUtil.push(Routes.recordselect);
             } else if (gameUtil.gameScene == GameScene.erqiling) {
+              // 设置270的游戏模式
+              BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(index + 1));
+              //  P3模式完全是APP控制，发送APP上线指令
+              if(index== 2){
+                BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, appOnLine(onLine: false));
+              }
               const List<Widget> _controllers = [
                 P1Controller(),
                 P2Controller(),
