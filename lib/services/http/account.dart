@@ -105,6 +105,7 @@ class Account {
     NSUserDefault.setKeyValue<String>(kAvatar, _response.data!.avatar);
     NSUserDefault.setKeyValue<String>(kBrithDay, _response.data!.birthday);
     NSUserDefault.setKeyValue<String>(kCountry, ISEmpty(_response.data!.country) ? 'Unknown' : _response.data!.country);
+    NSUserDefault.setKeyValue<String>(kUserEmail, _response.data!.accountNo ?? '');
 
     UserProvider.of(context).userName = ISEmpty(_response.data!.nickName) ? 'Unknown' : _response.data!.nickName;
     UserProvider.of(context).token = _response.data!.memberToken;
@@ -112,9 +113,10 @@ class Account {
     UserProvider.of(context).createTime = _response.data!.createTime;
     UserProvider.of(context).country = ISEmpty(_response.data!.country) ? 'Unknown' : _response.data!.country;
     UserProvider.of(context).brith = ISEmpty(_response.data!.birthday) ? '--' : _response.data!.birthday;
+    UserProvider.of(context).email = _response.data!.accountNo ?? '';
 
-    final _email = await NSUserDefault.getValue(kUserEmail);
-    UserProvider.of(context).email = _email ?? '';
+    // final _email = await NSUserDefault.getValue(kUserEmail);
+    // UserProvider.of(context).email = _email ?? '';
 
     // 登录成功后绑定用户和推送的token
     GameUtil gameUtil = GetIt.instance<GameUtil>();
@@ -127,12 +129,12 @@ class Account {
       "firebaseToken" : gameUtil.firebaseToken
     });
 
-    String userName =  await NSUserDefault.getValue(kUserName) ?? 'Unknown';
-    String email =  await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
-    if(userName!=null && userName.length > 0){
-      FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
-      FirebaseCrashlytics.instance.setCustomKey('userName', userName);
-      FirebaseCrashlytics.instance.setCustomKey('email', email ?? 'Unknown');
-    }
+    // String userName =  await NSUserDefault.getValue(kUserName) ?? 'Unknown';
+    // String email =  await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
+    // if(userName!=null && userName.length > 0){
+    //   FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
+    //   FirebaseCrashlytics.instance.setCustomKey('userName', userName);
+    //   FirebaseCrashlytics.instance.setCustomKey('email', email ?? 'Unknown');
+    // }
   }
 }

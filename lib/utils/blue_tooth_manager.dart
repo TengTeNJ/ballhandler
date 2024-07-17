@@ -173,7 +173,6 @@ class BluetoothManager {
           conectedDeviceCount.value--;
           if(conectedDeviceCount.value == 0){
             // 所有设备断开
-            print('---------++++++=========');
             _instance._bleListen?.cancel();
             _instance._bleListen = null;
             _instance._scanStream = null;

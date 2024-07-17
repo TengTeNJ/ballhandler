@@ -16,6 +16,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       realName: json['realName'].toString() as String?,
       birthday: json['birthday'].toString()as String,
       country:  json['country'].toString() as String,
+    accountNo: json['accountNo'].toString() as String,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -26,4 +27,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'memberToken': instance.memberToken,
       'createTime': instance.createTime,
       'realName': instance.realName,
+      'accountNo': instance.accountNo
     };

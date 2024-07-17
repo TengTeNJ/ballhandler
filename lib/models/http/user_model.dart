@@ -11,8 +11,10 @@ class User {
   String memberToken;
   String createTime;
   String? realName;
- String birthday;
- String country;
+  String birthday;
+  String country;
+  String? accountNo;
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
@@ -26,5 +28,6 @@ class User {
       required this.createTime,
       required this.realName,
       required this.birthday,
-      required this.country});
+      required this.country,
+      this.accountNo});
 }
