@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "940248126378-rngsfnu34d00l1jpkeman2fvh8qb59vr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potent.dangle",
+            "certificate_hash": "dc637d6c2c77e9c7a69021a308dded48db511049"
+          }
+        },
+        {
           "client_id": "940248126378-5hi3jnk1ibh9gqe9dulmttpif119lorc.apps.googleusercontent.com",
           "client_type": 3
         }

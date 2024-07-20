@@ -67,4 +67,5 @@ class DefaultFirebaseOptions {
     iosClientId: '940248126378-21i2rjscftt3ph9qne0p2dvbhpt72ov6.apps.googleusercontent.com',
     iosBundleId: 'com.potent.dangleios',
   );
+
 }
