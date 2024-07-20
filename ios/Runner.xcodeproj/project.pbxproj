@@ -231,7 +231,6 @@
 				A8CA26F36C365072F25D456B /* [CP] Copy Pods Resources */,
 				9CBDC3C0FBAA811D67B06B00 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
 				B3C250DE3B9B2821293DBA34 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
-
 			);
 			buildRules = (
 			);
