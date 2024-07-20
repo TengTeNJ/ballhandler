@@ -12,7 +12,28 @@
           "package_name": "com.potent.stickhandling"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "940248126378-0qgcr7uodv3k55hg39o2br2tn3afn2hk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potent.dangle",
+            "certificate_hash": "f8cddeff68a2fd259d27a4a6292943de1f464bad"
+          }
+        },
+        {
+          "client_id": "940248126378-rngsfnu34d00l1jpkeman2fvh8qb59vr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potent.dangle",
+            "certificate_hash": "dc637d6c2c77e9c7a69021a308dded48db511049"
+          }
+        },
+        {
+          "client_id": "940248126378-5hi3jnk1ibh9gqe9dulmttpif119lorc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCsVdT0KIZIbqeQP4B7ISZDK_cne2E7fnA"

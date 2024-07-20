@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'potent-hockey-8bae8.appspot.com',
     iosBundleId: 'com.potent.ballhandler',
   );
+
 }

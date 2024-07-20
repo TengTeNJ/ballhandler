@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
+import 'package:code/services/http/account.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -1811,6 +1814,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
   late PageController _pageController;
   int _currentIndex = 0;
   List<Color> _colors = [Colors.red, Colors.green, Colors.blue];
+ late StreamSubscription<dynamic> _subscription;
 
   @override
   void initState() {
@@ -1821,6 +1825,39 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
       int currentpage = _pageController.page!.round();
       _currentIndex = currentpage;
       setState(() {});
+    });
+    final Stream purchaseUpdated =
+        InAppPurchase.instance.purchaseStream;
+    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
+      _listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      _subscription.cancel();
+    }, onError: (error) {
+      // handle error here.
+    });
+  }
+  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        //_showPendingUI();
+      } else {
+        if (purchaseDetails.status == PurchaseStatus.error) {
+         // _handleError(purchaseDetails.error!);
+        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
+            purchaseDetails.status == PurchaseStatus.restored) {
+         // bool valid = await _verifyPurchase(purchaseDetails);
+
+        }
+        if (purchaseDetails.pendingCompletePurchase) {
+          await InAppPurchase.instance
+              .completePurchase(purchaseDetails);
+          Account.googlePayVertify(
+            purchaseId: purchaseDetails.purchaseID??'',
+            productNo: purchaseDetails.productID,
+            purchaseToken:purchaseDetails.verificationData.serverVerificationData,
+          );
+        }
+      }
     });
   }
 
@@ -1886,11 +1923,16 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
                 if (!available) {
                   // The store cannot be reached or accessed. Update the UI accordingly.
                 }
-                const Set<String> _kIds = <String>{'level_001'};
+                const Set<String> _kIds = <String>{'hockey_7','hockey_6','hockey_5'};
                 final ProductDetailsResponse response =
                     await InAppPurchase.instance.queryProductDetails(_kIds);
                 print('response====${response}');
+
                 print('productDetails====${response.productDetails}');
+                final ProductDetails productDetails = response.productDetails.first; // Saved earlier from queryProductDetails().
+                final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
+
+                InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
 
                 if (response.notFoundIDs.isNotEmpty) {
                   // Handle the error.
