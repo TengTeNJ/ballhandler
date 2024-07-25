@@ -439,3 +439,5 @@ const Map<int,Map<String,String>> p3Maps = {
     'des': 'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
   },
 }; // 270 P3模式 guide数据map映射表
+
+const Set<String> kProductIds = <String>{'hockey_02', 'five_1'}; // 订阅产品id

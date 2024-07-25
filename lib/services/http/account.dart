@@ -164,7 +164,21 @@ class Account {
       FirebaseCrashlytics.instance.setCustomKey('email', email ?? 'Unknown');
     }
   }
-
+/*苹果内购验证*/
+  static Future<ApiResponse> applePayVertify(
+      {String thirdPayNo = '',
+        String productNo = '',
+        String receiptDate = ''}) async {
+    final _data = {
+      'thirdPayNo':thirdPayNo,
+      'productNo':productNo,
+      'receiptDate':receiptDate,
+      'packageName': 'com.potent.dangle',
+    };
+    final response =
+    await HttpUtil.post('/api/pay/apple', _data, showLoading: true);
+    return ApiResponse(success: response.success);
+  }
 /*谷歌内购验证*/
   static Future<ApiResponse> googlePayVertify(
       {String purchaseId = '',

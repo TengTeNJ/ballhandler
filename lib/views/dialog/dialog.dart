@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/account.dart';
+import 'package:code/utils/app_purse.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/utils/toast.dart';
+import 'package:code/views/base/no_data_view.dart';
 import 'package:code/views/ble/ble_list_view.dart';
 import 'package:code/views/participants/subscribe_border_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
@@ -24,6 +27,8 @@ import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
 import 'package:in_app_purchase/in_app_purchase.dart';
+
+import '../../utils/upd_util.dart';
 
 /**发送邮件弹窗**/
 class SendEmailDiaog extends StatefulWidget {
@@ -1812,57 +1817,38 @@ class SubscribeDialog extends StatefulWidget {
 
 class _SubscribeDialogState extends State<SubscribeDialog> {
   late PageController _pageController;
+  AppPurse purse = AppPurse();
   int _currentIndex = 0;
-  List<Color> _colors = [Colors.red, Colors.green, Colors.blue];
- late StreamSubscription<dynamic> _subscription;
+  late StreamSubscription<dynamic> _subscription;
+  List<ProductDetails> datas = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // 开始监听
+    purse.startSubscription();
+    // 查询订阅产品
+    queryProducts();
+    // 滑动指示器
     _pageController = PageController(initialPage: _currentIndex);
+    // 滑动监听
     _pageController.addListener(() {
       int currentpage = _pageController.page!.round();
       _currentIndex = currentpage;
-      setState(() {});
-    });
-    final Stream purchaseUpdated =
-        InAppPurchase.instance.purchaseStream;
-    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription.cancel();
-    }, onError: (error) {
-      // handle error here.
+     // setState(() {});
     });
   }
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
-    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-        //_showPendingUI();
-      } else {
-        if (purchaseDetails.status == PurchaseStatus.error) {
-         // _handleError(purchaseDetails.error!);
-        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
-            purchaseDetails.status == PurchaseStatus.restored) {
-         // bool valid = await _verifyPurchase(purchaseDetails);
 
-        }
-        if (purchaseDetails.pendingCompletePurchase) {
-          await InAppPurchase.instance
-              .completePurchase(purchaseDetails);
-          Account.googlePayVertify(
-            purchaseId: purchaseDetails.purchaseID??'',
-            productNo: purchaseDetails.productID,
-            purchaseToken:purchaseDetails.verificationData.serverVerificationData,
-          );
-        }
-      }
-    });
+  /*查询产品*/
+  queryProducts() async {
+    final _list = await purse.getAvaliableProductList();
+    datas.addAll(_list);
+    setState(() {});
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(odeBuildContecontext) {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.only(left: 24, right: 24),
@@ -1913,40 +1899,36 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
             SizedBox(
               height: 24,
             ),
-            SubscribeBorderView(
-              leftTitle: 'Annual',
-              rightTitle: '14.99',
-              rightDes: '179.99',
-              onTap: () async {
-                final bool available =
-                    await InAppPurchase.instance.isAvailable();
-                if (!available) {
-                  // The store cannot be reached or accessed. Update the UI accordingly.
-                }
-                const Set<String> _kIds = <String>{'hockey_7','hockey_6','hockey_5'};
-                final ProductDetailsResponse response =
-                    await InAppPurchase.instance.queryProductDetails(_kIds);
-                print('response====${response}');
-
-                print('productDetails====${response.productDetails}');
-                final ProductDetails productDetails = response.productDetails.first; // Saved earlier from queryProductDetails().
-                final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
-
-                InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
-
-                if (response.notFoundIDs.isNotEmpty) {
-                  // Handle the error.
-                }
-                List<ProductDetails> products = response.productDetails;
-              },
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            SubscribeBorderView(
-              leftTitle: 'Monthly',
-              rightTitle: '17.99',
-            ),
+            Container(
+                child: datas.length == 0 ? NoDataView() : ListView.separated(
+                    itemBuilder: (BuildContext context, int index) {
+                      if (index == 0) {
+                        return SubscribeBorderView(
+                          leftTitle: datas[index].title,
+                          rightTitle: (datas[index].rawPrice / 12.0)
+                              .toStringAsFixed(2),
+                          rightDes: datas[index].rawPrice.toStringAsFixed(2),
+                          onTap: () async {
+                            purse.begainBuy(datas[index]);
+                          },
+                        );
+                      } else {
+                        return SubscribeBorderView(
+                          leftTitle: datas[index].title,
+                          rightTitle: datas[index].rawPrice.toStringAsFixed(2),
+                          onTap: () async {
+                            purse.begainBuy(datas[index]);
+                          },
+                        );
+                      }
+                      ;
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(
+                        height: 24,
+                      );
+                    },
+                    itemCount: datas.length),height: 152,),
             SizedBox(
               height: 8,
             ),
@@ -1997,10 +1979,18 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    purse.disposeSubscription();
+    super.dispose();
+  }
 }
 
 class MirrorScreenDialog extends StatelessWidget {
   const MirrorScreenDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -2027,7 +2017,8 @@ class MirrorScreenDialog extends StatelessWidget {
               padding: EdgeInsets.only(left: 50, right: 50),
               child: Constants.regularWhiteTextWidget(
                   'Please use the screen mirroring function on your mobile phone for casting',
-                  16,height: 1.375),
+                  16,
+                  height: 1.375),
             ),
           ],
         ),
