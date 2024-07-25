@@ -45,6 +45,8 @@ class _RootPageControllerState extends State<RootPageController> {
     RankingController(),
     ProfileController(),
   ];
+  late StreamSubscription<dynamic> _subscription;
+
 
   @override
   void initState() {

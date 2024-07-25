@@ -441,3 +441,5 @@ const Map<int,Map<String,String>> p3Maps = {
     'des': 'For one-handed training,practice from positional puck control to figure 8,use top hand on your stick,keeping it close to your body to maximize control.Focus on wrist strength by dribbling the puck with varying speeds and directions.Incorporate cone weaving to enhance dexterity and stick handling precision,ensuring to switch hands periodically for balanced training'
   },
 }; // 270 P3模式 guide数据map映射表
+
+const Set<String> kProductIds = <String>{'hockey_02', 'five_1'}; // 订阅产品id

@@ -46,13 +46,13 @@ class _SubscribeBorderViewState extends State<SubscribeBorderView> {
                   Row(
                     children: [
                       Constants.boldBaseTextWidget(
-                          '${widget.rightTitle}', 20),
+                          '\$${widget.rightTitle}', 20),
                       Constants.regularBaseTextWidget('/mo', 14),
                     ],
                   ),
                   SizedBox(height: 4,),
                   Constants.regularGreyTextWidget(
-                      'Billed as ${widget.rightDes}/yr', 14)
+                      'Billed as \$${widget.rightDes}/yr', 14)
                 ],
               )
                   : Row(
