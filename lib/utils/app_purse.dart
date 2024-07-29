@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:code/constants/constants.dart';
+import 'package:code/services/sqlite/data_base.dart';
+import 'package:code/utils/http_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
@@ -8,7 +10,8 @@ import '../services/http/account.dart';
 
 class AppPurse {
   StreamSubscription<dynamic>? _subscription;
-  StreamSubscription<dynamic>  startSubscription() {
+
+  StreamSubscription<dynamic> startSubscription() {
     if (this._subscription == null) {
       final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
       StreamSubscription<dynamic> _subscription =
@@ -31,41 +34,45 @@ class AppPurse {
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
-        //_showPendingUI();
         TTToast.showLoading();
       } else {
         TTToast.hideLoading();
-        if (purchaseDetails.status == PurchaseStatus.error) {
-           InAppPurchase.instance.completePurchase(purchaseDetails);
-          // _handleError(purchaseDetails.error!);
+        // if (purchaseDetails.pendingCompletePurchase) {
+        //   InAppPurchase.instance.completePurchase(purchaseDetails);
+        //   return;
+        // }
+        if (purchaseDetails.status == PurchaseStatus.error ||
+            purchaseDetails.status == PurchaseStatus.canceled) {
+           DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
+          // 取消和出错的话要结束购买流程 否则下次再点击进来进行购买会pending
+          InAppPurchase.instance.completePurchase(purchaseDetails);
+          print('处理支付错误');
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           // bool valid = await _verifyPurchase(purchaseDetails);
-          if (purchaseDetails.pendingCompletePurchase) {
-            await InAppPurchase.instance.completePurchase(purchaseDetails);
-            // 去服务端进行验证
-            if(purchaseDetails.pendingCompletePurchase){
-              if(Platform.isAndroid){
-                Account.googlePayVertify(
-                  purchaseId: purchaseDetails.purchaseID ?? '',
-                  productNo: purchaseDetails.productID,
-                  purchaseToken:
+          // 去服务端进行验证
+          ApiResponse _response;
+          if (Platform.isAndroid) {
+            _response = await Account.googlePayVertify(
+              purchaseId: purchaseDetails.purchaseID ?? '',
+              productNo: purchaseDetails.productID,
+              purchaseToken:
                   purchaseDetails.verificationData.serverVerificationData,
-                );
-              }else{
-                Account.applePayVertify(
-                  thirdPayNo: purchaseDetails.purchaseID ?? '',
-                  productNo: purchaseDetails.productID,
-                  receiptDate:
+            );
+          } else {
+            _response = await Account.applePayVertify(
+              thirdPayNo: purchaseDetails.purchaseID ?? '',
+              productNo: purchaseDetails.productID,
+              receiptDate:
                   purchaseDetails.verificationData.serverVerificationData,
-                );
-              }
-            }
+            );
           }
-        }else if(purchaseDetails.status == PurchaseStatus.canceled){
-           InAppPurchase.instance.completePurchase(purchaseDetails);
+          // 验证成功 则结束购买流程
+          if (_response != null && _response.success) {
+            InAppPurchase.instance.completePurchase(purchaseDetails);
+            DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
+          }
         }
-
       }
     });
   }
@@ -85,23 +92,24 @@ class AppPurse {
   }
 
   /*进行购买某个产品*/
-  begainBuy(ProductDetails productDetail) async{
-   final avaliable = await this.avaliable;
-   if(avaliable){
-     final PurchaseParam purchaseParam =
-     PurchaseParam(productDetails: productDetail);
-     await InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
-   }else{
-    TTToast.showToast('Not avaliable');
-   }
-
+  begainBuy(ProductDetails productDetail) async {
+    final avaliable = await this.avaliable;
+    if (avaliable) {
+      final PurchaseParam purchaseParam =
+          PurchaseParam(productDetails: productDetail);
+      await InAppPurchase.instance
+          .buyNonConsumable(purchaseParam: purchaseParam);
+       DatabaseHelper().insertSubData(productDetail);
+    } else {
+      TTToast.showToast('Not avaliable');
+    }
   }
 
   /*
   * 释放监听
   * */
-  disposeSubscription(){
-    if(this._subscription != null){
+  disposeSubscription() {
+    if (this._subscription != null) {
       this._subscription!.cancel();
     }
   }

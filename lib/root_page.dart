@@ -10,6 +10,7 @@ import 'package:code/services/http/account.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/services/sqlite/data_base.dart';
+import 'package:code/utils/app_purse.dart';
 import 'package:code/utils/event_track.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/message_ytil.dart';
@@ -25,6 +26,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'firebase_options.dart';
 
@@ -46,11 +49,12 @@ class _RootPageControllerState extends State<RootPageController> {
     ProfileController(),
   ];
   late StreamSubscription<dynamic> _subscription;
-
+ AppPurse purse = AppPurse();
 
   @override
   void initState() {
     super.initState();
+    handleAppPurse();
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     _pageController = PageController()
       ..addListener(() {
@@ -69,6 +73,10 @@ class _RootPageControllerState extends State<RootPageController> {
         loadLaunchPage();
       }
     });
+  }
+  /*处理内购*/
+  handleAppPurse(){
+   // purse.startSubscription();
   }
 
   Future<FirebaseApp> initFirebase() async {

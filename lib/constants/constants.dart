@@ -316,6 +316,7 @@ const String kBaseUrl_Pro = 'http://13.49.0.47:91'; // 生产环境地址
 
 const kDataBaseTableName = 'game_data_table'; // 数据库的表名
 const kDataBaseTVideoableName = 'video_table'; // 视频路径数据库的表名
+const kDataBaseSubscripeName = 'subscription'; // 订阅
 
 const kGameDuration = 45; // 游戏时常
 
@@ -440,4 +441,4 @@ const Map<int,Map<String,String>> p3Maps = {
   },
 }; // 270 P3模式 guide数据map映射表
 
-const Set<String> kProductIds = <String>{'hockey_02', 'five_1'}; // 订阅产品id
+const Set<String> kProductIds = <String>{'hockey_00', 'five_1'}; // 订阅产品id
