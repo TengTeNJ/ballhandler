@@ -48,7 +48,7 @@ class P1Controller extends StatelessWidget {
                         height: 40,
                       ),
                       Image(
-                        image: AssetImage('images/participants/p1_1.png'),
+                        image: AssetImage('images/participants/p1_1.apng.png'),
                         height: 148,
                         fit: BoxFit.fitHeight,
                       ),
@@ -76,7 +76,7 @@ class P1Controller extends StatelessWidget {
                       ),
                       SizedBox(height: 54,),
                       Image(
-                        image: AssetImage('images/participants/p1_2.png'),
+                        image: AssetImage('images/participants/p1_2.apng.png'),
                         height: 148,
                         fit: BoxFit.fitHeight,
                       ),
@@ -104,7 +104,7 @@ class P1Controller extends StatelessWidget {
                       ),
                       SizedBox(height: 54,),
                       Image(
-                        image: AssetImage('images/participants/p1_3.png'),
+                        image: AssetImage('images/participants/p1_3.apng.png'),
                         height: 148,
                         fit: BoxFit.fitHeight,
                       ),
@@ -132,7 +132,7 @@ class P1Controller extends StatelessWidget {
                       ),
                       SizedBox(height: 54,),
                       Image(
-                        image: AssetImage('images/participants/p1_4.png'),
+                        image: AssetImage('images/participants/p1_4.apng.png'),
                         height: 148,
                         fit: BoxFit.fitHeight,
                       ),

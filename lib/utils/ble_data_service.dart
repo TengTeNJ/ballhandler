@@ -16,6 +16,8 @@ enum BLEDataType {
   remainTime,
   millisecond,
   targetIn,
+  boardHit, // 灯板击中 270
+  statuSynchronize, // 状态同步 270
 }
 class ResponseCMDType {
   static const int deviceInfo = 0x20; // 设备信息，包含开机状态、电量等

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:code/constants/constants.dart';
+
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/toast.dart';
@@ -15,7 +16,7 @@ class AppPurse {
     if (this._subscription == null) {
       final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
       StreamSubscription<dynamic> _subscription =
-          purchaseUpdated.listen((purchaseDetailsList) {
+      purchaseUpdated.listen((purchaseDetailsList) {
         _listenToPurchaseUpdated(purchaseDetailsList);
       }, onDone: () {
         print('-------onDone-------');
@@ -43,7 +44,7 @@ class AppPurse {
         // }
         if (purchaseDetails.status == PurchaseStatus.error ||
             purchaseDetails.status == PurchaseStatus.canceled) {
-           DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
+          DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
           // 取消和出错的话要结束购买流程 否则下次再点击进来进行购买会pending
           InAppPurchase.instance.completePurchase(purchaseDetails);
           print('处理支付错误');
@@ -57,14 +58,14 @@ class AppPurse {
               purchaseId: purchaseDetails.purchaseID ?? '',
               productNo: purchaseDetails.productID,
               purchaseToken:
-                  purchaseDetails.verificationData.serverVerificationData,
+              purchaseDetails.verificationData.serverVerificationData,
             );
           } else {
             _response = await Account.applePayVertify(
               thirdPayNo: purchaseDetails.purchaseID ?? '',
               productNo: purchaseDetails.productID,
               receiptDate:
-                  purchaseDetails.verificationData.serverVerificationData,
+              purchaseDetails.verificationData.serverVerificationData,
             );
           }
           // 验证成功 则结束购买流程
@@ -87,7 +88,7 @@ class AppPurse {
   Future<List<ProductDetails>> getAvaliableProductList() async {
     const Set<String> _kIds = kProductIds;
     final ProductDetailsResponse response =
-        await InAppPurchase.instance.queryProductDetails(_kIds);
+    await InAppPurchase.instance.queryProductDetails(_kIds);
     return response.productDetails;
   }
 
@@ -96,10 +97,10 @@ class AppPurse {
     final avaliable = await this.avaliable;
     if (avaliable) {
       final PurchaseParam purchaseParam =
-          PurchaseParam(productDetails: productDetail);
+      PurchaseParam(productDetails: productDetail);
       await InAppPurchase.instance
           .buyNonConsumable(purchaseParam: purchaseParam);
-       DatabaseHelper().insertSubData(productDetail);
+      DatabaseHelper().insertSubData(productDetail);
     } else {
       TTToast.showToast('Not avaliable');
     }

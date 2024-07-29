@@ -3,6 +3,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
+import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
@@ -160,8 +161,14 @@ class BluetoothManager {
         EasyLoading.showSuccess('Bluetooth connection successful');
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((data) {
-          print("deviceId =${model.device!.id}---上报来的数据data = $data");
-          BluetoothDataParse.parseData(data,model);
+          print("deviceId =${model.device!.id}---上报来的数据data = ${data.map((toElement)=>toElement.toRadixString(16)).toList()}");
+          if(model.deviceName ==  k270_Name) {
+            // 解析270
+            BluetoothUltTimateDataParse.parseData(data, model);
+          }else{
+            // 解析五节
+            BluetoothDataParse.parseData(data,model);
+          }
         });
         writerDataToDevice(model,questDeviceInfoData());
         // 连接成功，则设备列表页面弹窗消失
@@ -173,7 +180,6 @@ class BluetoothManager {
           conectedDeviceCount.value--;
           if(conectedDeviceCount.value == 0){
             // 所有设备断开
-            print('---------++++++=========');
             _instance._bleListen?.cancel();
             _instance._bleListen = null;
             _instance._scanStream = null;
@@ -224,7 +230,6 @@ class BluetoothManager {
 
   listenBLEStatu(){
     if(_bleStatuListen == null){
-      print('这个代码会执行几次-----');
       _bleStatuListen =  FlutterReactiveBle().statusStream.listen((status) {
         print('蓝牙状态status===${status}');
         //code for handling status updatei
