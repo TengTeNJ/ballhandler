@@ -125,8 +125,8 @@ class _RootPageControllerState extends State<RootPageController> {
       VideoUtil().deleteFileInBackground(_datas);
     }
     // 消息推送处理
-    fireBaseMessage();
-    fireBaseCrashlytics(); // 监听推送通知
+    fireBaseMessage(); // 监听推送通知
+   // fireBaseCrashlytics();
   }
 
   Future<void> querySceneListdata() async {

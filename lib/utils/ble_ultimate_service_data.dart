@@ -150,7 +150,7 @@ class BluetoothUltTimateDataParse {
           int data2 = element[5]; // 灯板状态字节
           String binaryString = data2.toRadixString(2).padLeft(8, '0');
           String board3 = binaryString.substring(0, 2); // 灯板3的状态
-          String board2 = binaryString.substring(24); // 灯板2的状态
+          String board2 = binaryString.substring(2, 4); // 灯板2的状态
           String board1 = binaryString.substring(4, 6); // 灯板1的状态
           String board0 = binaryString.substring(6, 8); // 灯板0的状态
           BluetoothManager().gameData.lightStatus = [
