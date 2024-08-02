@@ -7,5 +7,6 @@ class LightBallModel{
   double? top;
   Color color;
   bool show;
+  int index = 0;
   LightBallModel({required this.color,this.show = false,this.left,this.right,this.top,this.bottom});
 }

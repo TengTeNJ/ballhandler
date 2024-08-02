@@ -1,3 +1,4 @@
+import 'package:code/models/game/hit_target_model.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class GameData extends ChangeNotifier {
   int _remainTime = 45; // 剩余时长
   int _millSecond = 0; // 剩余时长
   String _showRemainTime = '00:45'; // 需要在UI上显示的剩余时长的格式
+  HitTargetModel? hitTargetModel; // 击中的面板的灯的数据模型
   /* get方法 */
   bool get powerOn => _powerOn;
 
@@ -41,7 +43,7 @@ class GameData extends ChangeNotifier {
     BleULTimateLighStatu.close
   ]; // P3模式下  app端发送当前面板的四个灯的状态,仅仅270设备有效
 
-  List<int> p3DeviceBatteryValues = []; // p3模式下 所有板子的电量，板子的序号为0 1 2 3 4 5
+  List<int> p3DeviceBatteryValues = [100,100,100,100,100,100]; // p3模式下 所有板子的电量，板子的序号为0 1 2 3 4 5
   bool ultimateIsGaming = false; // 270设备的是否在游戏状态 0x00-不在游戏状态，0x01-游戏状态
 
   String get showRemainTime => _showRemainTime;

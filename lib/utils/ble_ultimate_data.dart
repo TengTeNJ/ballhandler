@@ -40,7 +40,7 @@ List<int> controRedLightBoard(int boradIndex, List<int> lightStatu) {
     destinationInt = int.parse(destination, radix: 2);
   }
 
-  int length = 7;
+  int length = 9;
   int cmd = 0x60;
 
   // Data
@@ -94,7 +94,7 @@ List<int> controBlueLightBoard(int boradIndex, List<int> lightStatu) {
     destinationInt = int.parse(destination, radix: 2);
   }
 
-  int length = 7;
+  int length = 9;
   int cmd = 0x60;
 
   String lights = '';
@@ -124,7 +124,7 @@ List<int> closeAllBoardLight() {
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00111111', radix: 2);
-  int length = 7;
+  int length = 9;
   int cmd = 0x60;
   int data1 = int.parse('00001111', radix: 2);
   int data2 = int.parse('00000000', radix: 2);
@@ -154,7 +154,7 @@ List<int> closeSomeOneBoardLight(int boardIndex) {
     destination = destination + '0';
     destinationInt = int.parse(destination, radix: 2);
   }
-  int length = 7;
+  int length = 9;
   int cmd = 0x60;
   int data1 = int.parse('00001111', radix: 2);
   int data2 = int.parse('00000000', radix: 2);
@@ -170,7 +170,7 @@ List<int> openAllBoardLight({bool isRed = true}) {
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00111111', radix: 2);
-  int length = 7;
+  int length = 9;
   int cmd = 0x60;
   int data1;
   int data2;
@@ -208,7 +208,7 @@ List<int> openSomeOneBoardLight(int boardIndex, {bool isRed = true}) {
     destination = destination + '0';
     destinationInt = int.parse(destination, radix: 2);
   }
-  int length = 7;
+  int length = 9;
   int cmd = 0x60;
   int data1;
   int data2;
@@ -226,18 +226,18 @@ List<int> openSomeOneBoardLight(int boardIndex, {bool isRed = true}) {
 }
 
 /*
-* 控制模式
-* 1: APP控制进入P1模式；
-  2: APP控制进入P2模式；
-  3: APP控制进入P3模式；
+* 控制模式(1,2,3 -> 0,1,2)
+* 0: APP控制进入P1模式；
+  1: APP控制进入P2模式；
+  2: APP控制进入P3模式；
 * */
 List<int> selectMode(int mode) {
   int start = kBLEDataFrameHeader;
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00000001', radix: 2);
-  int length = 6;
-  int cmd = 0x03;
+  int length = 8;
+  int cmd = 0x02;
   int data = mode;
   int cs = start + source + destination + length + cmd + data;
   return [start, source, destination, length, cmd, data, cs, end];
@@ -253,7 +253,7 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00000001', radix: 2);
-  int length = 9;
+  int length = 11;
   int cmd = 0x05;
   int data1 = 0x01;
   int data2;
@@ -303,7 +303,7 @@ List<int> scoreShow(int value) {
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00000001', radix: 2);
-  int length = 9;
+  int length = 11;
   int cmd = 0x05;
 
   int data1 = 0x02;
@@ -348,7 +348,7 @@ List<int>appOnLine({bool onLine = true}){
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00111111', radix: 2);
-  int length = 7;
+  int length = 9;
   int cmd = 0x0A;
   int data1 = 0x01;
   int data2 = 0x01;
@@ -367,7 +367,7 @@ List<int>gameStart({bool onStart = true}){
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00111111', radix: 2);
-  int length = 7;
+  int length = 9;
   int cmd = 0x0A;
   int data1 = 0x02; //  代表游戏开始/结束
   int data2 = 0x01;
@@ -376,4 +376,18 @@ List<int>gameStart({bool onStart = true}){
   }
   int cs = start + source + destination + length + cmd + data1 + data2;
   return [start, source, destination, length, cmd, data1,data2, cs, end];
+}
+
+/*
+* 响应心跳
+* */
+List<int>responseHearBeat(){
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00111111', radix: 2);
+  int length =7;
+  int cmd = 0x31;
+  int cs = start + source + destination + length + cmd;
+  return [start, source, destination, length, cmd, cs, end];
 }

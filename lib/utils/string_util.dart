@@ -154,4 +154,10 @@ class StringUtil {
     binary = binary.padLeft(8,'0');
     return binary;
   }
+
+  /*二进制字符串转换成十进制*/
+  static int binaryStringToDecimal(String binaryString) {
+    // 将二进制字符串转换为十进制数
+    return int.parse(binaryString, radix: 2);
+  }
 }

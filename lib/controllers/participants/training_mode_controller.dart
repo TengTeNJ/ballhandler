@@ -49,13 +49,13 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
           // NavigatorUtil.push(Routes.recordselect);
           // return;
           // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
-          const List<Widget> _controllers = [
-            P1Controller(),
-            P2Controller(),
-            P3Controller()
-          ];
-          NavigatorUtil.present(_controllers[index]);
-          return;
+          // const List<Widget> _controllers = [
+          //   P1Controller(),
+          //   P2Controller(),
+          //   P3Controller()
+          // ];
+          // NavigatorUtil.present(_controllers[index]);
+          // return;
 
           if (BluetoothManager().conectedDeviceCount.value == 0) {
             if (await SystemUtil.isIPad()) {
@@ -91,11 +91,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               NavigatorUtil.push(Routes.recordselect);
             } else if (gameUtil.gameScene == GameScene.erqiling) {
               // 设置270的游戏模式
-              BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(index + 1));
-              //  P3模式完全是APP控制，发送APP上线指令
-              if(index== 2){
-                BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, appOnLine(onLine: false));
-              }
+              BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(index));
               const List<Widget> _controllers = [
                 P1Controller(),
                 P2Controller(),

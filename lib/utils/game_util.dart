@@ -5,6 +5,7 @@ import 'dart:math';
 import '../models/game/light_ball_model.dart';
 import 'ble_ultimate_service_data.dart';
 
+/*初始化灯光状态 和UI的状态模拟一致*/
 List<LightBallModel> initUltimateLightModels() {
   List<LightBallModel> _list = [];
   List<double> _lefts = [
@@ -17,8 +18,8 @@ List<LightBallModel> initUltimateLightModels() {
     0.295,
     0.363,
     0.422,
-    0.611,
     0.5512,
+    0.611,
     0.673,
     0.673,
     0.835,
@@ -57,8 +58,8 @@ List<LightBallModel> initUltimateLightModels() {
     0.5679,
     0.679,
     0.6956,
-    0.679,
     0.6956,
+    0.679,
     0.818,
     0.5679,
     0.6712,
@@ -104,8 +105,8 @@ List<LightBallModel> simulatorLighs() {
     0.295,
     0.363,
     0.422,
-    0.611,
     0.5512,
+    0.611,
     0.673,
     0.673,
     0.835,
@@ -144,8 +145,8 @@ List<LightBallModel> simulatorLighs() {
     0.5679,
     0.679,
     0.6956,
-    0.679,
     0.6956,
+    0.679,
     0.818,
     0.5679,
     0.6712,
@@ -191,6 +192,81 @@ List<LightBallModel> simulatorLighs() {
     } else {
       model.show = false;
     }
+    _list.add(model);
+  }
+  return _list;
+}
+
+/*初始化灯光状态数据数组*/
+List<LightBallModel> initLighs() {
+
+  List<LightBallModel> _list = [];
+  List<double> _lefts = [
+    0.0526,
+    0.170,
+    0.108,
+    0.1177,
+    0.145429,
+    0.295,
+    0.295,
+    0.363,
+    0.422,
+    0.5512,
+    0.611,
+    0.673,
+    0.673,
+    0.835,
+    0,
+    0,
+    0,
+    0
+  ];
+  List<double> _rights = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0.1150,
+    0.108,
+    0.170,
+    0.0526
+  ];
+  List<double> _bottoms = [
+    0.0842,
+    0.0842,
+    0.236,
+    0.342,
+    0.6712,
+    0.818,
+    0.5679,
+    0.679,
+    0.6956,
+    0.6956,
+    0.679,
+    0.818,
+    0.5679,
+    0.6712,
+    0.342,
+    0.236,
+    0.0842,
+    0.0842
+  ];
+  for (int i = 0; i < _lefts.length; i++) {
+    LightBallModel model = LightBallModel(color: Constants.baseLightRedColor);
+    model.left = _lefts[i];
+    model.right = _rights[i];
+    model.bottom = _bottoms[i];
+    model.index = i;
     _list.add(model);
   }
   return _list;

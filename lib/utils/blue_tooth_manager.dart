@@ -3,6 +3,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
+import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/toast.dart';
@@ -120,7 +121,7 @@ class BluetoothManager {
     EasyLoading.show();
     _ble
         .connectToDevice(
-            id: model.device!.id, connectionTimeout: Duration(seconds: 10))
+            id: model.device!.id, connectionTimeout: Duration(seconds: 30))
         .listen((ConnectionStateUpdate connectionStateUpdate) {
       print('connectionStateUpdate = ${connectionStateUpdate.connectionState}');
       if (connectionStateUpdate.connectionState ==
@@ -143,6 +144,9 @@ class BluetoothManager {
               deviceId: model.device!.id);
           model.notifyCharacteristic = notifyCharacteristic;
           model.writerCharacteristic = writerCharacteristic;
+          // 发送 APP上线
+          BluetoothManager().writerDataToDevice(model, appOnLine());
+
         }else{
           // 保存读写特征值
           notifyCharacteristic = QualifiedCharacteristic(
@@ -160,9 +164,14 @@ class BluetoothManager {
         // 连接成功弹窗
         EasyLoading.showSuccess('Bluetooth connection successful');
         // 监听数据
-        _ble.subscribeToCharacteristic(notifyCharacteristic).listen((data) {
-          print("deviceId =${model.device!.id}---上报来的数据data = ${data.map((toElement)=>toElement.toRadixString(16)).toList()}");
+        _ble.subscribeToCharacteristic(notifyCharacteristic).listen((List<int> data) {
+          print("deviceName =${model.device!.name} 上报来的数据data = ${data.map((toElement)=>toElement.toRadixString(16)).toList()}");
           if(model.deviceName ==  k270_Name) {
+            if(data.length >= 7 && data[4] == 0x30){
+               // 心跳查询，直接回复心跳响应
+              BluetoothManager().writerDataToDevice(model, responseHearBeat());
+              return;
+            }
             // 解析270
             BluetoothUltTimateDataParse.parseData(data, model);
           }else{
@@ -211,7 +220,7 @@ class BluetoothManager {
       TTToast.showErrorInfo('Please connect your device first');
       return;
     }
-    print('data=${data}');
+    print('发送数据data=${data.map((toElement)=>toElement.toRadixString(16)).toList()}');
     await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
         value: data);
   }

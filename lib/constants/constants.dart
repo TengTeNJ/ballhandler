@@ -445,3 +445,36 @@ const Map<int,Map<String,String>> p3Maps = {
 
 const Set<String> kProductIds = <String>{'hockey_02', 'five_1'}; // 订阅产品id
 
+const Map<int,Map<int,int>> kBoardMap = {
+  0:{
+     3:9,
+    0:10,
+    1:11,
+    2:12
+  },
+  1:{
+    3:0,
+    0:2,
+    1:3,
+    2:1
+  },
+  2:{
+    3:4
+  },
+  3:{
+    3:5,
+    0:7,
+    1:8,
+    2:6
+  },
+  4:{
+    3:13,
+  },
+  5:{
+    3:14,
+    0:15,
+    1:16,
+    2:17
+  },
+}; // 灯板编号以及灯板上每个灯的数据索引和UI索引的映射表
+

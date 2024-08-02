@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/ble_data_service.dart';
+import 'package:code/utils/ble_ultimate_data.dart';
+import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -39,26 +44,57 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       // await SystemUtil.lockScreenHorizontalDirection();
       emulateSpace(context);
     });
-
+    // 初始化所有灯的位置
     setState(() {
-      datas = initUltimateLightModels();
+      datas = initLighs();
     });
+    // 监听数据状态
+    BluetoothManager().dataChange = (BLEDataType type) async {
+      if(type == BLEDataType.statuSynchronize || type == BLEDataType.allBoardStatuOneByOne){
+        // 状态同步
+        // 首先取出来 刷新的是哪个灯板
+        int target = BluetoothManager().gameData.currentTarget;
+        // 取出来映射关系
+        Map<int,int>? _map = kBoardMap[target];
+        if(_map != null){
+           _map!.forEach((int key,int value){
+             if(value >= datas.length){
+               print('数据解析错误，数据超过灯的上限数量');
+               return;
+             }
+             LightBallModel model = datas[value];
+             BleULTimateLighStatu statu = BluetoothManager().gameData.lightStatus[key];
+             if(statu == BleULTimateLighStatu.close){
+               model.show = false;
+             }else{
+               model.show = true;
+               if(statu == BleULTimateLighStatu.red){
+                 model.color = Constants.baseLightRedColor;
+               }else if(statu == BleULTimateLighStatu.blue){
+                 model.color = Constants.baseLightBlueColor;
+               }else if(statu == BleULTimateLighStatu.redAndBlue){
+                 model.color = Colors.orange;
+               }
+             }
 
-    // Timer.periodic(Duration(seconds: 3), (timer) {
-    //   print('Timer tick every second!');
-    //   datas.clear();
-    //   datas = simulatorLighs();
-    //   setState(() {});
-    //   //
-    // });
+           });
+        }
+        if(type == BLEDataType.statuSynchronize){
+          // 触发更新是 刷新页面
+          setState(() {
 
-    // Timer.periodic(Duration(seconds: 1), (timer) {
-    //   print('Timer tick every second!');
-    //   setState(() {
-    //     BluetoothManager().gameData.remainTime--;
-    //   });
-    //   //
-    // });
+          });
+        }
+
+      } else{
+        setState(() {
+
+        });
+      }
+    };
+    // 进来页面发个上线 拿到0x68数据进行渲染页面
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, appOnLine());
   }
 
   emulateSpace(BuildContext context) {
@@ -71,16 +107,11 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       _tempHeight =
           (Constants.screenWidth(context) - 90) / k270ProductImageScale;
     }
-    _height = _tempHeight;
-    _top = (Constants.screenHeight(context) - _tempHeight) / 2.0;
-    _left = (Constants.screenWidth(context) - _tempWidth) / 2.0;
-    _width = _tempWidth;
     setState(() {
-      print('_height=${_height}');
-      print('_top=${_top}');
-      print('_left=${_left}');
-      print('_width=${_width}');
-      print('_width1=${Constants.screenWidth(context)}');
+      _height = _tempHeight;
+      _top = (Constants.screenHeight(context) - _tempHeight) / 2.0;
+      _left = (Constants.screenWidth(context) - _tempWidth) / 2.0;
+      _width = _tempWidth;
     });
   }
 
@@ -298,6 +329,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     // TODO: implement dispose
     super.dispose();
     SystemUtil.lockScreenDirection();
+    BluetoothManager().dataChange = null;
   }
 }
 
