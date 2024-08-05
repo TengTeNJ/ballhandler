@@ -443,8 +443,8 @@ const Map<int,Map<String,String>> p3Maps = {
   },
 }; // 270 P3模式 guide数据map映射表
 
+// const Set<String> kProductIds = <String>{'hockey_101', 'hockey_5'}; // 订阅产品id
 const Set<String> kProductIds = <String>{'hockey_02', 'five_1'}; // 订阅产品id
-
 const Map<int,Map<int,int>> kBoardMap = {
   0:{
      3:9,

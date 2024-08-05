@@ -14,7 +14,9 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
+import '../../models/http/subscribe_model.dart';
 import '../../route/route.dart';
+import '../../services/http/account.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 
@@ -60,12 +62,23 @@ class _HomePageViewState extends State<HomePageController> {
           }
         }
       });
+      // 请求订阅数据
+      querySubScribeInfo();
     } else {
       // 未登录状态
       haslogin = false;
       DatabaseHelper().getLocalGuestData(context);
     }
   }
+
+  /*查询订阅信息 */
+  querySubScribeInfo() async{
+    final _response = await Account.querySubscribeInfo();
+    if(_response.success){
+      SubscribeModel? model = _response.data;
+    }
+  }
+
 
   @override
   void initState() {

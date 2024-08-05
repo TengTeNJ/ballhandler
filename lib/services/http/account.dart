@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
+import 'package:code/models/http/subscribe_model.dart';
 import 'package:code/models/http/user_model.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
@@ -191,7 +192,47 @@ class Account {
       'packageName': 'com.potent.dangle',
     };
     final response =
-        await HttpUtil.post('/api/pay/google', _data, showLoading: true);
+        await HttpUtil.post('/api/pay/google/sub', _data, showLoading: true);
     return ApiResponse(success: response.success);
+  }
+
+  /*获取订阅信息*/
+  static Future<ApiResponse<SubscribeModel>>
+  querySubscribeInfo() async {
+    final response = await HttpUtil.get(
+        '/api/member/index', null, showLoading: false);
+    SubscribeModel model = SubscribeModel();
+    if (response.success && response.data['data'] != null) {
+
+      final element = response.data['data'];
+      final _map = element;
+      final _payProductVoMap = element['payProductVo'] ?? {};
+      model.subscribeStartDate =
+      !ISEmpty(_map['subscribeStartDate']) ? _map['subscribeStartDate'].toString() : '';
+      model.subscribeEndDate =
+      !ISEmpty(_map['subscribeEndDate']) ? _map['subscribeEndDate'].toString() : '--';
+      model.subscribeStatus =
+      !ISEmpty(_map['subscribeStatus']) ? _map['subscribeStatus'] : 0;
+
+      ApiPayProductVo productVo = ApiPayProductVo();
+      productVo.productId = !ISEmpty(_payProductVoMap['productId']) ? _payProductVoMap['productId'] : 0;
+      productVo.productName =
+      !ISEmpty(_payProductVoMap['productName']) ? _payProductVoMap['productName'].toString() : '';
+      productVo.productNo =
+      !ISEmpty(_payProductVoMap['productNo']) ? _payProductVoMap['productNo'].toString(): '';
+      productVo.productPrice =
+      !ISEmpty(_payProductVoMap['productPrice']) ? _payProductVoMap['productPrice'] : 0;
+      productVo.productRemark =
+      !ISEmpty(_payProductVoMap['productRemark']) ? _payProductVoMap['productRemark'].toString() : '';
+      productVo.productTerm =
+      !ISEmpty(_payProductVoMap['productTerm']) ? _payProductVoMap['productTerm'] : 0;
+      productVo.productImage =
+      !ISEmpty(_payProductVoMap['productImage']) ? _payProductVoMap['productImage'].toString() : '';
+      model.productVo = productVo;
+
+      return ApiResponse(success: response.success, data: model);
+    } else {
+      return ApiResponse(success: false);
+    }
   }
 }

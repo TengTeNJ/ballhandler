@@ -5,6 +5,7 @@ import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
+import 'package:code/models/http/subscribe_model.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/services/http/airbattle.dart';
