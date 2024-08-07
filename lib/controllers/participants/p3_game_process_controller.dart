@@ -8,6 +8,7 @@ import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/p3_game_util.dart';
 import 'package:code/views/base/battery_view.dart';
 import 'package:code/views/base/ble_view.dart';
 import 'package:code/views/participants/ultimate_lights_view.dart';
@@ -95,6 +96,16 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     // 进来页面发个上线 拿到0x68数据进行渲染页面
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, appOnLine());
+
+    if(gameUtil.modelId == 3){
+      print('------270自由模式-----------');
+     p3Control();
+    }
+  }
+
+  p3Control() async{
+    final _result =  await  P3GameManager().startGame();
+    print('控制结束---------${_result}------------------');
   }
 
   emulateSpace(BuildContext context) {

@@ -84,6 +84,7 @@ class BluetoothManager {
   Stream<DiscoveredDevice>? _scanStream;
   StreamSubscription? _bleListen;
   StreamSubscription? _bleStatuListen;
+
   /*开始扫描*/
   Future<void> startScan() async {
     // 不能重复扫描

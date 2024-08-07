@@ -478,3 +478,38 @@ const Map<int,Map<int,int>> kBoardMap = {
   },
 }; // 灯板编号以及灯板上每个灯的数据索引和UI索引的映射表
 
+const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
+  0:{
+    'duration':30000,
+    'frequency': 3500,
+  },
+  1:{
+    'duration':30000,
+    'frequency': 3500,
+  },
+  2:{
+    'duration':30000,
+    'frequency': 3500,
+  },
+  3:{
+    'duration':30000,
+    'frequency': 3500,
+  },
+  4:{
+    'duration':30000,
+    'frequency': 3500,
+  },
+  5:{
+    'duration':30000,
+    'frequency': 3500,
+  },
+  6:{
+    'duration':30000,
+    'frequency': 3500,
+  },
+  7:{
+    'duration':30000,
+    'frequency': 3500,
+  },
+};
+

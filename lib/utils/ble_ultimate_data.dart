@@ -8,6 +8,9 @@
   bit[0]：主控板
 * */
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/string_util.dart';
+
+import 'ble_ultimate_service_data.dart';
 
 /*
 * 控制某面板灯光-红色
@@ -63,11 +66,6 @@ List<int> controRedLightBoard(int boradIndex, List<int> lightStatu) {
   return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
 }
 
-/*
-* 控制某面板灯光-蓝色
-* boradIndex为灯光索引，0为主控板 1-5为从板
-* lightStatu为灯板对应的四个灯光的的开关状态
-* */
 List<int> controBlueLightBoard(int boradIndex, List<int> lightStatu) {
   if (ISEmpty(lightStatu) || lightStatu.length != 4) {
     throw Exception('清输入面板上每个灯光的开关状态，每个面板有4个灯');
@@ -115,6 +113,71 @@ List<int> controBlueLightBoard(int boradIndex, List<int> lightStatu) {
   int cs = start + source + destinationInt + length + cmd + data1 + data2;
   return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
 }
+/*
+* 控制某面板灯光 不区分颜色
+* boradIndex为灯光索引，0为主控板 1-5为从板
+* lightStatu为灯板对应的四个灯光的的开关状态
+* */
+List<int> controLightBoard(int boradIndex, List<BleULTimateLighStatu>  lightStatu) {
+  if (ISEmpty(lightStatu) || lightStatu.length != 4) {
+    throw Exception('清输入面板上每个灯光的开关状态，每个面板有4个灯');
+  }
+  if (boradIndex < 0 || boradIndex > 5) {
+    throw Exception('面板的索引范围是[0-5],而你的索引为${boradIndex}');
+  }
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  // 数据源地址 从app发送的都是位上位机
+  int source = int.parse('10000000', radix: 2);
+  // 数据目的地址
+  int destinationInt;
+  String destination = '00';
+  if (boradIndex == 0) {
+    // 目的设备是主控板
+    destinationInt = int.parse('00000001', radix: 2);
+  } else {
+    // 目的设备是1-5号从板
+    for (int i = 5; i >=1; i--) {
+      destination = destination + ((i == boradIndex) ? '1' : '0');
+    }
+    destination = destination + '0';
+    destinationInt = int.parse(destination, radix: 2);
+  }
+
+  int length = 9;
+  int cmd = 0x60;
+
+  String lights = '';
+  int data1 = int.parse('00001111', radix: 2);
+  for (int j = 3; j >= 0; j--) {
+    BleULTimateLighStatu value = lightStatu[j];
+    // 0b00-关灯; 0b01-红灯; 0b10-蓝灯;
+    if (value == BleULTimateLighStatu.blue) {
+      // 蓝灯
+      lights = lights + '10';
+    }else if(value == BleULTimateLighStatu.red){
+      // 红灯
+      lights = lights + '01';
+    } else if(value == BleULTimateLighStatu.redAndBlue){
+      // 红灯 + 蓝灯同时开
+      lights = lights + '11';
+    }else {
+      // 关灯
+      lights = lights + '00';
+    }
+  }
+
+  print('控制灯光----${lights}');
+  int data2 = int.parse(lights, radix: 2);
+
+  int cs = start + source + destinationInt + length + cmd + data1 + data2;
+   String binaryString = StringUtil.decimalToBinary(cs);
+   if(binaryString.length > 8 ){
+     binaryString = binaryString.substring(binaryString.length - 8,binaryString.length);
+   }
+   cs = StringUtil.binaryStringToDecimal(binaryString);
+  return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
+}
 
 /*
 * 关闭所有的面板灯光
@@ -130,6 +193,11 @@ List<int> closeAllBoardLight() {
   int data2 = int.parse('00000000', radix: 2);
 
   int cs = start + source + destination + length + cmd + data1 + data2;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if(binaryString.length > 8 ){
+    binaryString = binaryString.substring(binaryString.length - 8,binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
   return [start, source, destination, length, cmd, data1, data2, cs, end];
 }
 
@@ -254,7 +322,7 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00000001', radix: 2);
   int length = 11;
-  int cmd = 0x05;
+  int cmd = 0x04;
   int data1 = 0x01;
   int data2;
   int data3;
@@ -266,9 +334,12 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
     data4 = 0x4f;
   } else {
     // 显示倒计时 3,2,1
-    data2 = 0x30;
-    data3 = 0x30;
-    data4 = 0x30 + value;
+    int hundredsPlace = (value / 100).truncate();
+    int tensPlace = ((value / 10) % 10).toInt();
+    int onesPlace = value % 10;
+    data2 = 0x30 + hundredsPlace;
+    data3 = 0x30 + tensPlace;
+    data4 = 0x30 + onesPlace;
   }
   int cs = start +
       source +
@@ -279,6 +350,12 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
       data2 +
       data3 +
       data4;
+
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if(binaryString.length > 8 ){
+    binaryString = binaryString.substring(binaryString.length - 8,binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
   return [
     start,
     source,
@@ -304,7 +381,7 @@ List<int> scoreShow(int value) {
   int source = int.parse('10000000', radix: 2);
   int destination = int.parse('00000001', radix: 2);
   int length = 11;
-  int cmd = 0x05;
+  int cmd = 0x04;
 
   int data1 = 0x02;
   String score = value.toString().padLeft(3, '0');
@@ -312,9 +389,9 @@ List<int> scoreShow(int value) {
   int data3;
   int data4;
   //  得分
-  data2 = 0x30 + int.parse(score.substring(0, 2));
-  data3 = 0x30 + int.parse(score.substring(1, 3));
-  data4 = 0x30 + int.parse(score.substring(2, 4));
+  data2 = 0x30 + int.parse(score.substring(0, 1));
+  data3 = 0x30 + int.parse(score.substring(1, 2));
+  data4 = 0x30 + int.parse(score.substring(2, 3));
 
   int cs = start +
       source +
@@ -325,6 +402,11 @@ List<int> scoreShow(int value) {
       data2 +
       data3 +
       data4;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if(binaryString.length > 8 ){
+    binaryString = binaryString.substring(binaryString.length - 8,binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
   return [
     start,
     source,

@@ -181,6 +181,8 @@ class BluetoothUltTimateDataParse {
           HitTargetModel model =  HitTargetModel(boardIndex: targetIndex, ledIndex: data1, statu:  StringUtil.lightToStatu(temp));
           BluetoothManager().gameData.hitTargetModel = model;
           print('击中了${targetIndex}号控制板的${data1}号灯板,状态为${temp}');
+          BluetoothManager()
+              .triggerCallback(type: BLEDataType.targetIn);
           break;
         case ResponseCMDType.allBoardStatu:
           // 初始时 所有灯板的状态 CENTRAL(中心主机)向APP同步所有灯板数据及状态。
