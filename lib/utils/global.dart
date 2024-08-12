@@ -33,4 +33,5 @@ class GameUtil {
     return 0;
   }
   List<SceneModel> sceneList = [SceneModel()]; // 场景列表
+  List<int> selectdP3Indexs = []; // 270P3模式选择的组合的索引
 }

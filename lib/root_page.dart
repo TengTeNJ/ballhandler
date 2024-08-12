@@ -68,7 +68,7 @@ class _RootPageControllerState extends State<RootPageController> {
         }
       });
 
-    refreshTokenAndDeleteLocanVideo();
+   // refreshTokenAndDeleteLocanVideo();
     subscription = EventBus().stream.listen((event) {
       if (event == kLoginSucess) {
         loadLaunchPage();

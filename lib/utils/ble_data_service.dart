@@ -20,7 +20,8 @@ enum BLEDataType {
   statuSynchronize, // 状态同步 270
   scoreAndRemainTime, // 270得分和倒计时都变化
   allBoardStatuOneByOne, // 所有的灯板状态的数据的一个个灯板进行解析，此时不能刷新页面
-  allBoadrStatuFinish; // 所有的灯板状态的数据解析完成，此时可以刷新页面
+  allBoadrStatuFinish, // 所有的灯板状态的数据解析完成，此时可以刷新页面
+  refreshSingleLedStatu, // 刷新某面板上的单个灯光
 }
 class ResponseCMDType {
   static const int deviceInfo = 0x20; // 设备信息，包含开机状态、电量等

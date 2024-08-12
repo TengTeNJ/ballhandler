@@ -824,7 +824,7 @@ class P3GameManager {
         gameUtil.selectedDeviceModel, scoreShow(BluetoothManager().gameData.score));
 
     // 监听击中
-    BluetoothManager().dataChange = (BLEDataType type) async {
+    BluetoothManager().p3DataChange = (BLEDataType type) async {
       print('击中------');
       if (type == BLEDataType.targetIn) {
         if (this.frequencyTimer != null) {

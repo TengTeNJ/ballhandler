@@ -8,6 +8,8 @@ import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/p1_game_util.dart';
+import 'package:code/utils/p1_game_util_new.dart';
 import 'package:code/utils/p3_game_util.dart';
 import 'package:code/views/base/battery_view.dart';
 import 'package:code/views/base/ble_view.dart';
@@ -80,14 +82,40 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
 
            });
         }
-        if(type == BLEDataType.statuSynchronize){
-          // 触发更新是 刷新页面
+        if(type == BLEDataType.statuSynchronize || type == BLEDataType.allBoadrStatuFinish ){
+          // 触发更新 刷新页面
           setState(() {
 
           });
         }
 
-      } else{
+      } else if(type == BLEDataType.refreshSingleLedStatu){
+        // 首先取出来 刷新的是哪个灯板
+        int target = BluetoothManager().gameData.currentTarget;
+        int singleLedIndex = BluetoothManager().gameData.singleLedIndex;
+        BleULTimateLighStatu statu = BluetoothManager().gameData.singleLedStatu;
+        // 取出来映射关系
+        Map<int,int>? _map = kBoardMap[target];
+        int? index = _map?[singleLedIndex];
+        if(index != null) {
+          LightBallModel model = datas[index!];
+          if (statu == BleULTimateLighStatu.close) {
+            model.show = false;
+          } else {
+            model.show = true;
+            if (statu == BleULTimateLighStatu.red) {
+              model.color = Constants.baseLightRedColor;
+            } else if (statu == BleULTimateLighStatu.blue) {
+              model.color = Constants.baseLightBlueColor;
+            } else if (statu == BleULTimateLighStatu.redAndBlue) {
+              model.color = Colors.orange;
+            }
+          }
+        }
+        setState(() {
+
+        });
+      }else {
         setState(() {
 
         });
@@ -96,7 +124,6 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     // 进来页面发个上线 拿到0x68数据进行渲染页面
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, appOnLine());
-
     if(gameUtil.modelId == 3){
       print('------270自由模式-----------');
      p3Control();
@@ -104,7 +131,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   }
 
   p3Control() async{
-    final _result =  await  P3GameManager().startGame();
+    final _result =  await  P1NewGameManager().startGame();
     print('控制结束---------${_result}------------------');
   }
 

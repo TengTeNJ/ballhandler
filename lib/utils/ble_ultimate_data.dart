@@ -10,7 +10,9 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/string_util.dart';
 
+import 'ble_data_service.dart';
 import 'ble_ultimate_service_data.dart';
+import 'blue_tooth_manager.dart';
 
 /*
 * 控制某面板灯光-红色
@@ -37,7 +39,7 @@ List<int> controRedLightBoard(int boradIndex, List<int> lightStatu) {
   } else {
     // 目的设备是1-5号从板
     for (int i = 5; i >= 1; i--) {
-      destination = destination + ((i == boradIndex ) ? '1' : '0');
+      destination = destination + ((i == boradIndex) ? '1' : '0');
     }
     destination = destination + '0';
     destinationInt = int.parse(destination, radix: 2);
@@ -85,7 +87,7 @@ List<int> controBlueLightBoard(int boradIndex, List<int> lightStatu) {
     destinationInt = int.parse('00000001', radix: 2);
   } else {
     // 目的设备是1-5号从板
-    for (int i = 5; i >=1; i--) {
+    for (int i = 5; i >= 1; i--) {
       destination = destination + ((i == boradIndex) ? '1' : '0');
     }
     destination = destination + '0';
@@ -113,12 +115,14 @@ List<int> controBlueLightBoard(int boradIndex, List<int> lightStatu) {
   int cs = start + source + destinationInt + length + cmd + data1 + data2;
   return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
 }
+
 /*
-* 控制某面板灯光 不区分颜色
+* 控制某面板灯光 不区分颜色 每次控制某面板上所有的灯光
 * boradIndex为灯光索引，0为主控板 1-5为从板
 * lightStatu为灯板对应的四个灯光的的开关状态
 * */
-List<int> controLightBoard(int boradIndex, List<BleULTimateLighStatu>  lightStatu) {
+List<int> controLightBoard(
+    int boradIndex, List<BleULTimateLighStatu> lightStatu) {
   if (ISEmpty(lightStatu) || lightStatu.length != 4) {
     throw Exception('清输入面板上每个灯光的开关状态，每个面板有4个灯');
   }
@@ -137,7 +141,7 @@ List<int> controLightBoard(int boradIndex, List<BleULTimateLighStatu>  lightStat
     destinationInt = int.parse('00000001', radix: 2);
   } else {
     // 目的设备是1-5号从板
-    for (int i = 5; i >=1; i--) {
+    for (int i = 5; i >= 1; i--) {
       destination = destination + ((i == boradIndex) ? '1' : '0');
     }
     destination = destination + '0';
@@ -155,13 +159,13 @@ List<int> controLightBoard(int boradIndex, List<BleULTimateLighStatu>  lightStat
     if (value == BleULTimateLighStatu.blue) {
       // 蓝灯
       lights = lights + '10';
-    }else if(value == BleULTimateLighStatu.red){
+    } else if (value == BleULTimateLighStatu.red) {
       // 红灯
       lights = lights + '01';
-    } else if(value == BleULTimateLighStatu.redAndBlue){
+    } else if (value == BleULTimateLighStatu.redAndBlue) {
       // 红灯 + 蓝灯同时开
       lights = lights + '11';
-    }else {
+    } else {
       // 关灯
       lights = lights + '00';
     }
@@ -171,11 +175,102 @@ List<int> controLightBoard(int boradIndex, List<BleULTimateLighStatu>  lightStat
   int data2 = int.parse(lights, radix: 2);
 
   int cs = start + source + destinationInt + length + cmd + data1 + data2;
-   String binaryString = StringUtil.decimalToBinary(cs);
-   if(binaryString.length > 8 ){
-     binaryString = binaryString.substring(binaryString.length - 8,binaryString.length);
-   }
-   cs = StringUtil.binaryStringToDecimal(binaryString);
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+
+  // 主动模拟数据变化 进行通知 实现页面刷新
+  BluetoothManager().gameData.currentTarget = boradIndex;
+  BluetoothManager().gameData.lightStatus = lightStatu;
+  BluetoothManager()
+      .triggerCallback(type: BLEDataType.statuSynchronize);
+
+  return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
+}
+
+/*
+* 控制某面板上单个灯光
+* */
+List<int> controSingleLightBoard(
+    int boradIndex, int ledIndex, BleULTimateLighStatu statu) {
+  if (boradIndex < 0 || boradIndex > 5) {
+    throw Exception('面板的索引范围是[0-5],而你的索引为${boradIndex}');
+  }
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  // 数据源地址 从app发送的都是位上位机
+  int source = int.parse('10000000', radix: 2);
+  // 数据目的地址
+  int destinationInt;
+  String destination = '00';
+  if (boradIndex == 0) {
+    // 目的设备是主控板
+    destinationInt = int.parse('00000001', radix: 2);
+  } else {
+    // 目的设备是1-5号从板
+    for (int i = 5; i >= 1; i--) {
+      destination = destination + ((i == boradIndex) ? '1' : '0');
+    }
+    destination = destination + '0';
+    destinationInt = int.parse(destination, radix: 2);
+  }
+
+  int length = 9;
+  int cmd = 0x60;
+
+  String ligh = '';
+  // 把不需要控制的灯的标示位置为0
+  for (int i = 0; i < 4; i++) {
+    if (i == ((ledIndex - 3).abs())) {
+      ligh = ligh + '1';
+    } else {
+      ligh = ligh + '0';
+    }
+  }
+  int data1 = int.parse('0000' + ligh, radix: 2);
+
+  String lights = '';
+  for (int j = 0; j < 4; j++) {
+    // 0b00-关灯; 0b01-红灯; 0b10-蓝灯;
+    if (j == ((ledIndex - 3).abs())) {
+      if (statu == BleULTimateLighStatu.blue) {
+        // 蓝灯
+        lights = lights + '10';
+      } else if (statu == BleULTimateLighStatu.red) {
+        // 红灯
+        lights = lights + '01';
+      } else if (statu == BleULTimateLighStatu.redAndBlue) {
+        // 红灯 + 蓝灯同时开
+        lights = lights + '11';
+      } else {
+        // 关灯
+        lights = lights + '00';
+      }
+    } else {
+      lights = lights + '00';
+    }
+  }
+  //print('控制单个灯光----${lights}');
+  int data2 = int.parse(lights, radix: 2);
+
+  int cs = start + source + destinationInt + length + cmd + data1 + data2;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+
+  // 主动模拟数据变化 进行通知 实现页面刷新
+  BluetoothManager().gameData.currentTarget = boradIndex;
+  BluetoothManager().gameData.singleLedIndex = ledIndex;
+  BluetoothManager().gameData.singleLedStatu = statu;
+  BluetoothManager()
+      .triggerCallback(type: BLEDataType.refreshSingleLedStatu);
+
   return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
 }
 
@@ -194,10 +289,27 @@ List<int> closeAllBoardLight() {
 
   int cs = start + source + destination + length + cmd + data1 + data2;
   String binaryString = StringUtil.decimalToBinary(cs);
-  if(binaryString.length > 8 ){
-    binaryString = binaryString.substring(binaryString.length - 8,binaryString.length);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
+
+  // 主动模拟数据变化 进行通知 实现页面刷新
+  for(int i =0; i < 6; i++){
+    BluetoothManager().gameData.currentTarget = i;
+    BluetoothManager().gameData.lightStatus = [
+  BleULTimateLighStatu.close,
+  BleULTimateLighStatu.close,
+      BleULTimateLighStatu.close,
+      BleULTimateLighStatu.close,
+    ];
+    BluetoothManager()
+        .triggerCallback(type: BLEDataType.allBoardStatuOneByOne);
+  }
+  BluetoothManager()
+      .triggerCallback(type: BLEDataType.allBoadrStatuFinish);
+
   return [start, source, destination, length, cmd, data1, data2, cs, end];
 }
 
@@ -352,8 +464,9 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
       data4;
 
   String binaryString = StringUtil.decimalToBinary(cs);
-  if(binaryString.length > 8 ){
-    binaryString = binaryString.substring(binaryString.length - 8,binaryString.length);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
   return [
@@ -403,8 +516,9 @@ List<int> scoreShow(int value) {
       data3 +
       data4;
   String binaryString = StringUtil.decimalToBinary(cs);
-  if(binaryString.length > 8 ){
-    binaryString = binaryString.substring(binaryString.length - 8,binaryString.length);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
   return [
@@ -425,7 +539,7 @@ List<int> scoreShow(int value) {
 /*APP 上线
 * 默认为上线，如果传入参数onLine = false 则代表下线
 * */
-List<int>appOnLine({bool onLine = true}){
+List<int> appOnLine({bool onLine = true}) {
   int start = kBLEDataFrameHeader;
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
@@ -434,17 +548,18 @@ List<int>appOnLine({bool onLine = true}){
   int cmd = 0x0A;
   int data1 = 0x01;
   int data2 = 0x01;
-  if(!onLine){
+  if (!onLine) {
     data2 = 0x00; // APP下线
   }
   int cs = start + source + destination + length + cmd + data1 + data2;
-  return [start, source, destination, length, cmd, data1,data2, cs, end];
+  return [start, source, destination, length, cmd, data1, data2, cs, end];
 }
+
 /*
 * 游戏开始
 * 默认为游戏开始，如果传入onStart = false,则代表游戏结束
 * */
-List<int>gameStart({bool onStart = true}){
+List<int> gameStart({bool onStart = true}) {
   int start = kBLEDataFrameHeader;
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
@@ -453,23 +568,30 @@ List<int>gameStart({bool onStart = true}){
   int cmd = 0x0A;
   int data1 = 0x02; //  代表游戏开始/结束
   int data2 = 0x01;
-  if(!onStart){
+  if (!onStart) {
     data2 = 0x00; // 游戏结束
   }
   int cs = start + source + destination + length + cmd + data1 + data2;
-  return [start, source, destination, length, cmd, data1,data2, cs, end];
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  return [start, source, destination, length, cmd, data1, data2, cs, end];
 }
 
 /*
 * 响应心跳
 * */
-List<int>responseHearBeat(){
+List<int> responseHearBeat() {
   int start = kBLEDataFrameHeader;
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
-  int destination = int.parse('00111111', radix: 2);
-  int length =7;
+  int destination = int.parse('00000001', radix: 2);
+  int length = 7;
   int cmd = 0x31;
   int cs = start + source + destination + length + cmd;
+  print('发送心跳------------');;
   return [start, source, destination, length, cmd, cs, end];
 }

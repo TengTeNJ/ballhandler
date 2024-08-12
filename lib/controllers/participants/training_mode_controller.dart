@@ -74,7 +74,9 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             List<BLEModel> devices = BluetoothManager()
                 .hasConnectedDeviceList
                 .where((element) =>
-                    element.deviceName == bleNames[gameUtil.gameScene.index])
+            element.deviceName.contains(bleNames[gameUtil.gameScene.index]))
+
+            // element.deviceName == bleNames[gameUtil.gameScene.index])
                 .toList();
             if (devices.length == 0) {
               // 没有和当前模式相匹配的设备

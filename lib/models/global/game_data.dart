@@ -14,6 +14,9 @@ class GameData extends ChangeNotifier {
   int _millSecond = 0; // 剩余时长
   String _showRemainTime = '00:45'; // 需要在UI上显示的剩余时长的格式
   HitTargetModel? hitTargetModel; // 击中的面板的灯的数据模型
+  int singleLedIndex = 0; // 刷新某面板上单个led时的led的索引
+  BleULTimateLighStatu singleLedStatu = BleULTimateLighStatu.close; // 刷新某面板上单个led时的led的状态
+
   /* get方法 */
   bool get powerOn => _powerOn;
 

@@ -76,6 +76,8 @@ class BluetoothManager {
 
   Function(BLEDataType type)? dataChange;
 
+  Function(BLEDataType type)? p3DataChange; // p3模式下数据监听 监听集中。如果都用dataChange，那么dataChange会覆盖。但是数据监听需要再util和controller都要使用
+
   final ValueNotifier<int> deviceListLength = ValueNotifier(-1);
 
   // 已连接的设备数量
@@ -100,7 +102,9 @@ class BluetoothManager {
       _bleListen =_scanStream!.listen((DiscoveredDevice event) {
         // 处理扫描到的蓝牙设备
         // print('event.name=${event.name}');
-        if (kBLEDevice_Names.indexOf(event.name) != -1) {
+        //model.deviceName .contains(k270_Name)
+        // kBLEDevice_Names.indexOf(event.name) != -1
+        if (event.name .contains(k270_Name)) {
           // 如果设备列表数组中无，则添加
           if (!hasDevice(event.id)) {
             this.deviceList.add(BLEModel(deviceName: event.name, device: event));
@@ -133,7 +137,7 @@ class BluetoothManager {
         model.hasConected = true;
         final notifyCharacteristic;
         final writerCharacteristic;
-        if(model.deviceName == k270_Name){
+        if(model.deviceName .contains(k270_Name)){
           // 保存读写特征值 270设备
           notifyCharacteristic = QualifiedCharacteristic(
               serviceId: Uuid.parse(kBLE_270_SERVICE_UUID),
@@ -167,7 +171,7 @@ class BluetoothManager {
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((List<int> data) {
           print("deviceName =${model.device!.name} 上报来的数据data = ${data.map((toElement)=>toElement.toRadixString(16)).toList()}");
-          if(model.deviceName ==  k270_Name) {
+          if(model.deviceName.contains(k270_Name)) {
             if(data.length >= 7 && data[4] == 0x30){
                // 心跳查询，直接回复心跳响应
               BluetoothManager().writerDataToDevice(model, responseHearBeat());
@@ -221,7 +225,7 @@ class BluetoothManager {
       TTToast.showErrorInfo('Please connect your device first');
       return;
     }
-    print('发送数据data=${data.map((toElement)=>toElement.toRadixString(16)).toList()}');
+   // print('发送数据data=${data.map((toElement)=>toElement.toRadixString(16)).toList()}');
     await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
         value: data);
   }
@@ -262,5 +266,9 @@ class BluetoothManager {
 
   triggerCallback({BLEDataType type = BLEDataType.none}) {
     dataChange?.call(type);
+  }
+
+  p3TriggerCallback({BLEDataType type = BLEDataType.none}) {
+    p3DataChange?.call(type);
   }
 }

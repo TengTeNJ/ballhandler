@@ -4,9 +4,11 @@ import 'package:code/route/route.dart';
 import 'package:code/utils/toast.dart';
 import 'package:code/views/participants/p3_grid_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import '../../constants/constants.dart';
 import '../../models/airbattle/p3_item_model.dart';
 import '../../utils/color.dart';
+import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 
 class P3Controller extends StatefulWidget {
@@ -104,6 +106,12 @@ class _P3ControllerState extends State<P3Controller> {
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {
                     if(_selectModels.length > 0){
+                      GameUtil gameUtil = GetIt.instance<GameUtil>();
+                      gameUtil.selectdP3Indexs.clear();
+                      // 记录选择的P3模式的索引组合
+                      _selectModels.forEach((element){
+                        gameUtil.selectdP3Indexs.add(element.index);
+                      });
                       NavigatorUtil.present(P3GuideController(selectModels: _selectModels,));
                     }
                   },
