@@ -131,8 +131,13 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   }
 
   p3Control() async{
-    final _result =  await  P1NewGameManager().startGame();
-    print('控制结束---------${_result}------------------');
+    try {
+      final _result =  await  P1NewGameManager().startGame();
+      print('控制结束---------${_result}------------------');
+      NavigatorUtil.pop();
+    } catch(error){
+      print('游戏出错了--------${error.toString()}');
+    }
   }
 
   emulateSpace(BuildContext context) {

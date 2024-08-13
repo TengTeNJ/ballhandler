@@ -120,14 +120,14 @@ class BluetoothUltTimateDataParse {
           }
         });
       }
-      print('蓝牙设备响应数据不包含帧头或者数据被分包=${data}');
+     //  print('蓝牙设备响应数据不包含帧头或者数据被分包=${data}');
     }
   }
 
 
   static handleData(List<int> element, BLEModel mode) {
     if (element.length < 4) {
-      print('解析数据出错');
+      // print('解析数据出错');
       return;
     }
     // 数据源地址

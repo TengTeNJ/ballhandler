@@ -68,7 +68,7 @@ class _RootPageControllerState extends State<RootPageController> {
         }
       });
 
-   // refreshTokenAndDeleteLocanVideo();
+   refreshTokenAndDeleteLocanVideo();
     subscription = EventBus().stream.listen((event) {
       if (event == kLoginSucess) {
         loadLaunchPage();
@@ -127,7 +127,7 @@ class _RootPageControllerState extends State<RootPageController> {
     }
     // 消息推送处理
     fireBaseMessage(); // 监听推送通知
-   // fireBaseCrashlytics();
+   fireBaseCrashlytics();
   }
 
   Future<void> querySceneListdata() async {

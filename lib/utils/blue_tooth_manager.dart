@@ -170,12 +170,13 @@ class BluetoothManager {
         EasyLoading.showSuccess('Bluetooth connection successful');
         // 监听数据
         _ble.subscribeToCharacteristic(notifyCharacteristic).listen((List<int> data) {
-          print("deviceName =${model.device!.name} 上报来的数据data = ${data.map((toElement)=>toElement.toRadixString(16)).toList()}");
           if(model.deviceName.contains(k270_Name)) {
             if(data.length >= 7 && data[4] == 0x30){
                // 心跳查询，直接回复心跳响应
               BluetoothManager().writerDataToDevice(model, responseHearBeat());
               return;
+            }else{
+              print("deviceName =${model.device!.name} 上报来的数据data = ${data.map((toElement)=>toElement.toRadixString(16)).toList()}");
             }
             // 解析270
             BluetoothUltTimateDataParse.parseData(data, model);
@@ -225,7 +226,7 @@ class BluetoothManager {
       TTToast.showErrorInfo('Please connect your device first');
       return;
     }
-   // print('发送数据data=${data.map((toElement)=>toElement.toRadixString(16)).toList()}');
+   print('发送数据data=${data.map((toElement)=>toElement.toRadixString(16)).toList()}');
     await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
         value: data);
   }
@@ -245,7 +246,7 @@ class BluetoothManager {
   listenBLEStatu(){
     if(_bleStatuListen == null){
       _bleStatuListen =  FlutterReactiveBle().statusStream.listen((status) {
-        print('蓝牙状态status===${status}');
+        // print('蓝牙状态status===${status}');
         //code for handling status updatei
         if(status == BleStatus.poweredOff){
           // 蓝牙开关关闭

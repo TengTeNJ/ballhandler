@@ -592,6 +592,6 @@ List<int> responseHearBeat() {
   int length = 7;
   int cmd = 0x31;
   int cs = start + source + destination + length + cmd;
-  print('发送心跳------------');;
+  // print('发送心跳------------');;
   return [start, source, destination, length, cmd, cs, end];
 }

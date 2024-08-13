@@ -247,18 +247,26 @@ class P1NewGameManager {
             print('randomTargets 为空');
             return;
           }
-          HitTargetModel matchModel = randomTargets.firstWhere((element) =>
-              hitModel != null &&
-              element.boardIndex == hitModel.boardIndex &&
-              element.ledIndex == hitModel.ledIndex);
+          HitTargetModel matchModel = randomTargets.firstWhere(
+            (element) =>
+                hitModel != null &&
+                element.boardIndex == hitModel.boardIndex &&
+                element.ledIndex == hitModel.ledIndex,
+            orElse: () => HitTargetModel(
+                boardIndex: -1,
+                ledIndex: -1,
+                statu: BleULTimateLighStatu.close),
+          );
           if (matchModel != null) {
             _stage2HitCount++;
-            print('第二阶段击中----_stage2HitCount ${_stage2HitCount}-----------');
+            print(
+                '第二阶段击中----_stage2HitCount ${_stage2HitCount}-----${randomTargets}------');
             BluetoothManager().writerDataToDevice(
                 gameUtil.selectedDeviceModel,
                 controSingleLightBoard(matchModel.boardIndex,
                     matchModel.ledIndex, BleULTimateLighStatu.close));
             if (_stage2HitCount == randomTargets.length) {
+              print('-----++++----++++');
               BluetoothManager().gameData.score =
                   BluetoothManager().gameData.score + randomTargets.length;
               // 得分显示
@@ -327,6 +335,7 @@ class P1NewGameManager {
   // 第一进度控制
   _process1Control() {
     if (_process1Index >= firstProcessData().length) {
+      print('从第一进度进入到第二进度');
       // 进入第二进度
       this.firstStageProcess = 2;
       _process2Control();
@@ -344,6 +353,7 @@ class P1NewGameManager {
   // 第二进度控制
   _process2Control() {
     if (_process2Index >= secondProcessData().length) {
+      print('从第二进度进入到第三进度');
       // 进入第三进度
       this.firstStageProcess = 3;
       _process3Index = 0;
@@ -365,6 +375,7 @@ class P1NewGameManager {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     if (_process3Index >= thirdProcessRedData().length) {
       // 进入第二阶段
+      print('进入第二阶段');
       if (this.durationTimer != null) {
         this.durationTimer!.cancel();
         this.durationTimer = null;
@@ -454,7 +465,10 @@ class P1NewGameManager {
       // 保证不和上一次的重复
       while (previousIndexs.contains(randomBoardIndex)) {
         randomBoardIndex = random.nextInt(6);
+        print(
+            '----------------00--------------------${previousIndexs}---------${randomBoardIndex}');
       }
+      print('----------------00--------------------');
       // 生成一个0到5的数值 灯板索引为0-5
       int randomLedIndex;
       if (randomBoardIndex == 2 || randomBoardIndex == 4) {
@@ -472,7 +486,10 @@ class P1NewGameManager {
       // 保证不和上一次的重复
       while (previousIndexs.contains(randomBoardIndex1)) {
         randomBoardIndex1 = random.nextInt(6);
+        print(
+            '----------------11--------------------${previousIndexs}---------${randomBoardIndex1}');
       }
+      print('---------------11--------------');
       // 生成一个0到5的数值 灯板索引为0-5
       int randomLedIndex1;
       if (randomBoardIndex1 == 2 || randomBoardIndex1 == 4) {
@@ -485,6 +502,7 @@ class P1NewGameManager {
       // 保证不和上一次的重复
       while (previousIndexs.contains(randomBoardIndex2)) {
         randomBoardIndex2 = random.nextInt(6);
+        print('100000000000-------');
       }
       int randomLedIndex2;
       if (randomBoardIndex2 == 2 || randomBoardIndex2 == 4) {
@@ -493,8 +511,17 @@ class P1NewGameManager {
       } else {
         randomLedIndex2 = random.nextInt(4); // 生成一个0到3的数值 灯板索引为0-3
       }
-      while (randomLedIndex1 == randomLedIndex1 &&
+      while (randomLedIndex1 == randomLedIndex2 &&
           randomBoardIndex1 == randomBoardIndex2) {
+        // 如果生成的两个灯板索引和led索引都一样 直接换一个灯板
+          while (previousIndexs.contains(randomBoardIndex2) ||
+              randomBoardIndex1 == randomBoardIndex2) {
+            randomBoardIndex2 = random.nextInt(6);
+            print('100000000000-------');
+          }
+          randomBoardIndex2 = random.nextInt(6);
+          print('123000000000000-------');
+
         if (randomBoardIndex2 == 2 || randomBoardIndex2 == 4) {
           randomBoardIndex2 = random.nextInt(6);
         } else {
