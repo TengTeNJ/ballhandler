@@ -122,9 +122,6 @@ class P1NewGameManager {
   List<HitTargetModel> randomTargets = []; // 第二阶段 随机亮的灯的数组 每次随机亮一个或者两个
   Future<bool> startGame() async {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-    // 开始游戏指令
-    BluetoothManager()
-        .writerDataToDevice(gameUtil.selectedDeviceModel, gameStart());
     // 先关闭所有的灯光
     BluetoothManager()
         .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
@@ -315,9 +312,6 @@ class P1NewGameManager {
             randomTargets.clear();
             this.stage = 1;
             // 结束
-            // 结束游戏指令
-            BluetoothManager().writerDataToDevice(
-                gameUtil.selectedDeviceModel, gameStart(onStart: false));
             completer.complete(true);
           }
         });

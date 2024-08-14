@@ -3,11 +3,15 @@ import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/ble_data_service.dart';
+import '../../utils/blue_tooth_manager.dart';
+
 class GameData extends ChangeNotifier {
   bool _powerOn = false; // 开机状态
   int _currentTarget = 0; // 当前响应标靶,如果是270设备，则代表响应的几个板子的索引，0-5(0为主控板，1-5为从控板)
   int sendCurrentTarget = 0; // P3模式下 app端发送的控制的当前的板子的索引0-5(0为主控板，1-5为从控板)
   int _score = 0; // 得分
+  int utimateGameSatatu = 0; // 270模式游戏的状态0x00-IDLE(选择模式状态)；0x01-游戏预备；0x02-游戏开始；0x03-游戏结束
   bool _gameStart = false; // 游戏状态
   int _powerValue = 100; // 电量值
   int _remainTime = 45; // 剩余时长
@@ -61,6 +65,9 @@ class GameData extends ChangeNotifier {
   }
 
   set score(int score) {
+    if(score < 0){
+      score = 0;
+    }
     _score = score;
   }
 
@@ -77,9 +84,10 @@ class GameData extends ChangeNotifier {
     notifyListeners();
     // _millSecond = 99;
     // 自动处理显示的剩余时长格字符串
-    _showRemainTime = '00:' +
-        _remainTime.toString().padLeft(2, '0') +
-        _millSecond.toString().padLeft(2, '0');
+    int minute = (remainTime / 60).toInt();
+    int second = remainTime % 60;
+    _showRemainTime =minute.toString().padLeft(2, '0') + ':' + second.toString().padLeft(2, '0');
+    BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
   }
 
   set millSecond(int millSecond) {

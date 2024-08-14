@@ -2,7 +2,9 @@ import 'package:code/models/game/hit_target_model.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/game_util.dart';
+import 'package:code/utils/global.dart';
 import 'package:code/utils/string_util.dart';
+import 'package:get_it/get_it.dart';
 
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
@@ -160,6 +162,11 @@ class BluetoothUltTimateDataParse {
           }
           break;
         case ResponseCMDType.targetIn:
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          if(gameUtil.modelId != 3){
+            // 只有P3模式才处理击中
+            break;
+          }
           int data1 = element[4]; // 灯板ID(1BYTE,0-3)
           int data2 = element[
               5]; // 灯掩码（1字节，使用BIT1-BIT0，取值：0b00-NA; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯）
@@ -279,16 +286,16 @@ class BluetoothUltTimateDataParse {
           switch (reason) {
             case 1:
               {
-                // 游戏状态变化 0x01-游戏预备；0x02-游戏开始；0x03-游戏结束。
+                // 游戏状态变化 0x00-IDLE(选择模式状态) 0x01-游戏预备；0x02-游戏开始；0x03-游戏结束。
                 int statu = element[5];
-                //print('游戏状态变化=${statu}');
+                BluetoothManager().gameData.utimateGameSatatu = statu;
+                BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
                 break;
               }
             case 2:
               {
                 // 模式选择变化 0x01-P1模式，0x02-P2模式，0x03-P3模式；
                 int mode = element[6];
-               // print('游戏选择变化=${mode}');
                 break;
               }
             case 4:

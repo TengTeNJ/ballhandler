@@ -806,15 +806,14 @@ class P3GameManager {
 
     Completer<bool> completer = Completer();
 
-    int duration =
+     int duration =
         kP3IndexAndDurationMap[this.currentInGameIndex]!['duration'] ?? 0;
-    int frequency =
-        kP3IndexAndDurationMap[this.currentInGameIndex]!['frequency'] ?? 0;
+    // int frequency =
+    //     kP3IndexAndDurationMap[this.currentInGameIndex]!['frequency'] ?? 0;
 
     // 倒计时赋值
     _countTime = (duration / 1000).toInt();
-    print('===_countTime==${_countTime}');
-
+    print('开始一轮游戏');
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 倒计时显示
     BluetoothManager().writerDataToDevice(
@@ -825,7 +824,6 @@ class P3GameManager {
 
     // 监听击中
     BluetoothManager().p3DataChange = (BLEDataType type) async {
-      print('击中------');
       if (type == BLEDataType.targetIn) {
         if (this.frequencyTimer != null) {
           this.frequencyTimer!.cancel();
@@ -838,36 +836,36 @@ class P3GameManager {
               element.ledIndex.contains(hitModel!.ledIndex) &&
               element.boardIndex == hitModel!.boardIndex);
           if (matchModel != null) {
-            print('击中了当前灯 ------');
             // 击中了当前亮的灯
-            if (matchModel.statu == BleULTimateLighStatu.blue) {
+            if (hitModel.statu == BleULTimateLighStatu.blue) {
               // 击中蓝灯 减1分
               BluetoothManager().gameData.score --;
               // 得分显示
               BluetoothManager().writerDataToDevice(
                   gameUtil.selectedDeviceModel, scoreShow(BluetoothManager().gameData.score));
-            } else if (matchModel.statu == BleULTimateLighStatu.red) {
+            } else if (hitModel.statu == BleULTimateLighStatu.red) {
               // 击中红灯加2分
               BluetoothManager().gameData.score = BluetoothManager().gameData.score +  2;
               // 得分显示
               BluetoothManager().writerDataToDevice(
                   gameUtil.selectedDeviceModel, scoreShow(BluetoothManager().gameData.score));
+              this._index++;
+              if (this._index > _allDatas.length) {
+                // 结束本组合中的某个模式
+                if (this.durationTimer != null) {
+                  this.durationTimer!.cancel();
+                }
+                if (this.frequencyTimer != null) {
+                  this.frequencyTimer!.cancel();
+                }
+                completer.complete(true);
+              } else {
+                // 继续循环执行
+                _implement(completer);
+              }
             }
           }
-          this._index++;
-          if (this._index > _allDatas.length) {
-            // 结束本组合中的某个模式
-            if (this.durationTimer != null) {
-              this.durationTimer!.cancel();
-            }
-            if (this.frequencyTimer != null) {
-              this.frequencyTimer!.cancel();
-            }
-            completer.complete(true);
-          } else {
-            // 继续循环执行
-            _implement(completer);
-          }
+
         }
       }
     };
@@ -881,7 +879,6 @@ class P3GameManager {
     this.durationTimer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
       // 达到时长 结束本组合元素的循环 进行下一个
       _countTime--;
-      print('===_countTime==${_countTime}');
       BluetoothManager().writerDataToDevice(
           gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
       // 倒计时显示
@@ -912,6 +909,16 @@ class P3GameManager {
       this.frequencyTimer!.cancel();
       this.frequencyTimer = null;
     }
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    // 先关闭所有的灯光
+    BluetoothManager()
+        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
+    // 倒计时显示
+    BluetoothManager().writerDataToDevice(
+        gameUtil.selectedDeviceModel, cutDownShow(value: 0));
+    // 得分显示
+    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
+        scoreShow(0));
   }
 
   // 执行

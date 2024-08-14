@@ -131,8 +131,6 @@ class P1GameManager {
   List<HitTargetModel> randomTargets = []; // 第二阶段 随机亮的灯的数组 每次随机亮一个或者两个
   Future<bool> startGame() async {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-    // 开始游戏指令
-    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, gameStart());
     // 先关闭所有的灯光
     BluetoothManager()
         .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
@@ -307,8 +305,6 @@ class P1GameManager {
             this.duration2Timer!.cancel();
             this.duration2Timer = null;
             // 结束
-            // 结束游戏指令
-            BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, gameStart(onStart: false));
             completer.complete(true);
           }
         });
@@ -320,7 +316,31 @@ class P1GameManager {
   }
 
   /*停止游戏*/
-  stopGame() {}
+  stopGame() {
+    // 清空定时器
+    if (this.durationTimer != null) {
+      this.durationTimer!.cancel();
+      this.durationTimer = null;
+    }
+    if (this.frequencyTimer != null) {
+      this.frequencyTimer!.cancel();
+      this.frequencyTimer = null;
+    }
+    if(this.duration2Timer != null){
+      this.duration2Timer!.cancel();
+      this.duration2Timer = null;
+    }
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    // 先关闭所有的灯光
+    BluetoothManager()
+        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
+    // 倒计时显示
+    BluetoothManager().writerDataToDevice(
+        gameUtil.selectedDeviceModel, cutDownShow(value: 0));
+    // 得分显示
+    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
+        scoreShow(0));
+  }
 
   // 第一进度控制
   _process1Control(){

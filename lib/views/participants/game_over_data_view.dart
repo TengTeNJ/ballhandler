@@ -1,7 +1,9 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -26,8 +28,14 @@ class _GameOverDataViewState extends State<GameOverDataView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    String timeString =  getGameDutation();
+    int timeValue = int.parse(timeString);
+    int minute = (timeValue / 60).toInt();
+    int second = timeValue % 60;
+    String minuteString = minute.toString().padLeft(2,'0');
+    String secondString = second.toString().padLeft(2,'0');
     _datas = [
-      '00:' + widget.dataModel.time,
+      minuteString + ':' + secondString,
       widget.dataModel.score.toString(),
       widget.dataModel.Integral
     ];

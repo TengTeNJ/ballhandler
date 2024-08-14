@@ -1,9 +1,11 @@
 import 'package:code/constants/constants.dart';
+import 'package:get_it/get_it.dart';
 import '../models/game/light_ball_model.dart';
 import 'package:code/utils/string_util.dart';
 import 'dart:math';
 import '../models/game/light_ball_model.dart';
 import 'ble_ultimate_service_data.dart';
+import 'global.dart';
 
 /*初始化灯光状态 和UI的状态模拟一致*/
 List<LightBallModel> initUltimateLightModels() {
@@ -303,5 +305,34 @@ List<BleULTimateLighStatu> parseAllLedStatu(List<int> element) {
     _tempLists.addAll(boardLightStatus);
   }
   return _tempLists;
+}
+
+String getGameDutation(){
+  GameUtil gameUtil = GetIt.instance<GameUtil>();
+  if(gameUtil.gameScene == GameScene.five){
+    // 五节
+    return '45';
+  }else if(gameUtil.gameScene == GameScene.erqiling){
+    // 270
+    if(gameUtil.modelId == 1){
+      return kP1Duration.toString();
+    }else if(gameUtil.modelId == 2){
+      return kP2Duration.toString();
+    }else{
+      List<int> indexs = gameUtil.selectdP3Indexs;
+      int duration = 0;
+      indexs.forEach((element){
+        Map? _map = kP3IndexAndDurationMap[element];
+        if(_map != null){
+          int _duration = _map['duration'];
+          duration = duration + _duration;
+        }
+
+      });
+      String durationString = (duration/1000).toInt().toString();
+      return durationString;
+    }
+  }
+  return '45';
 }
 

@@ -473,22 +473,24 @@ const Map<int,Map<int,int>> kBoardMap = {
   5:{
     3:14,
     0:15,
-    1:16,
-    2:17
+    1:17,
+    2:16
   },
 }; // 灯板编号以及灯板上每个灯的数据索引和UI索引的映射表
 
 const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
+  // 和P1保持一致
   0:{
-    'duration':30000,
+    'duration':90000,
     'frequency': 3500,
   },
   1:{
     'duration':30000,
     'frequency': 3500,
   },
+  // 和P1保持一致
   2:{
-    'duration':30000,
+    'duration':90000,
     'frequency': 3500,
   },
   3:{
@@ -503,8 +505,9 @@ const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
     'duration':30000,
     'frequency': 3500,
   },
+  // 和P1保持一致
   6:{
-    'duration':30000,
+    'duration':90000,
     'frequency': 3500,
   },
   7:{
@@ -512,4 +515,7 @@ const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
     'frequency': 3500,
   },
 };
+
+const kP1Duration = 90; // 270设备P1模式的游戏时长
+const kP2Duration = 120; // 270设备P2模式的游戏时长
 

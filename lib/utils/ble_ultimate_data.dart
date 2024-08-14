@@ -469,6 +469,8 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
         binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
+  BluetoothManager().gameData.remainTime = value;
+  BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
   return [
     start,
     source,
@@ -521,6 +523,7 @@ List<int> scoreShow(int value) {
         binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
+  BluetoothManager().triggerCallback(type: BLEDataType.score);
   return [
     start,
     source,
@@ -543,7 +546,7 @@ List<int> appOnLine({bool onLine = true}) {
   int start = kBLEDataFrameHeader;
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
-  int destination = int.parse('00111111', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
   int length = 9;
   int cmd = 0x0A;
   int data1 = 0x01;
@@ -552,6 +555,12 @@ List<int> appOnLine({bool onLine = true}) {
     data2 = 0x00; // APP下线
   }
   int cs = start + source + destination + length + cmd + data1 + data2;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
   return [start, source, destination, length, cmd, data1, data2, cs, end];
 }
 
@@ -563,7 +572,7 @@ List<int> gameStart({bool onStart = true}) {
   int start = kBLEDataFrameHeader;
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
-  int destination = int.parse('00111111', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
   int length = 9;
   int cmd = 0x0A;
   int data1 = 0x02; //  代表游戏开始/结束
@@ -578,6 +587,14 @@ List<int> gameStart({bool onStart = true}) {
         binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
+  if(onStart){
+    // 游戏开始
+    BluetoothManager().gameData.utimateGameSatatu = 2;
+  }else{
+    // 游戏结束
+    BluetoothManager().gameData.utimateGameSatatu = 3;
+  }
+  BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
   return [start, source, destination, length, cmd, data1, data2, cs, end];
 }
 
@@ -592,6 +609,12 @@ List<int> responseHearBeat() {
   int length = 7;
   int cmd = 0x31;
   int cs = start + source + destination + length + cmd;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
   // print('发送心跳------------');;
   return [start, source, destination, length, cmd, cs, end];
 }

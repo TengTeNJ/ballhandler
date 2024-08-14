@@ -99,6 +99,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                 P2Controller(),
                 P3Controller()
               ];
+              gameUtil.selectRecord = true;
               NavigatorUtil.present(_controllers[index]);
             }
           }

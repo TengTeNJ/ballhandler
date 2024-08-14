@@ -112,6 +112,7 @@ class _P3ControllerState extends State<P3Controller> {
                       _selectModels.forEach((element){
                         gameUtil.selectdP3Indexs.add(element.index);
                       });
+                      NavigatorUtil.pop();
                       NavigatorUtil.present(P3GuideController(selectModels: _selectModels,));
                     }
                   },
@@ -143,5 +144,12 @@ class _P3ControllerState extends State<P3Controller> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    print('P3-------controller');
   }
 }
