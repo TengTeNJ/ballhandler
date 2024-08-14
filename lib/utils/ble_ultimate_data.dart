@@ -185,8 +185,7 @@ List<int> controLightBoard(
   // 主动模拟数据变化 进行通知 实现页面刷新
   BluetoothManager().gameData.currentTarget = boradIndex;
   BluetoothManager().gameData.lightStatus = lightStatu;
-  BluetoothManager()
-      .triggerCallback(type: BLEDataType.statuSynchronize);
+  BluetoothManager().triggerCallback(type: BLEDataType.statuSynchronize);
 
   return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
 }
@@ -268,8 +267,7 @@ List<int> controSingleLightBoard(
   BluetoothManager().gameData.currentTarget = boradIndex;
   BluetoothManager().gameData.singleLedIndex = ledIndex;
   BluetoothManager().gameData.singleLedStatu = statu;
-  BluetoothManager()
-      .triggerCallback(type: BLEDataType.refreshSingleLedStatu);
+  BluetoothManager().triggerCallback(type: BLEDataType.refreshSingleLedStatu);
 
   return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
 }
@@ -296,19 +294,17 @@ List<int> closeAllBoardLight() {
   cs = StringUtil.binaryStringToDecimal(binaryString);
 
   // 主动模拟数据变化 进行通知 实现页面刷新
-  for(int i =0; i < 6; i++){
+  for (int i = 0; i < 6; i++) {
     BluetoothManager().gameData.currentTarget = i;
     BluetoothManager().gameData.lightStatus = [
-  BleULTimateLighStatu.close,
-  BleULTimateLighStatu.close,
+      BleULTimateLighStatu.close,
+      BleULTimateLighStatu.close,
       BleULTimateLighStatu.close,
       BleULTimateLighStatu.close,
     ];
-    BluetoothManager()
-        .triggerCallback(type: BLEDataType.allBoardStatuOneByOne);
+    BluetoothManager().triggerCallback(type: BLEDataType.allBoardStatuOneByOne);
   }
-  BluetoothManager()
-      .triggerCallback(type: BLEDataType.allBoadrStatuFinish);
+  BluetoothManager().triggerCallback(type: BLEDataType.allBoadrStatuFinish);
 
   return [start, source, destination, length, cmd, data1, data2, cs, end];
 }
@@ -485,6 +481,53 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
     end
   ];
 }
+/*数码管显示P3字样 */
+List<int> p3ScreenShow() {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
+  int length = 11;
+  int cmd = 0x04;
+  int data1 = 0x01;
+  int data2;
+  int data3;
+  int data4;
+  data2 = 0x00;
+  data3 = 0x50;
+  data4 = 0x33;
+
+  int cs = start +
+      source +
+      destination +
+      length +
+      cmd +
+      data1 +
+      data2 +
+      data3 +
+      data4;
+
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+
+  return [
+    start,
+    source,
+    destination,
+    length,
+    cmd,
+    data1,
+    data2,
+    data3,
+    data4,
+    cs,
+    end
+  ];
+}
 
 /*
 * 显示得分
@@ -587,10 +630,10 @@ List<int> gameStart({bool onStart = true}) {
         binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
-  if(onStart){
+  if (onStart) {
     // 游戏开始
     BluetoothManager().gameData.utimateGameSatatu = 2;
-  }else{
+  } else {
     // 游戏结束
     BluetoothManager().gameData.utimateGameSatatu = 3;
   }

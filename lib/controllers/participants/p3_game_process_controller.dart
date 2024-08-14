@@ -234,9 +234,10 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     }
     print('P3模式结束一段组合');
     // 结束游戏指令
-    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, gameStart(onStart: false));
     P1NewGameManager().stopGame();
     P3GameManager().stopGame();
+    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, gameStart(onStart: false));
+    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
   }
 
   emulateSpace(BuildContext context) {
@@ -470,15 +471,21 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 解除隐藏状态栏
     StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     SystemUtil.disableWakeUpDevice();
     BluetoothManager().dataChange = null;
-    BluetoothManager().gameData.remainTime = 45;
+    BluetoothManager().gameData.remainTime = 60;
     BluetoothManager().gameData.millSecond = 0;
     BluetoothManager().gameData.score = 0;
     subscription.cancel();
+    if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+      // 270自由模式 停止正在进行的游戏
+      P1NewGameManager().stopGame();
+      P3GameManager().stopGame();
+    }
   }
 }
 

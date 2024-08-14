@@ -909,6 +909,11 @@ class P3GameManager {
       this.frequencyTimer!.cancel();
       this.frequencyTimer = null;
     }
+    this._index = 0;
+    this._countTime = 0;
+    this.currentInGameIndex = -1;
+    this._countTime = 0;
+
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 先关闭所有的灯光
     BluetoothManager()
@@ -916,9 +921,6 @@ class P3GameManager {
     // 倒计时显示
     BluetoothManager().writerDataToDevice(
         gameUtil.selectedDeviceModel, cutDownShow(value: 0));
-    // 得分显示
-    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
-        scoreShow(0));
   }
 
   // 执行

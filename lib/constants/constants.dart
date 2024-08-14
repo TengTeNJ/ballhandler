@@ -355,6 +355,7 @@ const kCurrentDeviceInfoChange = 'current_device_info_change'; // 当前游戏�
 const kCurrentDeviceDisconnected = 'current_device_disconnected'; // 当前游戏设备断开连接
 const kPopSubscribeDialog= 'pop_subscribe_dialog'; // 主动弹出订阅弹窗
 const kPopSubscribeLate= 'pop_subscribe_dialog_late'; // 稍后订阅
+const kCurrent270DeviceInfoChange = 'current_270_device_info_change'; // 当前270游戏设备信息改变
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
   "1" :{
@@ -367,13 +368,9 @@ const Map<String,Map<String,String>> kGameSceneAndModelMap = {
     "5" : "SMILE Challenge",
   },
   "2" :{
-    "7" : "ZIGZAG Challenge",
-    "1" : "2 Challenge",
-    "2" : "L Challenge",
-    "3" : "OMEGA Challenge",
-    "6" : "Straight line Challenge",
-    "4" : "Pentagon Challenge",
-    "5" : "SMILE Challenge",
+    "1" : "P1 Mode",
+    "2" : "P2 Mode",
+    "3" : " FREE Mode",
   },
   "3" :{
     "7" : "ZIGZAG Challenge",

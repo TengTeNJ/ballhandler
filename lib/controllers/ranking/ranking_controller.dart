@@ -55,11 +55,12 @@ class _RankingControllerState extends State<RankingController> {
   queryRankList({bool loadMore = false}) async{
     if(loadMore){
       TTToast.showLoading();
-    }else{
-      _datas.clear();
     }
     final _response = await Rank.queryRankListData(_page);
     if(_response.success && _response.data != null){
+      if(!loadMore){
+        _datas.clear();
+      }
      _datas.addAll(_response.data!.data);
      _hasMode = (_datas.length < _response.data!.count);
      setState(() {

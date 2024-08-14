@@ -324,7 +324,38 @@ class P1NewGameManager {
   }
 
   /*停止游戏*/
-  stopGame() {}
+  stopGame() {
+    // 清空定时器
+    if (this.durationTimer != null) {
+      this.durationTimer!.cancel();
+      this.durationTimer = null;
+    }
+    if (this.frequencyTimer != null) {
+      this.frequencyTimer!.cancel();
+      this.frequencyTimer = null;
+    }
+    if (this.duration2Timer != null) {
+      this.duration2Timer!.cancel();
+      this.duration2Timer = null;
+    }
+    // 重置变量
+    this.stage = 1;
+    this._process1Index = 0;
+    this._process2Index = 0;
+    this._process3Index = 0;
+    this._process3EveryUnitIndex = 0;
+    this.process2LedIndexs.clear();
+    this.firstStageProcess = 1;
+    this._stage2HitCount = 0;
+    this._countTime = 60;
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    // 先关闭所有的灯光
+    BluetoothManager()
+        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
+    // 倒计时显示
+    BluetoothManager().writerDataToDevice(
+        gameUtil.selectedDeviceModel, cutDownShow(value: 0));
+  }
 
   // 第一进度控制
   _process1Control() {
@@ -395,9 +426,6 @@ class P1NewGameManager {
             randomTargets.clear();
             this.stage = 1;
             // 结束
-            // 结束游戏指令
-            BluetoothManager().writerDataToDevice(
-                gameUtil.selectedDeviceModel, gameStart(onStart: false));
             completer.complete(true);
           }
         });

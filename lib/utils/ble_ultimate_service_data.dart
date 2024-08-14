@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
+import 'notification_bloc.dart';
 
 // 270六块板子，1快主板，5块从板。每个板子有4个灯，成为灯板3、2、1、0
 /**
@@ -229,6 +230,14 @@ class BluetoothUltTimateDataParse {
           BluetoothManager().gameData.p3DeviceBatteryValues[targetIndex] =
               battery;
         }
+        GameUtil gameUtil = GetIt.instance<GameUtil>();
+        // 说明是当前选择的游戏设备
+        if(gameUtil.selectedDeviceModel.device != null && gameUtil.selectedDeviceModel.device!.id == mode.device!.id){
+          List<int> _batteryValues = BluetoothManager().gameData.p3DeviceBatteryValues;
+          int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
+          gameUtil.selectedDeviceModel.powerValue = minValue;
+          EventBus().sendEvent(kCurrent270DeviceInfoChange);
+        }
           break;
         case ResponseCMDType.statuSyn:
       //    print("deviceName  上报来的数据data = ${element.map((toElement)=>toElement.toRadixString(16)).toList()}");
@@ -248,14 +257,20 @@ class BluetoothUltTimateDataParse {
               StringUtil.lightToStatu(board2),
               StringUtil.lightToStatu(board3)
             ];
-            // print(
-            //     '${targetIndex}号控制板有状态更新，所对应的4个灯的状态为3号:${board3} 2号:${board2} 1号:${board3} 0号:${board0}');
           } else if (data1 == 2) {
             // 电量状态；0, 5, 25, 50, 75, 100
             int battery = element[6];
             BluetoothManager().gameData.p3DeviceBatteryValues[targetIndex] =
                 battery;
             print('${targetIndex}号灯的电量变化，电量值为${battery}');
+            GameUtil gameUtil = GetIt.instance<GameUtil>();
+            // 说明是当前选择的游戏设备
+            if(gameUtil.selectedDeviceModel.device != null && gameUtil.selectedDeviceModel.device!.id == mode.device!.id){
+              List<int> _batteryValues = BluetoothManager().gameData.p3DeviceBatteryValues;
+              int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
+              gameUtil.selectedDeviceModel.powerValue = minValue;
+              EventBus().sendEvent(kCurrent270DeviceInfoChange);
+            }
           } else if (data1 == 3) {
             // 灯板 + 电量
             int data2 = element[5]; // 灯板状态字节

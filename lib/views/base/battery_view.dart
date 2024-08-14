@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -39,11 +40,13 @@ class _BatteryViewState extends State<BatteryView> {
           powerLevel = gameUtil.selectedDeviceModel.batteryLevel;
           print('gameUtil.selectedDeviceModel=${gameUtil.selectedDeviceModel.powerValue}');
         }
-        setState(() {
-
-        });
+      }else if(event == kCurrent270DeviceInfoChange){
+        // 获取270设备中电量最少的赋值个电量变量
+        powerLevel = gameUtil.selectedDeviceModel.batteryLevel;
       }
+      setState(() {
 
+      });
     });
   }
   @override

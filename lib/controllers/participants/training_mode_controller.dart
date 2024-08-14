@@ -94,11 +94,18 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             } else if (gameUtil.gameScene == GameScene.erqiling) {
               // 设置270的游戏模式
               BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(index));
+              if(index == 2){
+                // 270的P3自由控制模式
+                BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
+                BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, scoreShow(0));
+              }
               const List<Widget> _controllers = [
                 P1Controller(),
                 P2Controller(),
                 P3Controller()
               ];
+              // 清空上次选择的组合
+              gameUtil.selectdP3Indexs.clear();
               gameUtil.selectRecord = true;
               NavigatorUtil.present(_controllers[index]);
             }
