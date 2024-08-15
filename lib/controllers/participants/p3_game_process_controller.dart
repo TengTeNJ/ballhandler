@@ -223,7 +223,6 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     List<int> indexs = gameUtil.selectdP3Indexs;
     // 开始游戏指令
     BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, gameStart());
-
     for(int i = 0; i < indexs.length; i ++){
       int index= indexs[i];
       if ([0, 2, 6].contains(index)) {

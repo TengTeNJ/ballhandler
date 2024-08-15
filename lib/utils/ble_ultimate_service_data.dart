@@ -31,7 +31,7 @@ class ResponseCMDType {
   BIT1-BIT0:灯板0选灯掩码
   上面每个掩码占据2BITS，取值：0b00-关灯; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯。*/
   static const int targetIn =
-      0x64; // 目标击中 灯板ID(1BYTE,0-3)+灯掩码（1字节，使用BIT1-BIT0，取值：0b00-NA; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯）
+  0x64; // 目标击中 灯板ID(1BYTE,0-3)+灯掩码（1字节，使用BIT1-BIT0，取值：0b00-NA; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯）
   /*上报原因（1字节）+数据（2字节，根据上报原因为：所属灯板状态(1字节，按BIT分别表示)+电池电量（0-100，%）
   上报原因：
   0x01：灯板状态；
@@ -81,7 +81,7 @@ class BluetoothUltTimateDataParse {
           // print('问题数据${element}');
         } else {
           // 先获取长度
-          if(element.length <= 2){
+          if (element.length <= 2) {
             bleNotAllData.addAll(data);
             return;
           }
@@ -123,7 +123,7 @@ class BluetoothUltTimateDataParse {
           }
         });
       }
-     //  print('蓝牙设备响应数据不包含帧头或者数据被分包=${data}');
+      //  print('蓝牙设备响应数据不包含帧头或者数据被分包=${data}');
     }
   }
 
@@ -148,100 +148,105 @@ class BluetoothUltTimateDataParse {
     // 目的地址
     int destination = element[1];
     String destinationString =
-        StringUtil.decimalToBinary(destination).padLeft(8, '0');
+    StringUtil.decimalToBinary(destination).padLeft(8, '0');
     //print('目的地址=${StringUtil.decimalToBinary(destination)}');
     if (destinationString.substring(0, 1) == '1') {
       // 代表数据是发送给app的
       int cmd = element[3];
       switch (cmd) {
         case ResponseCMDType.onLine:
-          // 在线状态 一个字节 8位BIT 0表示Central，BIT1表示Slave1，以此类推；bit值为1表示设备在线；
+        // 在线状态 一个字节 8位BIT 0表示Central，BIT1表示Slave1，以此类推；bit值为1表示设备在线；
           int data = element[4];
           String binaryString = data.toRadixString(2).padLeft(8, '0');
-          for(int i =0 ; i < 6; i ++){
-            print('${i}号在线状态:${binaryString.substring(binaryString.length - (i+1),binaryString.length-i)}');
+          for (int i = 0; i < 6; i ++) {
+            print('${i}号在线状态:${binaryString.substring(
+                binaryString.length - (i + 1), binaryString.length - i)}');
           }
           break;
         case ResponseCMDType.targetIn:
           GameUtil gameUtil = GetIt.instance<GameUtil>();
-          if(gameUtil.modelId != 3){
+          if (gameUtil.modelId != 3) {
             // 只有P3模式才处理击中
             break;
           }
           int data1 = element[4]; // 灯板ID(1BYTE,0-3)
           int data2 = element[
-              5]; // 灯掩码（1字节，使用BIT1-BIT0，取值：0b00-NA; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯）
+          5]; // 灯掩码（1字节，使用BIT1-BIT0，取值：0b00-NA; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯）
           String binaryString = data2.toRadixString(2);
           String temp = '';
           switch (binaryString) {
             case '0':
-              // 关闭
+            // 关闭
               temp = '关闭';
               break;
             case '1':
-              // 红灯
+            // 红灯
               temp = '红灯';
               break;
             case '10':
-              //  蓝灯
+            //  蓝灯
               temp = '蓝灯';
               break;
             case '11':
-              // 红+蓝灯
+            // 红+蓝灯
               temp = '红灯+蓝灯';
               break;
           }
-          HitTargetModel model =  HitTargetModel(boardIndex: targetIndex, ledIndex: data1, statu:  StringUtil.lightToStatu(binaryString.padLeft(2,'0')));
+          HitTargetModel model = HitTargetModel(boardIndex: targetIndex,
+              ledIndex: data1,
+              statu: StringUtil.lightToStatu(binaryString.padLeft(2, '0')));
           BluetoothManager().gameData.hitTargetModel = model;
           print('击中了${targetIndex}号控制板的${data1}号灯板,状态为${temp}');
           BluetoothManager()
               .p3TriggerCallback(type: BLEDataType.targetIn);
           break;
         case ResponseCMDType.allBoardStatu:
-          // 初始时 所有灯板的状态 CENTRAL(中心主机)向APP同步所有灯板数据及状态。
-         // 所有板的LED状态(6字节)+所有板的电池状态(6字节)
+        // 初始时 所有灯板的状态 CENTRAL(中心主机)向APP同步所有灯板数据及状态。
+        // 所有板的LED状态(6字节)+所有板的电池状态(6字节)
         // 4到9是LED状态，每个LED板子一个字节，每个面板上有四个灯板，每个灯板占两个位 0b00-关灯; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯。
         // 灯板状态
-        for(int i =0; i < 6; i++){
-          // 取出数据位，并转换成2进制字符串
-          int data = element[4+i];
-          String binaryString = data.toRadixString(2).padLeft(8, '0');
-          // 数组的索引的高低 对应 灯板的编号的高低
-          BluetoothManager().gameData.currentTarget = i;
-          String board3 = binaryString.substring(0, 2); // 灯板3的状态
-          String board2 = binaryString.substring(2, 4); // 灯板2的状态
-          String board1 = binaryString.substring(4, 6); // 灯板1的状态
-          String board0 = binaryString.substring(6, 8); // 灯板0的状态
-          BluetoothManager().gameData.lightStatus = [
-            StringUtil.lightToStatu(board0),
-            StringUtil.lightToStatu(board1),
-            StringUtil.lightToStatu(board2),
-            StringUtil.lightToStatu(board3)
-          ];
+          for (int i = 0; i < 6; i++) {
+            // 取出数据位，并转换成2进制字符串
+            int data = element[4 + i];
+            String binaryString = data.toRadixString(2).padLeft(8, '0');
+            // 数组的索引的高低 对应 灯板的编号的高低
+            BluetoothManager().gameData.currentTarget = i;
+            String board3 = binaryString.substring(0, 2); // 灯板3的状态
+            String board2 = binaryString.substring(2, 4); // 灯板2的状态
+            String board1 = binaryString.substring(4, 6); // 灯板1的状态
+            String board0 = binaryString.substring(6, 8); // 灯板0的状态
+            BluetoothManager().gameData.lightStatus = [
+              StringUtil.lightToStatu(board0),
+              StringUtil.lightToStatu(board1),
+              StringUtil.lightToStatu(board2),
+              StringUtil.lightToStatu(board3)
+            ];
+            BluetoothManager()
+                .triggerCallback(type: BLEDataType.allBoardStatuOneByOne);
+          }
           BluetoothManager()
-              .triggerCallback(type: BLEDataType.allBoardStatuOneByOne);
-        }
-        BluetoothManager()
-            .triggerCallback(type: BLEDataType.allBoadrStatuFinish);
-        // 电池电量
-        for(int i =0; i < 6; i++){
-          // 取出数据位，并转换成2进制字符串
-          int battery = element[10+i];
-          BluetoothManager().gameData.p3DeviceBatteryValues[targetIndex] =
-              battery;
-        }
-        GameUtil gameUtil = GetIt.instance<GameUtil>();
-        // 说明是当前选择的游戏设备
-        if(gameUtil.selectedDeviceModel.device != null && gameUtil.selectedDeviceModel.device!.id == mode.device!.id){
-          List<int> _batteryValues = BluetoothManager().gameData.p3DeviceBatteryValues;
-          int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
-          gameUtil.selectedDeviceModel.powerValue = minValue;
-          EventBus().sendEvent(kCurrent270DeviceInfoChange);
-        }
+              .triggerCallback(type: BLEDataType.allBoadrStatuFinish);
+          // 电池电量
+          for (int i = 0; i < 6; i++) {
+            // 取出数据位，并转换成2进制字符串
+            int battery = element[10 + i];
+            BluetoothManager().gameData.p3DeviceBatteryValues[i] =
+                battery;
+          }
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          // 说明是当前选择的游戏设备
+          if (gameUtil.selectedDeviceModel.device != null &&
+              gameUtil.selectedDeviceModel.device!.id == mode.device!.id) {
+            List<int> _batteryValues = BluetoothManager().gameData
+                .p3DeviceBatteryValues;
+            int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
+            gameUtil.selectedDeviceModel.powerValue = minValue;
+            EventBus().sendEvent(kCurrent270DeviceInfoChange);
+          }
           break;
         case ResponseCMDType.statuSyn:
-      //    print("deviceName  上报来的数据data = ${element.map((toElement)=>toElement.toRadixString(16)).toList()}");
-          // 上报原因：0x01：灯板状态；0x02：电量状态；0x03：灯板+电量状态；
+        //    print("deviceName  上报来的数据data = ${element.map((toElement)=>toElement.toRadixString(16)).toList()}");
+        // 上报原因：0x01：灯板状态；0x02：电量状态；0x03：灯板+电量状态；
           int data1 = element[4]; // 所属灯板状态(1字节，按BIT分别表示)+电池电量（0-100，%）
           if (data1 == 1) {
             // 灯板状态
@@ -265,8 +270,10 @@ class BluetoothUltTimateDataParse {
             print('${targetIndex}号灯的电量变化，电量值为${battery}');
             GameUtil gameUtil = GetIt.instance<GameUtil>();
             // 说明是当前选择的游戏设备
-            if(gameUtil.selectedDeviceModel.device != null && gameUtil.selectedDeviceModel.device!.id == mode.device!.id){
-              List<int> _batteryValues = BluetoothManager().gameData.p3DeviceBatteryValues;
+            if (gameUtil.selectedDeviceModel.device != null &&
+                gameUtil.selectedDeviceModel.device!.id == mode.device!.id) {
+              List<int> _batteryValues = BluetoothManager().gameData
+                  .p3DeviceBatteryValues;
               int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
               gameUtil.selectedDeviceModel.powerValue = minValue;
               EventBus().sendEvent(kCurrent270DeviceInfoChange);
@@ -297,7 +304,7 @@ class BluetoothUltTimateDataParse {
           break;
         case ResponseCMDType.newStatuSyn:
           int reason = element[
-              4]; // 上报原因：0x01: 游戏状态变化；0x02: 模式选择变化；0x04: 倒计时变化；0x08: 得分变化；
+          4]; // 上报原因：0x01: 游戏状态变化；0x02: 模式选择变化；0x04: 倒计时变化；0x08: 得分变化；
           switch (reason) {
             case 1:
               {
@@ -309,8 +316,16 @@ class BluetoothUltTimateDataParse {
               }
             case 2:
               {
-                // 模式选择变化 0x01-P1模式，0x02-P2模式，0x03-P3模式；
-                int mode = element[6];
+                // 模式选择变化 0x00-P1模式，0x01-P2模式，0x02-P3模式；
+                int modeStatu = element[6];
+                GameUtil gameUtil = GetIt.instance<GameUtil>();
+                // 主动切换模式时 如果app已经进入到了选择模式后的步骤 则进行手动切换
+                if (gameUtil.selectedDeviceModel.device != null &&
+                    gameUtil.selectedDeviceModel.device!.id ==
+                        mode.device!.id) {
+                  gameUtil.modelId = modeStatu + 1;
+                }
+
                 break;
               }
             case 4:
@@ -322,7 +337,7 @@ class BluetoothUltTimateDataParse {
                 String count2String = StringUtil.decimalToBinary(count_data2);
                 String valueString = count1String + count2String;
                 int remain_time = StringUtil.binaryStringToDecimal(valueString);
-               // print('倒计时变化=${remain_time}');
+                // print('倒计时变化=${remain_time}');
                 BluetoothManager().gameData.remainTime = remain_time;
                 BluetoothManager()
                     .triggerCallback(type: BLEDataType.remainTime);
@@ -356,7 +371,7 @@ class BluetoothUltTimateDataParse {
                 String count2String = StringUtil.decimalToBinary(count_data2);
                 String valueString = count1String + count2String;
                 int remain_time = StringUtil.binaryStringToDecimal(valueString);
-               // print('倒计时变化=${remain_time}');
+                // print('倒计时变化=${remain_time}');
                 BluetoothManager().gameData.remainTime = remain_time;
                 // 得分态变化
                 int score_data1 = element[9];

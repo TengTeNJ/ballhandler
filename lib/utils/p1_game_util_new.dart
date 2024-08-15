@@ -121,6 +121,8 @@ class P1NewGameManager {
 
   List<HitTargetModel> randomTargets = []; // 第二阶段 随机亮的灯的数组 每次随机亮一个或者两个
   Future<bool> startGame() async {
+    // 重新开始游戏 则complete重新赋值
+    this.completer = Completer();
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 先关闭所有的灯光
     BluetoothManager()
@@ -312,6 +314,7 @@ class P1NewGameManager {
             randomTargets.clear();
             this.stage = 1;
             // 结束
+            this.stopGame();
             completer.complete(true);
           }
         });
@@ -426,6 +429,7 @@ class P1NewGameManager {
             randomTargets.clear();
             this.stage = 1;
             // 结束
+            this.stopGame();
             completer.complete(true);
           }
         });
@@ -536,13 +540,13 @@ class P1NewGameManager {
       while (randomLedIndex1 == randomLedIndex2 &&
           randomBoardIndex1 == randomBoardIndex2) {
         // 如果生成的两个灯板索引和led索引都一样 直接换一个灯板
-          while (previousIndexs.contains(randomBoardIndex2) ||
-              randomBoardIndex1 == randomBoardIndex2) {
-            randomBoardIndex2 = random.nextInt(6);
-            print('100000000000-------');
-          }
+        while (previousIndexs.contains(randomBoardIndex2) ||
+            randomBoardIndex1 == randomBoardIndex2) {
           randomBoardIndex2 = random.nextInt(6);
-          print('123000000000000-------');
+          print('100000000000-------');
+        }
+        randomBoardIndex2 = random.nextInt(6);
+        print('123000000000000-------');
 
         if (randomBoardIndex2 == 2 || randomBoardIndex2 == 4) {
           randomBoardIndex2 = random.nextInt(6);

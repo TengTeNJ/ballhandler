@@ -597,7 +597,7 @@ List<List<ClickTargetModel>> trianglesDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [0], statu: [BleULTimateLighStatu.blue]),
     ClickTargetModel(
-        boardIndex: 2, ledIndex: [2], statu: [BleULTimateLighStatu.red])
+        boardIndex: 0, ledIndex: [2], statu: [BleULTimateLighStatu.red])
   ];
   // 3号板子 0蓝 3红
   List<ClickTargetModel> sevenData = [
@@ -792,8 +792,8 @@ class P3GameManager {
 
   List<int> selectIndexDatas = []; //  270模式选择的组合的索引
   int currentInGameIndex = -1; // 选择的组合当前正在游戏中的索引(0,1,2,3,4,5,6,7,8)
-  Timer? durationTimer;
-  Timer? frequencyTimer;
+  Timer? durationTimer; // 某个组合的游戏时长定时器
+  Timer? frequencyTimer; // 定时刷新亮灯的定时器
   int _index = 0; // 某组合下某个元素的灯光组合进行的索引
   int _countTime = 0; // 倒计时
 
@@ -813,7 +813,7 @@ class P3GameManager {
 
     // 倒计时赋值
     _countTime = (duration / 1000).toInt();
-    print('开始一轮游戏');
+    print('开始一轮游戏 currentInGameIndex= ${currentInGameIndex}');
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 倒计时显示
     BluetoothManager().writerDataToDevice(
@@ -824,10 +824,11 @@ class P3GameManager {
 
     // 监听击中
     BluetoothManager().p3DataChange = (BLEDataType type) async {
+      if(this.currentInGameIndex == -1){
+        // 不在游戏中
+        return;
+      }
       if (type == BLEDataType.targetIn) {
-        if (this.frequencyTimer != null) {
-          this.frequencyTimer!.cancel();
-        }
         // 取出来当前灯光的组合
         List<ClickTargetModel> datas = _allDatas[this._index];
         HitTargetModel? hitModel = BluetoothManager().gameData.hitTargetModel;
@@ -852,12 +853,7 @@ class P3GameManager {
               this._index++;
               if (this._index > _allDatas.length) {
                 // 结束本组合中的某个模式
-                if (this.durationTimer != null) {
-                  this.durationTimer!.cancel();
-                }
-                if (this.frequencyTimer != null) {
-                  this.frequencyTimer!.cancel();
-                }
+                this.stopGame();
                 completer.complete(true);
               } else {
                 // 继续循环执行
@@ -883,12 +879,7 @@ class P3GameManager {
           gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
       // 倒计时显示
       if (_countTime == 0) {
-        if (this.durationTimer != null) {
-          this.durationTimer!.cancel();
-        }
-        if (this.frequencyTimer != null) {
-          this.frequencyTimer!.cancel();
-        }
+        this.stopGame();
         completer.complete(true);
       }
     });
@@ -933,19 +924,16 @@ class P3GameManager {
         p3ModeDatas[this.currentInGameIndex];
 
     if (this._index >= _allDatas.length) {
+      print('_allDatas====${_allDatas.length} this._index = ${this._index}');
       // 结束本组合中的某个模式
-      if (this.durationTimer != null) {
-        this.durationTimer!.cancel();
-      }
-      if (this.frequencyTimer != null) {
-        this.frequencyTimer!.cancel();
-      }
+      this.stopGame();
       completer.complete(true);
       return;
     }
     List<ClickTargetModel> datas = _allDatas[this._index];
     int frequency =
         kP3IndexAndDurationMap[this.currentInGameIndex]!['frequency'] ?? 0;
+    // 先清空
     // 先清空
     if (this.frequencyTimer != null) {
       this.frequencyTimer!.cancel();

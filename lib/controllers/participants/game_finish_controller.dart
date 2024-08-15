@@ -34,8 +34,8 @@ class _GameFinishControllerState extends State<GameFinishController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // 隐藏状态栏
-    StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
+    // 解除隐藏状态栏
+    StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     queryVideoCount();
   }
