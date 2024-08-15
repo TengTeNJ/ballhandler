@@ -186,14 +186,14 @@ List<List<ClickTargetModel>> backHandDatas() {
   // 5号板子 0蓝 1红
   List<ClickTargetModel> threeData = [
     ClickTargetModel(
-        boardIndex: 1,
+        boardIndex: 5,
         ledIndex: [0, 2],
         statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red]),
   ];
-  // 5号板子 0蓝 3红
+  // 5号板子 0蓝 1红
   List<ClickTargetModel> fourData = [
     ClickTargetModel(
-        boardIndex: 2, ledIndex: [0,1], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red])
+        boardIndex: 5, ledIndex: [0,1], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red])
   ];
 
   List<List<ClickTargetModel>> datas = [
@@ -208,15 +208,15 @@ List<List<ClickTargetModel>> oneHandDatas() {
   // 先3号板子  1红
   List<ClickTargetModel> oneData = [
     ClickTargetModel(
-        boardIndex: 1,
-        ledIndex: [3],
+        boardIndex: 3,
+        ledIndex: [1],
         statu: [BleULTimateLighStatu.red]),
   ];
-  // 0号板子 0红
+  // 0号板子 3红
   List<ClickTargetModel> twoData = [
     ClickTargetModel(
         boardIndex: 0,
-        ledIndex: [0],
+        ledIndex: [3],
         statu: [BleULTimateLighStatu.red]),
   ];
   // 3号板子  1红
@@ -226,11 +226,11 @@ List<List<ClickTargetModel>> oneHandDatas() {
         ledIndex: [1],
         statu: [BleULTimateLighStatu.red]),
   ];
-  // 0号板子 0红
+  // 0号板子 3红
   List<ClickTargetModel> fourData =  [
     ClickTargetModel(
         boardIndex: 0,
-        ledIndex: [0],
+        ledIndex: [3],
         statu: [BleULTimateLighStatu.red]),
   ];
   // 3号板子 0蓝色 3红
@@ -258,16 +258,16 @@ List<List<ClickTargetModel>> oneHandDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [0,2], statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red])
   ];
-  // 5号板子  0蓝 1红
+  // 3号板子  0蓝 1红
   List<ClickTargetModel> tenData =  [
     ClickTargetModel(
-        boardIndex: 5, ledIndex: [0,1], statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red])
+        boardIndex: 3, ledIndex: [0,1], statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red])
   ];
-  // 0号板子 0红 1蓝
+  // 0号板子 3红 0蓝
   List<ClickTargetModel> elevenData = [
     ClickTargetModel(
         boardIndex:0,
-        ledIndex: [0, 1],
+        ledIndex: [3, 0],
         statu: [BleULTimateLighStatu.red, BleULTimateLighStatu.blue]),
   ];
   // 0号板子 0蓝 1红
@@ -281,13 +281,13 @@ List<List<ClickTargetModel>> oneHandDatas() {
   List<ClickTargetModel> thirteenData = [
     ClickTargetModel(
         boardIndex: 0,
-        ledIndex: [0, 1],
+        ledIndex: [0, 2],
         statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red]),
   ];
   // 0号板子 0蓝 3红
   List<ClickTargetModel> fourteenData = [
     ClickTargetModel(
-        boardIndex: 4, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red])
+        boardIndex: 0, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red])
   ];
   // 0号板子 0蓝色 1红
   List<ClickTargetModel> fifteenData = [
@@ -302,7 +302,7 @@ List<List<ClickTargetModel>> oneHandDatas() {
   // 0号板子 0蓝 3红
   List<ClickTargetModel> seventeenData = [
     ClickTargetModel(
-        boardIndex: 3, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red])
+        boardIndex: 0, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red])
   ];
   // 3号板子 0蓝 2红; 0号板子 0蓝
   List<ClickTargetModel> eighteenData = [
@@ -345,7 +345,7 @@ List<List<ClickTargetModel>> oneHandDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [0], statu: [BleULTimateLighStatu.blue]),
     ClickTargetModel(
-        boardIndex: 0, ledIndex: [0], statu: [BleULTimateLighStatu.blue])
+        boardIndex: 0, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red])
   ];
 
   // 3号板子 0蓝 2红 ; 0号板子 0蓝
@@ -353,7 +353,7 @@ List<List<ClickTargetModel>> oneHandDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [0,2], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red]),
     ClickTargetModel(
-        boardIndex: 0, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red])
+        boardIndex: 0, ledIndex: [0], statu: [BleULTimateLighStatu.blue])
   ];
 
   // 3号板子 0蓝 3红 ; 0号板子 0蓝
@@ -361,7 +361,7 @@ List<List<ClickTargetModel>> oneHandDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red]),
     ClickTargetModel(
-        boardIndex: 0, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red])
+        boardIndex: 0, ledIndex: [0], statu: [BleULTimateLighStatu.blue])
   ];
 
   // 3号板子 0蓝 1红 ; 0号板子 0蓝
@@ -401,7 +401,7 @@ List<List<ClickTargetModel>> oneHandDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [0,2], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red]),
     ClickTargetModel(
-        boardIndex: 0, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue])
+        boardIndex: 0, ledIndex: [0], statu: [BleULTimateLighStatu.blue])
   ];
 
   // 3号板子 0蓝 3红色 ; 0号板子 0蓝
@@ -409,7 +409,7 @@ List<List<ClickTargetModel>> oneHandDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red]),
     ClickTargetModel(
-        boardIndex: 0, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue])
+        boardIndex: 0, ledIndex: [0], statu: [BleULTimateLighStatu.blue])
   ];
 
   // 3号板子 0蓝 1红色 ; 0号板子 0蓝
@@ -417,7 +417,7 @@ List<List<ClickTargetModel>> oneHandDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [0,1], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red]),
     ClickTargetModel(
-        boardIndex: 0, ledIndex: [0,3], statu: [BleULTimateLighStatu.blue])
+        boardIndex: 0, ledIndex: [0], statu: [BleULTimateLighStatu.blue])
   ];
 
   List<List<ClickTargetModel>> datas = [
@@ -609,12 +609,12 @@ List<List<ClickTargetModel>> trianglesDatas() {
     ClickTargetModel(
         boardIndex: 0, ledIndex: [0,1], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.red])
   ];
-  // 3号板子 2红;0号板子 2蓝
+  // 3号板子 2红;0号板子 0蓝
   List<ClickTargetModel> nineData = [
     ClickTargetModel(
         boardIndex: 3, ledIndex: [2], statu: [BleULTimateLighStatu.red]),
     ClickTargetModel(
-        boardIndex: 0, ledIndex: [2], statu: [BleULTimateLighStatu.blue])
+        boardIndex: 0, ledIndex: [0], statu: [BleULTimateLighStatu.blue])
   ];
   // 0号板子 0蓝 2红
   List<ClickTargetModel> tenData = [
@@ -628,32 +628,32 @@ List<List<ClickTargetModel>> trianglesDatas() {
         ledIndex: [0, 1],
         statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red]),
   ];
-  // 5号板子 0蓝 1红
-  List<ClickTargetModel> twelveData = [
-    ClickTargetModel(
-        boardIndex: 5,
-        ledIndex: [0, 1],
-        statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red]),
-  ];
-  // 5号板子 0蓝 2红
-  List<ClickTargetModel> thirteenData = [
-    ClickTargetModel(
-        boardIndex: 5,
-        ledIndex: [0, 2],
-        statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red]),
-  ];
   // 5号板子 0蓝 3红
-  List<ClickTargetModel> fourteenData = [
+  List<ClickTargetModel> twelveData = [
     ClickTargetModel(
         boardIndex: 5,
         ledIndex: [0, 3],
         statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red]),
   ];
   // 5号板子 0蓝 1红
-  List<ClickTargetModel> fifteenData = [
+  List<ClickTargetModel> thirteenData = [
     ClickTargetModel(
         boardIndex: 5,
         ledIndex: [0, 1],
+        statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red]),
+  ];
+  // 5号板子 0蓝 2红
+  List<ClickTargetModel> fourteenData = [
+    ClickTargetModel(
+        boardIndex: 5,
+        ledIndex: [0, 2],
+        statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red]),
+  ];
+  // 5号板子 0蓝 3红
+  List<ClickTargetModel> fifteenData = [
+    ClickTargetModel(
+        boardIndex: 5,
+        ledIndex: [0, 3],
         statu: [BleULTimateLighStatu.blue, BleULTimateLighStatu.red]),
   ];
   // 0号板子 0蓝 1红
@@ -933,7 +933,6 @@ class P3GameManager {
     List<ClickTargetModel> datas = _allDatas[this._index];
     int frequency =
         kP3IndexAndDurationMap[this.currentInGameIndex]!['frequency'] ?? 0;
-    // 先清空
     // 先清空
     if (this.frequencyTimer != null) {
       this.frequencyTimer!.cancel();
