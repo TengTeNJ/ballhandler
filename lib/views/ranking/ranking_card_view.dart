@@ -38,7 +38,7 @@ String _rankNumber = '-';
       width: Constants.screenWidth(context) ,
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/ranking/ranking_card.png'),
+              image: AssetImage('images/ranking/ranking_card_${widget.index}.png'),
               fit: BoxFit.fill)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
