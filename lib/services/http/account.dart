@@ -133,6 +133,7 @@ class Account {
     NSUserDefault.setKeyValue<String>(kBrithDay, _response.data!.birthday);
     NSUserDefault.setKeyValue<String>(kCountry,
         ISEmpty(_response.data!.country) ? 'Unknown' : _response.data!.country);
+    NSUserDefault.setKeyValue<String>(kUserEmail, _response.data!.accountNo);
 
     UserProvider.of(context).userName = ISEmpty(_response.data!.nickName)
         ? 'Unknown'
@@ -145,8 +146,7 @@ class Account {
     UserProvider.of(context).brith =
         ISEmpty(_response.data!.birthday) ? '--' : _response.data!.birthday;
 
-    final _email = await NSUserDefault.getValue(kUserEmail);
-    UserProvider.of(context).email = _email ?? '';
+    UserProvider.of(context).email = ISEmpty(_response.data!.accountNo) ? '' : _response.data!.accountNo;
 
     // 登录成功后绑定用户和推送的token
     GameUtil gameUtil = GetIt.instance<GameUtil>();
@@ -156,14 +156,6 @@ class Account {
       gameUtil.firebaseToken = fcmToken ?? '';
     }
     updateAccountInfo({"firebaseToken": gameUtil.firebaseToken});
-
-    String userName = await NSUserDefault.getValue(kUserName) ?? 'Unknown';
-    String email = await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
-    if (userName != null && userName.length > 0) {
-      FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
-      FirebaseCrashlytics.instance.setCustomKey('userName', userName);
-      FirebaseCrashlytics.instance.setCustomKey('email', email ?? 'Unknown');
-    }
   }
 /*苹果内购验证*/
   static Future<ApiResponse> applePayVertify(
