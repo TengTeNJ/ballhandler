@@ -225,7 +225,7 @@ class _ProfileControllerState extends State<ProfileController> {
                           '#B1B1B1'),
                     ],
                   ),
-                  UserProvider.of(context).hasLogin
+                  UserProvider.of(context).hasLogin && UserProvider.of(context).subscribeModel.subscribeStatus != 1
                       ? MemberShipScbView()
                       : SizedBox(
                           height: 32,

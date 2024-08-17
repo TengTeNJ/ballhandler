@@ -108,7 +108,7 @@ class P1NewGameManager {
   Timer? durationTimer;
   Timer? duration2Timer;
   Timer? frequencyTimer;
-  int _countTime = 60; // 倒计时
+  int _countTime = 90; // 倒计时
 
   int _process1Index = 0; // 第一进度的索引
   int _process2Index = 0; // 第二进度的索引
@@ -138,7 +138,6 @@ class P1NewGameManager {
     BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
         scoreShow(BluetoothManager().gameData.score));
     print('得分显示-----${BluetoothManager().gameData.score}');
-
     // 监听击中
     BluetoothManager().p3DataChange = (BLEDataType type) async {
       if (type == BLEDataType.targetIn) {
@@ -264,14 +263,14 @@ class P1NewGameManager {
                 gameUtil.selectedDeviceModel,
                 controSingleLightBoard(matchModel.boardIndex,
                     matchModel.ledIndex, BleULTimateLighStatu.close));
+            BluetoothManager().gameData.score =
+                BluetoothManager().gameData.score +1;
+            // 得分显示
+            BluetoothManager().writerDataToDevice(
+                gameUtil.selectedDeviceModel,
+                scoreShow(BluetoothManager().gameData.score));
             if (_stage2HitCount == randomTargets.length) {
               print('-----++++----++++');
-              BluetoothManager().gameData.score =
-                  BluetoothManager().gameData.score + randomTargets.length;
-              // 得分显示
-              BluetoothManager().writerDataToDevice(
-                  gameUtil.selectedDeviceModel,
-                  scoreShow(BluetoothManager().gameData.score));
               _stage2HitCount = 0;
               _randomControl();
             }
@@ -286,39 +285,18 @@ class P1NewGameManager {
       BluetoothManager().writerDataToDevice(
           gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
       if (_countTime <= 0) {
-        // 60s结束后进入第二阶段
-        this.stage = 2;
-        // 第一阶段的各个进度的变量重置
-        _process1Index = 0;
-        _process2Index = 0;
-        _process3Index = 0;
-        _process3EveryUnitIndex = 0;
-        this.durationTimer!.cancel();
-        this.durationTimer = null;
-        _countTime = 30;
+        // 结束
+        this.stopGame();
         // 倒计时显示
         BluetoothManager().writerDataToDevice(
             gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
-        this.duration2Timer = Timer.periodic(Duration(seconds: 1), (callback) {
-          _countTime--;
-          // 倒计时显示
-          BluetoothManager().writerDataToDevice(
-              gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
-          if (_countTime <= 0) {
-            this.duration2Timer!.cancel();
-            this.duration2Timer = null;
-            if (this.frequencyTimer != null) {
-              this.frequencyTimer!.cancel();
-              this.frequencyTimer = null;
-            }
-            randomTargets.clear();
-            this.stage = 1;
-            // 结束
-            this.stopGame();
-            completer.complete(true);
-          }
-        });
-        _randomControl();
+        completer.complete(true);
+      }else if(_countTime <= 30){
+        // 进入第二阶段
+       if( this.stage != 2){
+         this.stage = 2;
+         _randomControl();
+       }
       }
     });
     // 第一进度开始控制
@@ -350,7 +328,7 @@ class P1NewGameManager {
     this.process2LedIndexs.clear();
     this.firstStageProcess = 1;
     this._stage2HitCount = 0;
-    this._countTime = 60;
+    this._countTime = 90;
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 先关闭所有的灯光
     BluetoothManager()
@@ -404,39 +382,14 @@ class P1NewGameManager {
     if (_process3Index >= thirdProcessRedData().length) {
       // 进入第二阶段
       print('进入第二阶段');
-      if (this.durationTimer != null) {
-        this.durationTimer!.cancel();
-        this.durationTimer = null;
         // 第一阶段的各个进度的变量重置
         _process1Index = 0;
         _process2Index = 0;
         _process3Index = 0;
         _process3EveryUnitIndex = 0;
-        _countTime = 30;
-        // 倒计时显示
-        BluetoothManager().writerDataToDevice(
-            gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
-        this.duration2Timer = Timer.periodic(Duration(seconds: 1), (callback) {
-          _countTime--;
-          // 倒计时显示
-          BluetoothManager().writerDataToDevice(
-              gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
-          if (_countTime <= 0) {
-            this.duration2Timer!.cancel();
-            this.duration2Timer = null;
-            this.frequencyTimer!.cancel();
-            this.frequencyTimer = null;
-            randomTargets.clear();
-            this.stage = 1;
-            // 结束
-            this.stopGame();
-            completer.complete(true);
-          }
-        });
         // 进入随机控制阶段
         this.stage = 2;
         _randomControl();
-      }
       return;
     }
     List<HitTargetModel> blueDatas = thirdProcessBlueData()[_process3Index];

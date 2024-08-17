@@ -1,3 +1,4 @@
+import 'package:code/constants/constants.dart';
 import 'package:code/models/airbattle/p3_item_model.dart';
 import 'package:code/views/participants/p3_item_view.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +25,12 @@ class _P3GridListViewState extends State<P3GridListView> {
     _datas = [];
     List<String> _paths = ['dekes','zigzag','drag','triangles','backhand','legs','figure','handed'];
     List<String> _titles = ['Wide Dekes','Zigzag','Toe Drag','Triangles','Backhand','Through the legs','Figure 8','One handed'];
-    List<int> _times = [30,30,30,30,30,30,30,30];
     for(int i = 0; i <_paths.length; i++){
+      Map<String,int>? _map = kP3IndexAndDurationMap[i];
+      int? time = _map?['second'];
       P3ItemModel model = P3ItemModel();
       model.index = i;
-      model.timeString = _times[i].toString() + 's';
+      model.timeString = time.toString() + 's';
       model.title = _titles[i];
       model.imagePath = _paths[i];
       _datas.add(model);

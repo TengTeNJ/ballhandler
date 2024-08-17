@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
+import '../http/subscribe_model.dart';
+
 // 用户信息模型
 class UserModel extends ChangeNotifier {
   String _userName = 'Guest'; // 同户名
@@ -19,6 +21,7 @@ class UserModel extends ChangeNotifier {
   String _inputEmail = ''; // 用户输入的邮箱
   String _brith = '-'; // 用户生日
   String _country = '-'; // 用户区域
+  SubscribeModel _subscribeModel = SubscribeModel(); // 用户订阅数据
 
   // get方法
   String get userName => _userName;
@@ -46,6 +49,8 @@ class UserModel extends ChangeNotifier {
   String get brith => _brith;
 
   String get country => _country;
+
+  SubscribeModel get subscribeModel => _subscribeModel;
 
   // 用户的年龄组  Above 12/Under 12
   String get group {
@@ -141,6 +146,12 @@ class UserModel extends ChangeNotifier {
     _country = country;
     notifyListeners();
   }
+
+  set subscribeModel(SubscribeModel subModel){
+    _subscribeModel = subModel;
+    notifyListeners();
+  }
+
 }
 
 // 创建一个全局的Provider

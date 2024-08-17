@@ -106,7 +106,6 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               ];
               // 清空上次选择的组合
               gameUtil.selectdP3Indexs.clear();
-              gameUtil.selectRecord = true;
               NavigatorUtil.present(_controllers[index]);
             }
           }

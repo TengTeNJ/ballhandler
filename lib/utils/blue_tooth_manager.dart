@@ -104,7 +104,7 @@ class BluetoothManager {
         // print('event.name=${event.name}');
         //model.deviceName .contains(k270_Name)
         // kBLEDevice_Names.indexOf(event.name) != -1
-        if (event.name .contains(k270_Name)) {
+        if (event.name .contains(k270_Name) || kBLEDevice_Names.indexOf(event.name) != -1) {
           // 如果设备列表数组中无，则添加
           if (!hasDevice(event.id)) {
             this.deviceList.add(BLEModel(deviceName: event.name, device: event));

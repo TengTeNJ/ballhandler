@@ -337,7 +337,7 @@ class BluetoothUltTimateDataParse {
                 String count2String = StringUtil.decimalToBinary(count_data2);
                 String valueString = count1String + count2String;
                 int remain_time = StringUtil.binaryStringToDecimal(valueString);
-                // print('倒计时变化=${remain_time}');
+                print('倒计时变化=${remain_time}');
                 BluetoothManager().gameData.remainTime = remain_time;
                 BluetoothManager()
                     .triggerCallback(type: BLEDataType.remainTime);
@@ -361,6 +361,7 @@ class BluetoothUltTimateDataParse {
               {
                 int statu = element[5];
                 print('游戏状态变化=${statu}');
+                BluetoothManager().gameData.utimateGameSatatu = statu;
                 // 模式选择变化 0x01-P1模式，0x02-P2模式，0x03-P3模式；
                 int mode = element[6];
                 print('游戏选择变化=${mode}');

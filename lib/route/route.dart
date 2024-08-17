@@ -19,6 +19,7 @@ import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/participants/p1_controller.dart';
 import 'package:code/controllers/participants/p3_game_process_controller.dart';
 import 'package:code/controllers/participants/p3_record_select_controller.dart';
+import 'package:code/controllers/participants/ready_controller.dart';
 import 'package:code/controllers/participants/record_select_controller.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
 import 'package:code/controllers/participants/video_check_controller.dart';
@@ -71,6 +72,7 @@ class Routes {
   static const String launch3= 'launch3'; //
   static const String webview= 'webView'; //
   static const String membership= 'membershipDetail'; //
+  static const String gameready= 'gameReady'; // 游戏准备页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -160,7 +162,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => TTWebViewController());
       case membership:
         return MaterialPageRoute(builder: (_) => MemberShipDetailController());
-      // EmailPageController
+      case gameready:
+        return MaterialPageRoute(builder: (_) => ReadyController());
+    // EmailPageController
      // IntegralController MyAccountDataModel
       default:
         return _errorRoute();

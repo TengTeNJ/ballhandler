@@ -20,7 +20,6 @@ class GameData extends ChangeNotifier {
   HitTargetModel? hitTargetModel; // 击中的面板的灯的数据模型
   int singleLedIndex = 0; // 刷新某面板上单个led时的led的索引
   BleULTimateLighStatu singleLedStatu = BleULTimateLighStatu.close; // 刷新某面板上单个led时的led的状态
-
   /* get方法 */
   bool get powerOn => _powerOn;
 

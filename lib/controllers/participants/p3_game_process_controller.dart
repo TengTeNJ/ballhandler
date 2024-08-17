@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/participants/ready_controller.dart';
+import 'package:code/route/route.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
@@ -46,7 +48,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   late CameraController _controller;
   bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
   late StreamSubscription subscription;
-
+ bool _ready = true; // 准备阶段 游戏还没正式开始
   @override
   void initState() {
     // TODO: implement initState
@@ -131,8 +133,15 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         }
         setState(() {});
       } else if (type == BLEDataType.gameStatu) {
-        // 游戏开始
-        if (BluetoothManager().gameData.utimateGameSatatu == 2) {
+        if(BluetoothManager().gameData.utimateGameSatatu == 1){
+          // 游戏预备
+          _ready = true;
+          Future.delayed(Duration(milliseconds: 50),(){
+            EventBus().sendEvent(kGameReady);
+          });
+        } else if (BluetoothManager().gameData.utimateGameSatatu == 2) {
+          // 游戏开始
+          _ready = false;
           _getStartFlag = true;
           // 数据初始化
           BluetoothManager().gameData.remainTime = 60;
@@ -146,6 +155,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           }
         } else if (BluetoothManager().gameData.utimateGameSatatu == 3) {
           // 游戏结束
+        //  _ready = true;
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           XFile videoFile = XFile('');
           if ((gameUtil.selectRecord || gameUtil.isFromAirBattle) &&
@@ -207,11 +217,18 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         if (mounted) {
           setState(() {});
         }
+        if(gameUtil.modelId != 3){
+        //  NavigatorUtil.push(Routes.gameready);
+        }
       }
     });
 
     if (gameUtil.modelId == 3) {
-      Future.delayed(Duration(seconds: 1),(){
+      // P3模式
+      Future.delayed(Duration(milliseconds: 500),(){
+        EventBus().sendEvent(kGameReady);
+      });
+      Future.delayed(Duration(seconds: 4),(){
         p3Control();
       });
     }
@@ -260,8 +277,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   @override
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-
-    return Scaffold(
+    return _ready ? ReadyController() : Scaffold(
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

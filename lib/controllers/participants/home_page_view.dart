@@ -76,6 +76,9 @@ class _HomePageViewState extends State<HomePageController> {
     final _response = await Account.querySubscribeInfo();
     if(_response.success){
       SubscribeModel? model = _response.data;
+      if(model != null){
+        UserProvider.of(context).subscribeModel = model;
+      }
     }
   }
 

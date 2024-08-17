@@ -356,6 +356,7 @@ const kCurrentDeviceDisconnected = 'current_device_disconnected'; // 当前游�
 const kPopSubscribeDialog= 'pop_subscribe_dialog'; // 主动弹出订阅弹窗
 const kPopSubscribeLate= 'pop_subscribe_dialog_late'; // 稍后订阅
 const kCurrent270DeviceInfoChange = 'current_270_device_info_change'; // 当前270游戏设备信息改变
+const kGameReady = 'game_ready'; // 游戏
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
   "1" :{
@@ -478,36 +479,44 @@ const Map<int,Map<int,int>> kBoardMap = {
 const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
   // 和P1保持一致
   0:{
+    'second':90,
     'duration':90000,
     'frequency': 3500,
   },
   1:{
+    'second':30,
     'duration':30000,
     'frequency': 3500,
   },
   // 和P1保持一致
   2:{
+    'second':90,
     'duration':90000,
     'frequency': 3500,
   },
   3:{
+    'second':30,
     'duration':30000,
     'frequency': 3500,
   },
   4:{
+    'second':30,
     'duration':30000,
     'frequency': 3500,
   },
   5:{
+    'second':30,
     'duration':30000,
     'frequency': 3500,
   },
   // 和P1保持一致
   6:{
+  'second':90,
     'duration':90000,
     'frequency': 3500,
   },
   7:{
+    'second':30,
     'duration':30000,
     'frequency': 3500,
   },

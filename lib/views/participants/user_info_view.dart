@@ -66,7 +66,7 @@ class _UserInfoViewState extends State<UserInfoView> {
               ),
             ],
           ),
-          widget.hasLogin ? GestureDetector(
+          widget.hasLogin  && UserProvider.of(context).subscribeModel.subscribeStatus != 1 ? GestureDetector(
             child: Image(
               image: AssetImage('images/participants/subscribe.png'),
               width: 20,
