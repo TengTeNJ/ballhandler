@@ -53,15 +53,13 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    //  更好计算图片宽高 以及实际渲染led的位置效果
     Future.delayed(Duration(milliseconds: 100), () async {
       // await SystemUtil.lockScreenHorizontalDirection();
       emulateSpace(context);
     });
-
     SystemUtil.wakeUpDevice(); // 保持屏幕活跃
-    GameUtil gameUtil = GetIt.instance<GameUtil>();
     SystemUtil.lockScreenHorizontalDirection();
-
     // 初始化所有灯的位置
     setState(() {
       datas = initLighs();
@@ -71,6 +69,8 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       widget.camera, // 选择第一个摄像头
       ResolutionPreset.medium, // 设置拍摄质量
     );
+
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 监听数据状态
     BluetoothManager().dataChange = (BLEDataType type) async {
       if (type == BLEDataType.statuSynchronize ||
@@ -134,8 +134,9 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         setState(() {});
       } else if (type == BLEDataType.gameStatu) {
         if(BluetoothManager().gameData.utimateGameSatatu == 1){
-          // 游戏预备
+          // 游戏预备 一般是从保存页面返回到 p1 p2模式 设备发送准备阶段指令给app 这列进行页面刷新 p3模式目前不会主动发送进入到准备阶段
           _ready = true;
+          // 延时50ms是因为_ready = true时ready页面出来了 但是可能还完成mount 那么kGameReady的监可能不会被收到
           Future.delayed(Duration(milliseconds: 50),(){
             EventBus().sendEvent(kGameReady);
           });
@@ -223,11 +224,13 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       }
     });
 
+    // 如果是P3模式 则需要app进行控制
     if (gameUtil.modelId == 3) {
-      // P3模式
+      // P3模式 进入到ready页面 发送游戏进入到准备阶段 让ready界面进行3 2 1倒计时
       Future.delayed(Duration(milliseconds: 500),(){
         EventBus().sendEvent(kGameReady);
       });
+      // 正式进入到p3控制 p3控制时会发送游戏开始命令 上面可以监听到 则进行展示游戏页面 刷新led状态
       Future.delayed(Duration(seconds: 4),(){
         p3Control();
       });
@@ -256,6 +259,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
   }
 
+/*计算270图片宽高*/
   emulateSpace(BuildContext context) {
     // 先让高度为屏幕高度。然后按照图片比例计算宽度
     double _tempHeight = Constants.screenHeight(context);
