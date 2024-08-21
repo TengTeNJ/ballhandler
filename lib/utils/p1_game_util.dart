@@ -21,6 +21,7 @@ List<HitTargetModel> firstProcessData() {
     HitTargetModel(boardIndex: 4, ledIndex: 3, statu: BleULTimateLighStatu.red),
     HitTargetModel(boardIndex: 2, ledIndex: 3, statu: BleULTimateLighStatu.red),
     HitTargetModel(boardIndex: 4, ledIndex: 3, statu: BleULTimateLighStatu.red),
+    HitTargetModel(boardIndex: 2, ledIndex: 3, statu: BleULTimateLighStatu.red),
   ];
 }
 
@@ -62,7 +63,7 @@ List<List<HitTargetModel>> secondProcessData() {
 // 第一阶段第三进度的红灯的灯控顺序
 List<List<HitTargetModel>> thirdProcessRedData() {
   List<HitTargetModel> datas1 = [
-    HitTargetModel(boardIndex: 5, ledIndex: 1, statu: BleULTimateLighStatu.red),
+    HitTargetModel(boardIndex: 5, ledIndex: 3, statu: BleULTimateLighStatu.red),
     HitTargetModel(boardIndex: 5, ledIndex: 2, statu: BleULTimateLighStatu.red),
     HitTargetModel(boardIndex: 5, ledIndex: 1, statu: BleULTimateLighStatu.red),
     HitTargetModel(boardIndex: 5, ledIndex: 3, statu: BleULTimateLighStatu.red),

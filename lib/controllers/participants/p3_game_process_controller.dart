@@ -44,7 +44,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   late CameraController _controller;
   bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
   late StreamSubscription subscription;
-  bool _ready = false; // 准备阶段 游戏还没正式开始
+  bool _ready = true; // 准备阶段 游戏还没正式开始
   DateTime? startTime;
   DateTime? endTime;
 
@@ -278,7 +278,11 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     BluetoothManager().writerDataToDevice(
         gameUtil.selectedDeviceModel, gameStart(onStart: false));
     BluetoothManager()
-        .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
+        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
+    Future.delayed(Duration(milliseconds: 20),(){
+      BluetoothManager()
+          .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
+    });
   }
 
 /*计算270图片宽高*/
@@ -360,6 +364,13 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                               borderRadius: BorderRadius.circular(22)),
                         ),
                         onTap: () {
+                          // 结束游戏指令
+                          P1NewGameManager().stopGame();
+                          P3GameManager().stopGame();
+                          BluetoothManager()
+                              .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
+                          BluetoothManager()
+                              .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
                           NavigatorUtil.pop();
                         },
                         behavior: HitTestBehavior.opaque,
