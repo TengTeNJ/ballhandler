@@ -279,4 +279,19 @@ class TTDialog {
       },
     );
   }
+
+  /**横屏投屏提醒弹窗**/
+  static horizontalMirrorScreenDialog(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Constants.darkControllerColor,
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.70,
+          child: MirrorScreenDialog(),
+        );
+      },
+    );
+  }
 }

@@ -547,7 +547,7 @@ Widget HorizontalScreenWidget(BuildContext context, String path) {
             recordWidget(),
             GestureDetector(
               onTap: () async {
-                TTDialog.mirrorScreenDialog(context);
+                TTDialog.horizontalMirrorScreenDialog(context);
               },
               child: Container(
                 child: Center(

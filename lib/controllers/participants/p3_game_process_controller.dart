@@ -44,7 +44,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   late CameraController _controller;
   bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
   late StreamSubscription subscription;
-  bool _ready = true; // 准备阶段 游戏还没正式开始
+  bool _ready = false; // 准备阶段 游戏还没正式开始
   DateTime? startTime;
   DateTime? endTime;
 
@@ -72,7 +72,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       widget.camera, // 选择第一个摄像头
       ResolutionPreset.medium, // 设置拍摄质量
     );
-
+    // 获取全局变量
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     gameUtil.nowISGamePage = true; // 在游戏页面
     // 监听数据状态
@@ -242,7 +242,6 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         }
       }
     });
-
     // 如果是P3模式 则需要app进行控制
     if (gameUtil.modelId == 3) {
       // P3模式 进入到ready页面 发送游戏进入到准备阶段 让ready界面进行3 2 1倒计时
@@ -266,12 +265,13 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     for (int i = 0; i < indexs.length; i++) {
       int index = indexs[i];
       if ([0, 2, 6].contains(index)) {
+        // wide side   toe-drag   figure8模式流程和P1保持一致
         await P1NewGameManager().startGame();
       } else {
         await P3GameManager().startGame(currentInGameIndex: index);
       }
     }
-    print('P3模式结束一段组合');
+    print('P3模式结束组合');
     // 结束游戏指令
     P1NewGameManager().stopGame();
     P3GameManager().stopGame();
@@ -370,7 +370,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                       child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
-                          TTDialog.mirrorScreenDialog(context);
+                          TTDialog.horizontalMirrorScreenDialog(context);
                         },
                         child: Container(
                           child: Center(
@@ -460,7 +460,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Constants.digiRegularWhiteTextWidget(
-                                        '00:', 76,
+                                        '00:', 72,
                                         height: 1.0),
                                     Constants.digiRegularWhiteTextWidget(
                                         BluetoothManager()
