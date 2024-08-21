@@ -26,9 +26,6 @@ class _ReadyControllerState extends State<ReadyController> {
         timerPeriodRefreshText();
       }
     });
-    Future.delayed(Duration(milliseconds: 500),(){
-      SystemUtil.lockScreenHorizontalDirection();
-    });
   }
   /*倒计时刷新*/
   timerPeriodRefreshText(){

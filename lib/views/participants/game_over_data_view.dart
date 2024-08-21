@@ -28,7 +28,11 @@ class _GameOverDataViewState extends State<GameOverDataView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     String timeString =  getGameDutation();
+    if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+      timeString =  widget.dataModel.time;
+    }
     int timeValue = int.parse(timeString);
     int minute = (timeValue / 60).toInt();
     int second = timeValue % 60;

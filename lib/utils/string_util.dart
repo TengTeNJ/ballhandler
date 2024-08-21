@@ -160,4 +160,12 @@ class StringUtil {
     // 将二进制字符串转换为十进制数
     return int.parse(binaryString, radix: 2);
   }
+/*记录两个时间点的时间差*/
+ static  int differenceInSeconds(DateTime? startTime , DateTime? endTime) {
+   if(startTime == null || endTime == null){
+     return 0;
+   }
+    final Duration duration = endTime.difference(startTime);
+    return duration.inSeconds.ceil(); // 计算秒数并向上取整
+  }
 }

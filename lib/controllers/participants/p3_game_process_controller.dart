@@ -1,16 +1,13 @@
 import 'dart:async';
-
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/participants/ready_controller.dart';
-import 'package:code/route/route.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
-import 'package:code/utils/p1_game_util.dart';
 import 'package:code/utils/p1_game_util_new.dart';
 import 'package:code/utils/p3_game_util.dart';
 import 'package:code/views/base/battery_view.dart';
@@ -19,7 +16,6 @@ import 'package:code/views/participants/ultimate_lights_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:status_bar_control/status_bar_control.dart';
-
 import '../../models/game/game_over_model.dart';
 import '../../models/game/light_ball_model.dart';
 import '../../services/sqlite/data_base.dart';
@@ -48,7 +44,10 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   late CameraController _controller;
   bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
   late StreamSubscription subscription;
- bool _ready = true; // 准备阶段 游戏还没正式开始
+  bool _ready = true; // 准备阶段 游戏还没正式开始
+  DateTime? startTime;
+  DateTime? endTime;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -64,6 +63,10 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     setState(() {
       datas = initLighs();
     });
+    if (BluetoothManager().gameData.utimateGameSatatu == 2) {
+      // 如果进页面时游戏已经开始 则不进入readyj阶段
+      _ready = false;
+    }
     //  初始化摄像头
     _controller = CameraController(
       widget.camera, // 选择第一个摄像头
@@ -71,6 +74,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     );
 
     GameUtil gameUtil = GetIt.instance<GameUtil>();
+    gameUtil.nowISGamePage = true; // 在游戏页面
     // 监听数据状态
     BluetoothManager().dataChange = (BLEDataType type) async {
       if (type == BLEDataType.statuSynchronize ||
@@ -133,15 +137,16 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         }
         setState(() {});
       } else if (type == BLEDataType.gameStatu) {
-        if(BluetoothManager().gameData.utimateGameSatatu == 1){
+        if (BluetoothManager().gameData.utimateGameSatatu == 1) {
           // 游戏预备 一般是从保存页面返回到 p1 p2模式 设备发送准备阶段指令给app 这列进行页面刷新 p3模式目前不会主动发送进入到准备阶段
           _ready = true;
           // 延时50ms是因为_ready = true时ready页面出来了 但是可能还完成mount 那么kGameReady的监可能不会被收到
-          Future.delayed(Duration(milliseconds: 50),(){
+          Future.delayed(Duration(milliseconds: 50), () {
             EventBus().sendEvent(kGameReady);
           });
         } else if (BluetoothManager().gameData.utimateGameSatatu == 2) {
           // 游戏开始
+          startTime = DateTime.now(); // 记录时间点
           _ready = false;
           _getStartFlag = true;
           // 数据初始化
@@ -156,7 +161,8 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           }
         } else if (BluetoothManager().gameData.utimateGameSatatu == 3) {
           // 游戏结束
-        //  _ready = true;
+          //  _ready = true;
+          endTime = DateTime.now(); // 记录时间点
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           XFile videoFile = XFile('');
           if ((gameUtil.selectRecord || gameUtil.isFromAirBattle) &&
@@ -170,18 +176,25 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           // 跳转到游戏完成页面
           String gameDuration = getGameDutation();
           GameOverModel model = GameOverModel();
+          model.score = (BluetoothManager().gameData.score).toString();
+          model.videoPath = (gameUtil.selectRecord || gameUtil.isFromAirBattle)
+              ? videoFile.path
+              : '';
+          model.endTime = StringUtil.dateToGameTimeString();
+          int timeBetween = StringUtil.differenceInSeconds(startTime, endTime);
+          model.time = timeBetween.toString();
           if (BluetoothManager().gameData.score == 0) {
             model.avgPace = '0.0';
           } else {
             model.avgPace =
                 (int.parse(gameDuration) / BluetoothManager().gameData.score)
                     .toStringAsFixed(2);
+            if (gameUtil.gameScene == GameScene.erqiling &&
+                gameUtil.modelId == 3) {
+              model.avgPace = (timeBetween / BluetoothManager().gameData.score)
+                  .toStringAsFixed(2);
+            }
           }
-          model.score = (BluetoothManager().gameData.score).toString();
-          model.videoPath = (gameUtil.selectRecord || gameUtil.isFromAirBattle)
-              ? videoFile.path
-              : '';
-          model.endTime = StringUtil.dateToGameTimeString();
           // 释放摄像头控制器
           // await _controller.dispose();
           if (gameUtil.isFromAirBattle) {
@@ -189,7 +202,9 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
             model.Integral = gameUtil.activityModel.rewardPoint;
           }
           //
-          model.time = gameDuration;
+
+          startTime = null;
+          endTime = null;
           //
           NavigatorUtil.push('gameFinish', arguments: model);
           // 标记离开游戏页面
@@ -205,6 +220,10 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         .writerDataToDevice(gameUtil.selectedDeviceModel, appOnLine());
     // 从游戏数据保存页面返回监听
     subscription = EventBus().stream.listen((event) {
+      if (BluetoothManager().gameData.utimateGameSatatu == 2) {
+        // 如果从保存页面返回时游戏已经开始 则不进入readyj阶段
+        _ready = false;
+      }
       if (event == kBackFromFinish || event == kFinishGame) {
         SystemUtil.lockScreenHorizontalDirection(); // 锁定屏幕方向
         // 隐藏状态栏
@@ -218,8 +237,8 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         if (mounted) {
           setState(() {});
         }
-        if(gameUtil.modelId != 3){
-        //  NavigatorUtil.push(Routes.gameready);
+        if (gameUtil.modelId != 3) {
+          //  NavigatorUtil.push(Routes.gameready);
         }
       }
     });
@@ -227,11 +246,11 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     // 如果是P3模式 则需要app进行控制
     if (gameUtil.modelId == 3) {
       // P3模式 进入到ready页面 发送游戏进入到准备阶段 让ready界面进行3 2 1倒计时
-      Future.delayed(Duration(milliseconds: 500),(){
+      Future.delayed(Duration(milliseconds: 500), () {
         EventBus().sendEvent(kGameReady);
       });
       // 正式进入到p3控制 p3控制时会发送游戏开始命令 上面可以监听到 则进行展示游戏页面 刷新led状态
-      Future.delayed(Duration(seconds: 4),(){
+      Future.delayed(Duration(seconds: 4), () {
         p3Control();
       });
     }
@@ -242,21 +261,24 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     List<int> indexs = gameUtil.selectdP3Indexs;
     // 开始游戏指令
-    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, gameStart());
-    for(int i = 0; i < indexs.length; i ++){
-      int index= indexs[i];
+    BluetoothManager()
+        .writerDataToDevice(gameUtil.selectedDeviceModel, gameStart());
+    for (int i = 0; i < indexs.length; i++) {
+      int index = indexs[i];
       if ([0, 2, 6].contains(index)) {
         await P1NewGameManager().startGame();
       } else {
-        await  P3GameManager().startGame(currentInGameIndex: index);
+        await P3GameManager().startGame(currentInGameIndex: index);
       }
     }
     print('P3模式结束一段组合');
     // 结束游戏指令
     P1NewGameManager().stopGame();
     P3GameManager().stopGame();
-    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, gameStart(onStart: false));
-    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
+    BluetoothManager().writerDataToDevice(
+        gameUtil.selectedDeviceModel, gameStart(onStart: false));
+    BluetoothManager()
+        .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
   }
 
 /*计算270图片宽高*/
@@ -281,209 +303,220 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   @override
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-    return _ready ? ReadyController() : Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/product/270_bg.png'), // 设置背景图片
-            fit: BoxFit.cover, // 设置填充方式
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-                left: _left,
-                top: _top,
-                child: Container(
-                  child: Stack(
-                    children: [
-                      Image(
-                        image: AssetImage('images/product/270.png'),
-                        fit: BoxFit.fill,
-                        height: _height,
-                      ),
-                      Positioned(
-                        child: UltimateLightsView(
-                          datas: datas,
-                          width: _width,
-                          height: _height,
-                        ),
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                      )
-                    ],
-                  ),
-                )),
-            Positioned(
-                left: 24,
-                top: 16,
-                child: GestureDetector(
-                  child: Container(
-                    child: Center(
-                      child: Image(
-                        image: AssetImage('images/participants/game_back.png'),
-                        width: 24,
-                        height: 21,
-                      ),
-                    ),
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                        color: hexStringToColor('#204DD1'),
-                        borderRadius: BorderRadius.circular(22)),
-                  ),
-                  onTap: () {
-                    NavigatorUtil.pop();
-                  },
-                  behavior: HitTestBehavior.opaque,
-                )),
-            Positioned(
-                right: 24,
-                top: 16,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    TTDialog.mirrorScreenDialog(context);
-                  },
-                  child: Container(
-                    child: Center(
-                      child: Image(
-                        image: AssetImage('images/participants/cast.png'),
-                        width: 26,
-                        height: 20,
-                      ),
-                    ),
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                        color: hexStringToColor('#204DD1'),
-                        borderRadius: BorderRadius.circular(22)),
-                  ),
-                )),
-            Positioned(
-              left: _left + _width * 0.245,
-              right: _left + _width * 0.245,
-              bottom:
-                  ((Constants.screenHeight(context) - _height).abs()) / 2.0 + 6,
-              // top: Constants.screenHeight(context) - 45,
-              child: Container(
-                // color: Colors.red,
-                margin: EdgeInsets.only(left: 12, right: 12
-                    // left: ((Constants.screenWidth(context) -
-                    //             (_left + _width * 0.245) * 2) -
-                    //         _width * 0.49 * 0.88 -
-                    //         8) /
-                    //     2.0,
-                    // right: ((Constants.screenWidth(context) -
-                    //             (_left + _width * 0.245) * 2) -
-                    //         _width * 0.49 * 0.88 -
-                    //         8) /
-                    //     2.0,
-                    ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        BatteryView(),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        BLEView()
-                      ],
-                    ),
-                    recordWidget(context),
-                  ],
+    return _ready
+        ? ReadyController()
+        : Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/product/270_bg.png'), // 设置背景图片
+                  fit: BoxFit.cover, // 设置填充方式
                 ),
               ),
-            ),
-            Positioned(
-                left: _left + _width * 0.245,
-                right: _left + _width * 0.245,
-                bottom: 53,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: _width * 0.49 * 0.56,
-                      height: 117,
-                      decoration: gameUtil.isFromAirBattle
-                          ? BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  hexStringToColor('#EF8914'),
-                                  hexStringToColor('#CF391A'),
-                                ],
+              child: Stack(
+                children: [
+                  Positioned(
+                      left: _left,
+                      top: _top,
+                      child: Container(
+                        child: Stack(
+                          children: [
+                            Image(
+                              image: AssetImage('images/product/270.png'),
+                              fit: BoxFit.fill,
+                              height: _height,
+                            ),
+                            Positioned(
+                              child: UltimateLightsView(
+                                datas: datas,
+                                width: _width,
+                                height: _height,
                               ),
-                              borderRadius: BorderRadius.circular(10))
-                          : BoxDecoration(
+                              left: 0,
+                              right: 0,
+                              top: 0,
+                              bottom: 0,
+                            )
+                          ],
+                        ),
+                      )),
+                  Positioned(
+                      left: 24,
+                      top: 16,
+                      child: GestureDetector(
+                        child: Container(
+                          child: Center(
+                            child: Image(
+                              image: AssetImage(
+                                  'images/participants/game_back.png'),
+                              width: 24,
+                              height: 21,
+                            ),
+                          ),
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
                               color: hexStringToColor('#204DD1'),
-                              borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                              borderRadius: BorderRadius.circular(22)),
+                        ),
+                        onTap: () {
+                          NavigatorUtil.pop();
+                        },
+                        behavior: HitTestBehavior.opaque,
+                      )),
+                  Positioned(
+                      right: 24,
+                      top: 16,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          TTDialog.mirrorScreenDialog(context);
+                        },
+                        child: Container(
+                          child: Center(
+                            child: Image(
+                              image: AssetImage('images/participants/cast.png'),
+                              width: 26,
+                              height: 20,
+                            ),
+                          ),
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                              color: hexStringToColor('#204DD1'),
+                              borderRadius: BorderRadius.circular(22)),
+                        ),
+                      )),
+                  Positioned(
+                    left: _left + _width * 0.245,
+                    right: _left + _width * 0.245,
+                    bottom:
+                        ((Constants.screenHeight(context) - _height).abs()) /
+                                2.0 +
+                            6,
+                    // top: Constants.screenHeight(context) - 45,
+                    child: Container(
+                      // color: Colors.red,
+                      margin: EdgeInsets.only(left: 12, right: 12
+                          // left: ((Constants.screenWidth(context) -
+                          //             (_left + _width * 0.245) * 2) -
+                          //         _width * 0.49 * 0.88 -
+                          //         8) /
+                          //     2.0,
+                          // right: ((Constants.screenWidth(context) -
+                          //             (_left + _width * 0.245) * 2) -
+                          //         _width * 0.49 * 0.88 -
+                          //         8) /
+                          //     2.0,
+                          ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Constants.mediumWhiteTextWidget('TIME LEFT', 13),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Constants.digiRegularWhiteTextWidget('00:', 76,
-                                  height: 1.0),
-                              Constants.digiRegularWhiteTextWidget(
-                                  BluetoothManager()
-                                      .gameData
-                                      .remainTime
-                                      .toString()
-                                      .padLeft(2, '0'),
-                                  72,
-                                  height: 1.0),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Container(
-                      width: _width * 0.49 * 0.32,
-                      height: 117,
-                      decoration: gameUtil.isFromAirBattle
-                          ? BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  hexStringToColor('#EF8914'),
-                                  hexStringToColor('#CF391A'),
-                                ],
+                              BatteryView(),
+                              SizedBox(
+                                width: 12,
                               ),
-                              borderRadius: BorderRadius.circular(10))
-                          : BoxDecoration(
-                              color: hexStringToColor('#204DD1'),
-                              borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Constants.mediumWhiteTextWidget('SCORE', 13,
-                              height: 1.0),
-                          Constants.digiRegularWhiteTextWidget(
-                              BluetoothManager().gameData.score.toString(), 72,
-                              height: 1.0)
+                              BLEView()
+                            ],
+                          ),
+                          recordWidget(context),
                         ],
                       ),
                     ),
-                  ],
-                ))
-          ],
-        ),
-      ),
-    );
+                  ),
+                  Positioned(
+                      left: _left + _width * 0.245,
+                      right: _left + _width * 0.245,
+                      bottom: 53,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: _width * 0.49 * 0.56,
+                            height: 117,
+                            decoration: gameUtil.isFromAirBattle
+                                ? BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        hexStringToColor('#EF8914'),
+                                        hexStringToColor('#CF391A'),
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(10))
+                                : BoxDecoration(
+                                    color: hexStringToColor('#204DD1'),
+                                    borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Constants.mediumWhiteTextWidget(
+                                    'TIME LEFT', 13),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Constants.digiRegularWhiteTextWidget(
+                                        '00:', 76,
+                                        height: 1.0),
+                                    Constants.digiRegularWhiteTextWidget(
+                                        BluetoothManager()
+                                            .gameData
+                                            .remainTime
+                                            .toString()
+                                            .padLeft(2, '0'),
+                                        72,
+                                        height: 1.0),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Container(
+                            width: _width * 0.49 * 0.32,
+                            height: 117,
+                            decoration: gameUtil.isFromAirBattle
+                                ? BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        hexStringToColor('#EF8914'),
+                                        hexStringToColor('#CF391A'),
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(10))
+                                : BoxDecoration(
+                                    color: hexStringToColor('#204DD1'),
+                                    borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Constants.mediumWhiteTextWidget('SCORE', 13,
+                                    height: 1.0),
+                                Constants.digiRegularWhiteTextWidget(
+                                    BluetoothManager()
+                                        .gameData
+                                        .score
+                                        .toString(),
+                                    72,
+                                    height: 1.0)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ))
+                ],
+              ),
+            ),
+          );
   }
 
   @override
@@ -500,7 +533,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     BluetoothManager().gameData.millSecond = 0;
     BluetoothManager().gameData.score = 0;
     subscription.cancel();
-    if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+    if (gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3) {
       // 270自由模式 停止正在进行的游戏
       P1NewGameManager().stopGame();
       P3GameManager().stopGame();

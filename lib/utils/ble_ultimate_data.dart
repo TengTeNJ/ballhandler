@@ -252,7 +252,7 @@ List<int> controSingleLightBoard(
       lights = lights + '00';
     }
   }
-  //print('控制单个灯光----${lights}');
+  print('控制单个灯光----${lights}');
   int data2 = int.parse(lights, radix: 2);
 
   int cs = start + source + destinationInt + length + cmd + data1 + data2;

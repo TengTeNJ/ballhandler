@@ -850,6 +850,9 @@ class P3GameManager {
               // 得分显示
               BluetoothManager().writerDataToDevice(
                   gameUtil.selectedDeviceModel, scoreShow(BluetoothManager().gameData.score));
+              // 关闭击中的灯
+              BluetoothManager().writerDataToDevice(
+                  gameUtil.selectedDeviceModel,controSingleLightBoard(hitModel.boardIndex, hitModel.ledIndex, BleULTimateLighStatu.close));
               this._index++;
               if (this._index > _allDatas.length) {
                 // 结束本组合中的某个模式
@@ -946,28 +949,47 @@ class P3GameManager {
     });
 
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-    // 先关闭所有的灯光
-    BluetoothManager()
-        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
 
+    // 确认不是首次
+    if(this._index >0){
+      List<ClickTargetModel> preDatas = _allDatas[this._index-1];
+      // 先关闭上次所有的灯光
+      preDatas.forEach((element) async {
+        // 根据具体数据进行替换 开关和红蓝状态
+        element.ledIndex.forEach((action) {
+          int index = action;
+          BleULTimateLighStatu statu =
+          element.statu[element.ledIndex.indexOf(index)];
+          // 匹配下 下一组亮的灯 是否有和此完全一样的 包括颜色
+
+          // firstWher    if(datas.isEmpty){
+          //             print('datas-------isEmpty');
+          //           }e函数如果没有匹配到任何元素  会抛异常 下面的代码也不会执行了 所以 需要在orElse函数里面加个默认值
+          final _matchModel = datas.firstWhere((nextElement) =>
+          element.boardIndex == nextElement.boardIndex &&
+              nextElement.ledIndex.contains(index) &&
+              nextElement.statu[nextElement.ledIndex.indexOf(index)] == statu,orElse:() => ClickTargetModel(boardIndex: -1, ledIndex: [], statu: []));
+          if(_matchModel.boardIndex == -1){
+            //  单控 下一组要打开的没有
+            BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
+                controSingleLightBoard(element.boardIndex, index, BleULTimateLighStatu.close));
+          }
+        });
+      });
+    }
+    // 先关闭所有的灯光
+    // BluetoothManager()
+    //     .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
     datas.forEach((element) async {
-      // 初始化灯板上的所有灯的状态都为关
-      List<BleULTimateLighStatu> lightStatu = [
-        BleULTimateLighStatu.close,
-        BleULTimateLighStatu.close,
-        BleULTimateLighStatu.close,
-        BleULTimateLighStatu.close
-      ];
       // 根据具体数据进行替换 开关和红蓝状态
       element.ledIndex.forEach((action) {
         int index = action;
         BleULTimateLighStatu statu =
             element.statu[element.ledIndex.indexOf(index)];
-        lightStatu[index] = statu;
+        //  单控
+        BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
+            controSingleLightBoard(element.boardIndex, index, statu));
       });
-      // 控制某灯板上的所有灯
-      BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
-          controLightBoard(element.boardIndex, lightStatu));
     });
   }
 }

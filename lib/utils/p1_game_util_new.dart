@@ -397,23 +397,27 @@ class P1NewGameManager {
     print('_process3EveryUnitIndex=${_process3EveryUnitIndex}');
     print('_process3Index=${_process3Index}');
     if (_process3EveryUnitIndex >= redDatas.length) {
+      // 关闭所有的灯光
+      BluetoothManager()
+          .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
       _process3EveryUnitIndex = 0;
       _process3Index++;
       _process3Control();
       return;
     }
-    // 关闭所有的灯光
-    BluetoothManager()
-        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
 
-    //  开启蓝灯
-    blueDatas.forEach((model) {
-      // add 亮的标靶
-      BluetoothManager().writerDataToDevice(
-          gameUtil.selectedDeviceModel,
-          controSingleLightBoard(
-              model.boardIndex, model.ledIndex, model.statu));
-    });
+    // 蓝灯在循环阶段只开启一次
+    if(_process3EveryUnitIndex == 0){
+      //  开启蓝灯
+      blueDatas.forEach((model) {
+        // add 亮的标靶
+        BluetoothManager().writerDataToDevice(
+            gameUtil.selectedDeviceModel,
+            controSingleLightBoard(
+                model.boardIndex, model.ledIndex, model.statu));
+      });
+    }
+
     // 逐个开启红灯
     HitTargetModel redmodel = redDatas[_process3EveryUnitIndex];
     BluetoothManager().writerDataToDevice(
