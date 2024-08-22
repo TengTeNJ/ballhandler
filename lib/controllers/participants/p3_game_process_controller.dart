@@ -366,7 +366,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                         ),
                         onTap: () {
                           // 结束游戏指令
-                          P1NewGameManager().stopGame();
+                          Figure8GameUtil().stopGame();
                           P3GameManager().stopGame();
                           BluetoothManager()
                               .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());

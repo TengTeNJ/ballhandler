@@ -186,6 +186,8 @@ class Participants {
             !ISEmpty(_map['sceneId']) ? _map['sceneId'].toString() : '1';
         model.modeId =
             !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
+        model.trainTime =
+        !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);

@@ -31,14 +31,13 @@ class GameProcessController extends StatefulWidget {
   @override
   State<GameProcessController> createState() => _GameProcessControllerState();
 }
-
+bool _confirmStopDialogFlag = false; // 当前是否有确认停止游戏的提示弹窗
 class _GameProcessControllerState extends State<GameProcessController>
     with WidgetsBindingObserver {
   late CameraController _controller;
   late String _imagePath;
   bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
   late StreamSubscription subscription;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -79,6 +78,10 @@ class _GameProcessControllerState extends State<GameProcessController>
           }
         } else {
           // 游戏结束
+          if(_confirmStopDialogFlag){
+            _confirmStopDialogFlag = false;
+            NavigatorUtil.pop();// 弹窗下落
+          }
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           XFile videoFile = XFile('');
           if ((gameUtil.selectRecord || gameUtil.isFromAirBattle) &&
@@ -336,7 +339,11 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
           children: [
             GestureDetector(
               onTap: () {
-                NavigatorUtil.pop();
+                _confirmStopDialogFlag = true;
+                TTDialog.confirmStopGameDialog(context,(){
+                  _confirmStopDialogFlag = false;
+                  NavigatorUtil.pop();
+                });
               },
               child: Container(
                 child: Center(
@@ -516,6 +523,7 @@ Widget HorizontalScreenWidget(BuildContext context, String path) {
           children: [
             GestureDetector(
               onTap: () {
+                // TTDialog.confirmStopGameDialog(context);
                 NavigatorUtil.pop();
               },
               child: Container(

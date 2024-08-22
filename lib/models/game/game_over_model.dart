@@ -13,7 +13,7 @@ class GameOverModel {
   String Integral = '1'; // 积分，默认为1
   String sceneId = '1';
   String modeId = '1';
-
+  String trainTime = '45'; // 训练时长 单位为秒
   factory GameOverModel.fromJson(Map<String, dynamic> json) =>
       _$GameOverModelFromJson(json);
 

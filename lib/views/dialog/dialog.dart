@@ -1836,7 +1836,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
     _pageController.addListener(() {
       int currentpage = _pageController.page!.round();
       _currentIndex = currentpage;
-     // setState(() {});
+      // setState(() {});
     });
   }
 
@@ -1900,35 +1900,40 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
               height: 24,
             ),
             Container(
-                child: datas.length == 0 ? NoDataView() : ListView.separated(
-                    itemBuilder: (BuildContext context, int index) {
-                      if (index == 0) {
-                        return SubscribeBorderView(
-                          leftTitle: datas[index].title,
-                          rightTitle: (datas[index].rawPrice / 12.0)
-                              .toStringAsFixed(2),
-                          rightDes: datas[index].rawPrice.toStringAsFixed(2),
-                          onTap: () async {
-                            purse.begainBuy(datas[index]);
-                          },
+              child: datas.length == 0
+                  ? NoDataView()
+                  : ListView.separated(
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index == 0) {
+                          return SubscribeBorderView(
+                            leftTitle: datas[index].title,
+                            rightTitle: (datas[index].rawPrice / 12.0)
+                                .toStringAsFixed(2),
+                            rightDes: datas[index].rawPrice.toStringAsFixed(2),
+                            onTap: () async {
+                              purse.begainBuy(datas[index]);
+                            },
+                          );
+                        } else {
+                          return SubscribeBorderView(
+                            leftTitle: datas[index].title,
+                            rightTitle:
+                                datas[index].rawPrice.toStringAsFixed(2),
+                            onTap: () async {
+                              purse.begainBuy(datas[index]);
+                            },
+                          );
+                        }
+                        ;
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          height: 24,
                         );
-                      } else {
-                        return SubscribeBorderView(
-                          leftTitle: datas[index].title,
-                          rightTitle: datas[index].rawPrice.toStringAsFixed(2),
-                          onTap: () async {
-                            purse.begainBuy(datas[index]);
-                          },
-                        );
-                      }
-                      ;
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 24,
-                      );
-                    },
-                    itemCount: datas.length),height: 152,),
+                      },
+                      itemCount: datas.length),
+              height: 152,
+            ),
             SizedBox(
               height: 8,
             ),
@@ -2031,6 +2036,43 @@ class MirrorScreenDialog extends StatelessWidget {
             },
           ),
         )
+      ],
+    );
+  }
+}
+
+class ConfirmStopGameDialog extends StatelessWidget {
+  Function?onTap;
+   ConfirmStopGameDialog({this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned(
+            top: 8,
+            left: (Constants.screenWidth(context) - 80) / 2.0,
+            child: Container(
+                width: 80,
+                height: 5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: Color.fromRGBO(89, 105, 138, 0.4),
+                ))),
+        Center(
+          child: Constants.boldWhiteTextWidget(
+              'Confirm to stop this challenge?', 20),
+        ),
+        Positioned(
+            child: BaseButton(title: 'Confirm',onTap: (){
+              if(onTap != null){
+                onTap!();
+              }
+               NavigatorUtil.pop();
+            },),
+            bottom: 42,
+            left: Constants.screenWidth(context) * 0.22,
+            right: Constants.screenWidth(context) * 0.22)
       ],
     );
   }

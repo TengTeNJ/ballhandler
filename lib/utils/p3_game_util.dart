@@ -1123,16 +1123,11 @@ class P3GameManager {
     // 取出来 组合元素的所有的灯光组合数据
     List<List<ClickTargetModel>> _allDatas =
         p3ModeDatas[this.currentInGameIndex];
-
     Completer<bool> completer = Completer();
-
     int duration =
-        kP3IndexAndDurationMap[this.currentInGameIndex]!['duration'] ?? 0;
-    // int frequency =
-    //     kP3IndexAndDurationMap[this.currentInGameIndex]!['frequency'] ?? 0;
-
+        kP3IndexAndDurationMap[this.currentInGameIndex]!['second'] ?? 0;
     // 倒计时赋值
-    _countTime = (duration / 1000).toInt();
+    _countTime = duration;
     print('开始一轮游戏 currentInGameIndex= ${currentInGameIndex}');
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 倒计时显示
@@ -1141,7 +1136,6 @@ class P3GameManager {
     // 得分显示
     BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
         scoreShow(BluetoothManager().gameData.score));
-
     // 监听击中
     BluetoothManager().p3DataChange = (BLEDataType type) async {
       if (this.currentInGameIndex == -1) {

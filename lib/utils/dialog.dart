@@ -294,4 +294,18 @@ class TTDialog {
       },
     );
   }
+
+  static confirmStopGameDialog(BuildContext context,Function onTap) {
+    showModalBottomSheet(
+      backgroundColor: Constants.darkControllerColor,
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.45,
+          child: ConfirmStopGameDialog(onTap: onTap,),
+        );
+      },
+    );
+  }
 }
