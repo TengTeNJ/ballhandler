@@ -3,8 +3,12 @@ import 'dart:async';
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../utils/ble_ultimate_data.dart';
+import '../../utils/blue_tooth_manager.dart';
 import '../../utils/color.dart';
+import '../../utils/global.dart';
 import '../../utils/notification_bloc.dart';
 import '../../utils/system_device.dart';
 class ReadyController extends StatefulWidget {
@@ -29,7 +33,10 @@ class _ReadyControllerState extends State<ReadyController> {
   }
   /*倒计时刷新*/
   timerPeriodRefreshText(){
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     int count = 3;
+    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
+        cutDownShow(value:3));
     setState(() {
       centerText = count.toString();
     });
@@ -38,11 +45,12 @@ class _ReadyControllerState extends State<ReadyController> {
      setState(() {
        if(count == 0){
          centerText = 'GO';
-         Future.delayed(Duration(milliseconds: 100),(){
-         //  NavigatorUtil.pop();
-         });
+         BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
+             cutDownShow(value:3,isGo: true));
          timer.cancel();
        }else{
+         BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
+             cutDownShow(value: count));
          centerText = count.toString();
        }
      });

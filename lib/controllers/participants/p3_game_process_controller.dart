@@ -6,6 +6,7 @@ import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/figure8_game_util.dart';
 import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/p1_game_util_new.dart';
@@ -264,16 +265,16 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         .writerDataToDevice(gameUtil.selectedDeviceModel, gameStart());
     for (int i = 0; i < indexs.length; i++) {
       int index = indexs[i];
-      if ([0, 2, 6].contains(index)) {
+      if ([6].contains(index)) {
         // wide side   toe-drag   figure8模式流程和P1保持一致
-        await P1NewGameManager().startGame();
+        await Figure8GameUtil().startGame();
       } else {
         await P3GameManager().startGame(currentInGameIndex: index);
       }
     }
     print('P3模式结束组合');
     // 结束游戏指令
-    P1NewGameManager().stopGame();
+    Figure8GameUtil().stopGame();
     P3GameManager().stopGame();
     BluetoothManager().writerDataToDevice(
         gameUtil.selectedDeviceModel, gameStart(onStart: false));

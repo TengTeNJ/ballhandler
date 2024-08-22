@@ -479,8 +479,8 @@ const Map<int,Map<int,int>> kBoardMap = {
 const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
   // 和P1保持一致
   0:{
-    'second':90,
-    'duration':90000,
+    'second':30,
+    'duration':30000,
     'frequency': 3500,
   },
   1:{
@@ -490,8 +490,8 @@ const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
   },
   // 和P1保持一致
   2:{
-    'second':90,
-    'duration':90000,
+    'second':30,
+    'duration':30000,
     'frequency': 3500,
   },
   3:{
@@ -511,7 +511,7 @@ const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
   },
   // 和P1保持一致
   6:{
-  'second':90,
+  'second':30,
     'duration':90000,
     'frequency': 3500,
   },

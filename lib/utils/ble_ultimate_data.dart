@@ -445,8 +445,8 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
     int hundredsPlace = (value / 100).truncate();
     int tensPlace = ((value / 10) % 10).toInt();
     int onesPlace = value % 10;
-    data2 = 0x30 + hundredsPlace;
-    data3 = 0x30 + tensPlace;
+    data2 =  hundredsPlace == 0 ? 0X00 : 0x30 + hundredsPlace;
+    data3 = tensPlace == 0 ? 0X00 :  0x30 + tensPlace;
     data4 = 0x30 + onesPlace;
   }
   int cs = start +
@@ -660,4 +660,27 @@ List<int> responseHearBeat() {
   cs = StringUtil.binaryStringToDecimal(binaryString);
   // print('发送心跳------------');;
   return [start, source, destination, length, cmd, cs, end];
+}
+
+/*
+* 重置定时器
+* */
+List<int> resetTimer() {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
+  int length = 9;
+  int cmd = 0x10;
+  int data1 = 0x03;
+  int data2 = 0x00;
+  int cs = start + source + destination + length + cmd +data1 + data2 ;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  // print('发送心跳------------');;
+  return [start, source, destination, length, cmd,  data1 , data2 , cs, end];
 }
