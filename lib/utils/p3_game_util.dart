@@ -213,11 +213,6 @@ List<List<ClickTargetModel>> zigzagDatas() {
 }
 
 List<List<ClickTargetModel>> toeDragDatas() {
-  // 2号板子  3红
-  List<ClickTargetModel> oneData = [
-    ClickTargetModel(
-        boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
-  ];
   // 3号板子  2红
   List<ClickTargetModel> twoData = [
     ClickTargetModel(
@@ -233,6 +228,7 @@ List<List<ClickTargetModel>> toeDragDatas() {
     ClickTargetModel(
         boardIndex: 4, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
   ];
+
   // 0号板子  2红
   List<ClickTargetModel> fiveData = [
     ClickTargetModel(
@@ -243,12 +239,12 @@ List<List<ClickTargetModel>> toeDragDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [2], statu: [BleULTimateLighStatu.red]),
   ];
-
   // 2号板子  3红
   List<ClickTargetModel> sevenData = [
     ClickTargetModel(
         boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
   ];
+
   // 3号板子  2红
   List<ClickTargetModel> eightData = [
     ClickTargetModel(
@@ -264,6 +260,7 @@ List<List<ClickTargetModel>> toeDragDatas() {
     ClickTargetModel(
         boardIndex: 4, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
   ];
+
   // 0号板子  2红
   List<ClickTargetModel> elevenData = [
     ClickTargetModel(
@@ -274,12 +271,12 @@ List<List<ClickTargetModel>> toeDragDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [2], statu: [BleULTimateLighStatu.red]),
   ];
-
   // 2号板子  3红
   List<ClickTargetModel> thirteenData = [
     ClickTargetModel(
         boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
   ];
+
   // 3号板子  2红
   List<ClickTargetModel> fourteenData = [
     ClickTargetModel(
@@ -295,6 +292,7 @@ List<List<ClickTargetModel>> toeDragDatas() {
     ClickTargetModel(
         boardIndex: 4, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
   ];
+
   // 0号板子  2红
   List<ClickTargetModel> seventeenData = [
     ClickTargetModel(
@@ -305,9 +303,13 @@ List<List<ClickTargetModel>> toeDragDatas() {
     ClickTargetModel(
         boardIndex: 3, ledIndex: [2], statu: [BleULTimateLighStatu.red]),
   ];
+  // 2号板子  3红
+  List<ClickTargetModel> oneData = [
+    ClickTargetModel(
+        boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
+  ];
 
   List<List<ClickTargetModel>> datas = [
-    oneData,
     twoData,
     threeData,
     fourData,
@@ -324,7 +326,8 @@ List<List<ClickTargetModel>> toeDragDatas() {
     fifteenData,
     sixteenData,
     seventeenData,
-    eighteenData
+    eighteenData,
+    oneData,
   ];
   return datas;
 }
