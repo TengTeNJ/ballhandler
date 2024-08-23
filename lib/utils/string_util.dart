@@ -168,4 +168,14 @@ class StringUtil {
     final Duration duration = endTime.difference(startTime);
     return duration.inSeconds.ceil(); // 计算秒数并向上取整
   }
+
+  /*时间字符串(秒数)转成格式00:00这样*/
+  static String timeStringFormat(String timeString){
+    int timeValue = int.parse(timeString);
+    int minute = (timeValue / 60).toInt();
+    int second = timeValue % 60;
+    String minuteString = minute.toString().padLeft(2,'0');
+    String secondString = second.toString().padLeft(2,'0');
+    return minuteString + ':' + secondString;
+  }
 }

@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/controllers/participants/p1_controller.dart';
 import 'package:code/controllers/participants/p2_controller.dart';
 import 'package:code/controllers/participants/p3_controller.dart';
+import 'package:code/controllers/participants/test_game_controller.dart';
 import 'package:code/models/ble/ble_model.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
@@ -73,10 +74,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             // 确认已连接的设备中是否有和当前模式匹配的,有的话则取第一个
             List<BLEModel> devices = BluetoothManager()
                 .hasConnectedDeviceList
-                .where((element) =>
-            element.deviceName.contains(bleNames[gameUtil.gameScene.index]))
-
-            // element.deviceName == bleNames[gameUtil.gameScene.index])
+                .where((element) => element.deviceName
+                    .contains(bleNames[gameUtil.gameScene.index]))
                 .toList();
             if (devices.length == 0) {
               // 没有和当前模式相匹配的设备
@@ -93,16 +92,19 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               NavigatorUtil.push(Routes.recordselect);
             } else if (gameUtil.gameScene == GameScene.erqiling) {
               // 设置270的游戏模式
-              BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(index));
-              if(index == 2){
+              BluetoothManager().writerDataToDevice(
+                  gameUtil.selectedDeviceModel, selectMode(index));
+              if (index == 2) {
                 // 270的P3自由控制模式
-                BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
-                BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, scoreShow(0));
+                BluetoothManager().writerDataToDevice(
+                    gameUtil.selectedDeviceModel, p3ScreenShow());
+                BluetoothManager().writerDataToDevice(
+                    gameUtil.selectedDeviceModel, scoreShow(0));
               }
               const List<Widget> _controllers = [
                 P1Controller(),
                 P2Controller(),
-                P3Controller()
+                P3Controller(),
               ];
               // 清空上次选择的组合
               gameUtil.selectdP3Indexs.clear();

@@ -445,9 +445,64 @@ List<int> cutDownShow({int value = 0, bool isGo = false}) {
     int hundredsPlace = (value / 100).truncate();
     int tensPlace = ((value / 10) % 10).toInt();
     int onesPlace = value % 10;
-    data2 =  hundredsPlace == 0 ? 0X00 : 0x30 + hundredsPlace;
-    data3 = tensPlace == 0 ? 0X00 :  0x30 + tensPlace;
+    data2 =  hundredsPlace == 0 ? 0x00 : 0x30 + hundredsPlace;
+    data3 = (tensPlace ==  0 && hundredsPlace == 0) ? 0x00 :  0x30 + tensPlace;
     data4 = 0x30 + onesPlace;
+  }
+  int cs = start +
+      source +
+      destination +
+      length +
+      cmd +
+      data1 +
+      data2 +
+      data3 +
+      data4;
+
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  BluetoothManager().gameData.remainTime = value;
+  BluetoothManager().triggerCallback(type: BLEDataType.remainTime);
+  return [
+    start,
+    source,
+    destination,
+    length,
+    cmd,
+    data1,
+    data2,
+    data3,
+    data4,
+    cs,
+    end
+  ];
+}
+
+List<int> cutDownAndGoShow({int value = 0, bool isGo = false}) {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
+  int length = 11;
+  int cmd = 0x04;
+  int data1 = 0x02;
+  int data2;
+  int data3;
+  int data4;
+  if (isGo) {
+    // 显示Go
+    data2 = 0;
+    data3 = 0x47;
+    data4 = 0x4f;
+  } else {
+    // 显示倒计时 3,2,1
+    data2 = 0;
+    data3 = 0x30 + value;
+    data4 =0;
   }
   int cs = start +
       source +

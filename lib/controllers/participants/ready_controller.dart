@@ -36,7 +36,7 @@ class _ReadyControllerState extends State<ReadyController> {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     int count = 3;
     BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
-        cutDownShow(value:3));
+        cutDownAndGoShow(value:3));
     setState(() {
       centerText = count.toString();
     });
@@ -46,11 +46,11 @@ class _ReadyControllerState extends State<ReadyController> {
        if(count == 0){
          centerText = 'GO';
          BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
-             cutDownShow(value:3,isGo: true));
+             cutDownAndGoShow(value:3,isGo: true));
          timer.cancel();
        }else{
          BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
-             cutDownShow(value: count));
+             cutDownAndGoShow(value: count));
          centerText = count.toString();
        }
      });
@@ -66,5 +66,12 @@ class _ReadyControllerState extends State<ReadyController> {
         child: Constants.boldWhiteTextWidget(centerText, 75),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    subscription.cancel();
   }
 }

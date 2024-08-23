@@ -363,6 +363,46 @@ List<List<ClickTargetModel>> backHandDatas() {
     twoData,
     threeData,
     fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
   ];
   return datas;
 }
@@ -760,6 +800,11 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue
     ]),
+    ClickTargetModel(boardIndex: 4, ledIndex: [
+      3
+    ], statu: [
+      BleULTimateLighStatu.blue
+    ]),
   ];
 
   // 5号板子 0,2,蓝 1,3红;0号板子 1,2,3蓝 0红
@@ -784,6 +829,11 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       BleULTimateLighStatu.red,
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue,
+      BleULTimateLighStatu.blue
+    ]),
+    ClickTargetModel(boardIndex: 4, ledIndex: [
+      3
+    ], statu: [
       BleULTimateLighStatu.blue
     ]),
   ];
@@ -1227,12 +1277,9 @@ class P3GameManager {
     this._countTime = 0;
 
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-    // 先关闭所有的灯光
+    // 关闭所有的灯光
     BluetoothManager()
         .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
-    // 倒计时显示
-    BluetoothManager().writerDataToDevice(
-        gameUtil.selectedDeviceModel, cutDownShow(value: 0));
   }
 
   // 执行

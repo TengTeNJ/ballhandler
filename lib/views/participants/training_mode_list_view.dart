@@ -6,6 +6,7 @@ import 'package:code/utils/color.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -196,7 +197,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Constants.regularWhiteTextWidget(
-                                      '00:${widget.model.trainTime.padLeft(2, '0')}',
+                                      StringUtil.timeStringFormat(widget.model.trainTime),
                                       14),
                                   Constants.regularWhiteTextWidget('Time', 12),
                                 ],

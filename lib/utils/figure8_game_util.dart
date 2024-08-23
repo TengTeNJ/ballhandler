@@ -145,7 +145,9 @@ class Figure8GameUtil {
         // 倒计时显示
         BluetoothManager().writerDataToDevice(
             gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
+        this.stopGame();
         this.completer.complete(true);
+
       }
     });
     _process3Control();
@@ -160,12 +162,17 @@ class Figure8GameUtil {
     _process3Index = 0; // 索引
     _process3EveryUnitIndex = 0; // 每个单元的红灯索引
     _countTime = 30; // 倒计时
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    // 关闭所有的灯光
+    BluetoothManager()
+        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
   }
 
   // 第三进度控制
   _process3Control() {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     if (_process3Index >= thirdProcessRedData().length) {
+      this.stopGame();
       this.completer.complete(true);
       return;
     }

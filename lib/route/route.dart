@@ -17,6 +17,8 @@ import 'package:code/controllers/participants/game_process_controller.dart';
 import 'package:code/controllers/participants/game_video_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/participants/p1_controller.dart';
+import 'package:code/controllers/participants/p2_controller.dart';
+import 'package:code/controllers/participants/p3_controller.dart';
 import 'package:code/controllers/participants/p3_game_process_controller.dart';
 import 'package:code/controllers/participants/p3_record_select_controller.dart';
 import 'package:code/controllers/participants/ready_controller.dart';
@@ -61,6 +63,8 @@ class Routes {
   static const String recordselect = 'recordSelect'; // record选择页面
   static const String subsetting = 'subSetting'; // 二级设置页面
   static const String p1 = 'p1'; // 270度的P1模式介绍页面
+  static const String p2 = 'p2'; // 270度的P2模式介绍页面
+  static const String p3 = 'p3'; // 270度的P3模式选择组合页面
   static const String p3check = 'p3Check';
   static const String process270 = '270Process';
   static const String videolist = 'videoList'; // 视频列表页面
@@ -132,6 +136,10 @@ class Routes {
       }
       case p1:
         return MaterialPageRoute(builder: (_) => P1Controller());
+      case p2:
+        return MaterialPageRoute(builder: (_) => P2Controller());
+      case p3:
+        return MaterialPageRoute(builder: (_) => P3Controller());
       case p3check:{
         final  CameraDescription camera = settings.arguments as CameraDescription;
         return MaterialPageRoute(builder: (_)=> P3RecordSelectController(camera: camera,));

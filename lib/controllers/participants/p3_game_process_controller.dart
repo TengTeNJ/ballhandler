@@ -202,12 +202,14 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
             // 从活动来的话 积分为活动积分 不是默认的1
             model.Integral = gameUtil.activityModel.rewardPoint;
           }
-          //
-
           startTime = null;
           endTime = null;
           //
-          NavigatorUtil.push('gameFinish', arguments: model);
+          if (gameUtil.gameScene == GameScene.erqiling) {
+            NavigatorUtil.popAndThenPush('gameFinish', arguments: model);
+          } else {
+            NavigatorUtil.push('gameFinish', arguments: model);
+          }
           // 标记离开游戏页面
           gameUtil.nowISGamePage = false;
           _getStartFlag = false;
@@ -278,9 +280,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     P3GameManager().stopGame();
     BluetoothManager().writerDataToDevice(
         gameUtil.selectedDeviceModel, gameStart(onStart: false));
-    BluetoothManager()
-        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
-    Future.delayed(Duration(milliseconds: 20),(){
+    Future.delayed(Duration(milliseconds: 500), () {
       BluetoothManager()
           .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
     });
@@ -368,10 +368,17 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                           // 结束游戏指令
                           Figure8GameUtil().stopGame();
                           P3GameManager().stopGame();
-                          BluetoothManager()
-                              .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
-                          BluetoothManager()
-                              .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
+                          GameUtil gameUtil = GetIt.instance<GameUtil>();
+                          if (gameUtil.modelId == 3) {
+                            BluetoothManager().writerDataToDevice(
+                                gameUtil.selectedDeviceModel, p3ScreenShow());
+                            BluetoothManager().gameData.utimateGameSatatu = 0;
+                          }
+                          BluetoothManager().writerDataToDevice(
+                              gameUtil.selectedDeviceModel, scoreShow(0));
+                          BluetoothManager().writerDataToDevice(
+                              gameUtil.selectedDeviceModel,
+                              closeAllBoardLight());
                           NavigatorUtil.pop();
                         },
                         behavior: HitTestBehavior.opaque,
@@ -549,6 +556,17 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       // 270自由模式 停止正在进行的游戏
       P1NewGameManager().stopGame();
       P3GameManager().stopGame();
+      BluetoothManager()
+          .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
+      BluetoothManager().writerDataToDevice(
+          gameUtil.selectedDeviceModel, closeAllBoardLight());
+    }else {
+      if (BluetoothManager().gameData.utimateGameSatatu ==
+          2) {
+        BluetoothManager().writerDataToDevice(
+            gameUtil.selectedDeviceModel,
+            selectMode(gameUtil.modelId - 1));
+      }
     }
   }
 }
