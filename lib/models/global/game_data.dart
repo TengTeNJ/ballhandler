@@ -50,8 +50,18 @@ class GameData extends ChangeNotifier {
   ]; // P3模式下  app端发送当前面板的四个灯的状态,仅仅270设备有效
 
   List<int> p3DeviceBatteryValues = [100,100,100,100,100,100]; // p3模式下 所有板子的电量，板子的序号为0 1 2 3 4 5
+  List<int> p3DeviceOnlineStatus = [1,1,1,1,1,1]; // p3模式下 所有板子的在线状态 0不在线 1是在线,板子的序号为0 1 2 3 4 5
+  int masterStatu = 0; // Central主机当前的系统状态：1字节0: 系统初始化；1: 系统配网；2: 系统游戏；3: 系统设置；4: 系统管理
   bool ultimateIsGaming = false; // 270设备的是否在游戏状态 0x00-不在游戏状态，0x01-游戏状态
-
+  List<int> get offlineBoards {
+    List<int> tempArray = [];
+    this.p3DeviceOnlineStatus.forEach((element){
+      if(element == 0){
+        tempArray.add(element);
+      }
+    });
+    return tempArray;
+  } // 不在线的设备的数量
   String get showRemainTime => _showRemainTime;
 
   /* set方法*/

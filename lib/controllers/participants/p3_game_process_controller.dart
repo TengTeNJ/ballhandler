@@ -11,6 +11,7 @@ import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/p1_game_util_new.dart';
 import 'package:code/utils/p3_game_util.dart';
+import 'package:code/utils/toast.dart';
 import 'package:code/views/base/battery_view.dart';
 import 'package:code/views/base/ble_view.dart';
 import 'package:code/views/participants/ultimate_lights_view.dart';
@@ -108,13 +109,18 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
             }
           });
         }
-        if (type == BLEDataType.statuSynchronize ||
-            type == BLEDataType.allBoadrStatuFinish) {
+        print('1111111111111111');
+        if (type == BLEDataType.statuSynchronize) {
           // 触发更新 刷新页面
+          print('2222222222222');
           setState(() {});
         }
+      } else if (type == BLEDataType.allBoadrStatuFinish) {
+        print('3333333333333333333');
+        setState(() {});
       } else if (type == BLEDataType.refreshSingleLedStatu) {
         // 首先取出来 刷新的是哪个灯板
+        print('444444444444444');
         int target = BluetoothManager().gameData.currentTarget;
         int singleLedIndex = BluetoothManager().gameData.singleLedIndex;
         BleULTimateLighStatu statu = BluetoothManager().gameData.singleLedStatu;
@@ -151,7 +157,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           _ready = false;
           _getStartFlag = true;
           // 数据初始化
-          BluetoothManager().gameData.remainTime = 60;
+          BluetoothManager().gameData.remainTime = 45;
           BluetoothManager().gameData.score = 0;
           setState(() {});
           // 用户选择了视频录制 则同步开始录制
@@ -214,7 +220,20 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           gameUtil.nowISGamePage = false;
           _getStartFlag = false;
         }
-      } else {
+      } else if(type == BLEDataType.masterStatu){
+        // 主机状态
+        if(BluetoothManager().gameData.masterStatu != 2){
+          TTToast.showErrorInfo('The device is not ready yet, please check the device',duration: 5000);
+          backHandle();
+        }
+      }else if(type == BLEDataType.onLine){
+ // 在线状态
+        List<int> offLineArray = BluetoothManager().gameData.offlineBoards;
+        if(!offLineArray.isEmpty){
+          TTToast.showErrorInfo('A device is offline, please check the device',duration: 5000);
+          backHandle();
+        }
+      }   else {
         setState(() {});
       }
     };
@@ -365,21 +384,9 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                               borderRadius: BorderRadius.circular(22)),
                         ),
                         onTap: () {
-                          // 结束游戏指令
                           Figure8GameUtil().stopGame();
                           P3GameManager().stopGame();
-                          GameUtil gameUtil = GetIt.instance<GameUtil>();
-                          if (gameUtil.modelId == 3) {
-                            BluetoothManager().writerDataToDevice(
-                                gameUtil.selectedDeviceModel, p3ScreenShow());
-                            BluetoothManager().gameData.utimateGameSatatu = 0;
-                          }
-                          BluetoothManager().writerDataToDevice(
-                              gameUtil.selectedDeviceModel, scoreShow(0));
-                          BluetoothManager().writerDataToDevice(
-                              gameUtil.selectedDeviceModel,
-                              closeAllBoardLight());
-                          NavigatorUtil.pop();
+                          backHandle();
                         },
                         behavior: HitTestBehavior.opaque,
                       )),
@@ -538,6 +545,33 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           );
   }
 
+  // 返回操作
+  backHandle(){
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    if (gameUtil.modelId == 3) {
+      BluetoothManager().writerDataToDevice(
+          gameUtil.selectedDeviceModel,
+          closeAllBoardLight());
+      Future.delayed(Duration(milliseconds: 100),(){
+        BluetoothManager().writerDataToDevice(
+            gameUtil.selectedDeviceModel, p3ScreenShow());
+      });
+      Future.delayed(Duration(milliseconds: 150),(){
+        BluetoothManager().writerDataToDevice(
+            gameUtil.selectedDeviceModel, scoreShow(0));
+      });
+    }else{
+      if (BluetoothManager().gameData.utimateGameSatatu == 2) {
+        Future.delayed(Duration(milliseconds: 100),(){
+          BluetoothManager().writerDataToDevice(
+              gameUtil.selectedDeviceModel, selectMode(gameUtil.modelId - 1));
+        });
+      }
+    }
+    BluetoothManager().gameData.utimateGameSatatu = 0;
+    NavigatorUtil.pop();
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -560,13 +594,8 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
       BluetoothManager().writerDataToDevice(
           gameUtil.selectedDeviceModel, closeAllBoardLight());
-    }else {
-      if (BluetoothManager().gameData.utimateGameSatatu ==
-          2) {
-        BluetoothManager().writerDataToDevice(
-            gameUtil.selectedDeviceModel,
-            selectMode(gameUtil.modelId - 1));
-      }
+    } else {
+
     }
   }
 }

@@ -739,3 +739,22 @@ List<int> resetTimer() {
   // print('发送心跳------------');;
   return [start, source, destination, length, cmd,  data1 , data2 , cs, end];
 }
+
+/*查询主机的当前系统状态*/
+List<int> queryMasterSystemStatu() {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
+  int length = 7;
+  int cmd = 0x14;
+  int cs = start + source + destination + length + cmd;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  // print('发送心跳------------');;
+  return [start, source, destination, length, cmd, cs, end];
+}

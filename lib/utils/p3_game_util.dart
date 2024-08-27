@@ -55,13 +55,17 @@ List<List<ClickTargetModel>> wideDatas() {
     fourData,
     fiveData,
     sixData,
-    sixData,
     oneData,
     twoData,
     threeData,
     fourData,
     fiveData,
     sixData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    fiveData,
     sixData,
     oneData,
     twoData,
@@ -233,6 +237,10 @@ List<List<ClickTargetModel>> zigzagDatas() {
 }
 
 List<List<ClickTargetModel>> toeDragDatas() {
+  // 2号板子  3红
+  List<ClickTargetModel> oneData = [
+  ClickTargetModel(
+      boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red])];
   // 3号板子  2红
   List<ClickTargetModel> twoData = [
     ClickTargetModel(
@@ -321,15 +329,11 @@ List<List<ClickTargetModel>> toeDragDatas() {
   // 3号板子  2红
   List<ClickTargetModel> eighteenData = [
     ClickTargetModel(
-        boardIndex: 3, ledIndex: [2], statu: [BleULTimateLighStatu.red]),
-  ];
-  // 2号板子  3红
-  List<ClickTargetModel> oneData = [
-    ClickTargetModel(
-        boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
-  ];
+        boardIndex: 3, ledIndex: [2], statu: [BleULTimateLighStatu.red]),];
+
 
   List<List<ClickTargetModel>> datas = [
+    oneData,
     twoData,
     threeData,
     fourData,
@@ -746,12 +750,10 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       0,
       1,
       2,
-      3
     ], statu: [
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue,
-      BleULTimateLighStatu.red
     ]),
     ClickTargetModel(
         boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
@@ -770,19 +772,17 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       BleULTimateLighStatu.blue
     ]),
     ClickTargetModel(
-        boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
+        boardIndex: 0, ledIndex: [1,2,3], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.blue,BleULTimateLighStatu.blue]),
   ];
 
   // 3号板子 0,2,3蓝 1红;0号板子 1,2,3蓝 0红
   List<ClickTargetModel> fourData = [
     ClickTargetModel(boardIndex: 3, ledIndex: [
       0,
-      1,
       2,
       3
     ], statu: [
       BleULTimateLighStatu.blue,
-      BleULTimateLighStatu.red,
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue
     ]),
@@ -812,17 +812,6 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue
     ]),
-    ClickTargetModel(boardIndex: 0, ledIndex: [
-      0,
-      1,
-      2,
-      3
-    ], statu: [
-      BleULTimateLighStatu.red,
-      BleULTimateLighStatu.blue,
-      BleULTimateLighStatu.blue,
-      BleULTimateLighStatu.blue
-    ]),
     ClickTargetModel(boardIndex: 4, ledIndex: [
       3
     ], statu: [
@@ -834,25 +823,12 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
   List<ClickTargetModel> sixData = [
     ClickTargetModel(boardIndex: 5, ledIndex: [
       0,
-      1,
       2,
       3
     ], statu: [
       BleULTimateLighStatu.blue,
-      BleULTimateLighStatu.red,
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.red
-    ]),
-    ClickTargetModel(boardIndex: 0, ledIndex: [
-      0,
-      1,
-      2,
-      3
-    ], statu: [
-      BleULTimateLighStatu.red,
-      BleULTimateLighStatu.blue,
-      BleULTimateLighStatu.blue,
-      BleULTimateLighStatu.blue
     ]),
     ClickTargetModel(boardIndex: 4, ledIndex: [
       3
@@ -865,12 +841,10 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
   List<ClickTargetModel> sevenData = [
     ClickTargetModel(boardIndex: 3, ledIndex: [
       0,
-      1,
       2,
       3
     ], statu: [
       BleULTimateLighStatu.blue,
-      BleULTimateLighStatu.red,
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue
     ]),
@@ -900,8 +874,15 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue
     ]),
-    ClickTargetModel(
-        boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
+    ClickTargetModel(boardIndex: 0, ledIndex: [
+      1,
+      2,
+      3
+    ], statu: [
+      BleULTimateLighStatu.blue,
+      BleULTimateLighStatu.blue,
+      BleULTimateLighStatu.blue
+    ]),
   ];
 
   // 1号板子 0,1,2,蓝 13红;2号板子 3红
@@ -910,16 +891,29 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       0,
       1,
       2,
-      3
     ], statu: [
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue,
-      BleULTimateLighStatu.red
     ]),
     ClickTargetModel(
         boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red]),
   ];
+
+  List<ClickTargetModel> tenData = [
+    ClickTargetModel(boardIndex: 1, ledIndex: [
+      0,
+      1,
+      2,
+      3,
+    ], statu: [
+      BleULTimateLighStatu.blue,
+      BleULTimateLighStatu.blue,
+      BleULTimateLighStatu.blue,
+      BleULTimateLighStatu.red,
+    ]),
+  ];
+
 
   List<List<ClickTargetModel>> datas = [
     oneData,
@@ -930,7 +924,8 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
     sixData,
     sevenData,
     eightData,
-    nineData
+    nineData,
+    tenData
   ];
   return datas;
 }

@@ -22,6 +22,8 @@ import '../../utils/system_device.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 
+import '../../utils/toast.dart';
+
 class TrainingModeController extends StatefulWidget {
   const TrainingModeController({super.key});
 
@@ -94,6 +96,11 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               // 设置270的游戏模式
               BluetoothManager().writerDataToDevice(
                   gameUtil.selectedDeviceModel, selectMode(index));
+              // 主机状态
+              if(BluetoothManager().gameData.masterStatu != 2){
+                TTToast.showErrorInfo('The device is not ready yet, please check the device',duration: 5000);
+                return;
+              }
               if (index == 2) {
                 // 270的P3自由控制模式
                 BluetoothManager().writerDataToDevice(

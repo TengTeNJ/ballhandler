@@ -22,6 +22,8 @@ enum BLEDataType {
   allBoardStatuOneByOne, // 所有的灯板状态的数据的一个个灯板进行解析，此时不能刷新页面
   allBoadrStatuFinish, // 所有的灯板状态的数据解析完成，此时可以刷新页面
   refreshSingleLedStatu, // 刷新某面板上的单个灯光
+  masterStatu, // Central主机当前的系统状态：1字节0: 系统初始化；1: 系统配网；2: 系统游戏；3: 系统设置；4: 系统管理
+  onLine, // 在线状态
 }
 class ResponseCMDType {
   static const int deviceInfo = 0x20; // 设备信息，包含开机状态、电量等

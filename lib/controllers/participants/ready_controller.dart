@@ -37,6 +37,9 @@ class _ReadyControllerState extends State<ReadyController> {
     int count = 3;
     BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
         cutDownAndGoShow(value:3));
+    // 开始游戏前 重置定时器
+    BluetoothManager().writerDataToDevice(
+        gameUtil.selectedDeviceModel, resetTimer());
     setState(() {
       centerText = count.toString();
     });
@@ -55,7 +58,6 @@ class _ReadyControllerState extends State<ReadyController> {
        }
      });
     });
-
   }
 
   @override

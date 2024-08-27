@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data.dart';
@@ -151,7 +152,8 @@ class BluetoothManager {
           model.writerCharacteristic = writerCharacteristic;
           // 发送 APP上线
           BluetoothManager().writerDataToDevice(model, appOnLine());
-
+          // 查询主机状态
+          BluetoothManager().writerDataToDevice(model, queryMasterSystemStatu());
         }else{
           // 保存读写特征值
           notifyCharacteristic = QualifiedCharacteristic(
@@ -227,6 +229,8 @@ class BluetoothManager {
       return;
     }
    print('发送数据data=${data.map((toElement)=>toElement.toRadixString(16)).toList()}');
+    // 多个命令同时发时 增加10ms的时间间隔
+    sleep(Duration(milliseconds: 10));
     await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
         value: data);
   }
