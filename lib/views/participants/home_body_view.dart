@@ -1,4 +1,3 @@
-
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
@@ -38,14 +37,16 @@ class _HomeBodyViewState extends State<HomeBodyView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image(
-                  image: AssetImage('images/participants/icon_white.png'),
+                  image: AssetImage(
+                      'images/participants/product_${widget.model.dictKey}.png'),
                   width: 62,
                   height: 63,
                 ),
                 SizedBox(
                   height: 8,
                 ),
-                Constants.boldWhiteTextWidget(widget.model.dictValue,
+                Constants.boldWhiteTextWidget(
+                  widget.model.dictValue,
                   26,
                   maxLines: 2,
                   textAlign: TextAlign.center,
