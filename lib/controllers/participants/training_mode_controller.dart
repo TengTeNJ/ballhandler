@@ -98,7 +98,10 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                   gameUtil.selectedDeviceModel, selectMode(index));
               // 主机状态
               if(BluetoothManager().gameData.masterStatu != 2){
-                TTToast.showErrorInfo('The device is not ready yet, please check the device',duration: 5000);
+                TTToast.showErrorInfo('The device is not ready yet, please check the device');
+                // 查询主机状态
+                BluetoothManager()
+                    .writerDataToDevice(gameUtil.selectedDeviceModel, queryMasterSystemStatu());
                 return;
               }
               if (index == 2) {

@@ -109,18 +109,14 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
             }
           });
         }
-        print('1111111111111111');
         if (type == BLEDataType.statuSynchronize) {
           // 触发更新 刷新页面
-          print('2222222222222');
           setState(() {});
         }
       } else if (type == BLEDataType.allBoadrStatuFinish) {
-        print('3333333333333333333');
         setState(() {});
       } else if (type == BLEDataType.refreshSingleLedStatu) {
         // 首先取出来 刷新的是哪个灯板
-        print('444444444444444');
         int target = BluetoothManager().gameData.currentTarget;
         int singleLedIndex = BluetoothManager().gameData.singleLedIndex;
         BleULTimateLighStatu statu = BluetoothManager().gameData.singleLedStatu;
@@ -223,14 +219,14 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       } else if(type == BLEDataType.masterStatu){
         // 主机状态
         if(BluetoothManager().gameData.masterStatu != 2){
-          TTToast.showErrorInfo('The device is not ready yet, please check the device',duration: 5000);
+          TTToast.showErrorInfo('The device is not ready yet, please check the device');
           backHandle();
         }
       }else if(type == BLEDataType.onLine){
  // 在线状态
         List<int> offLineArray = BluetoothManager().gameData.offlineBoards;
         if(!offLineArray.isEmpty){
-          TTToast.showErrorInfo('A device is offline, please check the device',duration: 5000);
+          TTToast.showErrorInfo('A device is offline, please check the device');
           backHandle();
         }
       }   else {
