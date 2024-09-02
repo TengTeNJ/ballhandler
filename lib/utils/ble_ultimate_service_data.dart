@@ -1,17 +1,13 @@
 import 'dart:async';
-
 import 'package:code/models/game/hit_target_model.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/control_time_out_util.dart';
-import 'package:code/utils/dialog.dart';
-import 'package:code/utils/game_util.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:get_it/get_it.dart';
-
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
 import 'notification_bloc.dart';
@@ -113,93 +109,6 @@ class BluetoothUltTimateDataParse {
     } else {
       handleNotFullData(data, model);
     }
-    // if (data.contains(kBLEDataFrameHeader)) {
-    //   List<List<int>> _datas = splitData(data);
-    //   _datas.forEach((element) {
-    //     if (element == null || element.length == 0) {
-    //       // 空数组
-    //       // print('问题数据${element}');
-    //     } else {
-    //       // 先获取长度
-    //       if (element.length <= 2) {
-    //         bleNotAllData.addAll(data);
-    //         if (bleNotAllData.length >= 3 &&
-    //             (bleNotAllData[2] - 1) == bleNotAllData.length) {
-    //           isNew = true;
-    //           bleNotAllData.clear();
-    //           handleData(bleNotAllData, model);
-    //         } else {
-    //           isNew = false;
-    //           delayTimer = Timer(Duration(milliseconds: 500), () {
-    //             if (!isNew) {
-    //               print(
-    //                   'bleNotAllData.toString()} == ${bleNotAllData.toString()}');
-    //               if (bleNotAllData[3] == 104) {
-    //                 Future.delayed(Duration(milliseconds: 3000), () {
-    //                   TTToast.showErrorInfo('原因:${bleNotAllData[3]}');
-    //                 });
-    //               }
-    //               bleNotAllData.clear();
-    //               isNew = true;
-    //             }
-    //           });
-    //         }
-    //         return;
-    //       }
-    //       int length = element[2] - 1; // 获取长度 去掉了枕头
-    //       if (length != element.length) {
-    //         // 说明不是完整数据
-    //         bleNotAllData.addAll(element);
-    //         if (bleNotAllData[2] - 1 == bleNotAllData.length) {
-    //           handleData(bleNotAllData, model);
-    //           isNew = true;
-    //           bleNotAllData.clear();
-    //         } else {
-    //           isNew = false;
-    //           delayTimer = Timer(Duration(milliseconds: 500), () {
-    //             if (!isNew) {
-    //               print(
-    //                   'bleNotAllData.toString()} == ${bleNotAllData.toString()}');
-    //               if (bleNotAllData[3] == 104) {
-    //                 Future.delayed(Duration(milliseconds: 3000), () {
-    //                   TTToast.showErrorInfo('原因:${bleNotAllData[3]}');
-    //                 });
-    //               }
-    //               bleNotAllData.clear();
-    //               isNew = true;
-    //             }
-    //           });
-    //         }
-    //       } else {
-    //         handleData(element, model);
-    //       }
-    //     }
-    //   });
-    // } else {
-    //   bleNotAllData.addAll(data);
-    //   // 减去3是因为去掉了一个帧头 和 bleNotAllData[2]的值不计算数据源设备地址和数据目的设备地址
-    //   if (bleNotAllData.length >= 3 &&
-    //       (bleNotAllData[2] - 1) == bleNotAllData.length) {
-    //     handleData(bleNotAllData, model);
-    //     isNew = true;
-    //     bleNotAllData.clear();
-    //   } else {
-    //     isNew = false;
-    //     delayTimer = Timer(Duration(milliseconds: 500), () {
-    //       if (!isNew) {
-    //         print('bleNotAllData.toString()} == ${bleNotAllData.toString()}');
-    //         if (bleNotAllData[3] == 104) {
-    //           Future.delayed(Duration(milliseconds: 3000), () {
-    //             TTToast.showErrorInfo('原因:${bleNotAllData[3]}');
-    //           });
-    //         }
-    //         bleNotAllData.clear();
-    //         isNew = true;
-    //       }
-    //     });
-    //   }
-    //   //  print('蓝牙设备响应数据不包含帧头或者数据被分包=${data}');
-    // }
   }
 
   static handleNotFullData(List<int> data, BLEModel model) {
@@ -208,9 +117,10 @@ class BluetoothUltTimateDataParse {
     //print('handleNotFullData12 ${isNew}');
     if (isNew) {
       isNew = false;
-      delayTimer = Timer(Duration(milliseconds: 50), () {
+      delayTimer = Timer(Duration(milliseconds: 150), () {
         if (!isNew) {
-          // print(
+          print('解析数据超时 ${bleNotAllData.map((toElement) => toElement.toRadixString(16)).toList()}');
+          // print(Œ
           //     'bleNotAllData.toString()} == ${bleNotAllData.map((toElement) => toElement.toRadixString(16)).toList()}}');
           bleNotAllData.clear();
           isNew = true;
@@ -470,6 +380,7 @@ class BluetoothUltTimateDataParse {
                 // 游戏状态变化 0x00-IDLE(选择模式状态) 0x01-游戏预备；0x02-游戏开始；0x03-游戏结束。
                 int statu = element[5];
                 BluetoothManager().gameData.utimateGameSatatu = statu;
+                print('----------------utimateGameSatatu----------------');
                 BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
                 break;
               }

@@ -45,9 +45,11 @@ class _GameFinishControllerState extends State<GameFinishController> {
       final _response = await Profile.queryUserVideoCountData();
       if (_response.success && _response.data != null) {
         _videoCount = _response.data!;
-        setState(() {
+        if(mounted){
+          setState(() {
 
-        });
+          });
+        }
       }
     }
   }

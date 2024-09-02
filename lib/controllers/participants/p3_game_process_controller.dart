@@ -51,6 +51,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   bool _ready = true; // 准备阶段 游戏还没正式开始
   DateTime? startTime;
   DateTime? endTime;
+  bool backFlag = false; // 点击了返回按钮
 
   @override
   void initState() {
@@ -165,6 +166,10 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
             await _controller.startVideoRecording();
           }
         } else if (BluetoothManager().gameData.utimateGameSatatu == 3) {
+          if(backFlag){
+            return;
+          }
+          print('游戏结束');
           // 游戏结束
           //  _ready = true;
           endTime = DateTime.now(); // 记录时间点
@@ -555,6 +560,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
 
   // 返回操作
   backHandle(){
+    backFlag = true;
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     if (gameUtil.modelId == 3) {
       BluetoothManager().writerDataToDevice(
