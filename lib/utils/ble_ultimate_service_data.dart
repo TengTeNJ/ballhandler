@@ -4,6 +4,7 @@ import 'package:code/models/game/hit_target_model.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
+import 'package:code/utils/control_time_out_util.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/game_util.dart';
 import 'package:code/utils/global.dart';
@@ -88,30 +89,29 @@ class BluetoothUltTimateDataParse {
   // 数据解析
   static parseData(List<int> data, BLEModel model) {
     if (data.isEmpty) {
-      print('********************空数据********************:${data}');
       return;
     }
-    if(data.length >= 4 && data[0] == kBLEDataFrameHeader){
+    if (data.length >= 4 && data[0] == kBLEDataFrameHeader) {
       // 取出来数据的长度标识位
       int length = data[3];
       // 通过 帧头 帧尾 length数据位的值和实际的数据包length进行匹配
-      if(data.length >= length && data[length -1] == kBLEDataFramerFoot){
-        List<int> rightData = data.sublist(0,length);
+      if (data.length >= length && data[length - 1] == kBLEDataFramerFoot) {
+        List<int> rightData = data.sublist(0, length);
         handleData(rightData, model); // 完整的一帧数据
-        List<int> othersData =  data.sublist(length,data.length);
+        List<int> othersData = data.sublist(length, data.length);
         isNew = true;
         bleNotAllData.clear();
-        if(delayTimer !=null){
+        if (delayTimer != null) {
           delayTimer!.cancel();
         }
-        if(!othersData.isEmpty){
+        if (!othersData.isEmpty) {
           parseData(othersData, model);
         }
-      }else{
-        handleNotFullData(data,model);
+      } else {
+        handleNotFullData(data, model);
       }
-    }else{
-      handleNotFullData(data,model);
+    } else {
+      handleNotFullData(data, model);
     }
     // if (data.contains(kBLEDataFrameHeader)) {
     //   List<List<int>> _datas = splitData(data);
@@ -202,13 +202,13 @@ class BluetoothUltTimateDataParse {
     // }
   }
 
-  static handleNotFullData(List<int>data,BLEModel model){
+  static handleNotFullData(List<int> data, BLEModel model) {
     bleNotAllData.addAll(data);
     //print('handleNotFullData1${data.map((toElement) => toElement.toRadixString(16)).toList()}');
     //print('handleNotFullData12 ${isNew}');
-    if(isNew){
+    if (isNew) {
       isNew = false;
-      delayTimer = Timer(Duration(milliseconds: 500), () {
+      delayTimer = Timer(Duration(milliseconds: 50), () {
         if (!isNew) {
           // print(
           //     'bleNotAllData.toString()} == ${bleNotAllData.map((toElement) => toElement.toRadixString(16)).toList()}}');
@@ -216,26 +216,28 @@ class BluetoothUltTimateDataParse {
           isNew = true;
         }
       });
-    }else{
+    } else {
       // print('handleNotFullData3${bleNotAllData.map((toElement) => toElement.toRadixString(16)).toList()}');
-      if(bleNotAllData.length >= 4 && bleNotAllData[0] == kBLEDataFrameHeader){
+      if (bleNotAllData.length >= 4 &&
+          bleNotAllData[0] == kBLEDataFrameHeader) {
         int length = bleNotAllData[3];
-        if(bleNotAllData.length >= length && bleNotAllData[length -1] == kBLEDataFramerFoot){
-          List<int> rightData = bleNotAllData.sublist(0,length);
+        if (bleNotAllData.length >= length &&
+            bleNotAllData[length - 1] == kBLEDataFramerFoot) {
+          List<int> rightData = bleNotAllData.sublist(0, length);
           handleData(rightData, model); // 完整的一帧数据
-          List<int> othersData =  bleNotAllData.sublist(length,bleNotAllData.length);
+          List<int> othersData =
+              bleNotAllData.sublist(length, bleNotAllData.length);
           isNew = true;
           bleNotAllData.clear();
-          if(delayTimer !=null){
+          if (delayTimer != null) {
             delayTimer!.cancel();
           }
-          if(!othersData.isEmpty){
+          if (!othersData.isEmpty) {
             parseData(othersData, model);
           }
         }
       }
     }
-
   }
 
   static handleData(List<int> element, BLEModel mode) {
@@ -244,12 +246,11 @@ class BluetoothUltTimateDataParse {
       return;
     }
     // 去除帧头
-    element = element.sublist(1,element.length);
+    element = element.sublist(1, element.length);
     // 数据源地址
     int source = element[0];
     if (source == 0x80) {
       // 数据源不能是APP
-      print('数据源app-----');
       return;
     }
     String binaryString = source.toRadixString(2).padLeft(8, '0');
@@ -270,15 +271,26 @@ class BluetoothUltTimateDataParse {
           break;
         case ResponseCMDType.ledControlStatu:
           int data = element[4];
-          if (data == 0) {
-            print('灯板控制返回失败');
-            TTToast.showErrorInfo('led control fail');
+          // int controlBoard = element[0];
+          print(
+              "控制返回的data = ${element.map((toElement) => toElement.toRadixString(16)).toList()}");
+          if (ControlTimeOutUtil().controlLedId != data) {
+            print('灯板不对应');
+            return;
           }
+          print('控制成功data=${data}');
+          if (ControlTimeOutUtil().timeOutTimer != null) {
+            ControlTimeOutUtil().timeOutTimer!.cancel();
+            ControlTimeOutUtil().timeOutTimer = null;
+          }
+          ControlTimeOutUtil().controlLedId ++;
+          ControlTimeOutUtil().completer.complete(true);
+          ControlTimeOutUtil().reset();
           break;
         case ResponseCMDType.masterStatu:
           // Central主机当前的系统状态：1字节0: 系统初始化；1: 系统配网；2: 系统游戏；3: 系统设置；4: 系统管理
           int data = element[4];
-          print('Central主机当前的系统状态=${data}');
+          // print('Central主机当前的系统状态=${data}');
           BluetoothManager().gameData.masterStatu = data;
           BluetoothManager().triggerCallback(type: BLEDataType.masterStatu);
           break;
@@ -286,10 +298,10 @@ class BluetoothUltTimateDataParse {
           //   字节1：0x01（成功），字节2：当前中心主机的系统状态，状态值定义同0x12命令； Central主机当前的系统状态：1字节0: 系统初始化；1: 系统配网；2: 系统游戏；3: 系统设置；4: 系统管理
           int data1 = element[4];
           int data2 = element[5];
-          print('APP查询中心主机当前系统状态的返回结果=${data1}');
+          //print('APP查询中心主机当前系统状态的返回结果=${data1}');
           if (data1 == 1) {
             // 成功
-            print('查询Central主机当前的系统状态的返回=${data2}');
+            //print('查询Central主机当前的系统状态的返回=${data2}');
             BluetoothManager().gameData.masterStatu = data2;
             BluetoothManager().triggerCallback(type: BLEDataType.masterStatu);
           }
@@ -309,8 +321,6 @@ class BluetoothUltTimateDataParse {
             if (v == '0') {
               TTToast.showErrorInfo('${i} offline');
             }
-            print(
-                '${i}号在线状态:${binaryString.substring(binaryString.length - (i + 1), binaryString.length - i)}');
           }
           BluetoothManager().triggerCallback(type: BLEDataType.onLine);
           break;
@@ -331,8 +341,8 @@ class BluetoothUltTimateDataParse {
               ledIndex: data1,
               statu: StringUtil.lightToStatu(binaryString.padLeft(2, '0')));
           BluetoothManager().gameData.hitTargetModel = model;
-          print(
-              '击中了${targetIndex}号控制板的${data1}号灯板,状态为${StringUtil.lightToStatu(binaryString)}');
+          // print(
+          //     '击中了${targetIndex}号控制板的${data1}号灯板,状态为${StringUtil.lightToStatu(binaryString)}');
           BluetoothManager().p3TriggerCallback(type: BLEDataType.targetIn);
           break;
         case ResponseCMDType.allBoardStatu:
@@ -399,14 +409,14 @@ class BluetoothUltTimateDataParse {
             ];
             BluetoothManager()
                 .triggerCallback(type: BLEDataType.statuSynchronize);
-            print(
-                '${targetIndex}灯板状态变化++++:${binaryString}-----${BluetoothManager().gameData.lightStatus}');
+            // print(
+            //     '${targetIndex}灯板状态变化++++:${binaryString}-----${BluetoothManager().gameData.lightStatus}');
           } else if (data1 == 2) {
             // 电量状态；0, 5, 25, 50, 75, 100
             int battery = element[6];
             BluetoothManager().gameData.p3DeviceBatteryValues[targetIndex] =
                 battery;
-            print('${targetIndex}号灯的电量变化，电量值为${battery}');
+            // print('${targetIndex}号灯的电量变化，电量值为${battery}');
             GameUtil gameUtil = GetIt.instance<GameUtil>();
             // 说明是当前选择的游戏设备
             if (gameUtil.selectedDeviceModel.device != null &&
@@ -432,8 +442,7 @@ class BluetoothUltTimateDataParse {
               StringUtil.lightToStatu(board2),
               StringUtil.lightToStatu(board3)
             ];
-            print(
-                '${targetIndex}灯板状态变化----:${binaryString}-----${BluetoothManager().gameData.lightStatus}');
+
             BluetoothManager()
                 .triggerCallback(type: BLEDataType.statuSynchronize);
             // print(
@@ -441,7 +450,6 @@ class BluetoothUltTimateDataParse {
             int battery = element[6];
             BluetoothManager().gameData.p3DeviceBatteryValues[targetIndex] =
                 battery;
-            print('${targetIndex}号灯的电量变化，电量值为${battery}');
             // 说明是当前选择的游戏设备
             if (gameUtil.selectedDeviceModel.device != null &&
                 gameUtil.selectedDeviceModel.device!.id == mode.device!.id) {
@@ -487,7 +495,6 @@ class BluetoothUltTimateDataParse {
                 String count2String = StringUtil.decimalToBinary(count_data2);
                 String valueString = count1String + count2String;
                 int remain_time = StringUtil.binaryStringToDecimal(valueString);
-                print('倒计时变化=${remain_time}');
                 BluetoothManager().gameData.remainTime = remain_time;
                 BluetoothManager()
                     .triggerCallback(type: BLEDataType.remainTime);
@@ -502,18 +509,15 @@ class BluetoothUltTimateDataParse {
                 String count2String = StringUtil.decimalToBinary(count_data2);
                 String valueString = count1String + count2String;
                 int balls_count = StringUtil.binaryStringToDecimal(valueString);
-                print('得分=${balls_count}');
                 BluetoothManager().gameData.score = balls_count;
                 break;
               }
             case 0x0f:
               {
                 int statu = element[5];
-                print('游戏状态变化=${statu}');
                 BluetoothManager().gameData.utimateGameSatatu = statu;
                 // 模式选择变化 0x01-P1模式，0x02-P2模式，0x03-P3模式；
                 int mode = element[6];
-                print('游戏选择变化=${mode}');
                 // 倒计时变化 两个字节
                 int count_data1 = element[7];
                 int count_data2 = element[8];
@@ -530,7 +534,6 @@ class BluetoothUltTimateDataParse {
                 String score2String = StringUtil.decimalToBinary(score_data2);
                 String scoreValueString = score1String + score2String;
                 int score = StringUtil.binaryStringToDecimal(scoreValueString);
-                print('得分=${score}');
                 BluetoothManager().gameData.score = score;
                 BluetoothManager()
                     .triggerCallback(type: BLEDataType.scoreAndRemainTime);
@@ -540,7 +543,6 @@ class BluetoothUltTimateDataParse {
       }
     } else {
       // 代表数据发送方不符合条件 APP端忽略
-      print('数据目的发送方不符合条件 APP端忽略:${destinationString}');
     }
   }
 }

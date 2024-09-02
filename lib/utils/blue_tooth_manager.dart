@@ -6,6 +6,7 @@ import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
+import 'package:code/utils/control_time_out_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
@@ -232,12 +233,43 @@ class BluetoothManager {
       TTToast.showErrorInfo('Please connect your device first');
       return;
     }
-    print(
-        '发送数据data=${data.map((toElement) => toElement.toRadixString(16)).toList()}');
+    if(data[4] == 0x60 && data[2] != 0x7f){
+      print(
+          " 重发数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
+    }
+
     // 多个命令同时发时 增加10ms的时间间隔
     sleep(Duration(milliseconds: 10));
     await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
         value: data);
+  }
+  /*增加超时机制的控制*/
+  Future<bool> asyncWriterDataToDevice(BLEModel model, List<int> data) async {
+    //  数据校验
+    if (data == null || data.length == 0) {
+       ControlTimeOutUtil().completer.complete(true);
+       ControlTimeOutUtil().completer = Completer();
+    }
+    // 确认蓝牙设备已连接 并保存对应的特征值
+    if (model == null ||
+        model.hasConected == null ||
+        model.writerCharacteristic == null) {
+      TTToast.showErrorInfo('Please connect your device first');
+      ControlTimeOutUtil().completer.complete(true);
+      ControlTimeOutUtil().reset();
+    }
+    ControlTimeOutUtil().controling.value = true;
+    ControlTimeOutUtil().controlBoard = data[2];
+    print(
+        " 发数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
+     _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
+        value: data);
+    // 解析270
+    // 记录缓存发送的数据
+    ControlTimeOutUtil().ongoingData = data;
+    // 超时重发逻辑
+    ControlTimeOutUtil().begainTimer();
+    return  ControlTimeOutUtil().completer.future;
   }
 
   /*判断是否已经被添加设备列表*/

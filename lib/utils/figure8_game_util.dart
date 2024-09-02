@@ -1,5 +1,6 @@
 // 第一阶段第三进度的红灯的灯控顺序
 import 'dart:async';
+import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 
@@ -8,6 +9,8 @@ import 'ble_data_service.dart';
 import 'ble_ultimate_data.dart';
 import 'ble_ultimate_service_data.dart';
 import 'blue_tooth_manager.dart';
+import 'control_time_out_util.dart';
+import 'game_util.dart';
 import 'global.dart';
 
 // 第一阶段第三进度的红灯的灯控顺序
@@ -77,6 +80,9 @@ class Figure8GameUtil {
     // 监听击中
     BluetoothManager().p3DataChange = (BLEDataType type) async {
       if (type == BLEDataType.targetIn) {
+        if(ControlTimeOutUtil().controling.value){
+          return;
+        }
         HitTargetModel? hitModel = BluetoothManager().gameData.hitTargetModel;
         // 获取击中的标靶
         // 第三进度
@@ -90,7 +96,7 @@ class Figure8GameUtil {
             hitModel.ledIndex == currentModel.ledIndex &&
             hitModel.statu == BleULTimateLighStatu.red) {
           // 关闭当前灯
-          BluetoothManager().writerDataToDevice(
+          await BluetoothManager().asyncWriterDataToDevice(
               gameUtil.selectedDeviceModel,
               controSingleLightBoard(currentModel.boardIndex,
                   currentModel.ledIndex, BleULTimateLighStatu.close));
@@ -123,10 +129,6 @@ class Figure8GameUtil {
         }
       }
     };
-
-    // 先关闭所有的灯光
-    BluetoothManager()
-        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
     // 倒计时显示
     BluetoothManager().writerDataToDevice(
         gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
@@ -146,15 +148,14 @@ class Figure8GameUtil {
         BluetoothManager().writerDataToDevice(
             gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
         this.stopGame();
-        this.completer.complete(true);
-
+        listenControlutil(this.completer);
       }
     });
     _process3Control();
     return completer.future;
   }
 
-  stopGame() {
+  stopGame() async{
     if (this.durationTimer != null) {
       this.durationTimer!.cancel();
       this.durationTimer = null;
@@ -162,26 +163,41 @@ class Figure8GameUtil {
     _process3Index = 0; // 索引
     _process3EveryUnitIndex = 0; // 每个单元的红灯索引
     _countTime = 30; // 倒计时
-    GameUtil gameUtil = GetIt.instance<GameUtil>();
-    // 关闭所有的灯光
-    BluetoothManager()
-        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
   }
 
   // 第三进度控制
-  _process3Control() {
+  _process3Control() async {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     if (_process3Index >= thirdProcessRedData().length) {
       this.stopGame();
-      this.completer.complete(true);
+      listenControlutil(this.completer);
       return;
     }
     List<HitTargetModel> blueDatas = thirdProcessBlueData()[_process3Index];
     List<HitTargetModel> redDatas = thirdProcessRedData()[_process3Index];
     if (_process3EveryUnitIndex >= redDatas.length) {
       // 关闭所有的灯光
-      BluetoothManager().writerDataToDevice(
+       BluetoothManager().writerDataToDevice(
           gameUtil.selectedDeviceModel, closeAllBoardLight());
+       sleep(Duration(milliseconds: 50));
+      // for(int i = 0; i < blueDatas.length; i++){
+      //   HitTargetModel model = blueDatas[i];
+      //   // add 亮的标靶
+      //   await BluetoothManager().asyncWriterDataToDevice(
+      //       gameUtil.selectedDeviceModel,
+      //       controSingleLightBoard(
+      //           model.boardIndex, model.ledIndex, BleULTimateLighStatu.close));
+      // }
+      //
+      // for(int i = 0; i < redDatas.length; i++){
+      //   HitTargetModel model = blueDatas[i];
+      //   // add 亮的标靶
+      //   await BluetoothManager().asyncWriterDataToDevice(
+      //       gameUtil.selectedDeviceModel,
+      //       controSingleLightBoard(
+      //           model.boardIndex, model.ledIndex, BleULTimateLighStatu.close));
+      // }
+
       _process3EveryUnitIndex = 0;
       _process3Index++;
       _process3Control();
@@ -190,19 +206,19 @@ class Figure8GameUtil {
 
     // 蓝灯在循环阶段只开启一次
     if (_process3EveryUnitIndex == 0) {
-      //  开启蓝灯
-      blueDatas.forEach((model) {
+      for(int i = 0; i < blueDatas.length; i++){
+        HitTargetModel model = blueDatas[i];
         // add 亮的标靶
-        BluetoothManager().writerDataToDevice(
+        await BluetoothManager().asyncWriterDataToDevice(
             gameUtil.selectedDeviceModel,
             controSingleLightBoard(
                 model.boardIndex, model.ledIndex, model.statu));
-      });
+      }
     }
 
     // 逐个开启红灯
     HitTargetModel redmodel = redDatas[_process3EveryUnitIndex];
-    BluetoothManager().writerDataToDevice(
+    await BluetoothManager().asyncWriterDataToDevice(
         gameUtil.selectedDeviceModel,
         controSingleLightBoard(
             redmodel.boardIndex, redmodel.ledIndex, redmodel.statu));

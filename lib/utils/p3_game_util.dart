@@ -1,13 +1,14 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:code/models/game/hit_target_model.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
+import 'package:code/utils/control_time_out_util.dart';
 import 'package:get_it/get_it.dart';
-
 import '../constants/constants.dart';
 import 'ble_data_service.dart';
 import 'blue_tooth_manager.dart';
+import 'game_util.dart';
 import 'global.dart';
 
 List<List<ClickTargetModel>> wideDatas() {
@@ -239,8 +240,9 @@ List<List<ClickTargetModel>> zigzagDatas() {
 List<List<ClickTargetModel>> toeDragDatas() {
   // 2号板子  3红
   List<ClickTargetModel> oneData = [
-  ClickTargetModel(
-      boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red])];
+    ClickTargetModel(
+        boardIndex: 2, ledIndex: [3], statu: [BleULTimateLighStatu.red])
+  ];
   // 3号板子  2红
   List<ClickTargetModel> twoData = [
     ClickTargetModel(
@@ -329,8 +331,8 @@ List<List<ClickTargetModel>> toeDragDatas() {
   // 3号板子  2红
   List<ClickTargetModel> eighteenData = [
     ClickTargetModel(
-        boardIndex: 3, ledIndex: [2], statu: [BleULTimateLighStatu.red]),];
-
+        boardIndex: 3, ledIndex: [2], statu: [BleULTimateLighStatu.red]),
+  ];
 
   List<List<ClickTargetModel>> datas = [
     oneData,
@@ -355,6 +357,7 @@ List<List<ClickTargetModel>> toeDragDatas() {
   ];
   return datas;
 }
+
 List<List<ClickTargetModel>> backHandDatas() {
   // 先1号板子 0蓝 3红
   List<ClickTargetModel> oneData = [
@@ -771,8 +774,15 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue
     ]),
-    ClickTargetModel(
-        boardIndex: 0, ledIndex: [1,2,3], statu: [BleULTimateLighStatu.blue,BleULTimateLighStatu.blue,BleULTimateLighStatu.blue]),
+    ClickTargetModel(boardIndex: 0, ledIndex: [
+      1,
+      2,
+      3
+    ], statu: [
+      BleULTimateLighStatu.blue,
+      BleULTimateLighStatu.blue,
+      BleULTimateLighStatu.blue
+    ]),
   ];
 
   // 3号板子 0,2,3蓝 1红;0号板子 1,2,3蓝 0红
@@ -812,11 +822,8 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.blue
     ]),
-    ClickTargetModel(boardIndex: 4, ledIndex: [
-      3
-    ], statu: [
-      BleULTimateLighStatu.blue
-    ]),
+    ClickTargetModel(
+        boardIndex: 4, ledIndex: [3], statu: [BleULTimateLighStatu.blue]),
   ];
 
   // 5号板子 0,2,蓝 1,3红;0号板子 1,2,3蓝 0红
@@ -830,11 +837,8 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       BleULTimateLighStatu.blue,
       BleULTimateLighStatu.red
     ]),
-    ClickTargetModel(boardIndex: 4, ledIndex: [
-      3
-    ], statu: [
-      BleULTimateLighStatu.blue
-    ]),
+    ClickTargetModel(
+        boardIndex: 4, ledIndex: [3], statu: [BleULTimateLighStatu.blue]),
   ];
 
   // 3号板子 0,2,3,蓝 1红;0号板子 1,2,3蓝 0红
@@ -913,7 +917,6 @@ List<List<ClickTargetModel>> througyTheLegsDatas() {
       BleULTimateLighStatu.red,
     ]),
   ];
-
 
   List<List<ClickTargetModel>> datas = [
     oneData,
@@ -1196,7 +1199,7 @@ class P3GameManager {
         kP3IndexAndDurationMap[this.currentInGameIndex]!['second'] ?? 0;
     // 倒计时赋值
     _countTime = duration;
-    print('开始一轮游戏 currentInGameIndex= ${currentInGameIndex}');
+    // print('开始一轮游戏 currentInGameIndex= ${currentInGameIndex}');
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 倒计时显示
     BluetoothManager().writerDataToDevice(
@@ -1210,14 +1213,20 @@ class P3GameManager {
         // 不在游戏中
         return;
       }
+      if (ControlTimeOutUtil().controling.value) {
+        return;
+      }
       if (type == BLEDataType.targetIn) {
         // 取出来当前灯光的组合
         List<ClickTargetModel> datas = _allDatas[this._index];
         HitTargetModel? hitModel = BluetoothManager().gameData.hitTargetModel;
         if (hitModel != null) {
-          ClickTargetModel matchModel = datas.firstWhere((element) =>
-              element.ledIndex.contains(hitModel!.ledIndex) &&
-              element.boardIndex == hitModel!.boardIndex);
+          ClickTargetModel matchModel = datas.firstWhere(
+              (element) =>
+                  element.ledIndex.contains(hitModel!.ledIndex) &&
+                  element.boardIndex == hitModel!.boardIndex,
+              orElse: () =>
+                  ClickTargetModel(boardIndex: -1, ledIndex: [], statu: []));
           if (matchModel != null) {
             // 击中了当前亮的灯
             if (hitModel.statu == BleULTimateLighStatu.blue) {
@@ -1236,7 +1245,7 @@ class P3GameManager {
                   gameUtil.selectedDeviceModel,
                   scoreShow(BluetoothManager().gameData.score));
               // 关闭击中的灯
-              BluetoothManager().writerDataToDevice(
+              await BluetoothManager().asyncWriterDataToDevice(
                   gameUtil.selectedDeviceModel,
                   controSingleLightBoard(hitModel.boardIndex, hitModel.ledIndex,
                       BleULTimateLighStatu.close));
@@ -1244,7 +1253,7 @@ class P3GameManager {
               if (this._index > _allDatas.length) {
                 // 结束本组合中的某个模式
                 this.stopGame();
-                completer.complete(true);
+                listenControlutil(completer);
               } else {
                 // 继续循环执行
                 _implement(completer);
@@ -1261,7 +1270,8 @@ class P3GameManager {
       this.durationTimer = null;
     }
     // 倒计时定时器
-    this.durationTimer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+    this.durationTimer =
+        Timer.periodic(Duration(milliseconds: 1000), (timer) async {
       // 达到时长 结束本组合元素的循环 进行下一个
       _countTime--;
       BluetoothManager().writerDataToDevice(
@@ -1269,7 +1279,7 @@ class P3GameManager {
       // 倒计时显示
       if (_countTime == 0) {
         this.stopGame();
-        completer.complete(true);
+        listenControlutil(completer);
       }
     });
 
@@ -1279,7 +1289,7 @@ class P3GameManager {
   }
 
   /*停止游戏*/
-  stopGame() {
+  Future<void> stopGame() async {
     // 清空定时器
     if (this.durationTimer != null) {
       this.durationTimer!.cancel();
@@ -1289,15 +1299,28 @@ class P3GameManager {
       this.frequencyTimer!.cancel();
       this.frequencyTimer = null;
     }
+    // 关闭所有的灯光
+    // GameUtil gameUtil = GetIt.instance<GameUtil>();
+    // List<List<ClickTargetModel>> _allDatas =
+    // p3ModeDatas[this.currentInGameIndex];
+    // int index =  _countTime == 0 ? this._index : (this._index - 1);
+    // List<ClickTargetModel> currentDatas = _allDatas[index];
+    // for(int i = 0; i <currentDatas.length; i++){
+    //   ClickTargetModel element = currentDatas[i];
+    //   List<BleULTimateLighStatu> status = [
+    //     BleULTimateLighStatu.close,
+    //     BleULTimateLighStatu.close,
+    //     BleULTimateLighStatu.close,
+    //     BleULTimateLighStatu.close
+    //   ];
+    //   await BluetoothManager().asyncWriterDataToDevice(
+    //       gameUtil.selectedDeviceModel,
+    //       controLightBoard(element.boardIndex, status));
+    // }
     this._index = 0;
     this._countTime = 0;
     this.currentInGameIndex = -1;
     this._countTime = 0;
-
-    GameUtil gameUtil = GetIt.instance<GameUtil>();
-    // 关闭所有的灯光
-    BluetoothManager()
-        .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
   }
 
   // 执行
@@ -1305,15 +1328,15 @@ class P3GameManager {
     if (_countTime <= 0) {
       return;
     }
-    print('this._index=======${this._index}');
+    // print('this._index=======${this._index}');
     List<List<ClickTargetModel>> _allDatas =
         p3ModeDatas[this.currentInGameIndex];
 
     if (this._index >= _allDatas.length) {
-      print('_allDatas====${_allDatas.length} this._index = ${this._index}');
+      //print('_allDatas====${_allDatas.length} this._index = ${this._index}');
       // 结束本组合中的某个模式
       this.stopGame();
-      completer.complete(true);
+      listenControlutil(completer);
       return;
     }
     List<ClickTargetModel> datas = _allDatas[this._index];
@@ -1325,32 +1348,33 @@ class P3GameManager {
       this.frequencyTimer = null;
     }
     // 和P1模式保持一致的Wide Dekes ,Toe Drag阶段，不进行定时刷新
-    if(currentInGameIndex != 0 && currentInGameIndex != 2){
+    if (currentInGameIndex != 0 && currentInGameIndex != 2) {
       this.frequencyTimer =
           Timer.periodic(Duration(milliseconds: frequency), (timer) {
-            this._index++;
-            // 递归
-            _implement(completer);
-          });
+        //print('++++++++--------');
+        this._index++;
+        // 递归
+        _implement(completer);
+      });
     }
 
-
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-
-    // 确认不是首次
     if (this._index > 0) {
       List<ClickTargetModel> preDatas = _allDatas[this._index - 1];
-      // 先关闭上次所有的灯光
-      preDatas.forEach((element) async {
-        // 根据具体数据进行替换 开关和红蓝状态
-        element.ledIndex.forEach((action) {
-          int index = action;
+      List<ClickTargetModel> preDatasCopy = [];
+      preDatasCopy.addAll(List.from(preDatas));
+      for (int i = 0; i < preDatasCopy.length; i++) {
+        ClickTargetModel element = preDatasCopy[i];
+        List<BleULTimateLighStatu> status = [
+          BleULTimateLighStatu.close,
+          BleULTimateLighStatu.close,
+          BleULTimateLighStatu.close,
+          BleULTimateLighStatu.close
+        ];
+        for (int j = 0; j < element.ledIndex.length; j++) {
+          int index = element.ledIndex[j];
           BleULTimateLighStatu statu =
               element.statu[element.ledIndex.indexOf(index)];
-          // 匹配下 下一组亮的灯 是否有和此完全一样的 包括颜色
-          // firstWher    if(datas.isEmpty){
-          //             print('datas-------isEmpty');
-          //           }e函数如果没有匹配到任何元素  会抛异常 下面的代码也不会执行了 所以 需要在orElse函数里面加个默认值
           final _matchModel = datas.firstWhere(
               (nextElement) =>
                   element.boardIndex == nextElement.boardIndex &&
@@ -1360,28 +1384,34 @@ class P3GameManager {
               orElse: () =>
                   ClickTargetModel(boardIndex: -1, ledIndex: [], statu: []));
           if (_matchModel.boardIndex == -1) {
-            //  单控 下一组要打开的没有
-            BluetoothManager().writerDataToDevice(
-                gameUtil.selectedDeviceModel,
-                controSingleLightBoard(
-                    element.boardIndex, index, BleULTimateLighStatu.close));
+            //  下一组不需要重复打开的 才需要关闭
+          } else {
+            status[index] = statu;
           }
-        });
-      });
+        }
+        await BluetoothManager().asyncWriterDataToDevice(
+            gameUtil.selectedDeviceModel,
+            controLightBoard(element.boardIndex, status));
+      }
     }
-    // 先关闭所有的灯光
-    // BluetoothManager()
-    //     .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
-    datas.forEach((element) async {
-      // 根据具体数据进行替换 开关和红蓝状态
-      element.ledIndex.forEach((action) {
-        int index = action;
-        BleULTimateLighStatu statu =
-            element.statu[element.ledIndex.indexOf(index)];
-        //  单控
-        BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
-            controSingleLightBoard(element.boardIndex, index, statu));
-      });
-    });
+    // 然后把下一组要开的灯打开
+    for (int i = 0; i < datas.length; i++) {
+      ClickTargetModel element = datas[i];
+      List<BleULTimateLighStatu> status = [
+        BleULTimateLighStatu.close,
+        BleULTimateLighStatu.close,
+        BleULTimateLighStatu.close,
+        BleULTimateLighStatu.close
+      ];
+      for (int j = 0; j < 4; j++) {
+        if (element.ledIndex.contains(j)) {
+          int index = element.ledIndex.indexOf(j);
+          status[j] = element.statu[index];
+        }
+      }
+      await BluetoothManager().asyncWriterDataToDevice(
+          gameUtil.selectedDeviceModel,
+          controLightBoard(element.boardIndex, status));
+    }
   }
 }

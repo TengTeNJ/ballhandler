@@ -8,6 +8,7 @@
   bit[0]：主控板
 * */
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/control_time_out_util.dart';
 import 'package:code/utils/string_util.dart';
 
 import 'ble_data_service.dart';
@@ -148,7 +149,7 @@ List<int> controLightBoard(
     destinationInt = int.parse(destination, radix: 2);
   }
 
-  int length = 9;
+  int length = 10;
   int cmd = 0x60;
 
   String lights = '';
@@ -170,11 +171,11 @@ List<int> controLightBoard(
       lights = lights + '00';
     }
   }
-
-  print('控制灯光----${lights}');
+int data0 = ControlTimeOutUtil().controlLedId;
+ // print('控制灯光----${lights}');
   int data2 = int.parse(lights, radix: 2);
 
-  int cs = start + source + destinationInt + length + cmd + data1 + data2;
+  int cs = start + source + destinationInt + length + cmd + data0 + data1 + data2;
   String binaryString = StringUtil.decimalToBinary(cs);
   if (binaryString.length > 8) {
     binaryString =
@@ -187,7 +188,7 @@ List<int> controLightBoard(
   BluetoothManager().gameData.lightStatus = lightStatu;
   BluetoothManager().triggerCallback(type: BLEDataType.statuSynchronize);
 
-  return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
+  return [start, source, destinationInt, length, cmd, data0,data1, data2, cs, end];
 }
 
 /*
@@ -217,7 +218,7 @@ List<int> controSingleLightBoard(
     destinationInt = int.parse(destination, radix: 2);
   }
 
-  int length = 9;
+  int length = 10;
   int cmd = 0x60;
 
   String ligh = '';
@@ -229,6 +230,8 @@ List<int> controSingleLightBoard(
       ligh = ligh + '0';
     }
   }
+
+  int data0 = ControlTimeOutUtil().controlLedId;
   int data1 = int.parse('0000' + ligh, radix: 2);
 
   String lights = '';
@@ -252,10 +255,10 @@ List<int> controSingleLightBoard(
       lights = lights + '00';
     }
   }
-  print('控制单个灯光----${lights}');
+//  print('控制单个灯光----${lights}');
   int data2 = int.parse(lights, radix: 2);
 
-  int cs = start + source + destinationInt + length + cmd + data1 + data2;
+  int cs = start + source + destinationInt + length + cmd + data0 + data1 + data2;
   String binaryString = StringUtil.decimalToBinary(cs);
   if (binaryString.length > 8) {
     binaryString =
@@ -269,23 +272,25 @@ List<int> controSingleLightBoard(
   BluetoothManager().gameData.singleLedStatu = statu;
   BluetoothManager().triggerCallback(type: BLEDataType.refreshSingleLedStatu);
 
-  return [start, source, destinationInt, length, cmd, data1, data2, cs, end];
+  return [start, source, destinationInt, length, cmd, data0,data1, data2, cs, end];
 }
 
 /*
 * 关闭所有的面板灯光
 * */
 List<int> closeAllBoardLight() {
+
   int start = kBLEDataFrameHeader;
   int end = kBLEDataFramerFoot;
   int source = int.parse('10000000', radix: 2);
-  int destination = int.parse('00111111', radix: 2);
-  int length = 9;
+  int destination = int.parse('01111111', radix: 2);
+  int length = 10;
   int cmd = 0x60;
+  int data0 = ControlTimeOutUtil().controlLedId + 20;
   int data1 = int.parse('00001111', radix: 2);
   int data2 = int.parse('00000000', radix: 2);
 
-  int cs = start + source + destination + length + cmd + data1 + data2;
+  int cs = start + source + destination + length + cmd + data0 + data1 + data2;
   String binaryString = StringUtil.decimalToBinary(cs);
   if (binaryString.length > 8) {
     binaryString =
@@ -306,7 +311,8 @@ List<int> closeAllBoardLight() {
   }
   BluetoothManager().triggerCallback(type: BLEDataType.allBoadrStatuFinish);
 
-  return [start, source, destination, length, cmd, data1, data2, cs, end];
+  print('all====${[start, source, destination, length, cmd, data0,data1, data2, cs, end]}');
+  return [start, source, destination, length, cmd, data0,data1, data2, cs, end];
 }
 
 /*关闭某个面板的所有灯光

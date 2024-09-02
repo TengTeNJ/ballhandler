@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/participants/ready_controller.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
+import 'package:code/utils/control_time_out_util.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/figure8_game_util.dart';
 import 'package:code/utils/game_util.dart';
@@ -285,17 +287,27 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       if ([6].contains(index)) {
         // wide side   toe-drag   figure8模式流程和P1保持一致
         await Figure8GameUtil().startGame();
+        BluetoothManager()
+            .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
+        sleep(Duration(milliseconds: 100));
       } else {
         await P3GameManager().startGame(currentInGameIndex: index);
+         BluetoothManager()
+            .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
+        sleep(Duration(milliseconds: 100));
+        ControlTimeOutUtil().reset();
       }
     }
     print('P3模式结束组合');
     // 结束游戏指令
     Figure8GameUtil().stopGame();
     P3GameManager().stopGame();
+    ControlTimeOutUtil().reset();
     BluetoothManager().writerDataToDevice(
         gameUtil.selectedDeviceModel, gameStart(onStart: false));
     Future.delayed(Duration(milliseconds: 500), () {
+      BluetoothManager()
+          .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
       BluetoothManager()
           .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
     });

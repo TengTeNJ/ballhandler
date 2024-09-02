@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:get_it/get_it.dart';
 import '../models/game/light_ball_model.dart';
@@ -5,6 +7,7 @@ import 'package:code/utils/string_util.dart';
 import 'dart:math';
 import '../models/game/light_ball_model.dart';
 import 'ble_ultimate_service_data.dart';
+import 'control_time_out_util.dart';
 import 'global.dart';
 
 /*初始化灯光状态 和UI的状态模拟一致*/
@@ -334,5 +337,20 @@ String getGameDutation(){
     }
   }
   return '45';
+}
+
+/*P3模式倒计时结束或者进行下一个组合游戏时监听确认是否上一个控制未返回*/
+listenControlutil(Completer<bool> completer) {
+  if (!ControlTimeOutUtil().controling.value) {
+    completer.complete(true);
+  } else {
+    // 监听此时是否正在控制
+    ControlTimeOutUtil().controling.addListener(() {
+      if (!ControlTimeOutUtil().controling.value) {
+        ControlTimeOutUtil().controling.removeListener(() {});
+        completer.complete(true);
+      }
+    });
+  }
 }
 
