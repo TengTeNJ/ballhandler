@@ -294,10 +294,14 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         await Figure8GameUtil().startGame();
         BluetoothManager()
             .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
+        BluetoothManager()
+            .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
         sleep(Duration(milliseconds: 100));
       } else {
         await P3GameManager().startGame(currentInGameIndex: index);
          BluetoothManager()
+            .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
+        BluetoothManager()
             .writerDataToDevice(gameUtil.selectedDeviceModel, closeAllBoardLight());
         sleep(Duration(milliseconds: 100));
         ControlTimeOutUtil().reset();
@@ -495,22 +499,13 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                               children: [
                                 Constants.mediumWhiteTextWidget(
                                     'TIME LEFT', 13),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Constants.digiRegularWhiteTextWidget(
-                                        '00:', 72,
-                                        height: 1.0),
-                                    Constants.digiRegularWhiteTextWidget(
-                                        BluetoothManager()
-                                            .gameData
-                                            .remainTime
-                                            .toString()
-                                            .padLeft(2, '0'),
-                                        72,
-                                        height: 1.0),
-                                  ],
-                                )
+                                Constants.digiRegularWhiteTextWidget(
+                                    StringUtil.timeStringFormat(  BluetoothManager()
+                                        .gameData
+                                        .remainTime
+                                        .toString()),
+                                    Constants.screenHeight(context) >= 780 ? 72 : 65,
+                                    height: 1.0),
                               ],
                             ),
                           ),
@@ -545,7 +540,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                                         .gameData
                                         .score
                                         .toString(),
-                                    72,
+                                    Constants.screenHeight(context) >= 780 ? 72 : 65,
                                     height: 1.0)
                               ],
                             ),
@@ -596,7 +591,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     SystemUtil.disableWakeUpDevice();
     BluetoothManager().dataChange = null;
-    BluetoothManager().gameData.remainTime = 60;
+    BluetoothManager().gameData.remainTime = 120;
     BluetoothManager().gameData.millSecond = 0;
     BluetoothManager().gameData.score = 0;
     subscription.cancel();

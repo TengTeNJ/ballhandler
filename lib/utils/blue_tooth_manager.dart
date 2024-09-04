@@ -130,8 +130,9 @@ class BluetoothManager {
       // 已连接状态直接返回
       return;
     }
+
     EasyLoading.show();
-    _ble
+    StreamSubscription<ConnectionStateUpdate> stream = _ble
         .connectToDevice(
             id: model.device!.id, connectionTimeout: Duration(seconds: 30))
         .listen((ConnectionStateUpdate connectionStateUpdate) {
@@ -174,9 +175,9 @@ class BluetoothManager {
           model.notifyCharacteristic = notifyCharacteristic;
           model.writerCharacteristic = writerCharacteristic;
         }
-
         // 连接成功弹窗
-        EasyLoading.showSuccess('Bluetooth connection successful');
+        EasyLoading.showSuccess('Bluetooth connection successful',
+            maskType: EasyLoadingMaskType.black);
         // 监听数据
         _ble
             .subscribeToCharacteristic(notifyCharacteristic)
@@ -218,6 +219,26 @@ class BluetoothManager {
         deviceListLength.value = this.deviceList.length;
       }
     });
+    // 保存sream
+    model.bleStream = stream;
+  }
+
+  /*断开连接*/
+  disconecteDevice(BLEModel device) {
+    device.bleStream?.cancel();
+    EasyLoading.showToast('Disconnected');
+    if (conectedDeviceCount.value > 0) {
+      conectedDeviceCount.value--;
+      if (conectedDeviceCount.value == 0) {
+        // 所有设备断开
+        _instance._bleListen?.cancel();
+        _instance._bleListen = null;
+        _instance._scanStream = null;
+      }
+    }
+    device.hasConected = false;
+    // 发送通知 主动断开
+    EventBus().sendEvent(kInitiativeDisconnect);
   }
 
   /*发送数据*/
@@ -233,7 +254,7 @@ class BluetoothManager {
       TTToast.showErrorInfo('Please connect your device first');
       return;
     }
-    if(data[4] == 0x60 && data[2] != 0x7f){
+    if (data[4] == 0x60 && data[2] != 0x7f) {
       print(
           " 重发数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
     }
@@ -243,12 +264,13 @@ class BluetoothManager {
     await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
         value: data);
   }
+
   /*增加超时机制的控制*/
   Future<bool> asyncWriterDataToDevice(BLEModel model, List<int> data) async {
     //  数据校验
     if (data == null || data.length == 0) {
-       ControlTimeOutUtil().completer.complete(true);
-       ControlTimeOutUtil().completer = Completer();
+      ControlTimeOutUtil().completer.complete(true);
+      ControlTimeOutUtil().completer = Completer();
     }
     // 确认蓝牙设备已连接 并保存对应的特征值
     if (model == null ||
@@ -262,14 +284,14 @@ class BluetoothManager {
     ControlTimeOutUtil().controlBoard = data[2];
     print(
         " 发数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
-     _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
+    _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
         value: data);
     // 解析270
     // 记录缓存发送的数据
     ControlTimeOutUtil().ongoingData = data;
     // 超时重发逻辑
     ControlTimeOutUtil().begainTimer();
-    return  ControlTimeOutUtil().completer.future;
+    return ControlTimeOutUtil().completer.future;
   }
 
   /*判断是否已经被添加设备列表*/
@@ -287,8 +309,9 @@ class BluetoothManager {
   listenBLEStatu() {
     if (_bleStatuListen == null) {
       _bleStatuListen = FlutterReactiveBle().statusStream.listen((status) {
-        // print('蓝牙状态status===${status}');
-        //code for handling status updatei
+        print('蓝牙状态status===${status}');
+        GameUtil gameUtil = GetIt.instance<GameUtil>();
+        gameUtil.bleStatus = status;
         if (status == BleStatus.poweredOff) {
           // 蓝牙开关关闭
           _instance._bleListen?.cancel();

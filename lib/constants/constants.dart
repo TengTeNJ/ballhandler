@@ -357,6 +357,7 @@ const kPopSubscribeDialog= 'pop_subscribe_dialog'; // 主动弹出订阅弹窗
 const kPopSubscribeLate= 'pop_subscribe_dialog_late'; // 稍后订阅
 const kCurrent270DeviceInfoChange = 'current_270_device_info_change'; // 当前270游戏设备信息改变
 const kGameReady = 'game_ready'; // 游戏
+const kInitiativeDisconnect = 'initiative_disconnect'; // 主动断开
 
 const Map<String,Map<String,String>> kGameSceneAndModelMap = {
   "1" :{

@@ -1,6 +1,7 @@
 import 'package:code/models/ble/ble_model.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 enum GameScene { five, erqiling,threee}
 
@@ -14,6 +15,7 @@ class GameUtil {
   ActivityModel activityModel = ActivityModel(); // 当前的ActivityModel
   bool hasShowNitice = false; // 是否已经展示首页获奖弹窗
   BLEModel selectedDeviceModel = BLEModel(deviceName: 'deviceName'); // 选择的游戏设备
+  BleStatus bleStatus = BleStatus.unknown; // 蓝牙的状态
   double get imageWidth {
     if(this.modelId == 1){
       return 200;

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 
@@ -26,6 +27,7 @@ class ControlTimeOutUtil{
   set retryTimes(int times){
     _retryTimes = times;
     if(_retryTimes > 5){
+      TTToast.showErrorInfo('超时次数达到上限');
       ControlTimeOutUtil().controlLedId ++;
       this.completer.complete(true);
       reset();
@@ -49,7 +51,7 @@ class ControlTimeOutUtil{
     }
     this.timeOutTimer =  Timer(Duration(milliseconds: 150), (){
       this.retryTimes ++;
-     print('超时${retryTimes}次');
+     print('超时${retryTimes}次---${controlLedId}');
     });
   }
 

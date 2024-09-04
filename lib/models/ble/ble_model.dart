@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 enum BLEModelStatu {
@@ -14,6 +16,7 @@ class BLEModel {
   bool? hasConected; // 连接状态
   QualifiedCharacteristic? notifyCharacteristic; // notify特征值
   QualifiedCharacteristic? writerCharacteristic; // writer特征值
+  StreamSubscription<ConnectionStateUpdate>? bleStream;
    int get batteryLevel{
      if(this.powerValue >80){
        return 5;

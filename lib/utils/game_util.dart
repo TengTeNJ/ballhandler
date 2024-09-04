@@ -345,6 +345,7 @@ listenControlutil(Completer<bool> completer) {
     completer.complete(true);
   } else {
     // 监听此时是否正在控制
+    print('等待控制完成----${ ControlTimeOutUtil().controlLedId}');
     ControlTimeOutUtil().controling.addListener(() {
       if (!ControlTimeOutUtil().controling.value) {
         ControlTimeOutUtil().controling.removeListener(() {});

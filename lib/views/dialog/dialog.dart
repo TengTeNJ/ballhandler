@@ -6,6 +6,7 @@ import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/app_purse.dart';
+import 'package:code/utils/ble_util.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -280,10 +281,18 @@ class _BLEListDialogState extends State<BLEListDialog> {
                     if (locationPermission == PermissionStatus.granted &&
                         bleScan == PermissionStatus.granted &&
                         bleConnect == PermissionStatus.granted) {
-                      BluetoothManager().startScan();
+                       bool result =  BleUtil.handleBleStatu(context);
+                      if(result){
+                        BluetoothManager().startScan();
+                      }
+                    }else{
+                      BleUtil.handleBleStatu(context);
                     }
                   } else {
-                    BluetoothManager().startScan();
+                    bool result =  BleUtil.handleBleStatu(context);
+                    if(result){
+                      BluetoothManager().startScan();
+                    }
                   }
                 },
                 child: Row(
@@ -372,10 +381,16 @@ class _IpadBLEListDialogState extends State<IpadBLEListDialog> {
                     if (locationPermission == PermissionStatus.granted &&
                         bleScan == PermissionStatus.granted &&
                         bleConnect == PermissionStatus.granted) {
-                      BluetoothManager().startScan();
+                      bool result =  BleUtil.handleBleStatu(context);
+                      if(result){
+                        BluetoothManager().startScan();
+                      }
                     }
                   } else {
-                    BluetoothManager().startScan();
+                    bool result =  BleUtil.handleBleStatu(context);
+                    if(result){
+                      BluetoothManager().startScan();
+                    }
                   }
                 },
                 child: Row(
