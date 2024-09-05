@@ -1,3 +1,4 @@
+import 'package:code/models/airbattle/p3_item_model.dart';
 import 'package:code/models/ble/ble_model.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
@@ -36,4 +37,6 @@ class GameUtil {
   }
   List<SceneModel> sceneList = [SceneModel()]; // 场景列表
   List<int> selectdP3Indexs = []; // 270P3模式选择的组合的索引
+  List<P3ItemModel> selectdP3Items = []; // 270P3模式选择的组合的索引
+
 }

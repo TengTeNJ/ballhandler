@@ -150,7 +150,6 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                           Routes.process270,
                           arguments: cameras[cameras.length >1 ? 1 : 0],
                         );
-                       // NavigatorUtil.popAndThenPush(Routes.gameready);
                       },
                       child: Container(
                         width: 90,

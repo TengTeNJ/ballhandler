@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class P3GridListView extends StatefulWidget {
-  Function?selectItem;
-   P3GridListView({this.selectItem});
+   Function?selectItem;
+   List<P3ItemModel>? selectedItemIndexs;
+   P3GridListView({this.selectItem,this.selectedItemIndexs});
 
   @override
   State<P3GridListView> createState() => _P3GridListViewState();
@@ -15,8 +16,8 @@ class P3GridListView extends StatefulWidget {
 class _P3GridListViewState extends State<P3GridListView> {
 
   int selectCount = 0;
-  late List<P3ItemModel> _datas;
-  List<P3ItemModel> _selectModels = [];
+  late List<P3ItemModel> _datas; // 初始化数据展示的
+  List<P3ItemModel> _selectModels = []; // 选中的
 
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _P3GridListViewState extends State<P3GridListView> {
     _datas = [];
     List<String> _paths = ['dekes','zigzag','drag','triangles','backhand','legs','figure','handed'];
     List<String> _titles = ['Wide Dekes','Zigzag','Toe Drag','Triangles','Backhand','Through the legs','Figure 8','One handed'];
+    // 初始化数据
     for(int i = 0; i <_paths.length; i++){
       Map<String,int>? _map = kP3IndexAndDurationMap[i];
       int? time = _map?['second'];
@@ -33,7 +35,18 @@ class _P3GridListViewState extends State<P3GridListView> {
       model.timeString = time.toString() + 's';
       model.title = _titles[i];
       model.imagePath = _paths[i];
-      _datas.add(model);
+      P3ItemModel matchModel = model;
+      // 记录上次选择的
+      if(widget.selectedItemIndexs != null){
+        matchModel = widget.selectedItemIndexs!.firstWhere((element)=>element.title == model.title,orElse: (){
+          return model;
+        });
+      }
+      if(matchModel.selectedIndex != 0){
+        selectCount ++;
+        _selectModels.add(matchModel);
+      }
+      _datas.add(matchModel);
     }
   }
 

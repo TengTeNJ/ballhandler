@@ -1213,6 +1213,7 @@ class P3GameManager {
         // 不在游戏中
         return;
       }
+      // 是否控制还未收到回复
       if (ControlTimeOutUtil().controling.value) {
         return;
       }
@@ -1328,12 +1329,10 @@ class P3GameManager {
     if (_countTime <= 0) {
       return;
     }
-    // print('this._index=======${this._index}');
     List<List<ClickTargetModel>> _allDatas =
         p3ModeDatas[this.currentInGameIndex];
 
     if (this._index >= _allDatas.length) {
-      //print('_allDatas====${_allDatas.length} this._index = ${this._index}');
       // 结束本组合中的某个模式
       this.stopGame();
       listenControlutil(completer);

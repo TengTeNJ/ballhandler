@@ -174,7 +174,7 @@ class P2Controller extends StatelessWidget {
                   behavior: HitTestBehavior.opaque,
                   onTap: () async{
                     TTToast.showLoading();
-                    NavigatorUtil.pop();
+                    //NavigatorUtil.pop();
                     List<CameraDescription> cameras = await availableCameras();
                     NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                     TTToast.hideLoading();

@@ -344,213 +344,220 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   @override
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-    return _ready
+    return WillPopScope(child:  _ready
         ? ReadyController()
         : Scaffold(
-            body: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/product/270_bg.png'), // 设置背景图片
-                  fit: BoxFit.cover, // 设置填充方式
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/product/270_bg.png'), // 设置背景图片
+            fit: BoxFit.cover, // 设置填充方式
+          ),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+                left: _left,
+                top: _top,
+                child: Container(
+                  child: Stack(
+                    children: [
+                      Image(
+                        image: AssetImage('images/product/270.png'),
+                        fit: BoxFit.fill,
+                        height: _height,
+                      ),
+                      Positioned(
+                        child: UltimateLightsView(
+                          datas: datas,
+                          width: _width,
+                          height: _height,
+                        ),
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                      )
+                    ],
+                  ),
+                )),
+            Positioned(
+                left: 24,
+                top: 16,
+                child: GestureDetector(
+                  child: Container(
+                    child: Center(
+                      child: Image(
+                        image: AssetImage(
+                            'images/participants/game_back.png'),
+                        width: 24,
+                        height: 21,
+                      ),
+                    ),
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                        color: hexStringToColor('#204DD1'),
+                        borderRadius: BorderRadius.circular(22)),
+                  ),
+                  onTap: () {
+                    Figure8GameUtil().stopGame();
+                    P3GameManager().stopGame();
+                    backHandle();
+                  },
+                  behavior: HitTestBehavior.opaque,
+                )),
+            Positioned(
+                right: 24,
+                top: 16,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    TTDialog.horizontalMirrorScreenDialog(context);
+                  },
+                  child: Container(
+                    child: Center(
+                      child: Image(
+                        image: AssetImage('images/participants/cast.png'),
+                        width: 26,
+                        height: 20,
+                      ),
+                    ),
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                        color: hexStringToColor('#204DD1'),
+                        borderRadius: BorderRadius.circular(22)),
+                  ),
+                )),
+            Positioned(
+              left: _left + _width * 0.245,
+              right: _left + _width * 0.245,
+              bottom:
+              ((Constants.screenHeight(context) - _height).abs()) /
+                  2.0 +
+                  6,
+              // top: Constants.screenHeight(context) - 45,
+              child: Container(
+                // color: Colors.red,
+                margin: EdgeInsets.only(left: 12, right: 12
+                  // left: ((Constants.screenWidth(context) -
+                  //             (_left + _width * 0.245) * 2) -
+                  //         _width * 0.49 * 0.88 -
+                  //         8) /
+                  //     2.0,
+                  // right: ((Constants.screenWidth(context) -
+                  //             (_left + _width * 0.245) * 2) -
+                  //         _width * 0.49 * 0.88 -
+                  //         8) /
+                  //     2.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        BatteryView(),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        BLEView()
+                      ],
+                    ),
+                    recordWidget(context),
+                  ],
                 ),
               ),
-              child: Stack(
-                children: [
-                  Positioned(
-                      left: _left,
-                      top: _top,
-                      child: Container(
-                        child: Stack(
-                          children: [
-                            Image(
-                              image: AssetImage('images/product/270.png'),
-                              fit: BoxFit.fill,
-                              height: _height,
-                            ),
-                            Positioned(
-                              child: UltimateLightsView(
-                                datas: datas,
-                                width: _width,
-                                height: _height,
-                              ),
-                              left: 0,
-                              right: 0,
-                              top: 0,
-                              bottom: 0,
-                            )
-                          ],
-                        ),
-                      )),
-                  Positioned(
-                      left: 24,
-                      top: 16,
-                      child: GestureDetector(
-                        child: Container(
-                          child: Center(
-                            child: Image(
-                              image: AssetImage(
-                                  'images/participants/game_back.png'),
-                              width: 24,
-                              height: 21,
-                            ),
-                          ),
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                              color: hexStringToColor('#204DD1'),
-                              borderRadius: BorderRadius.circular(22)),
-                        ),
-                        onTap: () {
-                          Figure8GameUtil().stopGame();
-                          P3GameManager().stopGame();
-                          backHandle();
-                        },
-                        behavior: HitTestBehavior.opaque,
-                      )),
-                  Positioned(
-                      right: 24,
-                      top: 16,
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () {
-                          TTDialog.horizontalMirrorScreenDialog(context);
-                        },
-                        child: Container(
-                          child: Center(
-                            child: Image(
-                              image: AssetImage('images/participants/cast.png'),
-                              width: 26,
-                              height: 20,
-                            ),
-                          ),
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                              color: hexStringToColor('#204DD1'),
-                              borderRadius: BorderRadius.circular(22)),
-                        ),
-                      )),
-                  Positioned(
-                    left: _left + _width * 0.245,
-                    right: _left + _width * 0.245,
-                    bottom:
-                        ((Constants.screenHeight(context) - _height).abs()) /
-                                2.0 +
-                            6,
-                    // top: Constants.screenHeight(context) - 45,
-                    child: Container(
-                      // color: Colors.red,
-                      margin: EdgeInsets.only(left: 12, right: 12
-                          // left: ((Constants.screenWidth(context) -
-                          //             (_left + _width * 0.245) * 2) -
-                          //         _width * 0.49 * 0.88 -
-                          //         8) /
-                          //     2.0,
-                          // right: ((Constants.screenWidth(context) -
-                          //             (_left + _width * 0.245) * 2) -
-                          //         _width * 0.49 * 0.88 -
-                          //         8) /
-                          //     2.0,
-                          ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              BatteryView(),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              BLEView()
+            ),
+            Positioned(
+                left: _left + _width * 0.245,
+                right: _left + _width * 0.245,
+                bottom: 53,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: _width * 0.49 * 0.56,
+                      height: 117,
+                      decoration: gameUtil.isFromAirBattle
+                          ? BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              hexStringToColor('#EF8914'),
+                              hexStringToColor('#CF391A'),
                             ],
                           ),
-                          recordWidget(context),
+                          borderRadius: BorderRadius.circular(10))
+                          : BoxDecoration(
+                          color: hexStringToColor('#204DD1'),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Constants.mediumWhiteTextWidget(
+                              'TIME LEFT', 13),
+                          Constants.digiRegularWhiteTextWidget(
+                              StringUtil.timeStringFormat(  BluetoothManager()
+                                  .gameData
+                                  .remainTime
+                                  .toString()),
+                              Constants.screenHeight(context) >= 780 ? 72 : 65,
+                              height: 1.0),
                         ],
                       ),
                     ),
-                  ),
-                  Positioned(
-                      left: _left + _width * 0.245,
-                      right: _left + _width * 0.245,
-                      bottom: 53,
-                      child: Row(
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      width: _width * 0.49 * 0.32,
+                      height: 117,
+                      decoration: gameUtil.isFromAirBattle
+                          ? BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              hexStringToColor('#EF8914'),
+                              hexStringToColor('#CF391A'),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(10))
+                          : BoxDecoration(
+                          color: hexStringToColor('#204DD1'),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: _width * 0.49 * 0.56,
-                            height: 117,
-                            decoration: gameUtil.isFromAirBattle
-                                ? BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        hexStringToColor('#EF8914'),
-                                        hexStringToColor('#CF391A'),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(10))
-                                : BoxDecoration(
-                                    color: hexStringToColor('#204DD1'),
-                                    borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Constants.mediumWhiteTextWidget(
-                                    'TIME LEFT', 13),
-                                Constants.digiRegularWhiteTextWidget(
-                                    StringUtil.timeStringFormat(  BluetoothManager()
-                                        .gameData
-                                        .remainTime
-                                        .toString()),
-                                    Constants.screenHeight(context) >= 780 ? 72 : 65,
-                                    height: 1.0),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Container(
-                            width: _width * 0.49 * 0.32,
-                            height: 117,
-                            decoration: gameUtil.isFromAirBattle
-                                ? BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        hexStringToColor('#EF8914'),
-                                        hexStringToColor('#CF391A'),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(10))
-                                : BoxDecoration(
-                                    color: hexStringToColor('#204DD1'),
-                                    borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Constants.mediumWhiteTextWidget('SCORE', 13,
-                                    height: 1.0),
-                                Constants.digiRegularWhiteTextWidget(
-                                    BluetoothManager()
-                                        .gameData
-                                        .score
-                                        .toString(),
-                                    Constants.screenHeight(context) >= 780 ? 72 : 65,
-                                    height: 1.0)
-                              ],
-                            ),
-                          ),
+                          Constants.mediumWhiteTextWidget('SCORE', 13,
+                              height: 1.0),
+                          Constants.digiRegularWhiteTextWidget(
+                              BluetoothManager()
+                                  .gameData
+                                  .score
+                                  .toString(),
+                              Constants.screenHeight(context) >= 780 ? 72 : 65,
+                              height: 1.0)
                         ],
-                      ))
-                ],
-              ),
-            ),
-          );
+                      ),
+                    ),
+                  ],
+                ))
+          ],
+        ),
+      ),
+    ), onWillPop: ()async{
+       if(_ready){
+         return false;
+       }else{
+         backHandle();
+         return true;
+       }
+    });
   }
 
   // 返回操作

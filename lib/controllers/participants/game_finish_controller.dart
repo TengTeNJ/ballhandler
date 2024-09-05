@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/participants/p3_controller.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
@@ -157,6 +158,12 @@ class _GameFinishControllerState extends State<GameFinishController> {
                       widget.dataModel,size: size);
                   if (_response.success) {
                     NavigatorUtil.pop();
+                    // 270的跳转到选择组合页面
+                    if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+                      Future.delayed(Duration(milliseconds: 100),(){
+                        NavigatorUtil.present(P3Controller());
+                      });
+                    }
                     EventBus().sendEvent(kFinishGame);
                     EventBus().sendEvent(kBackFromFinish);
                   }
@@ -170,6 +177,12 @@ class _GameFinishControllerState extends State<GameFinishController> {
                   dbHelper.insertData(kDataBaseTableName, widget.dataModel);
                   EventBus().sendEvent(kFinishGame);
                   NavigatorUtil.pop();
+                  // 270的跳转到选择组合页面
+                  if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+                    Future.delayed(Duration(milliseconds: 100),(){
+                      NavigatorUtil.present(P3Controller());
+                    });
+                  }
                 }
               },
               child: Container(
