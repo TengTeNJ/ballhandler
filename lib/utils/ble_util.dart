@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:code/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:get_it/get_it.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../constants/constants.dart';
+import 'blue_tooth_manager.dart';
 import 'color.dart';
 import 'global.dart';
 import 'package:open_settings/open_settings.dart';
 
 class BleUtil {
+  /*处理蓝牙状态*/
   static bool handleBleStatu(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     bool ready = false;
@@ -135,5 +140,32 @@ class BleUtil {
         break;
     }
     return ready;
+  }
+
+  /*开始搜索*/
+  static begainScan(BuildContext context) async {
+    if (Platform.isAndroid) {
+      PermissionStatus locationPermission = await Permission.location.request();
+      PermissionStatus bleScan = await Permission.bluetoothScan.request();
+      PermissionStatus bleConnect = await Permission.bluetoothConnect.request();
+      if (locationPermission == PermissionStatus.granted &&
+          bleScan == PermissionStatus.granted &&
+          bleConnect == PermissionStatus.granted) {
+        // 因为蓝牙监听那里不能立刻监听到 这里加延时处理
+        Future.delayed(Duration(milliseconds: 600), () {
+          bool result = BleUtil.handleBleStatu(context);
+          if (result) {
+            BluetoothManager().startScan();
+          }
+        });
+      } else {
+        BleUtil.handleBleStatu(context);
+      }
+    } else {
+      bool result = BleUtil.handleBleStatu(context);
+      if (result) {
+        BluetoothManager().startScan();
+      }
+    }
   }
 }

@@ -271,29 +271,7 @@ class _BLEListDialogState extends State<BLEListDialog> {
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
                   print('begain scan');
-                  if (Platform.isAndroid) {
-                    PermissionStatus locationPermission =
-                        await Permission.location.request();
-                    PermissionStatus bleScan =
-                        await Permission.bluetoothScan.request();
-                    PermissionStatus bleConnect =
-                        await Permission.bluetoothConnect.request();
-                    if (locationPermission == PermissionStatus.granted &&
-                        bleScan == PermissionStatus.granted &&
-                        bleConnect == PermissionStatus.granted) {
-                       bool result =  BleUtil.handleBleStatu(context);
-                      if(result){
-                        BluetoothManager().startScan();
-                      }
-                    }else{
-                      BleUtil.handleBleStatu(context);
-                    }
-                  } else {
-                    bool result =  BleUtil.handleBleStatu(context);
-                    if(result){
-                      BluetoothManager().startScan();
-                    }
-                  }
+                  BleUtil.begainScan(context);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -371,27 +349,7 @@ class _IpadBLEListDialogState extends State<IpadBLEListDialog> {
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
                   print('begain scan');
-                  if (Platform.isAndroid) {
-                    PermissionStatus locationPermission =
-                        await Permission.location.request();
-                    PermissionStatus bleScan =
-                        await Permission.bluetoothScan.request();
-                    PermissionStatus bleConnect =
-                        await Permission.bluetoothConnect.request();
-                    if (locationPermission == PermissionStatus.granted &&
-                        bleScan == PermissionStatus.granted &&
-                        bleConnect == PermissionStatus.granted) {
-                      bool result =  BleUtil.handleBleStatu(context);
-                      if(result){
-                        BluetoothManager().startScan();
-                      }
-                    }
-                  } else {
-                    bool result =  BleUtil.handleBleStatu(context);
-                    if(result){
-                      BluetoothManager().startScan();
-                    }
-                  }
+                  BleUtil.begainScan(context);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,

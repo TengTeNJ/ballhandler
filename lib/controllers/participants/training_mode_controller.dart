@@ -16,6 +16,7 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import '../../utils/ble_util.dart';
 import '../../utils/event_track.dart';
 import '../../utils/global.dart';
 import '../../utils/system_device.dart';
@@ -179,7 +180,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                       } else {
                         TTDialog.bleListDialog(context);
                       }
-
+                      BleUtil.begainScan(context);
                       print('蓝牙连接');
                     },
                     child: Container(
