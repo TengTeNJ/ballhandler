@@ -52,7 +52,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   DateTime? startTime;
   DateTime? endTime;
   bool backFlag = false; // 点击了返回按钮
-
+  String timeLeftText = 'TIME LEFT';
   @override
   void initState() {
     // TODO: implement initState
@@ -289,6 +289,9 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         .writerDataToDevice(gameUtil.selectedDeviceModel, gameStart());
     for (int i = 0; i < indexs.length; i++) {
       int index = indexs[i];
+     setState(() {
+       timeLeftText = timeLeftLabel(index: index);
+     });
       if ([6].contains(index)) {
         // wide side   toe-drag   figure8模式流程和P1保持一致
         await Figure8GameUtil().startGame();
@@ -320,6 +323,23 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       BluetoothManager()
           .writerDataToDevice(gameUtil.selectedDeviceModel, p3ScreenShow());
     });
+  }
+
+  /*Time Left*/
+  String timeLeftLabel({int index = -1}){
+     String labelText = 'TIME LEFT';
+     GameUtil gameUtil = GetIt.instance<GameUtil>();
+     if(gameUtil.modelId == 1){
+       labelText = 'P1';
+     }else if(gameUtil.modelId == 2){
+       labelText = 'P2';
+     }else{
+       final _map =  p3Maps[index];
+       if(_map != null){
+         labelText = 'P3-' + _map!['title'].toString();
+       }
+     }
+     return labelText;
   }
 
 /*计算270图片宽高*/
@@ -498,7 +518,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Constants.mediumWhiteTextWidget(
-                              'TIME LEFT', 13),
+                              timeLeftText, 13),
                           Constants.digiRegularWhiteTextWidget(
                               StringUtil.timeStringFormat(  BluetoothManager()
                                   .gameData

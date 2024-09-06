@@ -67,6 +67,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             } else {
               TTDialog.bleListDialog(context);
             }
+            BleUtil.begainScan(context);
           } else {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
             List<String> bleNames = [
