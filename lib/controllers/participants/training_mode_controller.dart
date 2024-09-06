@@ -6,6 +6,7 @@ import 'package:code/controllers/participants/test_game_controller.dart';
 import 'package:code/models/ble/ble_model.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/utils/audio_player_util.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/dialog.dart';
@@ -60,7 +61,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
           // ];
           // NavigatorUtil.present(_controllers[index]);
           // return;
-
+          // playLocalAudio('end.mp3');
+          // return;
           if (BluetoothManager().conectedDeviceCount.value == 0) {
             if (await SystemUtil.isIPad()) {
               TTDialog.ipadbleListDialog(context);

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/audio_player_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -28,6 +29,7 @@ class _ReadyControllerState extends State<ReadyController> {
     subscription = EventBus().stream.listen((event){
       if(event == kGameReady){
         timerPeriodRefreshText();
+        playLocalAudio('pre.wav');
       }
     });
   }
