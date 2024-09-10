@@ -10,6 +10,8 @@ import 'package:code/utils/toast.dart';
 import 'package:get_it/get_it.dart';
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
+import 'ble_util.dart';
+import 'navigator_util.dart';
 import 'notification_bloc.dart';
 
 // 270六块板子，1快主板，5块从板。每个板子有4个灯，成为灯板3、2、1、0
@@ -295,8 +297,10 @@ class BluetoothUltTimateDataParse {
                 BluetoothManager().gameData.p3DeviceBatteryValues;
             int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
             gameUtil.selectedDeviceModel.powerValue = minValue;
-            EventBus().sendEvent(kCurrent270DeviceInfoChange);
+            // 监听电量
+            BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
           }
+          EventBus().sendEvent(kCurrent270DeviceInfoChange);
           break;
         case ResponseCMDType.statuSyn:
           //    print("deviceName  上报来的数据data = ${element.map((toElement)=>toElement.toRadixString(16)).toList()}");
@@ -335,6 +339,8 @@ class BluetoothUltTimateDataParse {
                   BluetoothManager().gameData.p3DeviceBatteryValues;
               int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
               gameUtil.selectedDeviceModel.powerValue = minValue;
+              // 监听电量
+              BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
               EventBus().sendEvent(kCurrent270DeviceInfoChange);
             }
           } else if (data1 == 3) {
@@ -367,6 +373,8 @@ class BluetoothUltTimateDataParse {
                   BluetoothManager().gameData.p3DeviceBatteryValues;
               int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
               gameUtil.selectedDeviceModel.powerValue = minValue;
+              // 监听电量
+              BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
               EventBus().sendEvent(kCurrent270DeviceInfoChange);
             }
           }

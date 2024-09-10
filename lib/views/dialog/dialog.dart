@@ -22,6 +22,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io' show Platform;
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 import 'package:tt_indicator/tt_indicator.dart';
+import '../../models/ble/ble_model.dart';
 import '../../utils/nsuserdefault_util.dart';
 import 'package:flutter_to_airplay/flutter_to_airplay.dart';
 import 'package:chewie/chewie.dart';
@@ -266,6 +267,33 @@ class _BLEListDialogState extends State<BLEListDialog> {
                   ))),
           Positioned(
               top: 16,
+              left: 16,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  print('断开连接 break');
+                  if (BluetoothManager().hasConnectedDeviceList.length ==
+                      1) {
+                    BLEModel model =
+                    BluetoothManager().hasConnectedDeviceList[0];
+                    BluetoothManager().disconecteDevice(model);
+                  }else{
+                    print('未有连接蓝牙设备');
+                  }
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 20,
+                      child: Constants.regularBaseTextWidget('Break', 16,
+                          textAlign: TextAlign.start),
+                    )
+                  ],
+                ),
+              )),
+          Positioned(
+              top: 16,
               right: 16,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -344,6 +372,33 @@ class _IpadBLEListDialogState extends State<IpadBLEListDialog> {
                   ))),
           Positioned(
               top: 16,
+              left: 16,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  print('断开连接 break');
+                  if (BluetoothManager().hasConnectedDeviceList.length ==
+                      1) {
+                    BLEModel model =
+                    BluetoothManager().hasConnectedDeviceList[0];
+                    BluetoothManager().disconecteDevice(model);
+                  }else{
+                    print('未有连接蓝牙设备');
+                  }
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 20,
+                      child: Constants.regularBaseTextWidget('Break', 16,
+                          textAlign: TextAlign.start),
+                    )
+                  ],
+                ),
+              )),
+          Positioned(
+              top: 16,
               right: 16,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -406,10 +461,6 @@ class ExchangeIntegralDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [CancelButton()],
-          ),
           SizedBox(
             height: 90,
           ),
@@ -448,10 +499,6 @@ class ExchangeIntegralSuccessDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [CancelButton()],
-          ),
           SizedBox(
             height: 66,
           ),
@@ -1817,7 +1864,9 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
   queryProducts() async {
     final _list = await purse.getAvaliableProductList();
     datas.addAll(_list);
-    setState(() {});
+    if(mounted){
+      setState(() {});
+    }
   }
 
   @override
@@ -2015,8 +2064,9 @@ class MirrorScreenDialog extends StatelessWidget {
 }
 
 class ConfirmStopGameDialog extends StatelessWidget {
-  Function?onTap;
-   ConfirmStopGameDialog({this.onTap});
+  Function? onTap;
+
+  ConfirmStopGameDialog({this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -2037,16 +2087,131 @@ class ConfirmStopGameDialog extends StatelessWidget {
               'Confirm to stop this challenge?', 20),
         ),
         Positioned(
-            child: BaseButton(title: 'Confirm',onTap: (){
-              if(onTap != null){
-                onTap!();
-              }
-               NavigatorUtil.pop();
-            },),
+            child: BaseButton(
+              title: 'Confirm',
+              onTap: () {
+                if (onTap != null) {
+                  onTap!();
+                }
+                NavigatorUtil.pop();
+              },
+            ),
             bottom: 42,
             left: Constants.screenWidth(context) * 0.22,
             right: Constants.screenWidth(context) * 0.22)
       ],
+    );
+  }
+}
+
+/*蓝牙设备断开连接的弹窗*/
+class BlueToothDeviceDisconnectedDialog extends StatelessWidget {
+  const BlueToothDeviceDisconnectedDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 315,
+      width: 279,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 54,
+          ),
+          Image(
+            image: AssetImage('images/ble/ble_dis.png'),
+            width: 26,
+            height: 36,
+          ),
+          SizedBox(
+            height: 24,
+          ),
+          Constants.boldWhiteTextWidget('Bluetooth Disconnected', 20),
+          SizedBox(
+            height: 12,
+          ),
+          Constants.regularWhiteTextWidget(
+              'Bluetooth disconnected Please check your board', 14,
+              height: 1.3),
+          SizedBox(
+            height: 48,
+          ),
+          BaseButton(
+            title: 'Close',
+            onTap: () {
+              NavigatorUtil.pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
+
+/*低电量提示弹窗*/
+class LowPowerTipDialog extends StatelessWidget {
+  int boardIndex = 0;
+  int powerValue = 0;
+  bool isErQiLing = false;
+  LowPowerTipDialog({required this.boardIndex, required this.powerValue,bool isErQiLing = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 315,
+      width: 279,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 54,
+          ),
+          Image(
+            image: AssetImage('images/battery/battery_low.png'),
+            width: 52,
+          ),
+          SizedBox(
+            height: 24,
+          ),
+          Constants.boldWhiteTextWidget('Battery Low', 20),
+          SizedBox(
+            height: 12,
+          ),
+        RichText(
+          text: TextSpan(
+            text:  this.isErQiLing ? 'Board ${boardIndex} ' : '',
+            style: TextStyle(
+                color: Constants.baseStyleColor,
+                fontFamily: 'SanFranciscoDisplay',
+                fontSize: 14,
+                height: 1.3,
+                fontWeight: FontWeight.w400),
+            children: <TextSpan>[
+              TextSpan(
+                text: '${powerValue}%  battery remaining Please recharge your board ',
+                style: TextStyle(
+                  fontFamily: 'SanFranciscoDisplay',
+                  fontSize: 16,
+                  color: Colors.white,
+                  height: 1.3,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ),
+          SizedBox(
+            height: 48,
+          ),
+          BaseButton(
+            title: 'Close',
+            onTap: () {
+              NavigatorUtil.pop();
+            },
+          )
+        ],
+      ),
     );
   }
 }

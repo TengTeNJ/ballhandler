@@ -7,6 +7,7 @@ import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/control_time_out_util.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
@@ -130,15 +131,17 @@ class BluetoothManager {
       // 已连接状态直接返回
       return;
     }
-
+    // 连接弹窗
     EasyLoading.show();
     StreamSubscription<ConnectionStateUpdate> stream = _ble
         .connectToDevice(
-            id: model.device!.id, connectionTimeout: Duration(seconds: 30))
+            id: model.device!.id, connectionTimeout: Duration(seconds: 5))
         .listen((ConnectionStateUpdate connectionStateUpdate) {
       print('connectionStateUpdate = ${connectionStateUpdate.connectionState}');
       if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.connected) {
+        // 设备连接成功
+        EventBus().sendEvent(kDeviceConnected);
         // 连接设备数量+1
         conectedDeviceCount.value++;
         // 已连接
@@ -157,11 +160,13 @@ class BluetoothManager {
               deviceId: model.device!.id);
           model.notifyCharacteristic = notifyCharacteristic;
           model.writerCharacteristic = writerCharacteristic;
-          // 发送 APP上线
-          BluetoothManager().writerDataToDevice(model, appOnLine());
-          // 查询主机状态
-          BluetoothManager()
-              .writerDataToDevice(model, queryMasterSystemStatu());
+          Future.delayed(Duration(milliseconds: 500),(){
+            // 发送 APP上线
+            BluetoothManager().writerDataToDevice(model, appOnLine());
+            // 查询主机状态
+            BluetoothManager()
+                .writerDataToDevice(model, queryMasterSystemStatu());
+          });
         } else {
           // 保存读写特征值
           notifyCharacteristic = QualifiedCharacteristic(
@@ -174,6 +179,7 @@ class BluetoothManager {
               deviceId: model.device!.id);
           model.notifyCharacteristic = notifyCharacteristic;
           model.writerCharacteristic = writerCharacteristic;
+          writerDataToDevice(model, questDeviceInfoData());
         }
         // 连接成功弹窗
         EasyLoading.showSuccess('Bluetooth connection successful',
@@ -192,12 +198,12 @@ class BluetoothManager {
             BluetoothDataParse.parseData(data, model);
           }
         });
-        writerDataToDevice(model, questDeviceInfoData());
         // 连接成功，则设备列表页面弹窗消失
         NavigatorUtil.pop();
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
-        EasyLoading.showError('disconected');
+        // 蓝牙失去连接弹窗
+        TTDialog.blueToothDeviceDisconnectedDialog(NavigatorUtil.utilContext);
         if (conectedDeviceCount.value > 0) {
           conectedDeviceCount.value--;
           if (conectedDeviceCount.value == 0) {
@@ -211,10 +217,11 @@ class BluetoothManager {
         model.hasConected = false;
         this.deviceList.remove(model);
         // 说明是当前选择的游戏设备 并且断开了连接
-        GameUtil gameUtil = GetIt.instance<GameUtil>();
-        if (gameUtil.selectedDeviceModel.device != null &&
-            gameUtil.selectedDeviceModel.device!.id == model.device!.id) {
-          EventBus().sendEvent(kCurrentDeviceDisconnected);
+        EventBus().sendEvent(kCurrentDeviceDisconnected);
+        if(model.deviceName.contains(k270_Name)){
+          EventBus().sendEvent(kCurrentDeviceDisconnectedUli);
+        }else if(model.deviceName.contains(kFiveBallHandler_Name)){
+          EventBus().sendEvent(kCurrentDeviceDisconnectedFive);
         }
         deviceListLength.value = this.deviceList.length;
       }
@@ -239,6 +246,11 @@ class BluetoothManager {
     device.hasConected = false;
     // 发送通知 主动断开
     EventBus().sendEvent(kInitiativeDisconnect);
+    if(device.deviceName.contains(k270_Name)){
+      EventBus().sendEvent(kInitiativeDisconnectUli);
+    }else if(device.deviceName.contains(kFiveBallHandler_Name)){
+      EventBus().sendEvent(kInitiativeDisconnectFive);
+    }
   }
 
   /*发送数据*/

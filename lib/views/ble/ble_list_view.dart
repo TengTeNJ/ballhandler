@@ -47,7 +47,7 @@ class _BLEListViewState extends State<BLEListView> {
     subscription = EventBus().stream.listen((event) async {
       if (event == kInitiativeDisconnect) {
         // 主动断开连接
-        if(mounted){
+        if (mounted) {
           setState(() {});
         }
       }
@@ -124,6 +124,13 @@ class _BLEListViewState extends State<BLEListView> {
                           //BluetoothManager().showDeviceList[index].bleStream?.cancel();
                         }
                       } else {
+                        // 每次只能有一个设备连接 如果有已连接的 则先断开
+                        if (BluetoothManager().hasConnectedDeviceList.length ==
+                            1) {
+                          BLEModel model =
+                              BluetoothManager().hasConnectedDeviceList[0];
+                          BluetoothManager().disconecteDevice(model);
+                        }
                         BluetoothManager().conectToDevice(
                             BluetoothManager().showDeviceList[index]);
                       }

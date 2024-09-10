@@ -120,7 +120,6 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.red,
                           // borderRadius: BorderRadius.circular(30),
                           border: Border.all(
                               color: Color.fromRGBO(39, 182, 245, 1.0),

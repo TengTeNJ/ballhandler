@@ -13,14 +13,12 @@ import 'package:code/views/base/battery_view.dart';
 import 'package:code/views/base/ble_view.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter_to_airplay/flutter_to_airplay.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/ble_data.dart';
 import '../../utils/global.dart';
 import '../../utils/notification_bloc.dart';
 import '../../utils/system_device.dart';
 import '../../widgets/base/base_image.dart';
-import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:status_bar_control/status_bar_control.dart';
 
 class GameProcessController extends StatefulWidget {
@@ -31,13 +29,16 @@ class GameProcessController extends StatefulWidget {
   @override
   State<GameProcessController> createState() => _GameProcessControllerState();
 }
+
 bool _confirmStopDialogFlag = false; // 当前是否有确认停止游戏的提示弹窗
+
 class _GameProcessControllerState extends State<GameProcessController>
     with WidgetsBindingObserver {
   late CameraController _controller;
   late String _imagePath;
   bool _getStartFlag = false; // 是否收到了游戏开始的数据，或许会出现中途进页面的情况
   late StreamSubscription subscription;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -78,9 +79,9 @@ class _GameProcessControllerState extends State<GameProcessController>
           }
         } else {
           // 游戏结束
-          if(_confirmStopDialogFlag){
+          if (_confirmStopDialogFlag) {
             _confirmStopDialogFlag = false;
-            NavigatorUtil.pop();// 弹窗下落
+            NavigatorUtil.pop(); // 弹窗下落
           }
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           XFile videoFile = XFile('');
@@ -139,8 +140,6 @@ class _GameProcessControllerState extends State<GameProcessController>
         print('从游戏完成页面返回');
         gameUtil.nowISGamePage = true;
         BluetoothManager().gameData.remainTime = 45;
-        BluetoothManager().gameData.millSecond = 0;
-        BluetoothManager().gameData.score = 0;
         BluetoothManager().gameData.currentTarget = 3;
         _imagePath =
             'images/product/scene${gameUtil.gameScene.index + 1}/model${gameUtil.modelId}/${BluetoothManager().gameData.currentTarget}.png';
@@ -203,8 +202,6 @@ class _GameProcessControllerState extends State<GameProcessController>
     gameUtil.nowISGamePage = false;
     WidgetsBinding.instance.removeObserver(this);
     BluetoothManager().gameData.remainTime = 45;
-    BluetoothManager().gameData.millSecond = 0;
-    BluetoothManager().gameData.score = 0;
     subscription.cancel();
     super.dispose();
   }
@@ -231,7 +228,26 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
             padding: EdgeInsets.only(left: 16, right: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [BatteryView(), BLEView()],
+              children: [
+                Container(
+                  width: 28,
+                  height: 16,
+                  decoration: BoxDecoration(
+                      color: hexStringToOpacityColor('#1C1E21', 0.6),
+                      borderRadius: BorderRadius.circular(2)
+                  ),
+                  child: Center(child:  BatteryView(),),
+                ),
+                Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                      color: hexStringToOpacityColor('#1C1E21', 0.6),
+                    borderRadius: BorderRadius.circular(5)
+                  ),
+                  child: BLEView(),
+                )
+              ],
             ),
           ),
           SizedBox(
@@ -339,11 +355,18 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
           children: [
             GestureDetector(
               onTap: () {
-                _confirmStopDialogFlag = true;
-                TTDialog.confirmStopGameDialog(context,(){
-                  _confirmStopDialogFlag = false;
+                if(BluetoothManager().gameData.gameStart){
+                  // 初始化机器
+                  BluetoothManager()
+                      .writerDataToDevice(gameUtil.selectedDeviceModel, resumeGameData());
+                  _confirmStopDialogFlag = true;
+                  TTDialog.confirmStopGameDialog(context, () {
+                    _confirmStopDialogFlag = false;
+                    NavigatorUtil.pop();
+                  });
+                }else{
                   NavigatorUtil.pop();
-                });
+                }
               },
               child: Container(
                 child: Center(
@@ -374,15 +397,15 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
             recordWidget(),
             GestureDetector(
               onTap: () async {
-             TTDialog.mirrorScreenDialog(context);
+                TTDialog.mirrorScreenDialog(context);
               },
               child: Container(
                 child: Center(
                   child: Image(
-                          image: AssetImage('images/participants/cast.png'),
-                          width: 26,
-                          height: 20,
-                        ),
+                    image: AssetImage('images/participants/cast.png'),
+                    width: 26,
+                    height: 20,
+                  ),
                 ),
                 width: 54,
                 height: 54,
@@ -523,8 +546,22 @@ Widget HorizontalScreenWidget(BuildContext context, String path) {
           children: [
             GestureDetector(
               onTap: () {
-                // TTDialog.confirmStopGameDialog(context);
-                NavigatorUtil.pop();
+                _confirmStopDialogFlag = true;
+                TTDialog.confirmStopGameDialog(context, () {
+                  _confirmStopDialogFlag = false;
+                  if(BluetoothManager().gameData.gameStart){
+                    // 初始化机器
+                    BluetoothManager()
+                        .writerDataToDevice(gameUtil.selectedDeviceModel, resumeGameData());
+                    _confirmStopDialogFlag = true;
+                    TTDialog.confirmStopGameDialog(context, () {
+                      _confirmStopDialogFlag = false;
+                      NavigatorUtil.pop();
+                    });
+                  }else{
+                    NavigatorUtil.pop();
+                  }
+                });
               },
               child: Container(
                 child: Center(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:code/utils/dialog.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -165,6 +166,54 @@ class BleUtil {
       bool result = BleUtil.handleBleStatu(context);
       if (result) {
         BluetoothManager().startScan();
+      }
+    }
+  }
+
+  static listenPowerValue(BuildContext context, int powerValue) {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    if (powerValue > 30) {
+      return;
+    }
+    if (gameUtil.gameScene == GameScene.erqiling) {
+      if (gameUtil.uliLowPower2) {
+        return;
+      }
+      // 270
+      int index =
+          BluetoothManager().gameData.p3DeviceBatteryValues.indexOf(powerValue);
+      if (powerValue == 25) {
+        if(gameUtil.uliLowPower1){
+          return;
+        }
+        if (!gameUtil.nowISGamePage && !gameUtil.uliLowPower1) {
+          gameUtil.uliLowPower1 = true;
+          TTDialog.lowPowerTipDialog(context,
+              boardIndex: index, powerValue: powerValue);
+        }
+      } else if (powerValue == 5) {
+        gameUtil.uliLowPower2 = true;
+        TTDialog.lowPowerTipDialog(context,
+            boardIndex: index, powerValue: powerValue);
+      }
+    } else if (gameUtil.gameScene == GameScene.five) {
+      // 五节
+      if (gameUtil.fiveLowPower2) {
+        return;
+      }
+      if (powerValue <= 30 && powerValue > 5) {
+        if(gameUtil.fiveLowPower1){
+          return;
+        }
+        if (!gameUtil.nowISGamePage && !gameUtil.fiveLowPower2) {
+          gameUtil.fiveLowPower1 = true;
+          TTDialog.lowPowerTipDialog(context,
+              boardIndex: 0, powerValue: powerValue, isErQiLing: false);
+        }
+      } else if (powerValue <= 5) {
+        gameUtil.fiveLowPower2 = true;
+        TTDialog.lowPowerTipDialog(context,
+            boardIndex: 0, powerValue: powerValue, isErQiLing: false);
       }
     }
   }

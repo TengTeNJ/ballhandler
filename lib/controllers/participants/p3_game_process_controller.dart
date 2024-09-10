@@ -17,6 +17,7 @@ import 'package:code/utils/p3_game_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:code/views/base/battery_view.dart';
 import 'package:code/views/base/ble_view.dart';
+import 'package:code/views/base/game_process_statu_view.dart';
 import 'package:code/views/participants/ultimate_lights_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -259,7 +260,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
         // 从游戏完成页面返回
         print('从游戏完成页面返回');
-        gameUtil.nowISGamePage = true;
+        //gameUtil.nowISGamePage = true;
         BluetoothManager().gameData.remainTime = 60;
         BluetoothManager().gameData.millSecond = 0;
         BluetoothManager().gameData.score = 0;
@@ -467,32 +468,8 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                         child: Container(
                           // color: Colors.red,
                           margin: EdgeInsets.only(left: 12, right: 12
-                              // left: ((Constants.screenWidth(context) -
-                              //             (_left + _width * 0.245) * 2) -
-                              //         _width * 0.49 * 0.88 -
-                              //         8) /
-                              //     2.0,
-                              // right: ((Constants.screenWidth(context) -
-                              //             (_left + _width * 0.245) * 2) -
-                              //         _width * 0.49 * 0.88 -
-                              //         8) /
-                              //     2.0,
                               ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  BatteryView(),
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  BLEView()
-                                ],
-                              ),
-                              recordWidget(context),
-                            ],
-                          ),
+                          child: GameProcessStatuView(),
                         ),
                       ),
                       Positioned(
@@ -634,6 +611,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     BluetoothManager().gameData.remainTime = 120;
     BluetoothManager().gameData.millSecond = 0;
     BluetoothManager().gameData.score = 0;
+    gameUtil.nowISGamePage = false;
     subscription.cancel();
     if (gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3) {
       // 270自由模式 停止正在进行的游戏

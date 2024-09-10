@@ -8,6 +8,10 @@ enum GameScene { five, erqiling,threee}
 
 class GameUtil {
   GameScene gameScene = GameScene.five; // 默认为五节控球器
+  bool fiveLowPower1 = false; // 第一次低电量提示
+  bool fiveLowPower2 = false; // 第二次低电量提示
+  bool uliLowPower1 = false; // 第一次低电量提示
+  bool uliLowPower2 = false; // 第二次低电量提示
   int modelId = 0; // 场景下对应的模式模式
   bool nowISGamePage = false; // 是否在游戏页面，如果不在，收到了蓝牙的响应数据则不处理
   bool selectRecord = false; // 是否选择录制视频

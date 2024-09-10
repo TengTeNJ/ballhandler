@@ -1,6 +1,8 @@
 /*响应数据的CMD*/
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/ble_util.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/notification_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -108,6 +110,9 @@ class BluetoothDataParse {
           BluetoothManager().gameData.powerValue = statu_data;
           currentDevice.powerValue = statu_data;
           print('电量=======${statu_data}');
+          // 监听电量
+          BleUtil.listenPowerValue(NavigatorUtil.utilContext, statu_data);
+          EventBus().sendEvent(kCurrentDeviceInfoChange);
         }
         GameUtil gameUtil = GetIt.instance<GameUtil>();
         // 说明是当前选择的游戏设备

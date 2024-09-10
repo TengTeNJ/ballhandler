@@ -4,6 +4,8 @@ import 'dart:ffi';
 import 'package:code/constants/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/ble/ble_model.dart';
+import '../../utils/blue_tooth_manager.dart';
 import '../../utils/notification_bloc.dart';
 
 class BLEView extends StatefulWidget {
@@ -22,31 +24,40 @@ class _BLEViewState extends State<BLEView> {
     // TODO: implement initState
     super.initState();
     subscription = EventBus().stream.listen((event) {
-      if (event == kCurrentDeviceDisconnected) {
-        print('当前设备断开连接');
-        connected = false;
-        if(mounted){
-          setState(() {
-
-          });
+      if (event == kDeviceConnected) {
+        if (!BluetoothManager().hasConnectedDeviceList.isEmpty) {
+          BLEModel model = BluetoothManager().hasConnectedDeviceList.first;
+          if (model.deviceName.contains(kFiveBallHandler_Name)) {
+            connected = true;
+          }
         }
+
+      } else if (event == kInitiativeDisconnectFive ||
+          event == kCurrentDeviceDisconnectedFive) {
+        connected = false;
+      }
+      if (mounted) {
+        setState(() {});
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return connected
-        ? Image(
-            image: AssetImage('images/ble/game_ble.png'),
-            width: 25,
-            height: 25,
-          )
-        : Image(
-            image: AssetImage('images/ble/game_ble.png'),
-            width: 25,
-            height: 25,
-           color: Constants.baseGreyStyleColor,
-          );
+    return Center(
+      child: connected
+          ? Image(
+              image: AssetImage('images/ble/ble_on.png'),
+              width: 10,
+              height: 12,
+              fit: BoxFit.fill,
+            )
+          : Image(
+              image: AssetImage('images/ble/ble_off.png'),
+              width: 10,
+              height: 12,
+              fit: BoxFit.fill,
+            ),
+    );
   }
 }

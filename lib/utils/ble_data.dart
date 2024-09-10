@@ -27,3 +27,9 @@ List<int> questDeviceInfoData(){
   List<int> values = [0xA5,0x05,0x36,v,0xAA];
   return values;
 }
+
+List<int> resumeGameData(){
+  int v = 0xA5 + 0x05 + 0x37;
+  List<int> values = [0xA5,0x05,0x37,v,0xAA];
+  return values;
+}

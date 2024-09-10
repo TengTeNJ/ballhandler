@@ -11,7 +11,10 @@ import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/views/airbattle/my_award_view.dart';
+import 'package:code/views/base/five_statu_view.dart';
 import 'package:code/views/base/no_data_view.dart';
+import 'package:code/views/base/statu_view.dart';
 import 'package:code/views/participants/training_mode_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,6 +38,7 @@ class TrainingModeController extends StatefulWidget {
 
 class _TrainingModeControllerState extends State<TrainingModeController> {
   List<GameModel> _datas = [];
+  String title = 'Stickhandling';
 
   // List View
   Widget _itemBuilder(BuildContext context, int index) {
@@ -42,27 +46,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       child: TrainingModeListView(
         model: _datas[index],
         scanBleList: () async {
-          // const List<Widget> _controllers = [
-          //   P1Controller(),
-          //   P2Controller(),
-          //   P3Controller()
-          // ];
-          // NavigatorUtil.present(_controllers[index]);
-          // return;
-          // GameUtil gameUtil = GetIt.instance<GameUtil>();
-          // gameUtil.modelId = index + 1;
-          // NavigatorUtil.push(Routes.recordselect);
-          // return;
-          // 没有蓝牙设备则先提示去连接蓝牙设备，有设备则跳转到下一步
-          // const List<Widget> _controllers = [
-          //   P1Controller(),
-          //   P2Controller(),
-          //   P3Controller()
-          // ];
-          // NavigatorUtil.present(_controllers[index]);
-          // return;
-          // playLocalAudio('end.mp3');
-          // return;
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          gameUtil.selectRecord = false;
           if (BluetoothManager().conectedDeviceCount.value == 0) {
             if (await SystemUtil.isIPad()) {
               TTDialog.ipadbleListDialog(context);
@@ -71,7 +56,6 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             }
             BleUtil.begainScan(context);
           } else {
-            GameUtil gameUtil = GetIt.instance<GameUtil>();
             List<String> bleNames = [
               kFiveBallHandler_Name,
               k270_Name,
@@ -101,11 +85,12 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               BluetoothManager().writerDataToDevice(
                   gameUtil.selectedDeviceModel, selectMode(index));
               // 主机状态
-              if(BluetoothManager().gameData.masterStatu != 2){
-                TTToast.showErrorInfo('The device is not ready yet, please check the device');
+              if (BluetoothManager().gameData.masterStatu != 2) {
+                TTToast.showErrorInfo(
+                    'The device is not ready yet, please check the device');
                 // 查询主机状态
-                BluetoothManager()
-                    .writerDataToDevice(gameUtil.selectedDeviceModel, queryMasterSystemStatu());
+                BluetoothManager().writerDataToDevice(
+                    gameUtil.selectedDeviceModel, queryMasterSystemStatu());
                 return;
               }
               if (index == 2) {
@@ -121,7 +106,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                 P3Controller(),
               ];
               // 清空上次选择的组合
-             // gameUtil.selectdP3Indexs.clear();
+              // gameUtil.selectdP3Indexs.clear();
               NavigatorUtil.present(_controllers[index]);
             }
           }
@@ -146,7 +131,16 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     BluetoothManager().conectedDeviceCount.addListener(_listener);
     queryModeListData();
     // 隐藏状态栏和底部导航栏
-    // FlutterStatusbarcolor.setStatusBarColor(Colors.green);
+    // FlutterStatusbarcolor.setStatusBarColor(Colors.green);\
+    getTitle();
+  }
+
+  getTitle() {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    String _title = kTrainingMode_ReleaseNames[gameUtil.gameScene.index];
+    setState(() {
+      title = _title;
+    });
   }
 
   queryModeListData() async {
@@ -159,6 +153,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
 
   @override
   Widget build(BuildContext context) {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     return Scaffold(
       backgroundColor: Constants.darkThemeColor,
       appBar: CustomAppBar(
@@ -169,49 +164,43 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(top: 16, bottom: 32, left: 16, right: 16),
+              margin: EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Constants.boldWhiteTextWidget('Training Mode', 30,
-                      height: 0.8),
+                  Constants.boldWhiteTextWidget(title, 30, height: 0.8),
                   GestureDetector(
                     onTap: () async {
-                      //  TTDialog.bleListDialog(context);
                       if (await SystemUtil.isIPad()) {
                         TTDialog.ipadbleListDialog(context);
                       } else {
                         TTDialog.bleListDialog(context);
                       }
                       BleUtil.begainScan(context);
-                      print('蓝牙连接');
                     },
                     child: Container(
                       child: Row(
                         children: [
                           Image(
-                            image:
-                                BluetoothManager().conectedDeviceCount.value > 0
-                                    ? AssetImage('images/ble/ble_done.png')
-                                    : AssetImage('images/ble/ble_not.png'),
+                            image: AssetImage('images/ble/ble_link.png'),
                             width: 27,
                             height: 27,
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Constants.regularWhiteTextWidget(
-                              BluetoothManager()
-                                  .conectedDeviceCount
-                                  .value
-                                  .toString(),
-                              16),
                         ],
                       ),
                     ),
                   )
                 ],
               ),
+            ),
+            Container(
+              child: gameUtil.gameScene == GameScene.erqiling
+                  ? DeviceStatuView()
+                  : FiveStatuView(),
+              margin: EdgeInsets.only(left: 16),
+            ),
+            SizedBox(
+              height: 32,
             ),
             Expanded(
               child: _datas.length == 0

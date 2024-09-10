@@ -62,13 +62,13 @@ class Constants {
       {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0,
-        TextOverflow? overflow}) {
+      TextOverflow? overflow}) {
     return Text(
       maxLines: maxLines ?? null,
       textAlign: textAlign,
       text,
       style: TextStyle(
-        overflow: overflow,
+          overflow: overflow,
           height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.w400,
@@ -130,8 +130,8 @@ class Constants {
 
   static Text mediumBaseGreyTextWidget(String text, double fontSize,
       {int? maxLines,
-        TextAlign textAlign = TextAlign.center,
-        double height = 1.0}) {
+      TextAlign textAlign = TextAlign.center,
+      double height = 1.0}) {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
@@ -218,14 +218,14 @@ class Constants {
       {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0,
-        FontWeight? fontWeight,
-        TextOverflow? overflow}) {
+      FontWeight? fontWeight,
+      TextOverflow? overflow}) {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines ?? null,
       text,
       style: TextStyle(
-         overflow: overflow,
+          overflow: overflow,
           height: height,
           fontFamily: 'SanFranciscoDisplay',
           fontWeight: fontWeight,
@@ -272,17 +272,18 @@ const kAccessToken = 'token';
 const kInputEmail = 'inputEmail';
 const kUserEmail = 'userEmail';
 const kBrithDay = 'brithDay';
-const kCountry= 'countryArea';
-const kUnreadMessageCount= 'unreadMessageCount'; // 未读消息的数量
-const kShowLaunch= 'showLaunchPage'; // 是否展示启动介绍页的标识
+const kCountry = 'countryArea';
+const kUnreadMessageCount = 'unreadMessageCount'; // 未读消息的数量
+const kShowLaunch = 'showLaunchPage'; // 是否展示启动介绍页的标识
 
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';
 const kBLEDevice_NewName = 'StarShots';
-const kFiveBallHandler_Name = 'Stickhandling'; // 五节控球器的名称
+// const kFiveBallHandler_Name = 'Stickhandling'; // 五节控球器的名称
+const kFiveBallHandler_Name = 'StarShots'; // 五节控球器的名称
 const kThreeBallHandler_Name = 'Razor Dangler 2.0'; // 三节控球器的名称
-// const k270_Name = 'Ultimater Dangler'; // 270度
-const k270_Name = 'Dangler-M'; // 270度
+const k270_Name_Release = 'Ultimater Dangler'; // 270度
+const k270_Name = 'Dangler-M'; // 270度 蓝牙设备名称
 
 const kBLEDevice_OldName = 'Tv511u-E4247823';
 const kBLE_SERVICE_NOTIFY_UUID = "ffe0";
@@ -309,6 +310,12 @@ const kBLEDevice_ReleaseNames = [
   kThreeBallHandler_Name,
 ];
 
+const kTrainingMode_ReleaseNames = [
+  kFiveBallHandler_Name,
+  k270_Name_Release,
+  kThreeBallHandler_Name,
+];
+
 const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
 const kBLEDataFramerFoot = 0xAA; // 蓝牙数据尾
 
@@ -327,7 +334,7 @@ double kFontSize(BuildContext context, double size) {
   return size;
 }
 
-double baseMargin(BuildContext context,double size) {
+double baseMargin(BuildContext context, double size) {
   // double scale =Constants.screenWidth(context) / 375 ;
   return size;
 }
@@ -353,172 +360,158 @@ const kGetMessage = 'get_message'; // 收到消息
 const kIntegralChange = 'change_integral'; // 积分兑换
 const kCurrentDeviceInfoChange = 'current_device_info_change'; // 当前游戏设备信息改变
 const kCurrentDeviceDisconnected = 'current_device_disconnected'; // 当前游戏设备断开连接
-const kPopSubscribeDialog= 'pop_subscribe_dialog'; // 主动弹出订阅弹窗
-const kPopSubscribeLate= 'pop_subscribe_dialog_late'; // 稍后订阅
-const kCurrent270DeviceInfoChange = 'current_270_device_info_change'; // 当前270游戏设备信息改变
+const kPopSubscribeDialog = 'pop_subscribe_dialog'; // 主动弹出订阅弹窗
+const kPopSubscribeLate = 'pop_subscribe_dialog_late'; // 稍后订阅
+const kCurrent270DeviceInfoChange =
+    'current_270_device_info_change'; // 当前270游戏设备信息改变
 const kGameReady = 'game_ready'; // 游戏
 const kInitiativeDisconnect = 'initiative_disconnect'; // 主动断开
+const kDeviceConnected = 'device_connected'; // 设备连接成功
+const kInitiativeDisconnectUli = 'initiative_disconnect_uli'; // 主动断开
+const kInitiativeDisconnectFive = 'initiative_disconnect_five'; // 主动断开
+const kCurrentDeviceDisconnectedUli = 'current_device_disconnected_uli'; // 当前游戏设备断开连接
+const kCurrentDeviceDisconnectedFive = 'current_device_disconnected_five'; // 当前游戏设备断开连接
 
-const Map<String,Map<String,String>> kGameSceneAndModelMap = {
-  "1" :{
-    "7" : "ZIGZAG Challenge",
-    "1" : "2 Challenge",
-    "2" : "L Challenge",
-    "3" : "OMEGA Challenge",
-    "6" : "Straight line Challenge",
-    "4" : "Pentagon Challenge",
-    "5" : "SMILE Challenge",
+const Map<String, Map<String, String>> kGameSceneAndModelMap = {
+  "1": {
+    "7": "ZIGZAG Challenge",
+    "1": "2 Challenge",
+    "2": "L Challenge",
+    "3": "OMEGA Challenge",
+    "6": "Straight line Challenge",
+    "4": "Pentagon Challenge",
+    "5": "SMILE Challenge",
   },
-  "2" :{
-    "1" : "P1 Mode",
-    "2" : "P2 Mode",
-    "3" : " FREE Mode",
+  "2": {
+    "1": "P1 Mode",
+    "2": "P2 Mode",
+    "3": " FREE Mode",
   },
-  "3" :{
-    "7" : "ZIGZAG Challenge",
-    "1" : "2 Challenge",
-    "2" : "L Challenge",
-    "3" : "OMEGA Challenge",
-    "6" : "Straight line Challenge",
-    "4" : "Pentagon Challenge",
-    "5" : "SMILE Challenge",
+  "3": {
+    "7": "ZIGZAG Challenge",
+    "1": "2 Challenge",
+    "2": "L Challenge",
+    "3": "OMEGA Challenge",
+    "6": "Straight line Challenge",
+    "4": "Pentagon Challenge",
+    "5": "SMILE Challenge",
   }
-};// 游戏场景和模式映射表
+}; // 游戏场景和模式映射表
 
-const k270ProductImageScale = 1445/737; // 270产品图片宽高比
+const k270ProductImageScale = 1445 / 737; // 270产品图片宽高比
 
-const  kUserVideoMaxCount = 100; // 视频的最大数量
+const kUserVideoMaxCount = 100; // 视频的最大数量
 
 const kAppVersion = '202405131652';
 
-const Map<int,int> kLighMap = {
-  1:4,
-  2:5,
-  3:1,
-  4:2,
-  5:3
-} ; // 灯光映射表
+const Map<int, int> kLighMap = {1: 4, 2: 5, 3: 1, 4: 2, 5: 3}; // 灯光映射表
 
-const Map<int,Map<String,String>> p3Maps = {
-  0:{
+const Map<int, Map<String, String>> p3Maps = {
+  0: {
     'image': 'WideDekes.apng',
     'title': 'Wide Dekes',
-    'des': 'Navigate 15 seconds in each of the three two-pad zones , engaging with 1 or 2 red lights randomly up across two pads, each worth 2 points, and dodging a single blue \'defender\' light, demanding quick reactions and agile decision-making.'
+    'des':
+        'Navigate 15 seconds in each of the three two-pad zones , engaging with 1 or 2 red lights randomly up across two pads, each worth 2 points, and dodging a single blue \'defender\' light, demanding quick reactions and agile decision-making.'
   },
-  1:{
+  1: {
     'image': 'zigzag.apng',
     'title': 'Ziazag',
-    'des': 'Sharpen your control of the puck with zigzag-handling patterns. Follow the lights to trainspeed and control with forehand and backhand.'
+    'des':
+        'Sharpen your control of the puck with zigzag-handling patterns. Follow the lights to trainspeed and control with forehand and backhand.'
   },
-  2:{
+  2: {
     'image': 'ToeDrag.apng',
     'title': 'Toe Drag',
-    'des': 'Master the full workout area, applying a wide array of advanced techniques to outmaneuver defenders and navigate complex scenarios, mirroring the unpredictability of real-game situations..'
+    'des':
+        'Master the full workout area, applying a wide array of advanced techniques to outmaneuver defenders and navigate complex scenarios, mirroring the unpredictability of real-game situations..'
   },
-  3:{
+  3: {
     'image': 'Triangles.apng',
     'title': 'Triangles',
-    'des': 'Tackle Triangles sequences in backhand side, front and fronthand side zones across the full 270-degree workout area Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'},
-  4:{
+    'des':
+        'Tackle Triangles sequences in backhand side, front and fronthand side zones across the full 270-degree workout area Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
+  },
+  4: {
     'image': 'Backhand.apng',
     'title': 'Backhand',
-    'des': 'For Backhand training in backhand side and fronthand side engaging with 1 or 2 red lights randomly up across two pads, each worth 2 points, and dodging a single blue \'defender\' light, demanding quick reactions and agile decision-making.'
+    'des':
+        'For Backhand training in backhand side and fronthand side engaging with 1 or 2 red lights randomly up across two pads, each worth 2 points, and dodging a single blue \'defender\' light, demanding quick reactions and agile decision-making.'
   },
-  5:{
+  5: {
     'image': 'TTL.apng',
     'title': 'Through the legs',
-    'des': ' For through-the-legs hockey drill, there will be 3 blue defender dots and 1 red target. You will need to weave through the legs, in and around the blue defenders to score points. This will enhance your ability to stickhandle between defenders legs or blade. Improve precision and reaction time in game-like situations.To add complexity, try adding a fake to one direction and through the legs in the other. '
+    'des':
+        ' For through-the-legs hockey drill, there will be 3 blue defender dots and 1 red target. You will need to weave through the legs, in and around the blue defenders to score points. This will enhance your ability to stickhandle between defenders legs or blade. Improve precision and reaction time in game-like situations.To add complexity, try adding a fake to one direction and through the legs in the other. '
   },
-
-  6:{
+  6: {
     'image': 'Figure8.apng',
     'title': 'Figure 8',
-    'des': 'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
+    'des':
+        'Tackle figure-8 sequences in backhand side, front and fronthand side zones across the full 270-degree workout area, honing precision stickhandling in tight spaces. Dodge blue \'defenders\' and weave through shifting red lights to enhance agility, puck control, and strategic evasion skills'
   },
-  7:{
+  7: {
     'image': 'onehand.apng',
     'title': 'One handed',
-    'des': 'For one-handed training,practice from positional puck control to figure 8,use top hand on your stick,keeping it close to your body to maximize control.Focus on wrist strength by dribbling the puck with varying speeds and directions.Incorporate cone weaving to enhance dexterity and stick handling precision,ensuring to switch hands periodically for balanced training'
+    'des':
+        'For one-handed training,practice from positional puck control to figure 8,use top hand on your stick,keeping it close to your body to maximize control.Focus on wrist strength by dribbling the puck with varying speeds and directions.Incorporate cone weaving to enhance dexterity and stick handling precision,ensuring to switch hands periodically for balanced training'
   },
 }; // 270 P3模式 guide数据map映射表
 
 // const Set<String> kProductIds = <String>{'hockey_101', 'hockey_5'}; // 订阅产品id
 const Set<String> kProductIds = <String>{'hockey_02', 'five_1'}; // 订阅产品id
-const Map<int,Map<int,int>> kBoardMap = {
-  0:{
-     3:9,
-    0:10,
-    1:11,
-    2:12
+const Map<int, Map<int, int>> kBoardMap = {
+  0: {3: 9, 0: 10, 1: 11, 2: 12},
+  1: {3: 0, 0: 2, 1: 3, 2: 1},
+  2: {3: 4},
+  3: {3: 5, 0: 7, 1: 8, 2: 6},
+  4: {
+    3: 13,
   },
-  1:{
-    3:0,
-    0:2,
-    1:3,
-    2:1
-  },
-  2:{
-    3:4
-  },
-  3:{
-    3:5,
-    0:7,
-    1:8,
-    2:6
-  },
-  4:{
-    3:13,
-  },
-  5:{
-    3:14,
-    0:15,
-    1:17,
-    2:16
-  },
+  5: {3: 14, 0: 15, 1: 17, 2: 16},
 }; // 灯板编号以及灯板上每个灯的数据索引和UI索引的映射表
 
-const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
+const Map<int, Map<String, int>> kP3IndexAndDurationMap = {
   // 和P1保持一致
-  0:{
-    'second':30,
-    'duration':30000,
+  0: {
+    'second': 30,
+    'duration': 30000,
     'frequency': 3500,
   },
-  1:{
-    'second':30,
-    'duration':30000,
-    'frequency': 3500,
-  },
-  // 和P1保持一致
-  2:{
-    'second':30,
-    'duration':30000,
-    'frequency': 3500,
-  },
-  3:{
-    'second':30,
-    'duration':30000,
-    'frequency': 3500,
-  },
-  4:{
-    'second':30,
-    'duration':30000,
-    'frequency': 3500,
-  },
-  5:{
-    'second':30,
-    'duration':30000,
+  1: {
+    'second': 30,
+    'duration': 30000,
     'frequency': 3500,
   },
   // 和P1保持一致
-  6:{
-  'second':30,
-    'duration':90000,
+  2: {
+    'second': 30,
+    'duration': 30000,
     'frequency': 3500,
   },
-  7:{
-    'second':30,
-    'duration':30000,
+  3: {
+    'second': 30,
+    'duration': 30000,
+    'frequency': 3500,
+  },
+  4: {
+    'second': 30,
+    'duration': 30000,
+    'frequency': 3500,
+  },
+  5: {
+    'second': 30,
+    'duration': 30000,
+    'frequency': 3500,
+  },
+  // 和P1保持一致
+  6: {
+    'second': 30,
+    'duration': 90000,
+    'frequency': 3500,
+  },
+  7: {
+    'second': 30,
+    'duration': 30000,
     'frequency': 3500,
   },
 };
@@ -526,3 +519,11 @@ const Map<int,Map<String,int>> kP3IndexAndDurationMap = {
 const kP1Duration = 90; // 270设备P1模式的游戏时长
 const kP2Duration = 120; // 270设备P2模式的游戏时长
 
+const Map<int, int> kP3DataAndProductIndexMap = {
+  0:1,
+  1:1,
+  2:2,
+  3:3,
+  4:5,
+  5:6
+}; // 270灯板的蓝牙数据索引和产品标签上的实际索引的映射表

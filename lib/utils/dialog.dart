@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class TTDialog {
   /**发送邮件**/
-  static sendEmailDialog(BuildContext context,Function confirm) {
+  static sendEmailDialog(BuildContext context, Function confirm) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
@@ -13,13 +13,15 @@ class TTDialog {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.42,
-          child: SendEmailDiaog(confirm: confirm,),
+          child: SendEmailDiaog(
+            confirm: confirm,
+          ),
         );
       },
     );
   }
 
-  static sendIpadEmailDialog(BuildContext context,Function confirm) {
+  static sendIpadEmailDialog(BuildContext context, Function confirm) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
@@ -27,7 +29,9 @@ class TTDialog {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.42,
-          child: IpadSendEmailDiaog(confirm: confirm,),
+          child: IpadSendEmailDiaog(
+            confirm: confirm,
+          ),
         );
       },
     );
@@ -61,8 +65,9 @@ class TTDialog {
       },
     );
   }
+
 /*积分兑换商品弹窗提醒*/
-  static integralExchangeDialog(BuildContext context,Function exchange) {
+  static integralExchangeDialog(BuildContext context, Function exchange) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -74,12 +79,13 @@ class TTDialog {
               color: hexStringToColor('#3E3E55'),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: ExchangeIntegralDialog(exchange: exchange,),
+            child: ExchangeIntegralDialog(
+              exchange: exchange,
+            ),
           ),
         );
       },
     );
-
   }
 
   /*积分兑换成功提醒*/
@@ -100,10 +106,9 @@ class TTDialog {
         );
       },
     );
-
   }
 
-  static championDialog(BuildContext context,Function gotIt) {
+  static championDialog(BuildContext context, Function gotIt) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -115,14 +120,16 @@ class TTDialog {
               color: hexStringToColor('#3E3E55'),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: ChampionDialog(gotIt: gotIt,),
+            child: ChampionDialog(
+              gotIt: gotIt,
+            ),
           ),
         );
       },
     );
   }
 
-  static awardDialog(BuildContext context,Function gotIt) {
+  static awardDialog(BuildContext context, Function gotIt) {
     showModalBottomSheet(
       backgroundColor: hexStringToColor('#39394B'),
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
@@ -130,83 +137,98 @@ class TTDialog {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.42,
-          child: AwardDialog(gotIt: gotIt,),
+          child: AwardDialog(
+            gotIt: gotIt,
+          ),
         );
       },
     );
   }
 
-  static timeSelect(BuildContext context,Function confirm,{int index = 0,String? start,String? end}) {
+  static timeSelect(BuildContext context, Function confirm,
+      {int index = 0, String? start, String? end}) {
     showModalBottomSheet(
       backgroundColor: hexStringToColor('#3E3E55'),
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
       context: context,
       builder: (BuildContext context) {
         double _height = 0.5;
-        return StatefulBuilder(builder: (BuildContext context,StateSetter setState){
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
           return FractionallySizedBox(
             heightFactor: _height,
-            child: TimeSelectDialog( startTime: start, endTime: end, selectIndex: index, datePickerSelect: (value){
-              if(value){
-                _height = 0.80;
-                setState(() {
-                });
-              }else{
-                _height = 0.5;
-                setState(() {
-                });
-              }
-            },confirm: (startTime,endTime,selectIndex){
-              if(confirm!=null){
-                int _index = selectIndex;
-                if(selectIndex == -1){
-                  _index = 3;
+            child: TimeSelectDialog(
+              startTime: start,
+              endTime: end,
+              selectIndex: index,
+              datePickerSelect: (value) {
+                if (value) {
+                  _height = 0.80;
+                  setState(() {});
+                } else {
+                  _height = 0.5;
+                  setState(() {});
                 }
-                confirm(startTime,endTime,_index);
-              }
-            },),
+              },
+              confirm: (startTime, endTime, selectIndex) {
+                if (confirm != null) {
+                  int _index = selectIndex;
+                  if (selectIndex == -1) {
+                    _index = 3;
+                  }
+                  confirm(startTime, endTime, _index);
+                }
+              },
+            ),
           );
         });
       },
-
     );
   }
-  static iPadTimeSelect(BuildContext context,Function confirm,{int index = 0,String? start,String? end}) {
+
+  static iPadTimeSelect(BuildContext context, Function confirm,
+      {int index = 0, String? start, String? end}) {
     showModalBottomSheet(
       backgroundColor: hexStringToColor('#3E3E55'),
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
       context: context,
       builder: (BuildContext context) {
         double _height = 0.5;
-        return StatefulBuilder(builder: (BuildContext context,StateSetter setState){
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
           return FractionallySizedBox(
             heightFactor: _height,
-            child: IpadTimeSelectDialog( startTime: start, endTime: end, selectIndex: index, datePickerSelect: (value){
-              if(value){
-                _height = 0.80;
-                setState(() {
-                });
-              }else{
-                _height = 0.5;
-                setState(() {
-                });
-              }
-            },confirm: (startTime,endTime,selectIndex){
-              if(confirm!=null){
-                int _index = selectIndex;
-                if(selectIndex == -1){
-                  _index = 3;
+            child: IpadTimeSelectDialog(
+              startTime: start,
+              endTime: end,
+              selectIndex: index,
+              datePickerSelect: (value) {
+                if (value) {
+                  _height = 0.80;
+                  setState(() {});
+                } else {
+                  _height = 0.5;
+                  setState(() {});
                 }
-                confirm(startTime,endTime,_index);
-              }
-            },),
+              },
+              confirm: (startTime, endTime, selectIndex) {
+                if (confirm != null) {
+                  int _index = selectIndex;
+                  if (selectIndex == -1) {
+                    _index = 3;
+                  }
+                  confirm(startTime, endTime, _index);
+                }
+              },
+            ),
           );
         });
       },
-
     );
   }
-  static joinAirBattle(BuildContext context,Function continueClick,Function goToSetting) {
+
+  static joinAirBattle(
+      BuildContext context, Function continueClick, Function goToSetting) {
     showModalBottomSheet(
       backgroundColor: hexStringToColor('#39394B'),
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
@@ -214,28 +236,35 @@ class TTDialog {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.45,
-          child: JoinAirBattleDialog(continueClick: continueClick,goToSetting: goToSetting,),
+          child: JoinAirBattleDialog(
+            continueClick: continueClick,
+            goToSetting: goToSetting,
+          ),
         );
       },
     );
   }
 
-  static userNameDialog(BuildContext context,Function confirm){
-    return showDialog(context: context, builder: (context){
-      return UserNameDialog(confirm: confirm,);
-    });
+  static userNameDialog(BuildContext context, Function confirm) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return UserNameDialog(
+            confirm: confirm,
+          );
+        });
   }
 
-
-  static airplayDialog(BuildContext context){
-    return showDialog(context: context, builder: (context){
-      return AirPlayView();
-    });
+  static airplayDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AirPlayView();
+        });
   }
 
   /* 视频引导页*/
-  static videiGuideAidlog(BuildContext context,String videoPath){
-
+  static videiGuideAidlog(BuildContext context, String videoPath) {
     showModalBottomSheet(
       // backgroundColor: Colors.transparent,
       backgroundColor: hexStringToColor('#3E3E55'),
@@ -295,7 +324,7 @@ class TTDialog {
     );
   }
 
-  static confirmStopGameDialog(BuildContext context,Function onTap) {
+  static confirmStopGameDialog(BuildContext context, Function onTap) {
     showModalBottomSheet(
       backgroundColor: Constants.darkControllerColor,
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
@@ -303,7 +332,50 @@ class TTDialog {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.45,
-          child: ConfirmStopGameDialog(onTap: onTap,),
+          child: ConfirmStopGameDialog(
+            onTap: onTap,
+          ),
+        );
+      },
+    );
+  }
+
+  /*蓝牙断开连接弹窗*/
+  static blueToothDeviceDisconnectedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              color: hexStringToColor('#3E3E55'),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: BlueToothDeviceDisconnectedDialog(),
+          ),
+        );
+      },
+    );
+  }
+
+  /*电量过低提示弹窗*/
+  static lowPowerTipDialog(BuildContext context,
+      {int boardIndex = 0, int powerValue = 0,bool isErQiLing = false}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.only(left: 32,right: 32),
+            decoration: BoxDecoration(
+              color: hexStringToColor('#3E3E55'),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: LowPowerTipDialog(boardIndex: boardIndex, powerValue: powerValue),
+          ),
         );
       },
     );
