@@ -21,15 +21,10 @@ import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/system_device.dart';
 import 'package:code/utils/video_util.dart';
 import 'package:code/widgets/navigation/customBottomNavigationBar.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:sqflite/sqflite.dart';
-
 import 'firebase_options.dart';
 
 class RootPageController extends StatefulWidget {
@@ -127,7 +122,7 @@ class _RootPageControllerState extends State<RootPageController> {
     }
     // 消息推送处理
     fireBaseMessage(); // 监听推送通知
-   fireBaseCrashlytics();
+   // fireBaseCrashlytics();
   }
 
   Future<void> querySceneListdata() async {
@@ -162,21 +157,21 @@ class _RootPageControllerState extends State<RootPageController> {
 
   /*异常捕获*/
   fireBaseCrashlytics() async {
-    FlutterError.onError = (errorDetails) {
-      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-    };
-    // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
-    String userName = await NSUserDefault.getValue(kUserName) ?? 'Unknown';
-    String email = await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
-    if (userName != null && userName.length > 0) {
-      FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
-      FirebaseCrashlytics.instance.setCustomKey('userName', userName);
-      FirebaseCrashlytics.instance.setCustomKey('email', email ?? '--');
-    }
+    // FlutterError.onError = (errorDetails) {
+    //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    // };
+    // // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+    // PlatformDispatcher.instance.onError = (error, stack) {
+    //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    //   return true;
+    // };
+    // String userName = await NSUserDefault.getValue(kUserName) ?? 'Unknown';
+    // String email = await NSUserDefault.getValue(kUserEmail) ?? 'Unknown';
+    // if (userName != null && userName.length > 0) {
+    //   FirebaseCrashlytics.instance.log("userName:${userName}-email:${email}");
+    //   FirebaseCrashlytics.instance.setCustomKey('userName', userName);
+    //   FirebaseCrashlytics.instance.setCustomKey('email', email ?? '--');
+    // }
   }
 
   @override

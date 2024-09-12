@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import '../../constants/constants.dart';
 import '../../models/airbattle/p3_item_model.dart';
+import '../../utils/ble_ultimate_data.dart';
+import '../../utils/blue_tooth_manager.dart';
 import '../../utils/color.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
@@ -100,6 +102,10 @@ class _P3ControllerState extends State<P3Controller> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        // 模式切换锁定解除
+                        GameUtil gameUtil = GetIt.instance<GameUtil>();
+                        BluetoothManager().writerDataToDevice(
+                            gameUtil.selectedDeviceModel, lockMode(lock: false));
                         NavigatorUtil.pop();
                       },
                       child: Container(

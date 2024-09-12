@@ -213,6 +213,11 @@ class _GameFinishControllerState extends State<GameFinishController> {
           ],
         ),), onWillPop: () async {
           EventBus().sendEvent(kBackFromFinish);
+          if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+            Future.delayed(Duration(milliseconds: 100),(){
+              NavigatorUtil.present(P3Controller());
+            });
+          }
           return true;
         })
       // body: Center(child: GameOverDataView(dataModel: widget.dataModel,),),

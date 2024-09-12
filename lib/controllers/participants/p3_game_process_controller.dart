@@ -15,8 +15,6 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/p1_game_util_new.dart';
 import 'package:code/utils/p3_game_util.dart';
 import 'package:code/utils/toast.dart';
-import 'package:code/views/base/battery_view.dart';
-import 'package:code/views/base/ble_view.dart';
 import 'package:code/views/base/game_process_statu_view.dart';
 import 'package:code/views/participants/ultimate_lights_view.dart';
 import 'package:flutter/material.dart';
@@ -197,6 +195,10 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           model.endTime = StringUtil.dateToGameTimeString();
           int timeBetween = StringUtil.differenceInSeconds(startTime, endTime);
           model.time = timeBetween.toString();
+          if(gameUtil.modelId == 3){
+            // p3模式减去每个组合之间的时间间隔
+            model.time = (int.parse(model.time) - gameUtil.selectdP3Items.length).toString();
+          }
           if (BluetoothManager().gameData.score == 0) {
             model.avgPace = '0.0';
           } else {
@@ -294,7 +296,10 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         .writerDataToDevice(gameUtil.selectedDeviceModel, gameStart());
     for (int i = 0; i < indexs.length; i++) {
       playLocalAudio('start.mp3');
-      sleep(Duration(milliseconds: 500));
+      BluetoothManager().writerDataToDevice(
+          gameUtil.selectedDeviceModel, closeAllBoardLight());
+      P3GameManager().reset();
+      sleep(Duration(milliseconds: 1000));
       int index = indexs[i];
       setState(() {
         timeLeftText = timeLeftLabel(index: index);
@@ -302,8 +307,6 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       if ([6].contains(index)) {
         // wide side   toe-drag   figure8模式流程和P1保持一致
         await Figure8GameUtil().startGame();
-        BluetoothManager().writerDataToDevice(
-            gameUtil.selectedDeviceModel, closeAllBoardLight());
         BluetoothManager().writerDataToDevice(
             gameUtil.selectedDeviceModel, closeAllBoardLight());
       } else {

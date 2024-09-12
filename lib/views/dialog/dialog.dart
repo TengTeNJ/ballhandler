@@ -1072,7 +1072,7 @@ class _TimeSelectDialogState extends State<TimeSelectDialog> {
                       initDateTime: _selectedDate,
                       locale: DateTimePickerLocale.en_us,
                       dateFormat:
-                          'MMMM-dd-yyyy', // 这里的MMMM需要有4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
+                          'MMM-dd-yyyy', // 这里的MMMM4个显示引英文全写，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
                     )),
                   ) // 时间弹窗
                 : Container(),
@@ -1505,7 +1505,7 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
                       initDateTime: _selectedDate,
                       locale: DateTimePickerLocale.en_us,
                       dateFormat:
-                          'MMMM-dd-yyyy', // 这里的MMMM需要有4个，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
+                          'MMM-dd-yyyy', // 这里的MMMM4个显示引英文全写，两个的话仍然显示数字月份.3个的话显示缩写的英文月份
                     )),
                   ) // 时间弹窗
                 : Container(),
@@ -2153,8 +2153,8 @@ class BlueToothDeviceDisconnectedDialog extends StatelessWidget {
 class LowPowerTipDialog extends StatelessWidget {
   int boardIndex = 0;
   int powerValue = 0;
-  bool isErQiLing = false;
-  LowPowerTipDialog({required this.boardIndex, required this.powerValue,bool isErQiLing = false});
+  bool isErQiLing;
+  LowPowerTipDialog({required this.boardIndex, required this.powerValue,required this.isErQiLing});
 
   @override
   Widget build(BuildContext context) {
@@ -2180,7 +2180,7 @@ class LowPowerTipDialog extends StatelessWidget {
           ),
         RichText(
           text: TextSpan(
-            text:  this.isErQiLing ? 'Board ${boardIndex} ' : '',
+            text:  this.isErQiLing ? 'Board ${kP3DataAndProductIndexMap[boardIndex]} ' : '',
             style: TextStyle(
                 color: Constants.baseStyleColor,
                 fontFamily: 'SanFranciscoDisplay',

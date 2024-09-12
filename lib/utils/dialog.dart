@@ -374,7 +374,7 @@ class TTDialog {
               color: hexStringToColor('#3E3E55'),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: LowPowerTipDialog(boardIndex: boardIndex, powerValue: powerValue),
+            child: LowPowerTipDialog(boardIndex: boardIndex, powerValue: powerValue,isErQiLing: isErQiLing,),
           ),
         );
       },

@@ -49,7 +49,7 @@ class ControlTimeOutUtil{
       this.timeOutTimer!.cancel();
       this.timeOutTimer = null;
     }
-    this.timeOutTimer =  Timer(Duration(milliseconds: 150), (){
+    this.timeOutTimer =  Timer(Duration(milliseconds: 200), (){
       this.retryTimes ++;
      print('超时${retryTimes}次---${controlLedId}');
     });

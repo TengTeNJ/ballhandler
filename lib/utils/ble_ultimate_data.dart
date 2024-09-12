@@ -764,3 +764,25 @@ List<int> queryMasterSystemStatu() {
   // print('发送心跳------------');;
   return [start, source, destination, length, cmd, cs, end];
 }
+
+List<int> lockMode({bool lock = true}) {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
+  int length = 9;
+  int cmd = 0x0A;
+  int data1 = 0x03;
+  int data2 = 0x00;
+  if (!lock) {
+    data2 = 0x01; // 解除锁定
+  }
+  int cs = start + source + destination + length + cmd + data1 + data2;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  return [start, source, destination, length, cmd, data1, data2, cs, end];
+}

@@ -17,49 +17,51 @@ class _GameProcessStatuViewState extends State<GameProcessStatuView> {
   @override
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 90,
-          height: 24,
-          child: NewBatteryView(),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: hexStringToOpacityColor('#1C1E21', 0.6)
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 102,
+            height: 24,
+            child: NewBatteryView(),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                color: hexStringToOpacityColor('#1C1E21', 0.6)
+            ),
           ),
-        ),
-        SizedBox(
-          width: 12,
-        ),
-        Container(
-          width: 24,
-          height: 24,
-          child: BLEView(),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: hexStringToOpacityColor('#1C1E21', 0.6)),
-        ),
-        SizedBox(
-          width: gameUtil.selectRecord ? 12 : 0,
-        ),
-        gameUtil.selectRecord
-            ? Container(
-                width: 24,
-                height: 24,
-                child: Center(
-                  child: Image(
-                    image: AssetImage('images/ble/red.png'),
-                    width: 8,
-                    height: 8,
-                  ),
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    color: hexStringToOpacityColor('#1C1E21', 0.6)),
-              )
-            : Container()
-      ],
+          SizedBox(
+            width: 12,
+          ),
+          Container(
+            width: 24,
+            height: 24,
+            child: BLEView(),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                color: hexStringToOpacityColor('#1C1E21', 0.6)),
+          ),
+          SizedBox(
+            width: gameUtil.selectRecord ? 12 : 0,
+          ),
+          gameUtil.selectRecord
+              ? Container(
+            width: 24,
+            height: 24,
+            child: Center(
+              child: Image(
+                image: AssetImage('images/ble/red.png'),
+                width: 8,
+                height: 8,
+              ),
+            ),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                color: hexStringToOpacityColor('#1C1E21', 0.6)),
+          )
+              : Container()
+        ],
+      ),
     );
   }
 }

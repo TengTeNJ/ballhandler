@@ -278,9 +278,9 @@ const kShowLaunch = 'showLaunchPage'; // 是否展示启动介绍页的标识
 
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';
-const kBLEDevice_NewName = 'StarShots';
+const kBLEDevice_NewName = 'Stickhandling'; // StarShots Stickhandling
 // const kFiveBallHandler_Name = 'Stickhandling'; // 五节控球器的名称
-const kFiveBallHandler_Name = 'StarShots'; // 五节控球器的名称
+const kFiveBallHandler_Name = 'Stickhandling'; // 五节控球器的名称
 const kThreeBallHandler_Name = 'Razor Dangler 2.0'; // 三节控球器的名称
 const k270_Name_Release = 'Ultimater Dangler'; // 270度
 const k270_Name = 'Dangler-M'; // 270度 蓝牙设备名称

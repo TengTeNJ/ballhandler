@@ -108,6 +108,9 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               // 清空上次选择的组合
               // gameUtil.selectdP3Indexs.clear();
               NavigatorUtil.present(_controllers[index]);
+              // 模式切换锁定
+              BluetoothManager().writerDataToDevice(
+                  gameUtil.selectedDeviceModel, lockMode());
             }
           }
         },

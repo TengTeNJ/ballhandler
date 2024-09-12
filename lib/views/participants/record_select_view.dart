@@ -14,7 +14,9 @@ class _RecordSelectViewState extends State<RecordSelectView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: (){
+        print('+++++++++++');
         setState(() {
           _selectStatu = !_selectStatu;
           if(widget.onTap != null){

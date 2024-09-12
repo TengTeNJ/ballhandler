@@ -7,9 +7,12 @@ import 'package:get_it/get_it.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 
 import '../../constants/constants.dart';
+import '../../utils/ble_ultimate_data.dart';
+import '../../utils/blue_tooth_manager.dart';
 import '../../utils/color.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
+import '../../utils/toast.dart';
 import '../../views/participants/record_select_view.dart';
 
 class P3RecordSelectController extends StatefulWidget {
@@ -142,6 +145,16 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                     right: (Constants.screenWidth(context) * 0.175 - 90) / 2.0,
                     child: GestureDetector(
                       onTap: () async {
+                        // 确认网络构建完成 才可以进行游戏
+                        if (BluetoothManager().gameData.masterStatu != 2) {
+                          TTToast.showErrorInfo(
+                              'The device is not ready yet, please check the device');
+                          GameUtil gameUtil = GetIt.instance<GameUtil>();
+                          // 查询主机状态
+                          BluetoothManager().writerDataToDevice(
+                              gameUtil.selectedDeviceModel, queryMasterSystemStatu());
+                          return;
+                        }
                         _controller.dispose();
                         List<CameraDescription> cameras =
                         await availableCameras();

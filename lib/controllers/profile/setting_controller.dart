@@ -125,7 +125,7 @@ class _SettingControllerState extends State<SettingController> {
               ),
               SettingView(
                   showArrows: [true],
-                  title: 'Date',
+                  title: 'Data',
                   datas: ['Video'],
                   detailTitles: [''],
                   selectItem: (index) {
@@ -145,7 +145,7 @@ class _SettingControllerState extends State<SettingController> {
                   if (index == 0) {
                     NavigatorUtil.push(Routes.subsetting, arguments: {
                       "switchCount" : 3,
-                      "title": "Private Prpfile",
+                      "title": "Private Profile",
                       "subTitle":
                           "When your profile is Private,only membersyou approve can see your profile and workout history",
                     });

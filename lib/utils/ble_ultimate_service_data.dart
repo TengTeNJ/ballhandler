@@ -231,7 +231,7 @@ class BluetoothUltTimateDataParse {
             String v = binaryString.substring(
                 binaryString.length - (i + 1), binaryString.length - i);
             if (v == '0') {
-              TTToast.showErrorInfo('${i} offline');
+              TTToast.showErrorInfo('Board ${kP3DataAndProductIndexMap[i]} offline');
             }
           }
           BluetoothManager().triggerCallback(type: BLEDataType.onLine);
@@ -290,17 +290,13 @@ class BluetoothUltTimateDataParse {
             BluetoothManager().gameData.p3DeviceBatteryValues[i] = battery;
           }
           GameUtil gameUtil = GetIt.instance<GameUtil>();
-          // 说明是当前选择的游戏设备
-          if (gameUtil.selectedDeviceModel.device != null &&
-              gameUtil.selectedDeviceModel.device!.id == mode.device!.id) {
             List<int> _batteryValues =
                 BluetoothManager().gameData.p3DeviceBatteryValues;
             int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
             gameUtil.selectedDeviceModel.powerValue = minValue;
             // 监听电量
             BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
-          }
-          EventBus().sendEvent(kCurrent270DeviceInfoChange);
+            EventBus().sendEvent(kCurrent270DeviceInfoChange);
           break;
         case ResponseCMDType.statuSyn:
           //    print("deviceName  上报来的数据data = ${element.map((toElement)=>toElement.toRadixString(16)).toList()}");
@@ -332,9 +328,6 @@ class BluetoothUltTimateDataParse {
                 battery;
             // print('${targetIndex}号灯的电量变化，电量值为${battery}');
             GameUtil gameUtil = GetIt.instance<GameUtil>();
-            // 说明是当前选择的游戏设备
-            if (gameUtil.selectedDeviceModel.device != null &&
-                gameUtil.selectedDeviceModel.device!.id == mode.device!.id) {
               List<int> _batteryValues =
                   BluetoothManager().gameData.p3DeviceBatteryValues;
               int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
@@ -342,7 +335,6 @@ class BluetoothUltTimateDataParse {
               // 监听电量
               BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
               EventBus().sendEvent(kCurrent270DeviceInfoChange);
-            }
           } else if (data1 == 3) {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
             // 灯板 + 电量
@@ -366,9 +358,6 @@ class BluetoothUltTimateDataParse {
             int battery = element[6];
             BluetoothManager().gameData.p3DeviceBatteryValues[targetIndex] =
                 battery;
-            // 说明是当前选择的游戏设备
-            if (gameUtil.selectedDeviceModel.device != null &&
-                gameUtil.selectedDeviceModel.device!.id == mode.device!.id) {
               List<int> _batteryValues =
                   BluetoothManager().gameData.p3DeviceBatteryValues;
               int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
@@ -376,7 +365,6 @@ class BluetoothUltTimateDataParse {
               // 监听电量
               BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
               EventBus().sendEvent(kCurrent270DeviceInfoChange);
-            }
           }
           break;
         case ResponseCMDType.newStatuSyn:

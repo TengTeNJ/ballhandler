@@ -16,7 +16,7 @@ class NewBatteryView extends StatefulWidget {
 }
 
 class _NewBatteryViewState extends State<NewBatteryView> {
-  List<int> batteryValues = [];
+  List<int> batteryValues = [100,100,100,100,100,100];
   bool connected = false;
   List<String> imageNames = ['gray', 'red', 'yellow', 'green'];
   late StreamSubscription subscription;
@@ -45,6 +45,7 @@ class _NewBatteryViewState extends State<NewBatteryView> {
   }
 
   getBatteryValues() {
+    batteryValues.clear();
     BLEModel model = BluetoothManager().hasConnectedDeviceList.first;
     if (model.deviceName.contains(k270_Name)) {
       connected = true;
@@ -73,6 +74,7 @@ class _NewBatteryViewState extends State<NewBatteryView> {
     } else {
       nameIndex = 3;
     }
+    print('nameIndex = = ${nameIndex}');
     return Container(
       width: 8,
       height: 16,
@@ -81,22 +83,21 @@ class _NewBatteryViewState extends State<NewBatteryView> {
             AssetImage('images/battery/battery_${imageNames[nameIndex]}.png'),
         width: 8,
         height: 16,
+        fit: BoxFit.fill,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 11, right: 11),
-      child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemBuilder: _itemBuilder,
-          separatorBuilder: (context, index) => SizedBox(
-                width: 4,
-              ),
-          itemCount: batteryValues.length),
-    );
+    return ListView.separated(
+      padding: EdgeInsets.only(left: 12,right:12,top: 3,bottom: 3),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: _itemBuilder,
+        separatorBuilder: (context, index) => SizedBox(
+          width: 6,
+        ),
+        itemCount: batteryValues.length);
   }
 
   @override

@@ -2,9 +2,13 @@ import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../route/route.dart';
+import '../../utils/ble_ultimate_data.dart';
+import '../../utils/blue_tooth_manager.dart';
 import '../../utils/color.dart';
+import '../../utils/global.dart';
 import '../../utils/toast.dart';
 
 class P2Controller extends StatelessWidget {
@@ -144,7 +148,10 @@ class P2Controller extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print('----------');
+                        // 模式切换锁定解除
+                        GameUtil gameUtil = GetIt.instance<GameUtil>();
+                        BluetoothManager().writerDataToDevice(
+                            gameUtil.selectedDeviceModel, lockMode(lock: false));
                         NavigatorUtil.pop();
                       },
                       child: Container(

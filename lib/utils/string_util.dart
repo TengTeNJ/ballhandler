@@ -49,7 +49,7 @@ class StringUtil {
   }
 
   static String dateToBrithString(DateTime date) {
-    String formattedDate = DateFormat('MMMM dd,yyyy').format(date);
+    String formattedDate = DateFormat('MMM. dd,yyyy').format(date);
     return formattedDate;
   }
 
@@ -65,13 +65,13 @@ class StringUtil {
 
   /*UI上展示的时间字符串转换为DateTime*/
   static DateTime showTimeStringToDate(String timeString) {
-    final DateFormat formatter = DateFormat("MMMM dd,yyyy HH:mm'");
+    final DateFormat formatter = DateFormat("MMM. dd,yyyy HH:mm'");
     DateTime dateTime = formatter.parse(timeString);
     return dateTime;
   }
 
   static DateTime showTimeStringToDateNotMinute(String timeString) {
-    final DateFormat formatter = DateFormat("MMMM dd,yyyy'");
+    final DateFormat formatter = DateFormat("MMM. dd,yyyy'");
     DateTime dateTime = formatter.parse(timeString);
     return dateTime;
   }
@@ -92,7 +92,7 @@ class StringUtil {
   static String serviceStringToShowMyActivityDateString(String timeString) {
     try {
       DateTime dateTime = stringToDate(timeString);
-      String formattedDate = DateFormat('MMMM yyyy').format(dateTime);
+      String formattedDate = DateFormat('MMM. yyyy').format(dateTime);
       return formattedDate;
     } catch (error) {
       return '-';
@@ -103,7 +103,7 @@ class StringUtil {
   static String serviceStringMyStatuDateString(String timeString) {
     try {
       DateTime dateTime = stringToDate(timeString);
-      String formattedDate = DateFormat('MMMM dd').format(dateTime);
+      String formattedDate = DateFormat('MMM. dd').format(dateTime);
       return formattedDate;
     } catch (error) {
       return '-';
@@ -114,7 +114,7 @@ class StringUtil {
     print('timeString = ${timeString}');
     try {
       DateTime dateTime = stringToDate(timeString);
-      String formattedDate = DateFormat('MMMM dd,yyyy HH:mm').format(dateTime);
+      String formattedDate = DateFormat('MMM. dd,yyyy HH:mm').format(dateTime);
       return formattedDate;
     } catch (error) {
       return '-';

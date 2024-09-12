@@ -189,12 +189,12 @@ class BleUtil {
         if (!gameUtil.nowISGamePage && !gameUtil.uliLowPower1) {
           gameUtil.uliLowPower1 = true;
           TTDialog.lowPowerTipDialog(context,
-              boardIndex: index, powerValue: powerValue);
+              boardIndex: index, powerValue: powerValue,isErQiLing:true);
         }
       } else if (powerValue == 5) {
         gameUtil.uliLowPower2 = true;
         TTDialog.lowPowerTipDialog(context,
-            boardIndex: index, powerValue: powerValue);
+            boardIndex: index, powerValue: powerValue,isErQiLing:true);
       }
     } else if (gameUtil.gameScene == GameScene.five) {
       // 五节

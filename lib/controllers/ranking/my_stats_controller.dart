@@ -96,6 +96,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
       if (_lineResponse.data != null && _lineResponse.data!.length > 0) {
         datas.addAll(_lineResponse.data!);
       }
+      print('_lineResponse.data===${datas.length}');
     }
     setState(() {});
   }

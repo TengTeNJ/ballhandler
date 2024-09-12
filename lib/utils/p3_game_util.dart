@@ -1324,6 +1324,22 @@ class P3GameManager {
     this._countTime = 0;
   }
 
+  reset(){
+    // 清空定时器
+    if (this.durationTimer != null) {
+      this.durationTimer!.cancel();
+      this.durationTimer = null;
+    }
+    if (this.frequencyTimer != null) {
+      this.frequencyTimer!.cancel();
+      this.frequencyTimer = null;
+    }
+    this._index = 0;
+    this._countTime = 0;
+    this.currentInGameIndex = -1;
+    this._countTime = 0;
+  }
+
   // 执行
   _implement(Completer<bool> completer) async {
     if (_countTime <= 0) {
