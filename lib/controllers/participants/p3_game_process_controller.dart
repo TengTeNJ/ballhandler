@@ -273,9 +273,12 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         if (mounted) {
           setState(() {});
         }
-        if (gameUtil.modelId != 3) {
-          //  NavigatorUtil.push(Routes.gameready);
-        }
+      }else if(event == kCurrentDeviceDisconnectedUli){
+        // 蓝牙断开连接
+        Figure8GameUtil().stopGame();
+        P3GameManager().stopGame();
+        BluetoothManager().gameData.utimateGameSatatu = 0;
+        NavigatorUtil.pop();
       }
     });
     // 如果是P3模式 则需要app进行控制
@@ -307,13 +310,9 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       if ([6].contains(index)) {
         // wide side   toe-drag   figure8模式流程和P1保持一致
         await Figure8GameUtil().startGame();
-        // BluetoothManager().writerDataToDevice(
-        //     gameUtil.selectedDeviceModel, closeAllBoardLight());
+        ControlTimeOutUtil().reset();
       } else {
         await P3GameManager().startGame(currentInGameIndex: index);
-        print('组合结束---');
-        // BluetoothManager().writerDataToDevice(
-        //     gameUtil.selectedDeviceModel, closeAllBoardLight());
         ControlTimeOutUtil().reset();
       }
     }

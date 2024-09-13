@@ -16,7 +16,7 @@ class P1Controller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(child: Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
@@ -209,7 +209,7 @@ class P1Controller extends StatelessWidget {
                   behavior: HitTestBehavior.opaque,
                   onTap: () async{
                     TTToast.showLoading();
-                   // NavigatorUtil.pop();
+                    // NavigatorUtil.pop();
                     List<CameraDescription> cameras = await availableCameras();
                     NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                     TTToast.hideLoading();
@@ -235,6 +235,12 @@ class P1Controller extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ), onWillPop: () async{
+      // 模式切换锁定解除
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      BluetoothManager().writerDataToDevice(
+          gameUtil.selectedDeviceModel, lockMode(lock: false));
+      return true;
+    });
   }
 }

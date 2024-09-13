@@ -170,8 +170,7 @@ class StringUtil {
    }
     final Duration duration = endTime.difference(startTime);
    GameUtil gameUtil = GetIt.instance<GameUtil>();
-   // 需要减去组合之间的时间间隔
-    return duration.inSeconds.ceil() - (gameUtil.selectdP3Items.length/2).toInt(); // 计算秒数并向上取整
+    return duration.inSeconds.ceil(); // 计算秒数并向上取整
   }
 
   /*时间字符串(秒数)转成格式00:00这样*/

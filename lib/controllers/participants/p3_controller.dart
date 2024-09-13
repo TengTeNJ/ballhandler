@@ -35,7 +35,7 @@ class _P3ControllerState extends State<P3Controller> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(child: Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
@@ -117,7 +117,7 @@ class _P3ControllerState extends State<P3Controller> {
                         child: Center(
                           child: Image(
                             image:
-                                AssetImage('images/participants/back_grey.png'),
+                            AssetImage('images/participants/back_grey.png'),
                             width: 16,
                             height: 12,
                           ),
@@ -148,21 +148,21 @@ class _P3ControllerState extends State<P3Controller> {
                           borderRadius: BorderRadius.circular(10),
                           gradient: _selectModels.length > 0
                               ? LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color.fromRGBO(182, 246, 29, 1.0),
-                                    Color.fromRGBO(219, 219, 20, 1.0)
-                                  ],
-                                )
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color.fromRGBO(182, 246, 29, 1.0),
+                              Color.fromRGBO(219, 219, 20, 1.0)
+                            ],
+                          )
                               : LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    hexStringToColor('#B5B5B5'),
-                                    hexStringToColor('#717171'),
-                                  ],
-                                )),
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              hexStringToColor('#B5B5B5'),
+                              hexStringToColor('#717171'),
+                            ],
+                          )),
                       child: Center(
                         child: Constants.boldBlackTextWidget('Continue', 16),
                       )),
@@ -170,13 +170,19 @@ class _P3ControllerState extends State<P3Controller> {
           ],
         ),
       ),
-    );
+    ), onWillPop: ()async{
+      // 模式切换锁定解除
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      BluetoothManager().writerDataToDevice(
+          gameUtil.selectedDeviceModel, lockMode(lock: false));
+      return true;
+
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    print('P3-------controller');
   }
 }
