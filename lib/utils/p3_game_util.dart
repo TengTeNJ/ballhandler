@@ -1279,6 +1279,8 @@ class P3GameManager {
           gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
       // 倒计时显示
       if (_countTime == 0) {
+        BluetoothManager().writerDataToDevice(
+            gameUtil.selectedDeviceModel, closeAllBoardLight());
         this.stopGame();
         listenControlutil(completer);
       }
@@ -1301,23 +1303,23 @@ class P3GameManager {
       this.frequencyTimer = null;
     }
     // 关闭所有的灯光
-    // GameUtil gameUtil = GetIt.instance<GameUtil>();
-    // List<List<ClickTargetModel>> _allDatas =
-    // p3ModeDatas[this.currentInGameIndex];
-    // int index =  _countTime == 0 ? this._index : (this._index - 1);
-    // List<ClickTargetModel> currentDatas = _allDatas[index];
-    // for(int i = 0; i <currentDatas.length; i++){
-    //   ClickTargetModel element = currentDatas[i];
-    //   List<BleULTimateLighStatu> status = [
-    //     BleULTimateLighStatu.close,
-    //     BleULTimateLighStatu.close,
-    //     BleULTimateLighStatu.close,
-    //     BleULTimateLighStatu.close
-    //   ];
-    //   await BluetoothManager().asyncWriterDataToDevice(
-    //       gameUtil.selectedDeviceModel,
-    //       controLightBoard(element.boardIndex, status));
-    // }
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    List<List<ClickTargetModel>> _allDatas =
+    p3ModeDatas[this.currentInGameIndex];
+    int index =  _countTime == 0 ? this._index : (this._index - 1);
+    List<ClickTargetModel> currentDatas = _allDatas[index];
+    for(int i = 0; i <currentDatas.length; i++){
+      ClickTargetModel element = currentDatas[i];
+      List<BleULTimateLighStatu> status = [
+        BleULTimateLighStatu.close,
+        BleULTimateLighStatu.close,
+        BleULTimateLighStatu.close,
+        BleULTimateLighStatu.close
+      ];
+      await BluetoothManager().asyncWriterDataToDevice(
+          gameUtil.selectedDeviceModel,
+          controLightBoard(element.boardIndex, status));
+    }
     this._index = 0;
     this._countTime = 0;
     this.currentInGameIndex = -1;
@@ -1355,8 +1357,9 @@ class P3GameManager {
       return;
     }
     List<ClickTargetModel> datas = _allDatas[this._index];
-    int frequency =
-        kP3IndexAndDurationMap[this.currentInGameIndex]!['frequency'] ?? 0;
+    // int frequency =
+    //     kP3IndexAndDurationMap[this.currentInGameIndex]!['frequency'] ?? 0;
+    int frequency = 3500;
     // 先清空
     if (this.frequencyTimer != null) {
       this.frequencyTimer!.cancel();
@@ -1366,7 +1369,6 @@ class P3GameManager {
     if (currentInGameIndex != 0 && currentInGameIndex != 2) {
       this.frequencyTimer =
           Timer.periodic(Duration(milliseconds: frequency), (timer) {
-        //print('++++++++--------');
         this._index++;
         // 递归
         _implement(completer);

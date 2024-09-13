@@ -85,6 +85,7 @@ class _VideoViewState extends State<VideoView> {
                           model.score = widget.videoModel.trainScore;
                           model.avgPace = widget.videoModel.avgPace;
                           model.endTime = widget.videoModel.createTime;
+                          model.rank = widget.videoModel.rankNumber;
                           NavigatorUtil.push('videoPlay',
                               arguments: {"model": model, "gameFinish": false});
                         },

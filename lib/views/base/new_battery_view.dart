@@ -74,7 +74,6 @@ class _NewBatteryViewState extends State<NewBatteryView> {
     } else {
       nameIndex = 3;
     }
-    print('nameIndex = = ${nameIndex}');
     return Container(
       width: 8,
       height: 16,

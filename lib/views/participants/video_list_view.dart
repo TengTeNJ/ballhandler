@@ -86,7 +86,7 @@ class _VideoListViewState extends State<VideoListView> {
                       actions: <Widget>[
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(false),
-                          child: Text('Cancel',style: TextStyle(color: Constants.baseGreyStyleColor),),
+                          child: Text('Cancel',style: TextStyle(color: Constants.baseStyleColor),),
                         ),
                         TextButton(
                           onPressed: () async{
@@ -95,7 +95,7 @@ class _VideoListViewState extends State<VideoListView> {
                               Navigator.of(context).pop(true);
                             }
                           },
-                          child: Text('Delete',style: TextStyle(color: Constants.baseStyleColor),),
+                          child: Text('Delete',style: TextStyle(color: Constants.baseGreyStyleColor),),
                         ),
                       ],
                     );

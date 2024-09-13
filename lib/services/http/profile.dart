@@ -58,6 +58,7 @@ class VideoModel{
   String? activityId;
   String? activityName;
   String? activityRemark;
+  String rankNumber = '-';
 }
 
 class VideoDataModel {
@@ -237,6 +238,8 @@ class Profile {
         !ISEmpty(_map['activityName']) ? _map['activityName'].toString() : '';
         model.activityRemark =
         !ISEmpty(_map['activityRemark']) ? _map['activityRemark'].toString() : '';
+        model.rankNumber =
+        !ISEmpty(_map['rankNumber']) ? _map['rankNumber'].toString() : '-';
         _list.add(model);
       });
       _model.data = _list;
@@ -249,7 +252,7 @@ class Profile {
 /*查询用户下的视频个数*/
   static Future<ApiResponse<int>> queryUserVideoCountData() async {
     final _data = {
-      "limit": '1',
+      "limit": '10',
       "page": '1',
     };
     final response = await HttpUtil.get('/api/train/video/list', _data,

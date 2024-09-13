@@ -179,25 +179,7 @@ class Figure8GameUtil {
       // 关闭所有的灯光
        BluetoothManager().writerDataToDevice(
           gameUtil.selectedDeviceModel, closeAllBoardLight());
-       sleep(Duration(milliseconds: 50));
-      // for(int i = 0; i < blueDatas.length; i++){
-      //   HitTargetModel model = blueDatas[i];
-      //   // add 亮的标靶
-      //   await BluetoothManager().asyncWriterDataToDevice(
-      //       gameUtil.selectedDeviceModel,
-      //       controSingleLightBoard(
-      //           model.boardIndex, model.ledIndex, BleULTimateLighStatu.close));
-      // }
-      //
-      // for(int i = 0; i < redDatas.length; i++){
-      //   HitTargetModel model = blueDatas[i];
-      //   // add 亮的标靶
-      //   await BluetoothManager().asyncWriterDataToDevice(
-      //       gameUtil.selectedDeviceModel,
-      //       controSingleLightBoard(
-      //           model.boardIndex, model.ledIndex, BleULTimateLighStatu.close));
-      // }
-
+       sleep(Duration(milliseconds: 100));
       _process3EveryUnitIndex = 0;
       _process3Index++;
       _process3Control();

@@ -197,7 +197,11 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           model.time = timeBetween.toString();
           if(gameUtil.modelId == 3){
             // p3模式减去每个组合之间的时间间隔
-            model.time = (int.parse(model.time) - gameUtil.selectdP3Items.length).toString();
+            model.time = ((int.parse(model.time))).toString();
+          }else if(gameUtil.modelId == 1){
+            model.time = '90';
+          }else if(gameUtil.modelId == 2){
+            model.time = '120';
           }
           if (BluetoothManager().gameData.score == 0) {
             model.avgPace = '0.0';
@@ -296,10 +300,6 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         .writerDataToDevice(gameUtil.selectedDeviceModel, gameStart());
     for (int i = 0; i < indexs.length; i++) {
       playLocalAudio('start.mp3');
-      BluetoothManager().writerDataToDevice(
-          gameUtil.selectedDeviceModel, closeAllBoardLight());
-      P3GameManager().reset();
-      sleep(Duration(milliseconds: 1000));
       int index = indexs[i];
       setState(() {
         timeLeftText = timeLeftLabel(index: index);
@@ -307,14 +307,13 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       if ([6].contains(index)) {
         // wide side   toe-drag   figure8模式流程和P1保持一致
         await Figure8GameUtil().startGame();
-        BluetoothManager().writerDataToDevice(
-            gameUtil.selectedDeviceModel, closeAllBoardLight());
+        // BluetoothManager().writerDataToDevice(
+        //     gameUtil.selectedDeviceModel, closeAllBoardLight());
       } else {
         await P3GameManager().startGame(currentInGameIndex: index);
-        BluetoothManager().writerDataToDevice(
-            gameUtil.selectedDeviceModel, closeAllBoardLight());
-        BluetoothManager().writerDataToDevice(
-            gameUtil.selectedDeviceModel, closeAllBoardLight());
+        print('组合结束---');
+        // BluetoothManager().writerDataToDevice(
+        //     gameUtil.selectedDeviceModel, closeAllBoardLight());
         ControlTimeOutUtil().reset();
       }
     }
@@ -513,8 +512,8 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                                                 .remainTime
                                                 .toString()),
                                         Constants.screenHeight(context) >= 780
-                                            ? 72
-                                            : 65,
+                                            ? 70
+                                            : 62,
                                         height: 1.0),
                                   ],
                                 ),
@@ -552,8 +551,8 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                                             .score
                                             .toString(),
                                         Constants.screenHeight(context) >= 780
-                                            ? 72
-                                            : 65,
+                                            ? 70
+                                            : 62,
                                         height: 1.0)
                                   ],
                                 ),

@@ -140,6 +140,10 @@ class BluetoothManager {
       print('connectionStateUpdate = ${connectionStateUpdate.connectionState}');
       if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.connected) {
+        if(Platform.isAndroid){
+          // 请求高优先级连接
+          _ble.requestConnectionPriority(deviceId: model.device!.id, priority: ConnectionPriority.highPerformance);
+        }
         // 设备连接成功
         EventBus().sendEvent(kDeviceConnected);
         // 连接设备数量+1

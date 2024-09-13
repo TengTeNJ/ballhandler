@@ -16,7 +16,7 @@ class P2Controller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(child: Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
@@ -207,6 +207,12 @@ class P2Controller extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ), onWillPop: ()async{
+      // 模式切换锁定解除
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      BluetoothManager().writerDataToDevice(
+          gameUtil.selectedDeviceModel, lockMode(lock: false));
+      return true;
+    });
   }
 }

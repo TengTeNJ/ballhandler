@@ -108,7 +108,7 @@ class _TodayDataViewState extends State<TodayDataView> {
                           ),
                           Column(
                             children: [
-                              Constants.mediumWhiteTextWidget(StringUtil.timeStringFormat(widget.gameOverModel.time), 20),
+                              Constants.mediumWhiteTextWidget(StringUtil.timeStringFormat(widget.gameOverModel.trainTime), 20),
                               SizedBox(height: 4,),
                               Constants.customTextWidget('Time(sec.)', 10, '#B1B1B1'),
                             ],

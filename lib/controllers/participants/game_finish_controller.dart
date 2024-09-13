@@ -110,7 +110,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
             SizedBox(
               height: 38,
             ),
-            GameOverDataView(dataModel: widget.dataModel),
+           GameOverDataView(dataModel: widget.dataModel),
             SizedBox(
               height: 4,
             ),

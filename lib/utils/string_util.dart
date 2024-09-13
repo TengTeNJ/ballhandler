@@ -1,6 +1,9 @@
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:date_format/date_format.dart';
-import 'package:intl/intl.dart'; // 导入intl包
+import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
+
+import 'global.dart'; // 导入intl包
 
 class StringUtil {
   /*邮箱校验*/
@@ -166,11 +169,16 @@ class StringUtil {
      return 0;
    }
     final Duration duration = endTime.difference(startTime);
-    return duration.inSeconds.ceil(); // 计算秒数并向上取整
+   GameUtil gameUtil = GetIt.instance<GameUtil>();
+   // 需要减去组合之间的时间间隔
+    return duration.inSeconds.ceil() - (gameUtil.selectdP3Items.length/2).toInt(); // 计算秒数并向上取整
   }
 
   /*时间字符串(秒数)转成格式00:00这样*/
   static String timeStringFormat(String timeString){
+    if(timeString.isEmpty){
+      return '00:30';
+    }
     int timeValue = int.parse(timeString);
     int minute = (timeValue / 60).toInt();
     int second = timeValue % 60;
