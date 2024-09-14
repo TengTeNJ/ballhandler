@@ -1,6 +1,9 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../utils/global.dart';
 
 class RankingCardView extends StatefulWidget {
   int index = 0;
@@ -13,6 +16,7 @@ class RankingCardView extends StatefulWidget {
 class _RankingCardViewState extends State<RankingCardView> {
 String _avgPace = '-';
 String _rankNumber = '-';
+String _title = 'Digital Stickhandling Trainer';
   @override
   void initState() {
     // TODO: implement initState
@@ -33,6 +37,7 @@ String _rankNumber = '-';
 
   @override
   Widget build(BuildContext context) {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     return Container(
       height: 130,
       width: Constants.screenWidth(context) ,
@@ -51,7 +56,7 @@ String _rankNumber = '-';
               children: [
                 Container(
                   child: Constants.mediumWhiteTextWidget(
-                      'Digital stickhandling trainer', 14,
+                      gameUtil.sceneList[gameUtil.gameScene.index].dictValue ?? _title, 14,
                       textAlign: TextAlign.left),
                 ),
                 Image(

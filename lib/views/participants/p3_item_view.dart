@@ -2,6 +2,9 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/airbattle/p3_item_model.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../utils/global.dart';
 
 class P3ItemView extends StatefulWidget {
   P3ItemModel model = P3ItemModel();
@@ -20,6 +23,13 @@ class _P3ItemViewState extends State<P3ItemView> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
+        if( !widget.model.selected ){
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          if(gameUtil.selectdP3Items.length >= 3){
+            return;
+          }
+        }
+
         if(widget.selectItem != null){
           widget.model.selected = !widget.model.selected;
           widget.selectItem!(widget.model.index);

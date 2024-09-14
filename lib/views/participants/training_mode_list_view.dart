@@ -107,7 +107,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   SizedBox(
                     width: 2,
                   ),
-                  GestureDetector(
+                  widget.model.modeVideo.contains('http') ? GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       if (widget.model.modeVideo.contains('http')) {
@@ -125,7 +125,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                         child: Image(
                           image: AssetImage('images/participants/question.png'),
                         )),
-                  ),
+                  ) : Container(),
                 ],
               ),
             ),

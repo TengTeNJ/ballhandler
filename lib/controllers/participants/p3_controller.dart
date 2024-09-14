@@ -59,7 +59,7 @@ class _P3ControllerState extends State<P3Controller> {
                       Padding(
                         padding: EdgeInsets.only(left: 16, right: 16),
                         child: Constants.mediumGreyTextWidget(
-                            'Please select 3-5 training modes and combine them into one free mode for training',
+                            'Please select 1-3 training modes and combine them into one free mode for training',
                             14,
                             height: 1.2,
                             textAlign: TextAlign.start),

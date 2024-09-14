@@ -2,7 +2,10 @@ import 'package:code/constants/constants.dart';
 import 'package:code/models/airbattle/p3_item_model.dart';
 import 'package:code/views/participants/p3_item_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+
+import '../../utils/global.dart';
 
 class P3GridListView extends StatefulWidget {
    Function?selectItem;

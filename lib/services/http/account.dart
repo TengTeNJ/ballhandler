@@ -10,6 +10,11 @@ import 'package:get_it/get_it.dart';
 
 import '../../utils/global.dart';
 
+class CheckResultModel {
+  int thirdLoginType = 0; // 账号路径(0邮箱登录、1apple、2google、3facebook、4shopify)
+  bool setPwdFlag = false; // 是否设置过密码
+}
+
 class Account {
   /*第三方登录*/
   static Future<ApiResponse<User>> thirdLogin(Map<String, dynamic> data) async {
@@ -24,12 +29,21 @@ class Account {
   /*邮箱注册接口*/
   static Future<ApiResponse<User>> emailRegister(
       String code, String pwd) async {
-    final email = NSUserDefault.getValue<String>(kInputEmail);
+    final email = await NSUserDefault.getValue<String>(kInputEmail);
     final _data = {"account": email ?? '', "code": code, "password": pwd};
     final response =
         await HttpUtil.post('/api/login/register', _data, showLoading: true);
     return ApiResponse(
         success: response.success, data: User.fromJson(response.data['data']));
+  }
+  /*设置密码*/
+  static Future<ApiResponse> setPwd(String pwd) async {
+    final email = await NSUserDefault.getValue<String>(kInputEmail);
+    final _data = {"account": email ?? '',  "password": pwd};
+    final response =
+    await HttpUtil.post('/api/login/forgetPwd', _data, showLoading: true);
+    return ApiResponse(
+        success: response.success);
   }
 
   /*发送验证码*/
@@ -75,13 +89,22 @@ class Account {
   }
 
 /*校验账号是否已存在*/
-  static Future<ApiResponse<bool>> checkeEmail(String account) async {
+  static Future<ApiResponse<CheckResultModel>> checkeEmail(
+      String account) async {
     Map<String, dynamic> _data = {
       "account": account,
     };
     final response = await HttpUtil.get('/api/login/checkEmail', _data);
-    return ApiResponse(
-        success: response.success, data: response.data['code'] == '0');
+    CheckResultModel model = CheckResultModel();
+    Map _map = response.data['data'];
+    if (_map != null) {
+      model.thirdLoginType = ISEmpty(_map['thirdLoginType'])
+          ? 0
+          : (_map['thirdLoginType']);
+      model.setPwdFlag =
+          ISEmpty(_map['setPwdFlag']) ? false : (_map['setPwdFlag']) != 0;
+    }
+    return ApiResponse(success: response.success, data: model);
   }
 
   /*检测是否设置过用户信息*/
@@ -145,7 +168,8 @@ class Account {
     UserProvider.of(context).brith =
         ISEmpty(_response.data!.birthday) ? '--' : _response.data!.birthday;
 
-    UserProvider.of(context).email = ISEmpty(_response.data!.accountNo) ? '' : _response.data!.accountNo;
+    UserProvider.of(context).email =
+        ISEmpty(_response.data!.accountNo) ? '' : _response.data!.accountNo;
 
     // 登录成功后绑定用户和推送的token
     GameUtil gameUtil = GetIt.instance<GameUtil>();
@@ -156,30 +180,32 @@ class Account {
     }
     updateAccountInfo({"firebaseToken": gameUtil.firebaseToken});
   }
+
 /*苹果内购验证*/
   static Future<ApiResponse> applePayVertify(
       {String thirdPayNo = '',
-        String productNo = '',
-        String receiptDate = ''}) async {
+      String productNo = '',
+      String receiptDate = ''}) async {
     final _data = {
-      'thirdPayNo':thirdPayNo,
-      'productNo':productNo,
-      'receiptDate':receiptDate,
+      'thirdPayNo': thirdPayNo,
+      'productNo': productNo,
+      'receiptDate': receiptDate,
       'packageName': 'com.potent.dangle',
     };
     final response =
-    await HttpUtil.post('/api/pay/apple', _data, showLoading: true);
+        await HttpUtil.post('/api/pay/apple', _data, showLoading: true);
     return ApiResponse(success: response.success);
   }
+
 /*谷歌内购验证*/
   static Future<ApiResponse> googlePayVertify(
       {String purchaseId = '',
       String productNo = '',
       String purchaseToken = ''}) async {
     final _data = {
-      'purchaseId':purchaseId,
-      'productNo':productNo,
-      'purchaseToken':purchaseToken,
+      'purchaseId': purchaseId,
+      'productNo': productNo,
+      'purchaseToken': purchaseToken,
       'packageName': 'com.potent.dangle',
     };
     final response =
@@ -188,37 +214,45 @@ class Account {
   }
 
   /*获取订阅信息*/
-  static Future<ApiResponse<SubscribeModel>>
-  querySubscribeInfo() async {
-    final response = await HttpUtil.get(
-        '/api/member/index', null, showLoading: false);
+  static Future<ApiResponse<SubscribeModel>> querySubscribeInfo() async {
+    final response =
+        await HttpUtil.get('/api/member/index', null, showLoading: false);
     SubscribeModel model = SubscribeModel();
     if (response.success && response.data['data'] != null) {
-
       final element = response.data['data'];
       final _map = element;
       final _payProductVoMap = element['payProductVo'] ?? {};
-      model.subscribeStartDate =
-      !ISEmpty(_map['subscribeStartDate']) ? _map['subscribeStartDate'].toString() : '';
-      model.subscribeEndDate =
-      !ISEmpty(_map['subscribeEndDate']) ? _map['subscribeEndDate'].toString() : '--';
+      model.subscribeStartDate = !ISEmpty(_map['subscribeStartDate'])
+          ? _map['subscribeStartDate'].toString()
+          : '';
+      model.subscribeEndDate = !ISEmpty(_map['subscribeEndDate'])
+          ? _map['subscribeEndDate'].toString()
+          : '--';
       model.subscribeStatus =
-      !ISEmpty(_map['subscribeStatus']) ? _map['subscribeStatus'] : 0;
+          !ISEmpty(_map['subscribeStatus']) ? _map['subscribeStatus'] : 0;
 
       ApiPayProductVo productVo = ApiPayProductVo();
-      productVo.productId = !ISEmpty(_payProductVoMap['productId']) ? _payProductVoMap['productId'] : 0;
-      productVo.productName =
-      !ISEmpty(_payProductVoMap['productName']) ? _payProductVoMap['productName'].toString() : '';
-      productVo.productNo =
-      !ISEmpty(_payProductVoMap['productNo']) ? _payProductVoMap['productNo'].toString(): '';
-      productVo.productPrice =
-      !ISEmpty(_payProductVoMap['productPrice']) ? _payProductVoMap['productPrice'] : 0;
-      productVo.productRemark =
-      !ISEmpty(_payProductVoMap['productRemark']) ? _payProductVoMap['productRemark'].toString() : '';
-      productVo.productTerm =
-      !ISEmpty(_payProductVoMap['productTerm']) ? _payProductVoMap['productTerm'] : 0;
-      productVo.productImage =
-      !ISEmpty(_payProductVoMap['productImage']) ? _payProductVoMap['productImage'].toString() : '';
+      productVo.productId = !ISEmpty(_payProductVoMap['productId'])
+          ? _payProductVoMap['productId']
+          : 0;
+      productVo.productName = !ISEmpty(_payProductVoMap['productName'])
+          ? _payProductVoMap['productName'].toString()
+          : '';
+      productVo.productNo = !ISEmpty(_payProductVoMap['productNo'])
+          ? _payProductVoMap['productNo'].toString()
+          : '';
+      productVo.productPrice = !ISEmpty(_payProductVoMap['productPrice'])
+          ? _payProductVoMap['productPrice']
+          : 0;
+      productVo.productRemark = !ISEmpty(_payProductVoMap['productRemark'])
+          ? _payProductVoMap['productRemark'].toString()
+          : '';
+      productVo.productTerm = !ISEmpty(_payProductVoMap['productTerm'])
+          ? _payProductVoMap['productTerm']
+          : 0;
+      productVo.productImage = !ISEmpty(_payProductVoMap['productImage'])
+          ? _payProductVoMap['productImage'].toString()
+          : '';
       model.productVo = productVo;
 
       return ApiResponse(success: response.success, data: model);

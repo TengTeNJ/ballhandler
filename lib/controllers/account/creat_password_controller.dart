@@ -1,15 +1,18 @@
 import 'package:code/controllers/account/password_page_controller.dart';
+import 'package:code/services/http/account.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
+import '../../utils/notification_bloc.dart';
 import '../../utils/string_util.dart';
 import '../../utils/toast.dart';
 import '../../widgets/account/cancel_button.dart';
 import '../../widgets/account/custom_textfield.dart';
 
 class CreatPassWordController extends StatefulWidget {
-  const CreatPassWordController({super.key});
+  int thirdLoginType = 0;
+   CreatPassWordController({this.thirdLoginType = 0});
 
   @override
   State<CreatPassWordController> createState() =>
@@ -144,9 +147,24 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                           'The passwords entered twice are inconsistent, please check');
                       return;
                     }
-                    NavigatorUtil.present(PasswordPageController(
-                      password: _inputText,
-                    ));
+
+                    if(widget.thirdLoginType == 4){
+                      // shopify用户
+                      // 设置密码
+                      await  Account.setPwd(_inputText);
+                      final _response =
+                      await Account.emailLogin(_inputText);
+                      if (_response.success == true) {
+                        Account.handleUserData(_response, context);
+                        EventBus().sendEvent(kLoginSucess);
+                        NavigatorUtil.popToRoot();
+                      }
+                    }else{
+                      NavigatorUtil.present(PasswordPageController(
+                        password: _inputText,
+                      ));
+                    }
+
                   },
                   child: Container(
                     child: Center(
