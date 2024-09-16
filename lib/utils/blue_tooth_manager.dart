@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:code/constants/constants.dart';
+import 'package:code/models/game/hit_target_model.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
+import 'package:code/utils/ble_robot_service_model.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/control_time_out_util.dart';
@@ -28,6 +30,10 @@ class BluetoothManager {
   }
 
   BluetoothManager._internal();
+  BLEModel robotModel = BLEModel(deviceName: kTestRobotName);
+  int robotStatu = 1; // 机器人状态
+  int robotIndex = 0; // 机器人到达灯的位置 1-18
+  final ValueNotifier<HitTargetModel> hitModel = ValueNotifier(HitTargetModel(boardIndex: -1, ledIndex: -1, statu: BleULTimateLighStatu.close));
 
   // 蓝牙列表
   List<BLEModel> deviceList = [];
@@ -120,6 +126,10 @@ class BluetoothManager {
           } else {
             // 设备列表数组中已有，则忽略
           }
+        }else if(event.name == kTestRobotName){
+          // 自动连接机器人测试设备
+          this.robotModel.device = event;
+          conectToDevice(this.robotModel);
         }
       });
     }
@@ -143,6 +153,25 @@ class BluetoothManager {
         if(Platform.isAndroid){
           // 请求高优先级连接
           _ble.requestConnectionPriority(deviceId: model.device!.id, priority: ConnectionPriority.highPerformance);
+        }
+        if(model.deviceName == kTestRobotName){
+          QualifiedCharacteristic notifyCharacteristic = QualifiedCharacteristic(
+              serviceId: Uuid.parse(kBLE_SERVICE_ROBOT_UUID),
+              characteristicId: Uuid.parse(kBLE_ROBOT_CHARACTERISTIC_NOTIFY_UUID),
+              deviceId: model.device!.id);
+          QualifiedCharacteristic writerCharacteristic = QualifiedCharacteristic(
+              serviceId: Uuid.parse(kBLE_SERVICE_ROBOT_UUID),
+              characteristicId: Uuid.parse(kBLE_ROBOT_CHARACTERISTIC_WRITER_UUID),
+              deviceId: model.device!.id);
+          model.notifyCharacteristic = notifyCharacteristic;
+          model.writerCharacteristic = writerCharacteristic;
+          // 监听数据
+          _ble
+              .subscribeToCharacteristic(notifyCharacteristic)
+              .listen((List<int> data) {
+            BluetoothRobotDataParse.parseData(data, model);
+          });
+          return;
         }
         // 设备连接成功
         EventBus().sendEvent(kDeviceConnected);

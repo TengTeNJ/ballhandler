@@ -1222,6 +1222,8 @@ class P3GameManager {
         List<ClickTargetModel> datas = _allDatas[this._index];
         HitTargetModel? hitModel = BluetoothManager().gameData.hitTargetModel;
         if (hitModel != null) {
+          BluetoothManager().hitModel.value = hitModel;
+          return;
           ClickTargetModel matchModel = datas.firstWhere(
               (element) =>
                   element.ledIndex.contains(hitModel!.ledIndex) &&

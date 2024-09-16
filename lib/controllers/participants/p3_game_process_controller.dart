@@ -296,6 +296,9 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
 
 /*P3模式*/
   p3Control() async {
+    if(BluetoothManager().robotStatu != 1){
+      return;
+    }
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     List<int> indexs = gameUtil.selectdP3Indexs;
     // 开始游戏指令

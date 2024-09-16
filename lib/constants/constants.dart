@@ -296,6 +296,11 @@ const kBLE_270_CHARACTERISTIC_WRITER_UUID = "fff2";
 
 const kPageLimit = 10; // 数据分页每页显示的数据量
 
+const kTestRobotName = '270 Test Robot';
+const kBLE_SERVICE_ROBOT_UUID = "0001";
+const kBLE_ROBOT_CHARACTERISTIC_NOTIFY_UUID = "0002";
+const kBLE_ROBOT_CHARACTERISTIC_WRITER_UUID = "0003";
+
 const kBLEDevice_Names = [
   kBLEDevice_Name,
   kBLEDevice_NewName,
@@ -371,6 +376,7 @@ const kInitiativeDisconnectUli = 'initiative_disconnect_uli'; // 主动断开
 const kInitiativeDisconnectFive = 'initiative_disconnect_five'; // 主动断开
 const kCurrentDeviceDisconnectedUli = 'current_device_disconnected_uli'; // 当前游戏设备断开连接
 const kCurrentDeviceDisconnectedFive = 'current_device_disconnected_five'; // 当前游戏设备断开连接
+const kRobotStatuChange = 'robot_statu_change'; // 机器人状态改变
 
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
@@ -527,3 +533,24 @@ const Map<int, int> kP3DataAndProductIndexMap = {
   4:5,
   5:6
 }; // 270灯板的蓝牙数据索引和产品标签上的实际索引的映射表
+
+const Map<String,int> kBoardIndexToRobotIndexMap = {
+  '13':1,
+  '12':2,
+  '10':3,
+  '11':4,
+  '23':5,
+  '32':6,
+  '33':7,
+  '30':8,
+  '31':9,
+  '03':10,
+  '00':11,
+  '02':12,
+  '01':13,
+  '43':14,
+  '53':15,
+  '50':16,
+  '52':17,
+  '51':18,
+};
