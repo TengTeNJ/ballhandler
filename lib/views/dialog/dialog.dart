@@ -582,7 +582,7 @@ class ChampionDialog extends StatelessWidget {
             height: 18,
           ),
           Constants.customTextWidget(
-              'Congratulations on winning the cham -pionship in this Air Battle',
+              'Congratulations on winning this month\'s Air Battle!',
               14,
               '#FFFFFF',
               height: 1.5),
@@ -592,7 +592,7 @@ class ChampionDialog extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 24, right: 24),
             child: BaseButton(
-                title: 'Got It',
+                title: 'See Award',
                 height: 40,
                 onTap: () {
                   NavigatorUtil.pop();
@@ -651,9 +651,9 @@ class AwardDialog extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 16, right: 16),
                 child: Constants.customTextWidget(
-                    'Congratulations on winning the championshipin this Air Battle We sent an email to ' +
+                    'Congratulations on winning this month\'s Air Battle! We’ve sent an email to ' +
                         UserProvider.of(context).email +
-                        ' help You Receive a reward',
+                        'with details about your award',
                     16,
                     '#FFFFFF',
                     height: 1.5),

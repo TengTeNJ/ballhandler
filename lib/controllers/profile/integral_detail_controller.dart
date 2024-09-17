@@ -63,7 +63,7 @@ class _IntegralDetailControllerState extends State<IntegralDetailController> {
         backgroundColor: Constants.darkThemeColor,
         appBar: CustomAppBar(
           showBack: true,
-          title: 'Points Details ',
+          title: 'Points History ',
         ),
         //  borderRadius: BorderRadius.circular(26),
         body: Container(

@@ -25,7 +25,7 @@ class _ProgressDataViewState extends State<ProgressDataView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Constants.regularWhiteTextWidget('Your  Progress', 16),
+          Constants.regularWhiteTextWidget('Your  Rewards Progress', 16),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

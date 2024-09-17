@@ -261,7 +261,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                         ),
                         child: Center(
                           child: Constants.boldWhiteTextWidget(
-                                 detailModel.isJoin == 0 ? 'JOIN' :  'End in ${detailModel.timeDifferentString}',
+                                 detailModel.isJoin == 0 ? 'JOIN' :  'Ending in ${detailModel.timeDifferentString}',
                               16),
                         ),
                       ),
