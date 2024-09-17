@@ -142,7 +142,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                       children: [
                         Padding(padding: EdgeInsets.only(left: 12, top: 12),
                           child: Constants.regularGreyTextWidget(
-                              'My Rewards', 12), ),
+                              'My Awards', 12), ),
                         Padding(padding: EdgeInsets.only(left: 12, top: 12),
                           child: Constants.mediumWhiteTextWidget(
                               _model.activityAward.toString(), 40), ),
@@ -173,7 +173,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                       children: [
                         Padding(padding: EdgeInsets.only(left: 12, top: 12),
                           child: Constants.regularGreyTextWidget(
-                              'Activity Points', 12), ),
+                              'Points Earned', 12), ),
                         Padding(padding: EdgeInsets.only(left: 12, top: 12),
                           child: Constants.mediumWhiteTextWidget(
                               _model.activityIntegral.toString(), 40), ),

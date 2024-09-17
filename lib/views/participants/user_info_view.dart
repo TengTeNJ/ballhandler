@@ -48,20 +48,14 @@ class _UserInfoViewState extends State<UserInfoView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Consumer<UserModel>(builder: (context, user, child) {
-                    return Text(user.userName,
+                    return Text( 'Hello, ' +user.userName + '!',
                         style: TextStyle(
                             fontSize: 24,
                             color: Colors.white,
                             fontFamily: 'SanFranciscoDisplay',
                             fontWeight: FontWeight.w500));
                   }),
-                  Text(
-                    'welcome to use  POTENT HOCKEY',
-                    style: TextStyle(
-                        color: Constants.baseGreyStyleColor,
-                        fontFamily: 'SanFranciscoDisplay',
-                        fontWeight: FontWeight.w400),
-                  )
+                  Constants.regularGreyTextWidget('Welcome to Potent Hockey DangleElite', 12)
                 ],
               ),
             ],

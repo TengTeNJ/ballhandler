@@ -286,7 +286,7 @@ class _BLEListDialogState extends State<BLEListDialog> {
                     Container(
                       width: 100,
                       height: 20,
-                      child: Constants.regularBaseTextWidget('Break', 16,
+                      child: Constants.regularBaseTextWidget('Disconnect', 16,
                           textAlign: TextAlign.start),
                     )
                   ],
@@ -391,7 +391,7 @@ class _IpadBLEListDialogState extends State<IpadBLEListDialog> {
                     Container(
                       width: 100,
                       height: 20,
-                      child: Constants.regularBaseTextWidget('Break', 16,
+                      child: Constants.regularBaseTextWidget('Disconnect', 16,
                           textAlign: TextAlign.start),
                     )
                   ],
