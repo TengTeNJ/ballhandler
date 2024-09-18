@@ -13,9 +13,9 @@ class OverAllDataView extends StatefulWidget {
 
 class _OverAllDataViewState extends State<OverAllDataView> {
   final List<String> _titles = [
-    'Carrer best',
-    'Total Score(pts.)',
-    'Time (Min.)',
+    'Sec/Pts',
+    'Pts',
+    'Min',
     'Trainings'
   ];
 
@@ -41,7 +41,7 @@ class _OverAllDataViewState extends State<OverAllDataView> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 20),
-                  child: Constants.regularGreyTextWidget('My LifeTime Stats', 14),
+                  child: Constants.regularGreyTextWidget('My Stats', 14),
                 ),
                 Padding(
                   padding: EdgeInsets.only(right: 20),

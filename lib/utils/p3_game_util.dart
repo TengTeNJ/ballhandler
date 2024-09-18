@@ -1253,7 +1253,8 @@ class P3GameManager {
               this._index++;
               if (this._index > _allDatas.length) {
                 // 结束本组合中的某个模式
-                this.stopGame();
+                await this.stopGame();
+                print('1111111');
                 listenControlutil(completer);
               } else {
                 // 继续循环执行
@@ -1281,7 +1282,8 @@ class P3GameManager {
       if (_countTime == 0) {
         BluetoothManager().writerDataToDevice(
             gameUtil.selectedDeviceModel, closeAllBoardLight());
-        this.stopGame();
+        await this.stopGame();
+        print('222222');
         listenControlutil(completer);
       }
     });
@@ -1301,6 +1303,9 @@ class P3GameManager {
     if (this.frequencyTimer != null) {
       this.frequencyTimer!.cancel();
       this.frequencyTimer = null;
+    }
+    if(this.currentInGameIndex == -1){
+      return;
     }
     // 关闭所有的灯光
     GameUtil gameUtil = GetIt.instance<GameUtil>();
@@ -1352,7 +1357,8 @@ class P3GameManager {
 
     if (this._index >= _allDatas.length) {
       // 结束本组合中的某个模式
-      this.stopGame();
+     await this.stopGame();
+      print('333333');
       listenControlutil(completer);
       return;
     }

@@ -106,7 +106,7 @@ class _MyActivityDataViewState extends State<MyActivityDataView> {
                             children: [
                               Constants.mediumWhiteTextWidget(widget.activityModel.avgPace, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Avg.pace', 12, '#B1B1B1'),
+                              Constants.customTextWidget('Sec/Pts', 12, '#B1B1B1'),
                             ],
                           )
                         ],

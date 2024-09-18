@@ -1,15 +1,11 @@
-import 'dart:ffi';
-import 'dart:io';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/utils/color.dart';
-import 'package:code/utils/game_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
-
 import '../../utils/global.dart';
 
 class GameOverDataView extends StatefulWidget {
@@ -22,7 +18,7 @@ class GameOverDataView extends StatefulWidget {
 }
 
 class _GameOverDataViewState extends State<GameOverDataView> {
-  final _titles = ['Time', 'Score', 'Integral'];
+  final _titles = ['Time(sec)', 'Score', 'Pucks'];
   late final _datas;
   String mode = '';
 
@@ -74,7 +70,7 @@ class _GameOverDataViewState extends State<GameOverDataView> {
             children: [
               Constants.boldWhiteTextWidget(
                   '${widget.dataModel.avgPace.toString()}', 40),
-              Constants.regularBaseTextWidget('Avg.pace', 14),
+              Constants.regularBaseTextWidget('Avg.pace(s/pt)', 14),
             ],
           ),
           SizedBox(

@@ -50,7 +50,7 @@ class PlayerBottomView extends StatelessWidget {
                 TBTextView(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   title: model.avgPace,
-                  detailTitle: 'Avg.pace',
+                  detailTitle: 'Sec/Pts',
                   titleColor: Colors.white,
                   detailColor: Constants.baseStyleColor,
                   titleFontSize: 40,

@@ -175,7 +175,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                       children: [
                         Padding(padding: EdgeInsets.only(left: 12, top: 12),
                           child: Constants.regularGreyTextWidget(
-                              'Points Earned', 12), ),
+                              'Activity Pucks', 12), ),
                         Padding(padding: EdgeInsets.only(left: 12, top: 12),
                           child: Constants.mediumWhiteTextWidget(
                               _model.activityIntegral.toString(), 40), ),

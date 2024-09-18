@@ -283,10 +283,13 @@ class _BLEListDialogState extends State<BLEListDialog> {
                 child: Row(
                   children: [
                     Container(
-                      width: 100,
-                      height: 20,
-                      child: Constants.regularBaseTextWidget('Disconnect', 16,
-                          textAlign: TextAlign.start),
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: hexStringToColor('#65657D'),
+                        borderRadius: BorderRadius.circular(18)
+                      ),
+                      child: Center(child: Image(image: AssetImage('images/ble/disconnect.png'),width: 16),),
                     )
                   ],
                 ),
@@ -304,10 +307,13 @@ class _BLEListDialogState extends State<BLEListDialog> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      width: 100,
-                      height: 20,
-                      child: Constants.regularBaseTextWidget('Scan', 16,
-                          textAlign: TextAlign.end),
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                          color: hexStringToColor('#65657D'),
+                          borderRadius: BorderRadius.circular(18)
+                      ),
+                      child: Center(child: Image(image: AssetImage('images/ble/scan.png'),width: 16),),
                     )
                   ],
                 ),
