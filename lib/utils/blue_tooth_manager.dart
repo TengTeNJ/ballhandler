@@ -5,6 +5,7 @@ import 'package:code/models/game/hit_target_model.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
+import 'package:code/utils/ble_robot_data.dart';
 import 'package:code/utils/ble_robot_service_model.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
@@ -112,23 +113,28 @@ class BluetoothManager {
       );
       _bleListen = _scanStream!.listen((DiscoveredDevice event) {
         // 处理扫描到的蓝牙设备
-        // print('event.name=${event.name}');
+        print('event.name=${event.name}');
         //model.deviceName .contains(k270_Name)
         // kBLEDevice_Names.indexOf(event.name) != -1
         if (event.name.contains(k270_Name) ||
-            kBLEDevice_Names.indexOf(event.name) != -1) {
+            (kBLEDevice_Names.indexOf(event.name) != -1)) {
           // 如果设备列表数组中无，则添加
           if (!hasDevice(event.id)) {
             this
                 .deviceList
                 .add(BLEModel(deviceName: event.name, device: event));
             deviceListLength.value = this.deviceList.length;
+            if(event.name == kTestRobotName){
+              // 自动连接机器人测试设备
+              this.robotModel = BLEModel(deviceName: event.name, device: event);
+              conectToDevice(this.robotModel);
+            }
           } else {
             // 设备列表数组中已有，则忽略
           }
         }else if(event.name == kTestRobotName){
           // 自动连接机器人测试设备
-          this.robotModel.device = event;
+          this.robotModel = BLEModel(deviceName: event.name, device: event);
           conectToDevice(this.robotModel);
         }
       });
@@ -154,7 +160,10 @@ class BluetoothManager {
           // 请求高优先级连接
           _ble.requestConnectionPriority(deviceId: model.device!.id, priority: ConnectionPriority.highPerformance);
         }
+        // 连接成功弹窗
         if(model.deviceName == kTestRobotName){
+          EasyLoading.showSuccess('机器人连接成功',
+              maskType: EasyLoadingMaskType.black);
           QualifiedCharacteristic notifyCharacteristic = QualifiedCharacteristic(
               serviceId: Uuid.parse(kBLE_SERVICE_ROBOT_UUID),
               characteristicId: Uuid.parse(kBLE_ROBOT_CHARACTERISTIC_NOTIFY_UUID),
@@ -165,11 +174,17 @@ class BluetoothManager {
               deviceId: model.device!.id);
           model.notifyCharacteristic = notifyCharacteristic;
           model.writerCharacteristic = writerCharacteristic;
+          BluetoothManager().robotModel.notifyCharacteristic = notifyCharacteristic;
+          BluetoothManager().robotModel.writerCharacteristic = writerCharacteristic;
           // 监听数据
           _ble
               .subscribeToCharacteristic(notifyCharacteristic)
               .listen((List<int> data) {
             BluetoothRobotDataParse.parseData(data, model);
+            HitTargetModel hitModel = HitTargetModel(boardIndex: 0, ledIndex: 1, statu: BleULTimateLighStatu.close);
+            Timer.periodic(Duration(seconds: 5), (timer){
+              BluetoothManager().writerDataToDevice(BluetoothManager().robotModel, noticeRobotIndex(hitModel));
+            });
           });
           return;
         }

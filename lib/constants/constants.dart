@@ -296,29 +296,32 @@ const kBLE_270_CHARACTERISTIC_WRITER_UUID = "fff2";
 
 const kPageLimit = 10; // 数据分页每页显示的数据量
 
-const kTestRobotName = '270 Test Robot';
-const kBLE_SERVICE_ROBOT_UUID = "0001";
-const kBLE_ROBOT_CHARACTERISTIC_NOTIFY_UUID = "0002";
-const kBLE_ROBOT_CHARACTERISTIC_WRITER_UUID = "0003";
+const kTestRobotName = '270 Test Robot'; //StarShots 270 Test Robo
+const kBLE_SERVICE_ROBOT_UUID = "181a";
+const kBLE_ROBOT_CHARACTERISTIC_NOTIFY_UUID = "2a6e";
+const kBLE_ROBOT_CHARACTERISTIC_WRITER_UUID = "2a6f";
 
 const kBLEDevice_Names = [
   kBLEDevice_Name,
   kBLEDevice_NewName,
   kFiveBallHandler_Name,
   kThreeBallHandler_Name,
-  k270_Name
+  k270_Name,
+  kTestRobotName
 ];
 
 const kBLEDevice_ReleaseNames = [
   kFiveBallHandler_Name,
   k270_Name,
   kThreeBallHandler_Name,
+  kTestRobotName,
 ];
 
 const kTrainingMode_ReleaseNames = [
   kFiveBallHandler_Name,
   k270_Name_Release,
   kThreeBallHandler_Name,
+  kTestRobotName,
 ];
 
 const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
