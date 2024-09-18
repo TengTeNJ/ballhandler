@@ -181,10 +181,10 @@ class BluetoothManager {
               .subscribeToCharacteristic(notifyCharacteristic)
               .listen((List<int> data) {
             BluetoothRobotDataParse.parseData(data, model);
-            HitTargetModel hitModel = HitTargetModel(boardIndex: 0, ledIndex: 1, statu: BleULTimateLighStatu.close);
-            Timer.periodic(Duration(seconds: 5), (timer){
-              BluetoothManager().writerDataToDevice(BluetoothManager().robotModel, noticeRobotIndex(hitModel));
-            });
+            // HitTargetModel hitModel = HitTargetModel(boardIndex: 0, ledIndex: 1, statu: BleULTimateLighStatu.close);
+            // Timer.periodic(Duration(seconds: 5), (timer){
+            //   BluetoothManager().writerDataToDevice(BluetoothManager().robotModel, noticeRobotIndex(hitModel));
+            // });
           });
           return;
         }

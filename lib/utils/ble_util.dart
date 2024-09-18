@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:code/utils/ble_robot_data.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/material.dart';
@@ -193,6 +194,8 @@ class BleUtil {
         }
       } else if (powerValue == 5) {
         gameUtil.uliLowPower2 = true;
+        // 发送低电量提醒给机器人
+        BluetoothManager().writerDataToDevice(BluetoothManager().robotModel, robotWarn(index));
         TTDialog.lowPowerTipDialog(context,
             boardIndex: index, powerValue: powerValue,isErQiLing:true);
       }

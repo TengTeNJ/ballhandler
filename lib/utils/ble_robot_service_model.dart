@@ -102,7 +102,7 @@ class BluetoothRobotDataParse {
       int index = element[2];
       BluetoothManager().robotIndex = index;
       BluetoothManager().hitModel.addListener((){
-       BluetoothManager().writerDataToDevice(BluetoothManager().robotModel, noticeRobotIndex( BluetoothManager().hitModel.value));
+      // BluetoothManager().writerDataToDevice(BluetoothManager().robotModel, noticeRobotIndex( BluetoothManager().hitModel.value));
       });
       Future.delayed(Duration(milliseconds: 200),(){
         BluetoothManager().hitModel.removeListener((){});
