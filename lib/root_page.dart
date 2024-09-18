@@ -45,7 +45,7 @@ class _RootPageControllerState extends State<RootPageController> {
     ProfileController(),
   ];
   late StreamSubscription<dynamic> _subscription;
- AppPurse purse = AppPurse();
+  AppPurse purse = AppPurse();
 
   @override
   void initState() {
@@ -63,16 +63,17 @@ class _RootPageControllerState extends State<RootPageController> {
         }
       });
 
-   refreshTokenAndDeleteLocanVideo();
+    refreshTokenAndDeleteLocanVideo();
     subscription = EventBus().stream.listen((event) {
       if (event == kLoginSucess) {
         loadLaunchPage();
       }
     });
   }
+
   /*处理内购*/
-  handleAppPurse(){
-   // purse.startSubscription();
+  handleAppPurse() {
+    // purse.startSubscription();
   }
 
   Future<FirebaseApp> initFirebase() async {
@@ -89,9 +90,11 @@ class _RootPageControllerState extends State<RootPageController> {
       if (_launchFlag != null && _launchFlag == 'done') {
         // 已经加载过启动页 不需要重新加载
       } else {
-        Future.delayed(Duration(milliseconds: 500), () {
-          NavigatorUtil.push(Routes.launch1);
-        });
+        // 订阅启动页入口暂时屏蔽
+        //   Future.delayed(Duration(milliseconds: 500), () {
+        //     NavigatorUtil.push(Routes.launch1);
+        //   });
+        // }
       }
     }
   }
@@ -122,7 +125,7 @@ class _RootPageControllerState extends State<RootPageController> {
     }
     // 消息推送处理
     fireBaseMessage(); // 监听推送通知
-   // fireBaseCrashlytics();
+    // fireBaseCrashlytics();
   }
 
   Future<void> querySceneListdata() async {
