@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 
+import '../../models/global/user_info.dart';
+import '../../utils/dialog.dart';
 import '../../utils/global.dart';
 
 class RankingController extends StatefulWidget {
@@ -98,6 +100,11 @@ class _RankingControllerState extends State<RankingController> {
             ),
             GestureDetector(onTap: (){
               // 跳转到数据分析页面
+              if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
+                // 未订阅 则限制进入
+                TTDialog.subscribeDialog(context);
+                return;
+              }
               NavigatorUtil.push(Routes.mystats);
             },child: Container(
               width: Constants.screenWidth(context),

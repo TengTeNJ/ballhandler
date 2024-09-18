@@ -6,6 +6,8 @@ import 'package:code/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../models/global/user_info.dart';
+import '../../utils/dialog.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 
@@ -44,6 +46,11 @@ class _TodayDataViewState extends State<TodayDataView> {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: (){
+                  if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
+                    // 未订阅 则限制进入
+                    TTDialog.subscribeDialog(context);
+                    return;
+                  }
                   NavigatorUtil.push('videoPlay', arguments: {
                     "model": widget.gameOverModel,
                     "gameFinish": false

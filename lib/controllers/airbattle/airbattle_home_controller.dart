@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
-import 'package:code/services/http/airbattle.dart';import 'package:code/utils/navigator_util.dart';
+import 'package:code/services/http/airbattle.dart';
+import 'package:code/utils/dialog.dart';import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/airbattle/activity_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
@@ -201,6 +203,11 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                 margin: EdgeInsets.only(left: 16, right: 16),
                 child: ActivityListView(
                   selectItem: (ActivityModel model) {
+                    if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
+                      // 未订阅 则限制进入
+                      TTDialog.subscribeDialog(context);
+                      return;
+                    }
                     NavigatorUtil.push('activityDetail',arguments: model);
                   }
                 ),

@@ -5,19 +5,22 @@ import 'package:code/constants/constants.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
+import '../models/global/user_info.dart';
+import '../models/http/subscribe_model.dart';
 import '../services/http/account.dart';
 
 class AppPurse {
   StreamSubscription<dynamic>? _subscription;
 
-  StreamSubscription<dynamic> startSubscription() {
+  StreamSubscription<dynamic> startSubscription(BuildContext buildContext) {
     if (this._subscription == null) {
       final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
       StreamSubscription<dynamic> _subscription =
       purchaseUpdated.listen((purchaseDetailsList) {
-        _listenToPurchaseUpdated(purchaseDetailsList);
+        _listenToPurchaseUpdated(purchaseDetailsList,buildContext);
       }, onDone: () {
         print('-------onDone-------');
         //_subscription.cancel();
@@ -32,7 +35,7 @@ class AppPurse {
     }
   }
 
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList,BuildContext buildContext) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
         TTToast.showLoading();
@@ -72,10 +75,23 @@ class AppPurse {
           if (_response != null && _response.success) {
             InAppPurchase.instance.completePurchase(purchaseDetails);
             DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
+            // 刷新账号订阅信息
+            querySubScribeInfo(buildContext);
           }
         }
       }
     });
+  }
+
+  /*查询订阅信息 */
+  querySubScribeInfo(BuildContext buildContext) async{
+    final _response = await Account.querySubscribeInfo();
+    if(_response.success){
+      SubscribeModel? model = _response.data;
+      if(model != null){
+        UserProvider.of(buildContext).subscribeModel = model;
+      }
+    }
   }
 
   Future<bool> get avaliable async {

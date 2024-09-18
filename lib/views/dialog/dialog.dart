@@ -272,12 +272,11 @@ class _BLEListDialogState extends State<BLEListDialog> {
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
                   print('断开连接 break');
-                  if (BluetoothManager().hasConnectedDeviceList.length ==
-                      1) {
+                  if (BluetoothManager().hasConnectedDeviceList.length == 1) {
                     BLEModel model =
-                    BluetoothManager().hasConnectedDeviceList[0];
+                        BluetoothManager().hasConnectedDeviceList[0];
                     BluetoothManager().disconecteDevice(model);
-                  }else{
+                  } else {
                     print('未有连接蓝牙设备');
                   }
                 },
@@ -377,12 +376,11 @@ class _IpadBLEListDialogState extends State<IpadBLEListDialog> {
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
                   print('断开连接 break');
-                  if (BluetoothManager().hasConnectedDeviceList.length ==
-                      1) {
+                  if (BluetoothManager().hasConnectedDeviceList.length == 1) {
                     BLEModel model =
-                    BluetoothManager().hasConnectedDeviceList[0];
+                        BluetoothManager().hasConnectedDeviceList[0];
                     BluetoothManager().disconecteDevice(model);
-                  }else{
+                  } else {
                     print('未有连接蓝牙设备');
                   }
                 },
@@ -1846,8 +1844,10 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // 开始监听
-    purse.startSubscription();
+    Future.delayed(Duration(milliseconds: 200), () {
+      // 开始监听
+      purse.startSubscription(context);
+    });
     // 查询订阅产品
     queryProducts();
     // 滑动指示器
@@ -1864,7 +1864,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
   queryProducts() async {
     final _list = await purse.getAvaliableProductList();
     datas.addAll(_list);
-    if(mounted){
+    if (mounted) {
       setState(() {});
     }
   }
@@ -2154,7 +2154,11 @@ class LowPowerTipDialog extends StatelessWidget {
   int boardIndex = 0;
   int powerValue = 0;
   bool isErQiLing;
-  LowPowerTipDialog({required this.boardIndex, required this.powerValue,required this.isErQiLing});
+
+  LowPowerTipDialog(
+      {required this.boardIndex,
+      required this.powerValue,
+      required this.isErQiLing});
 
   @override
   Widget build(BuildContext context) {
@@ -2178,29 +2182,32 @@ class LowPowerTipDialog extends StatelessWidget {
           SizedBox(
             height: 12,
           ),
-        RichText(
-          text: TextSpan(
-            text:  this.isErQiLing ? 'Board ${kP3DataAndProductIndexMap[boardIndex]} ' : '',
-            style: TextStyle(
-                color: Constants.baseStyleColor,
-                fontFamily: 'SanFranciscoDisplay',
-                fontSize: 14,
-                height: 1.3,
-                fontWeight: FontWeight.w400),
-            children: <TextSpan>[
-              TextSpan(
-                text: '${powerValue}%  battery remaining Please recharge your board ',
-                style: TextStyle(
+          RichText(
+            text: TextSpan(
+              text: this.isErQiLing
+                  ? 'Board ${kP3DataAndProductIndexMap[boardIndex]} '
+                  : '',
+              style: TextStyle(
+                  color: Constants.baseStyleColor,
                   fontFamily: 'SanFranciscoDisplay',
-                  fontSize: 16,
-                  color: Colors.white,
+                  fontSize: 14,
                   height: 1.3,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w400),
+              children: <TextSpan>[
+                TextSpan(
+                  text:
+                      '${powerValue}%  battery remaining Please recharge your board ',
+                  style: TextStyle(
+                    fontFamily: 'SanFranciscoDisplay',
+                    fontSize: 16,
+                    color: Colors.white,
+                    height: 1.3,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
           SizedBox(
             height: 48,
           ),

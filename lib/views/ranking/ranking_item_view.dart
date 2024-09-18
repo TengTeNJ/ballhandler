@@ -5,6 +5,8 @@ import 'package:code/utils/color.dart';
 import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/global/user_info.dart';
+import '../../utils/dialog.dart';
 import '../../utils/navigator_util.dart';
 
 class RankingItemView extends StatefulWidget {
@@ -34,6 +36,11 @@ class _RankingItemViewState extends State<RankingItemView> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
+                      if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
+                        // 未订阅 则限制进入
+                        TTDialog.subscribeDialog(context);
+                        return;
+                      }
                       GameOverModel model = GameOverModel();
                       model.rank = widget.model.rankNumber.toString();
                       model.videoPath = widget.model.trainVideo.toString();

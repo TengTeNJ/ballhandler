@@ -5,6 +5,8 @@ import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/game/game_over_model.dart';
+import '../../models/global/user_info.dart';
+import '../../utils/dialog.dart';
 import '../../utils/navigator_util.dart';
 class MyActivityDataView extends StatefulWidget {
   MyActivityModel  activityModel;
@@ -35,14 +37,17 @@ class _MyActivityDataViewState extends State<MyActivityDataView> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: (){
+                      if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
+                        // 未订阅 则限制进入
+                        TTDialog.subscribeDialog(context);
+                        return;
+                      }
                       GameOverModel model = GameOverModel();
                       model.rank = widget.activityModel.rankNumber.toString();
                       model.videoPath = widget.activityModel.trainVideo.toString();
                       model.avgPace = widget.activityModel.avgPace.toString();
                       model.score = widget.activityModel.trainScore;
                       model.endTime = widget.activityModel.createTime;
-                      // model.modeId = widget.activityModel.modeId;
-                      // model.sceneId = widget.activityModel.sceneId;
                       print('model.path=${model.videoPath}');
                       NavigatorUtil.push('videoPlay',
                           arguments: {"model": model, "gameFinish": false});
