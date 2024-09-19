@@ -8,6 +8,7 @@ import 'package:code/services/http/account.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/services/http/profile.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/milestone_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/string_util.dart';
@@ -34,11 +35,16 @@ class ProfileController extends StatefulWidget {
 class _ProfileControllerState extends State<ProfileController> {
   late MyAccountDataModel _model = MyAccountDataModel();
   late StreamSubscription subscription;
-
+  late List<String> scoreMilestoneData;
+int scoreLevel = -1;
+  late List<String> avgMilestoneData;
+  int avgLevel = -1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    scoreMilestoneData = getScoreMileStoneData(0)['data'];
+    avgMilestoneData = getAvgPaceMileStoneData(0)['data'];
     queryMyAccountInfoData();
     // 监听
     subscription = EventBus().stream.listen((event) {
@@ -63,7 +69,13 @@ class _ProfileControllerState extends State<ProfileController> {
     final _response = await Profile.queryIMyAccountInfoData();
     if (_response.success && _response.data != null) {
       _model = _response.data!;
-
+      // 获取里程碑数据
+      Map _map = getScoreMileStoneData(_model.trainScore);
+      scoreMilestoneData = _map['data'];
+      scoreLevel = _map['level'];
+      Map _avgMap = getAvgPaceMileStoneData(_model.avgPace);
+      avgMilestoneData = _avgMap['data'];
+      avgLevel = _avgMap['level'];
       if (mounted) {
         setState(() {});
         // 同步用户信息
@@ -225,7 +237,11 @@ class _ProfileControllerState extends State<ProfileController> {
                           '#B1B1B1'),
                     ],
                   ),
-                  UserProvider.of(context).hasLogin && UserProvider.of(context).subscribeModel.subscribeStatus != 1
+                  UserProvider.of(context).hasLogin &&
+                          UserProvider.of(context)
+                                  .subscribeModel
+                                  .subscribeStatus !=
+                              1
                       ? MemberShipScbView()
                       : SizedBox(
                           height: 32,
@@ -268,16 +284,16 @@ class _ProfileControllerState extends State<ProfileController> {
                     height: 12,
                   ),
                   RewardiconsView(
-                    titles: ['First Trains', '100 pts', '200pts'],
-                    currentLevel: 1,
+                    titles: avgMilestoneData,
+                    currentLevel: avgLevel,
                   ),
                   SizedBox(
                     height: 24,
                   ),
                   RewardiconsView(
-                    titles: ['First Trains', '0.1 sec', '0.2sec', '0.5sec'],
-                    currentLevel: 2,
-                  ),
+                    titles: scoreMilestoneData,
+                    currentLevel: scoreLevel,
+                  )
                 ],
               );
             },

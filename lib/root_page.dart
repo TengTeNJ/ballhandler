@@ -91,10 +91,9 @@ class _RootPageControllerState extends State<RootPageController> {
         // 已经加载过启动页 不需要重新加载
       } else {
         // 订阅启动页入口暂时屏蔽
-        //   Future.delayed(Duration(milliseconds: 500), () {
-        //     NavigatorUtil.push(Routes.launch1);
-        //   });
-        // }
+          Future.delayed(Duration(milliseconds: 500), () {
+            NavigatorUtil.push(Routes.launch1);
+          });
       }
     }
   }

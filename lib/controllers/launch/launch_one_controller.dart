@@ -22,11 +22,16 @@ class LaunchOneController extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
+                  left: (Constants.screenWidth(context) - 90) /2.0,
+                  right: (Constants.screenWidth(context) - 90) /2.0,
+                  top: Constants.screenHeight(context) * 0.56,
+                  child: Image(image: AssetImage('images/account/potent.png'),width: 90,height: 44,)),
+              Positioned(
                   left: 16,
                   right: 16,
-                  top: Constants.screenHeight(context) * 0.56,
+                  top: Constants.screenHeight(context) * 0.63,
                   child: Constants.boldWhiteTextWidget(
-                      "Welcome to Potent Hockey DangleElite Unlock Your Full Potential with Elite Membership!",
+                      "Welcome to \nPotent Hockey DangleElite",
                       20,
                       height: 1.25,
                       textAlign: TextAlign.center)),

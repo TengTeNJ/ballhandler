@@ -14,6 +14,8 @@ import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
+import '../../route/route.dart';
+
 class LoginPageController extends StatefulWidget {
   const LoginPageController({super.key});
 
@@ -198,7 +200,8 @@ class _LoginPageControllerState extends State<LoginPageController> with SingleTi
                 PrivacyCheckView(onSelected: (value){
                   privacyChecked = value;
                 },goToPrivacy: (){
-                  NavigatorUtil.present(PrivacyPageController());
+                  NavigatorUtil.push(Routes.webview);
+                  //NavigatorUtil.present(PrivacyPageController());
                 },),
               ],
             ),

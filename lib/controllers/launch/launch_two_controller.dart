@@ -45,22 +45,16 @@ class LaunchTwoController extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Constants.customTextWidget(
-                      "Exclusive Membership Benefits:", 16, "#FBBA00",
-                      fontWeight: FontWeight.w500),
-                  SizedBox(
-                    height: 12,
-                  ),
                   Constants.boldWhiteTextWidget(
                       textAlign: TextAlign.start,
-                      "Free Digital Stickhandling Trainer with 1-Year Subscription",
+                      "Full Privilege To DangleElite App",
                       20,
                       height: 1.25),
                   SizedBox(
                     height: 20,
                   ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image(
                         image: AssetImage('images/launch/done.png'),
@@ -74,17 +68,15 @@ class LaunchTwoController extends StatelessWidget {
                         width: Constants.screenWidth(context) - 72,
                         child: Constants.boldWhiteTextWidget(
                             textAlign: TextAlign.start,
-                            "30-Day Risk-Free Product Trial: First month’s fee covers shipment and handling",
+                            "Daily Training & Challenges",
                             14,
                             height: 1.2),
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 18,
-                  ),
+                  SizedBox(height: 14,),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image(
                         image: AssetImage('images/launch/done.png'),
@@ -98,7 +90,96 @@ class LaunchTwoController extends StatelessWidget {
                         width: Constants.screenWidth(context) - 72,
                         child: Constants.boldWhiteTextWidget(
                             textAlign: TextAlign.start,
-                            " Extended 12-Month Warranty on your product.",
+                            "Air-Batt Challenges",
+                            14,
+                            height: 1.2),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 14,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage('images/launch/done.png'),
+                        width: 16,
+                        height: 16,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        width: Constants.screenWidth(context) - 72,
+                        child: Constants.boldWhiteTextWidget(
+                            textAlign: TextAlign.start,
+                            "Leaderboards/Ranking",
+                            14,
+                            height: 1.2),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 14,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage('images/launch/done.png'),
+                        width: 16,
+                        height: 16,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        width: Constants.screenWidth(context) - 72,
+                        child: Constants.boldWhiteTextWidget(
+                            textAlign: TextAlign.start,
+                            "Performance & Progress Tracking",
+                            14,
+                            height: 1.2),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 14,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage('images/launch/done.png'),
+                        width: 16,
+                        height: 16,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        width: Constants.screenWidth(context) - 72,
+                        child: Constants.boldWhiteTextWidget(
+                            textAlign: TextAlign.start,
+                            "Earn Awards & Redeem for Rewards",
+                            14,
+                            height: 1.2),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 14,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage('images/launch/done.png'),
+                        width: 16,
+                        height: 16,
+                        color: Colors.transparent,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        width: Constants.screenWidth(context) - 72,
+                        child: Constants.boldWhiteTextWidget(
+                            textAlign: TextAlign.start,
+                            "And More...",
                             14,
                             height: 1.2),
                       )
@@ -117,7 +198,7 @@ class LaunchTwoController extends StatelessWidget {
                 behavior: HitTestBehavior.opaque,
                 onTap: (){
                   print('去启动介绍页2');
-                  NavigatorUtil.push(Routes.launch3);
+                  NavigatorUtil.popToRoot();
                 },
                 child: Container(
                   height: 40,
@@ -125,7 +206,7 @@ class LaunchTwoController extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       color: Constants.baseStyleColor
                   ),
-                  child: Center(child: Constants.mediumWhiteTextWidget('Next', 16),),
+                  child: Center(child: Constants.mediumWhiteTextWidget('Let\'s Start', 16),),
                 ),
               )),
         ],

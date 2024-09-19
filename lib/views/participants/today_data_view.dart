@@ -103,21 +103,21 @@ class _TodayDataViewState extends State<TodayDataView> {
                             children: [
                               Constants.mediumWhiteTextWidget(widget.gameOverModel.avgPace, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Avg.pace (sec.)', 10, '#B1B1B1'),
+                              Constants.customTextWidget('Sec/Pts', 10, '#B1B1B1'),
                             ],
                           ),
                           Column(
                             children: [
                               Constants.mediumWhiteTextWidget(widget.gameOverModel.score, 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Score(pts.)', 10, '#B1B1B1'),
+                              Constants.customTextWidget('Pts', 10, '#B1B1B1'),
                             ],
                           ),
                           Column(
                             children: [
                               Constants.mediumWhiteTextWidget(StringUtil.timeStringFormat(widget.gameOverModel.trainTime), 20),
                               SizedBox(height: 4,),
-                              Constants.customTextWidget('Time(sec.)', 10, '#B1B1B1'),
+                              Constants.customTextWidget('Sec', 10, '#B1B1B1'),
                             ],
                           )
                         ],

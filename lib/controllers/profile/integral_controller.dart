@@ -57,7 +57,7 @@ class _IntegralControllerState extends State<IntegralController> {
                 children: [
                   Positioned(right: 16, child: CancelButton()),
                   Center(
-                    child: Constants.boldWhiteTextWidget('You Progress', 20),
+                    child: Constants.boldWhiteTextWidget('Your Rewards Progress', 20),
                   )
                 ],
               ),
@@ -82,7 +82,7 @@ class _IntegralControllerState extends State<IntegralController> {
                 SizedBox(
                   height: 8,
                 ),
-                Constants.regularGreyTextWidget('Potent Hockey Points', 14),
+                Constants.regularGreyTextWidget('Pucks', 14),
                 SizedBox(
                   height: 8,
                 ),
@@ -92,7 +92,7 @@ class _IntegralControllerState extends State<IntegralController> {
                     NavigatorUtil.push('integralDetail');
                   },
                   child: Container(
-                    width: 74,
+                    width: 106,
                     height: 26,
                     decoration: BoxDecoration(
                       color: hexStringToColor('#292936'),
@@ -102,7 +102,7 @@ class _IntegralControllerState extends State<IntegralController> {
                       child: Padding(padding: EdgeInsets.only(left: 8,right: 8),child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Constants.regularBaseTextWidget('Detail', 12),
+                          Constants.regularBaseTextWidget('Pucks History', 12),
                           SizedBox(
                             width: 8,
                           ),
