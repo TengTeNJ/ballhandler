@@ -92,7 +92,7 @@ class _IntegralControllerState extends State<IntegralController> {
                     NavigatorUtil.push('integralDetail');
                   },
                   child: Container(
-                    width: 106,
+                    width: 120,
                     height: 26,
                     decoration: BoxDecoration(
                       color: hexStringToColor('#292936'),

@@ -102,10 +102,18 @@ class AppPurse {
   /*
   * 获取可购买的产品列表*/
   Future<List<ProductDetails>> getAvaliableProductList() async {
-    const Set<String> _kIds = kProductIds;
-    final ProductDetailsResponse response =
-    await InAppPurchase.instance.queryProductDetails(_kIds);
-    return response.productDetails;
+    List<ProductDetails> array = [];
+    final ProductDetailsResponse yearResponse =
+    await InAppPurchase.instance.queryProductDetails(kYearProductIds);
+    if(yearResponse.productDetails.isNotEmpty){
+      array.addAll(yearResponse.productDetails);
+    }
+    final ProductDetailsResponse monthResponse =
+    await InAppPurchase.instance.queryProductDetails(kMonthProductIds);
+    if(monthResponse.productDetails.isNotEmpty){
+      array.addAll(monthResponse.productDetails);
+    }
+    return array;
   }
 
   /*进行购买某个产品*/

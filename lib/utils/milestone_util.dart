@@ -22,7 +22,7 @@ Map getScoreMileStoneData(int score) {
   return {'data': array, "level": level};
 }
 
-Map getAvgPaceMileStoneData(double avgPace) {
+Map getAvgPaceMileStoneData(num avgPace) {
   int level = -1;
   List<String> array = [];
   array.add('First Train');
