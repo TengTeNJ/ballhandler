@@ -142,7 +142,12 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                 margin: EdgeInsets.only(
                                     left: 16, right: 16, bottom: 16),
                                 child: AirBattleDataView(
+                                     createTime: detailModel.champion.createTime,
                                     grade: Grade.gold,
+                                    sceneId: detailModel.sceneId,
+                                    modeId: detailModel.modeId,
+                                    trainVideo: detailModel.champion.championTrainVideo,
+                                    hasVideo: (!detailModel.champion.championTrainVideo.isEmpty && detailModel.champion.championTrainVideo.contains('http')),
                                     userName:
                                         detailModel.champion.championNickName,
                                     area: detailModel.champion.championCountry,
@@ -170,6 +175,10 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                 margin: EdgeInsets.only(
                                     left: 16, right: 16, bottom: 16),
                                 child: AirBattleDataView(
+                                    sceneId: detailModel.sceneId,
+                                    modeId: detailModel.modeId,
+                                    trainVideo: detailModel.self.trainVideo.toString(),
+                                    hasVideo: (!detailModel.self.trainVideo.toString().isEmpty && detailModel.self.trainVideo.toString().contains('http')),
                                     grade: Grade.silver,
                                     userName:
                                         detailModel.self.nickName ?? 'Guest',

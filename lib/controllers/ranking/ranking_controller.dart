@@ -93,7 +93,7 @@ class _RankingControllerState extends State<RankingController> {
             SizedBox(),
             Padding(
               padding: EdgeInsets.only(left: 16),
-              child: Constants.boldWhiteTextWidget('Rankings', 30),
+              child: Constants.boldWhiteTextWidget('Leaderboards', 30),
             ),
             SizedBox(
               height: 16,

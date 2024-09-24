@@ -3,6 +3,9 @@ import 'package:code/utils/color.dart';
 import 'package:code/widgets/base/top_bottom_text_view.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/game/game_over_model.dart';
+import '../../utils/navigator_util.dart';
+
 enum Grade {
   normal,
   silver,
@@ -18,6 +21,10 @@ class AirBattleDataView extends StatelessWidget {
   String rank;
   String score;
   String avgPace;
+  String trainVideo = ''; // 视频数据
+  String createTime = '';
+  String sceneId = '1';
+  String modeId = '1';
 
   AirBattleDataView(
       {required this.userName,
@@ -27,27 +34,45 @@ class AirBattleDataView extends StatelessWidget {
       required this.score,
       required this.avgPace,
       this.hasVideo = false,
+      this.trainVideo = '',
+      this.createTime = '',
+      this.sceneId = '1',
+      this.modeId = '1',
       this.grade = Grade.normal});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 86,
-      width: Constants.screenWidth(context) - 32,
-      decoration: BoxDecoration(
-          color: hexStringToColor('#3E3E55'),
-          borderRadius: BorderRadius.circular(10)),
-      child: Stack(
-        children: [
-          hasVideo == true
-              ? Positioned(
-                  top: 8,
-                  right: 8,
-                  child: GestureDetector(
-                    onTap: (){
-                      print('-----------');
-                    },
-                    behavior: HitTestBehavior.opaque,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        if (!this.hasVideo) {
+          return;
+        }
+        GameOverModel model = GameOverModel();
+        model.rank = rank;
+        model.videoPath = trainVideo;
+        model.avgPace = avgPace;
+        model.score = score;
+        model.endTime = createTime;
+        model.modeId = modeId;
+        model.sceneId = sceneId;
+        model.endTime = createTime;
+        print('model.path=${model.videoPath}');
+        NavigatorUtil.push('videoPlay',
+            arguments: {"model": model, "gameFinish": false});
+      },
+      child: Container(
+        height: 86,
+        width: Constants.screenWidth(context) - 32,
+        decoration: BoxDecoration(
+            color: hexStringToColor('#3E3E55'),
+            borderRadius: BorderRadius.circular(10)),
+        child: Stack(
+          children: [
+            hasVideo == true
+                ? Positioned(
+                    top: 8,
+                    right: 8,
                     child: Container(
                         width: 32,
                         height: 14,
@@ -55,70 +80,71 @@ class AirBattleDataView extends StatelessWidget {
                             color: Constants.baseStyleColor,
                             borderRadius: BorderRadius.circular(3)),
                         child: Center(
-                            child: Constants.regularWhiteTextWidget('View', 10))),
-                  ))
-              : Container(),
-          Positioned(
-            left: 24,
-            top: 6,
-            bottom: 6,
-            right: 56,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image(
-                  image: AssetImage(grade == Grade.gold
-                      ? "images/airbattle/gold.png"
-                      : "images/airbattle/icon.png"),
-                  width: 48,
-                  height: 48,
-                ),
-                SizedBox(
-                  width: 24,
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Constants.regularWhiteTextWidget(userName, 14),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Constants.regularGreyTextWidget(area, 10),
-                          SizedBox(
-                            width: 6,
-                          ),
-                          Constants.regularGreyTextWidget(birthday, 10),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TBTextView(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              title: rank.toString(),
-                              detailTitle: 'Rank'),
-                          TBTextView(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              title: score.toString(),
-                              detailTitle: 'Score'),
-                          TBTextView(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              title: avgPace.toString(),
-                              detailTitle: 'Avg.Pace'),
-                        ],
-                      ),
-                    ],
+                            child:
+                                Constants.regularWhiteTextWidget('View', 10))))
+                : Container(),
+            Positioned(
+              left: 24,
+              top: 6,
+              bottom: 6,
+              right: 56,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image(
+                    image: AssetImage(grade == Grade.gold
+                        ? "images/airbattle/gold.png"
+                        : "images/airbattle/icon.png"),
+                    width: 48,
+                    height: 48,
                   ),
-                )
-              ],
+                  SizedBox(
+                    width: 24,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Constants.regularWhiteTextWidget(userName, 14),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Constants.regularGreyTextWidget(area, 10),
+                            SizedBox(
+                              width: 6,
+                            ),
+                            Constants.regularGreyTextWidget(birthday, 10),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TBTextView(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                title: rank.toString(),
+                                detailTitle: 'Rank'),
+                            TBTextView(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                title: score.toString(),
+                                detailTitle: 'Score'),
+                            TBTextView(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                title: avgPace.toString(),
+                                detailTitle: 'Avg.Pace'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

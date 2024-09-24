@@ -118,9 +118,12 @@ class StringUtil {
     try {
       DateTime dateTime = stringToDate(timeString);
       String formattedDate = DateFormat('MMM. dd,yyyy HH:mm').format(dateTime);
+      if(formattedDate.isEmpty){
+        return timeString;
+      }
       return formattedDate;
     } catch (error) {
-      return '-';
+      return timeString;
     }
   }
 

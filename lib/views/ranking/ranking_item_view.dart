@@ -21,38 +21,42 @@ class RankingItemView extends StatefulWidget {
 class _RankingItemViewState extends State<RankingItemView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: hexStringToColor('#3E3E55'),
-          borderRadius: BorderRadius.circular(10)),
-      height: 72,
-      child: Stack(
-        children: [
-          (widget.model.trainVideo.length > 0 &&
-                  widget.model.trainVideo.contains('http'))
-              ? Positioned(
-                  top: 8,
-                  right: 8,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
-                        // 未订阅 则限制进入
-                        TTDialog.subscribeDialog(context);
-                        return;
-                      }
-                      GameOverModel model = GameOverModel();
-                      model.rank = widget.model.rankNumber.toString();
-                      model.videoPath = widget.model.trainVideo.toString();
-                      model.avgPace = widget.model.avgPace.toString();
-                      model.score = widget.model.trainScore;
-                      model.endTime = widget.model.createTime;
-                      model.modeId = widget.model.modeId;
-                      model.sceneId = widget.model.sceneId;
-                      print('model.path=${model.videoPath}');
-                      NavigatorUtil.push('videoPlay',
-                          arguments: {"model": model, "gameFinish": false});
-                    },
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        if (widget.model.trainVideo.isEmpty ||
+            !widget.model.trainVideo.contains('http')) {
+          return;
+        }
+        if (UserProvider.of(context).subscribeModel.subscribeStatus != 1) {
+          // 未订阅 则限制进入
+          TTDialog.subscribeDialog(context);
+          return;
+        }
+        GameOverModel model = GameOverModel();
+        model.rank = widget.model.rankNumber.toString();
+        model.videoPath = widget.model.trainVideo.toString();
+        model.avgPace = widget.model.avgPace.toString();
+        model.score = widget.model.trainScore;
+        model.endTime = widget.model.createTime;
+        model.modeId = widget.model.modeId;
+        model.sceneId = widget.model.sceneId;
+        print('model.path=${model.videoPath}');
+        NavigatorUtil.push('videoPlay',
+            arguments: {"model": model, "gameFinish": false});
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: hexStringToColor('#3E3E55'),
+            borderRadius: BorderRadius.circular(10)),
+        height: 72,
+        child: Stack(
+          children: [
+            (widget.model.trainVideo.length > 0 &&
+                    widget.model.trainVideo.contains('http'))
+                ? Positioned(
+                    top: 8,
+                    right: 8,
                     child: Container(
                         width: 32,
                         height: 14,
@@ -61,75 +65,76 @@ class _RankingItemViewState extends State<RankingItemView> {
                             borderRadius: BorderRadius.circular(3)),
                         child: Center(
                             child:
-                                Constants.regularWhiteTextWidget('View', 10))),
-                  ))
-              : Container(),
-          Positioned(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Constants.boldWhiteTextWidget(
-                        widget.model.rankNumber.toString(), 20),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(19),
-                      child: ISEmpty(widget.model.avatar)
-                          ? Container(
-                              width: 38,
-                              height: 38,
-                              color: hexStringToColor('#AA9155'),
-                            )
-                          : TTNetImage(
-                              url: widget.model.avatar.toString(),
-                              placeHolderPath: '',
-                              width: 38,
-                              height: 38,
-                            ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Container(
-                      constraints:BoxConstraints(maxWidth:  Constants.screenWidth(context) - 280),
-                      child: Constants.mediumWhiteTextWidget(
-                          maxLines: 2,
-                          textAlign: TextAlign.start,
-                          widget.model.nickName.toString(),
-                          20),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Constants.regularGreyTextWidget(
-                        widget.model.country.toString(), 10),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    // Text('0.9',style: TextStyle(fontSize: 20,height: 1.0,color: Colors.white),),
-                    Constants.boldWhiteTextWidget(
-                        widget.model.avgPace.toString(), 20,
-                        height: 0.8),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Constants.regularWhiteTextWidget('sec/pt', 10)
-                  ],
-                ),
-              ],
+                                Constants.regularWhiteTextWidget('View', 10))))
+                : Container(),
+            Positioned(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Constants.boldWhiteTextWidget(
+                          widget.model.rankNumber.toString(), 20),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(19),
+                        child: ISEmpty(widget.model.avatar)
+                            ? Container(
+                                width: 38,
+                                height: 38,
+                                color: hexStringToColor('#AA9155'),
+                              )
+                            : TTNetImage(
+                                url: widget.model.avatar.toString(),
+                                placeHolderPath: '',
+                                width: 38,
+                                height: 38,
+                              ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        constraints: BoxConstraints(
+                            maxWidth: Constants.screenWidth(context) - 280),
+                        child: Constants.mediumWhiteTextWidget(
+                            maxLines: 2,
+                            textAlign: TextAlign.start,
+                            widget.model.nickName.toString(),
+                            20),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Constants.regularGreyTextWidget(
+                          widget.model.country.toString(), 10),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // Text('0.9',style: TextStyle(fontSize: 20,height: 1.0,color: Colors.white),),
+                      Constants.boldWhiteTextWidget(
+                          widget.model.avgPace.toString(), 20,
+                          height: 0.8),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Constants.regularWhiteTextWidget('sec/pt', 10)
+                    ],
+                  ),
+                ],
+              ),
+              left: 24,
+              right: 24,
+              top: 16,
+              bottom: 16,
             ),
-            left: 24,
-            right: 24,
-            top: 16,
-            bottom: 16,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
