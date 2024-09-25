@@ -275,6 +275,7 @@ const kBrithDay = 'brithDay';
 const kCountry = 'countryArea';
 const kUnreadMessageCount = 'unreadMessageCount'; // 未读消息的数量
 const kShowLaunch = 'showLaunchPage'; // 是否展示启动介绍页的标识
+const kSceneSelectCache = 'scene_select_cache'; // 场景选择缓存 0 1 2
 
 /**蓝牙设备相关的信息**/
 const kBLEDevice_Name = 'Myspeedz';

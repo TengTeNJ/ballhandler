@@ -164,6 +164,14 @@ class _HomePageViewState extends State<HomePageController> {
       gameUtil.sceneList.forEach((element) {
         _pageViews.add(HomeBodyView(model: element));
       });
+      int? value = await NSUserDefault.getValue<int>(kSceneSelectCache);
+      if(value!=null && _pageViews.length > value){
+        // 获取场景缓存
+        List<GameScene> array = [GameScene.five,GameScene.erqiling,GameScene.threee];
+        gameUtil.gameScene = array[value];
+        _pageController.jumpToPage(value);
+        _currentIndex = value;
+      }
       if(mounted){
         setState(() {
 

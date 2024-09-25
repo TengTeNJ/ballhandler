@@ -11,6 +11,7 @@ import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/views/airbattle/my_award_view.dart';
 import 'package:code/views/base/five_statu_view.dart';
 import 'package:code/views/base/no_data_view.dart';
@@ -79,11 +80,10 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             gameUtil.selectedDeviceModel = devices.first;
             gameUtil.modelId = index + 1;
             if (gameUtil.gameScene == GameScene.five) {
+              // 记录选择的场景 放入缓存
+              NSUserDefault.setKeyValue<int>(kSceneSelectCache, gameUtil.gameScene.index);
               NavigatorUtil.push(Routes.recordselect);
             } else if (gameUtil.gameScene == GameScene.erqiling) {
-              // 设置270的游戏模式
-              BluetoothManager().writerDataToDevice(
-                  gameUtil.selectedDeviceModel, selectMode(index));
               // 主机状态
               if (BluetoothManager().gameData.masterStatu != 2) {
                 TTToast.showErrorInfo(
@@ -93,6 +93,9 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                     gameUtil.selectedDeviceModel, queryMasterSystemStatu());
                 return;
               }
+              // 设置270的游戏模式
+              BluetoothManager().writerDataToDevice(
+                  gameUtil.selectedDeviceModel, selectMode(index));
               if (index == 2) {
                 // 270的P3自由控制模式
                 BluetoothManager().writerDataToDevice(
@@ -107,6 +110,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               ];
               // 清空上次选择的组合
               // gameUtil.selectdP3Indexs.clear();
+              // 记录选择的场景 放入缓存
+              NSUserDefault.setKeyValue<int>(kSceneSelectCache, gameUtil.gameScene.index);
               NavigatorUtil.present(_controllers[index]);
               // 模式切换锁定
               BluetoothManager().writerDataToDevice(
