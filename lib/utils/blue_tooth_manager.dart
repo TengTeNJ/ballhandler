@@ -92,6 +92,15 @@ class BluetoothManager {
   StreamSubscription? _bleListen;
   StreamSubscription? _bleStatuListen;
 
+  int hitModelMessageId = -1; // 灯击中的消息id
+  List<int> hitMessageIdList = []; // 每轮游戏收到的击中的消息id
+  List<int> board1HitMessageIdList = []; // 每轮游戏收到的击中的消息id
+  List<int> board2HitMessageIdList = []; // 每轮游戏收到的击中的消息id
+  List<int> board3HitMessageIdList = []; // 每轮游戏收到的击中的消息id
+  List<int> board4HitMessageIdList = []; // 每轮游戏收到的击中的消息id
+  List<int> board5HitMessageIdList = []; // 每轮游戏收到的击中的消息id
+  List<int> board6HitMessageIdList = []; // 每轮游戏收到的击中的消息id
+
   /*开始扫描*/
   Future<void> startScan() async {
     // 不能重复扫描

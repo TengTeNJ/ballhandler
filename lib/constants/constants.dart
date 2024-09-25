@@ -524,7 +524,7 @@ const kP1Duration = 90; // 270设备P1模式的游戏时长
 const kP2Duration = 120; // 270设备P2模式的游戏时长
 
 const Map<int, int> kP3DataAndProductIndexMap = {
-  0:1,
+  0:4,
   1:1,
   2:2,
   3:3,

@@ -34,10 +34,20 @@ class _HomePageViewState extends State<HomePageController> {
   late PageController _pageController;
   late StreamSubscription subscription;
   List<Widget> _pageViews = [];
+  bool isLaunch = true;
 
   // 获取用户首页的数据
   getHomeData(BuildContext context) async {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 登录了则请求相关数据
+    if(isLaunch){
+      int? value = await NSUserDefault.getValue<int>(kSceneSelectCache);
+      if(value != null){
+        List<GameScene> array = [GameScene.five,GameScene.erqiling,GameScene.threee];
+        gameUtil.gameScene = array[value];
+      }
+      isLaunch = false;
+    }
     final _token = await NSUserDefault.getValue(kAccessToken);
     if (_token != null && _token.length > 0) {
       haslogin = true;
@@ -51,7 +61,6 @@ class _HomePageViewState extends State<HomePageController> {
           UserProvider.of(context).totalScore = value.data!.trainScore;
           UserProvider.of(context).totalTime = value.data!.trainTime;
           // 首页弹窗
-          GameUtil gameUtil = GetIt.instance<GameUtil>();
           if (value.data!.noticeType != 0) {
             if (!gameUtil.hasShowNitice) {
               TTDialog.championDialog(context, () {

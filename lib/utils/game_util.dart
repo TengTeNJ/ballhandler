@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:code/constants/constants.dart';
+import 'package:code/models/game/hit_target_model.dart';
 import 'package:get_it/get_it.dart';
 import '../models/game/light_ball_model.dart';
 import 'package:code/utils/string_util.dart';
 import 'dart:math';
 import '../models/game/light_ball_model.dart';
 import 'ble_ultimate_service_data.dart';
+import 'blue_tooth_manager.dart';
 import 'control_time_out_util.dart';
 import 'global.dart';
 
@@ -353,5 +355,65 @@ listenControlutil(Completer<bool> completer) {
       }
     });
   }
+}
+
+bool saveBoardHitMessgeId(HitTargetModel model){
+   switch (model.boardIndex){
+     case 0:{
+       if(BluetoothManager().board1HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
+         return true;
+       }
+       if(BluetoothManager().board1HitMessageIdList.length == 255){
+         BluetoothManager().board1HitMessageIdList.clear();
+       }
+       BluetoothManager().board1HitMessageIdList.add(BluetoothManager().hitModelMessageId);
+     }
+     case 1:{
+       if(BluetoothManager().board2HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
+         return true;
+       }
+       if(BluetoothManager().board2HitMessageIdList.length == 255){
+         BluetoothManager().board2HitMessageIdList.clear();
+       }
+       BluetoothManager().board2HitMessageIdList.add(BluetoothManager().hitModelMessageId);
+     }
+     case 2:{
+       if(BluetoothManager().board3HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
+         return true;
+       }
+       if(BluetoothManager().board3HitMessageIdList.length == 255){
+         BluetoothManager().board3HitMessageIdList.clear();
+       }
+       BluetoothManager().board3HitMessageIdList.add(BluetoothManager().hitModelMessageId);
+     }
+     case 3:{
+       if(BluetoothManager().board4HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
+         return true;
+       }
+       if(BluetoothManager().board4HitMessageIdList.length == 255){
+         BluetoothManager().board4HitMessageIdList.clear();
+       }
+       BluetoothManager().board4HitMessageIdList.add(BluetoothManager().hitModelMessageId);
+     }
+     case 4:{
+       if(BluetoothManager().board5HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
+         return true;
+       }
+       if(BluetoothManager().board5HitMessageIdList.length == 255){
+         BluetoothManager().board5HitMessageIdList.clear();
+       }
+       BluetoothManager().board5HitMessageIdList.add(BluetoothManager().hitModelMessageId);
+     }
+     case 5:{
+       if(BluetoothManager().board6HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
+         return true;
+       }
+       if(BluetoothManager().board6HitMessageIdList.length == 255){
+         BluetoothManager().board6HitMessageIdList.clear();
+       }
+       BluetoothManager().board6HitMessageIdList.add(BluetoothManager().hitModelMessageId);
+     }
+   }
+   return false;
 }
 

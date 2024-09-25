@@ -1229,8 +1229,14 @@ class P3GameManager {
               orElse: () =>
                   ClickTargetModel(boardIndex: -1, ledIndex: [], statu: []));
           if (matchModel != null) {
+            if(saveBoardHitMessgeId(hitModel)){
+              return;
+            }
             // 击中了当前亮的灯
             if (hitModel.statu == BleULTimateLighStatu.blue) {
+              //  响应击中的灯
+              BluetoothManager().writerDataToDevice(
+                  gameUtil.selectedDeviceModel,responseHitModel(hitModel.boardIndex, BluetoothManager().hitModelMessageId));
               // 击中蓝灯 减1分
               BluetoothManager().gameData.score--;
               // 得分显示
@@ -1238,6 +1244,7 @@ class P3GameManager {
                   gameUtil.selectedDeviceModel,
                   scoreShow(BluetoothManager().gameData.score));
             } else if (hitModel.statu == BleULTimateLighStatu.red) {
+              print('击中红灯');
               // 击中红灯加2分
               BluetoothManager().gameData.score =
                   BluetoothManager().gameData.score + 2;
@@ -1245,16 +1252,18 @@ class P3GameManager {
               BluetoothManager().writerDataToDevice(
                   gameUtil.selectedDeviceModel,
                   scoreShow(BluetoothManager().gameData.score));
+              //  响应击中的灯
+               BluetoothManager().writerDataToDevice(
+                  gameUtil.selectedDeviceModel,responseHitModel(hitModel.boardIndex, BluetoothManager().hitModelMessageId));
               // 关闭击中的灯
-              await BluetoothManager().asyncWriterDataToDevice(
-                  gameUtil.selectedDeviceModel,
-                  controSingleLightBoard(hitModel.boardIndex, hitModel.ledIndex,
-                      BleULTimateLighStatu.close));
+              // await BluetoothManager().asyncWriterDataToDevice(
+              //     gameUtil.selectedDeviceModel,
+              //     controSingleLightBoard(hitModel.boardIndex, hitModel.ledIndex,
+              //         BleULTimateLighStatu.close));
               this._index++;
               if (this._index > _allDatas.length) {
                 // 结束本组合中的某个模式
                 await this.stopGame();
-                print('1111111');
                 listenControlutil(completer);
               } else {
                 // 继续循环执行
@@ -1283,7 +1292,6 @@ class P3GameManager {
         BluetoothManager().writerDataToDevice(
             gameUtil.selectedDeviceModel, closeAllBoardLight());
         await this.stopGame();
-        print('222222');
         listenControlutil(completer);
       }
     });
@@ -1307,6 +1315,14 @@ class P3GameManager {
     if(this.currentInGameIndex == -1){
       return;
     }
+    // 清空消息id列表
+    BluetoothManager().board1HitMessageIdList.clear();
+    BluetoothManager().board2HitMessageIdList.clear();
+    BluetoothManager().board3HitMessageIdList.clear();
+    BluetoothManager().board4HitMessageIdList.clear();
+    BluetoothManager().board5HitMessageIdList.clear();
+    BluetoothManager().board6HitMessageIdList.clear();
+
     // 关闭所有的灯光
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     List<List<ClickTargetModel>> _allDatas =
@@ -1358,7 +1374,6 @@ class P3GameManager {
     if (this._index >= _allDatas.length) {
       // 结束本组合中的某个模式
      await this.stopGame();
-      print('333333');
       listenControlutil(completer);
       return;
     }

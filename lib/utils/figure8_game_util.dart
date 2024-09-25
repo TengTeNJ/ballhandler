@@ -95,11 +95,12 @@ class Figure8GameUtil {
             hitModel.boardIndex == currentModel.boardIndex &&
             hitModel.ledIndex == currentModel.ledIndex &&
             hitModel.statu == BleULTimateLighStatu.red) {
-          // 关闭当前灯
-          await BluetoothManager().asyncWriterDataToDevice(
-              gameUtil.selectedDeviceModel,
-              controSingleLightBoard(currentModel.boardIndex,
-                  currentModel.ledIndex, BleULTimateLighStatu.close));
+          if(saveBoardHitMessgeId(hitModel)){
+            return;
+          }
+          //  响应击中的灯
+          BluetoothManager().writerDataToDevice(
+              gameUtil.selectedDeviceModel,responseHitModel(hitModel.boardIndex, BluetoothManager().hitModelMessageId));
           // 加分
           BluetoothManager().gameData.score =
               BluetoothManager().gameData.score + 2;
@@ -112,13 +113,17 @@ class Figure8GameUtil {
         } else if (hitModel != null &&
             hitModel.statu == BleULTimateLighStatu.blue) {
           // 击中蓝灯
-          print('击中蓝灯了-------');
           HitTargetModel matchModel = blueDatas.firstWhere((element) =>
               hitModel != null &&
               hitModel.boardIndex == element.boardIndex &&
               hitModel.ledIndex == element.ledIndex);
           if (matchModel != null) {
-            print('击中蓝灯了 减分-------');
+            if(saveBoardHitMessgeId(hitModel)){
+              return;
+            }
+            //  响应击中的灯
+            BluetoothManager().writerDataToDevice(
+                gameUtil.selectedDeviceModel,responseHitModel(hitModel.boardIndex, BluetoothManager().hitModelMessageId));
             // 减分
             BluetoothManager().gameData.score =
                 BluetoothManager().gameData.score - 1;

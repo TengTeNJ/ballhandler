@@ -57,6 +57,7 @@ class ControlTimeOutUtil{
 
   /*重置超时监听*/
   reset(){
+    ControlTimeOutUtil().completer = Completer<bool>();
     if( this.timeOutTimer != null){
       this.timeOutTimer!.cancel();
       this.timeOutTimer = null;
@@ -64,6 +65,5 @@ class ControlTimeOutUtil{
     this._retryTimes = 0;
     this.ongoingData.clear();
     this.controling.value = false;
-    ControlTimeOutUtil().completer = Completer<bool>();
   }
 }

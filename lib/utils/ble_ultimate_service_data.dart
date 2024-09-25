@@ -121,7 +121,8 @@ class BluetoothUltTimateDataParse {
       isNew = false;
       delayTimer = Timer(Duration(milliseconds: 150), () {
         if (!isNew) {
-          print('解析数据超时 ${bleNotAllData.map((toElement) => toElement.toRadixString(16)).toList()}');
+          print(
+              '解析数据超时 ${bleNotAllData.map((toElement) => toElement.toRadixString(16)).toList()}');
           // print(Œ
           //     'bleNotAllData.toString()} == ${bleNotAllData.map((toElement) => toElement.toRadixString(16)).toList()}}');
           bleNotAllData.clear();
@@ -195,15 +196,28 @@ class BluetoothUltTimateDataParse {
             ControlTimeOutUtil().timeOutTimer!.cancel();
             ControlTimeOutUtil().timeOutTimer = null;
           }
-          ControlTimeOutUtil().controlLedId ++;
+          ControlTimeOutUtil().controlLedId++;
           ControlTimeOutUtil().completer.complete(true);
           ControlTimeOutUtil().reset();
           break;
         case ResponseCMDType.masterStatu:
           // Central主机当前的系统状态：1字节0: 系统初始化；1: 系统配网；2: 系统游戏；3: 系统设置；4: 系统管理
           int data = element[4];
-          // print('Central主机当前的系统状态=${data}');
+          print('Central主机当前的系统状态=${data}');
           BluetoothManager().gameData.masterStatu = data;
+          if (data == 2) {
+            GameUtil gameUtil = GetIt.instance<GameUtil>();
+            if (gameUtil.gameScene == GameScene.erqiling) {
+              print('重新打开p3');
+              // 有时候 检测到某子设备掉线 然后又恢复后 就会重新变为2 然后 也会被熄屏 所以 如果是p3模式的话 就重新初始化一下显示屏显示
+             Future.delayed(Duration(milliseconds: 300),(){
+               BluetoothManager().writerDataToDevice(
+                   gameUtil.selectedDeviceModel, p3ScreenShow());
+               BluetoothManager().writerDataToDevice(
+                   gameUtil.selectedDeviceModel, scoreShow(0));
+             });
+            }
+          }
           BluetoothManager().triggerCallback(type: BLEDataType.masterStatu);
           break;
         case ResponseCMDType.queryMasterStatuResponse:
@@ -231,7 +245,8 @@ class BluetoothUltTimateDataParse {
             String v = binaryString.substring(
                 binaryString.length - (i + 1), binaryString.length - i);
             if (v == '0') {
-              TTToast.showErrorInfo('Board ${kP3DataAndProductIndexMap[i]} offline');
+              TTToast.showErrorInfo(
+                  'Board ${kP3DataAndProductIndexMap[i]} offline');
             }
           }
           BluetoothManager().triggerCallback(type: BLEDataType.onLine);
@@ -242,9 +257,11 @@ class BluetoothUltTimateDataParse {
             // 只有P3模式才处理击中
             break;
           }
-          int data1 = element[4]; // 灯板ID(1BYTE,0-3)
+          int messageId = element[4];
+          BluetoothManager().hitModelMessageId = messageId;
+          int data1 = element[5]; // 灯板ID(1BYTE,0-3)
           int data2 = element[
-              5]; // 灯掩码（1字节，使用BIT1-BIT0，取值：0b00-NA; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯）
+              6]; // 灯掩码（1字节，使用BIT1-BIT0，取值：0b00-NA; 0b01-红灯; 0b10-蓝灯; 0b11-红灯+蓝灯）
           String binaryString = data2.toRadixString(2);
           // 数据源赋值
           BluetoothManager().gameData.currentTarget = targetIndex;
@@ -290,13 +307,13 @@ class BluetoothUltTimateDataParse {
             BluetoothManager().gameData.p3DeviceBatteryValues[i] = battery;
           }
           GameUtil gameUtil = GetIt.instance<GameUtil>();
-            List<int> _batteryValues =
-                BluetoothManager().gameData.p3DeviceBatteryValues;
-            int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
-            gameUtil.selectedDeviceModel.powerValue = minValue;
-            // 监听电量
-            BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
-            EventBus().sendEvent(kCurrent270DeviceInfoChange);
+          List<int> _batteryValues =
+              BluetoothManager().gameData.p3DeviceBatteryValues;
+          int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
+          gameUtil.selectedDeviceModel.powerValue = minValue;
+          // 监听电量
+          BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
+          EventBus().sendEvent(kCurrent270DeviceInfoChange);
           break;
         case ResponseCMDType.statuSyn:
           //    print("deviceName  上报来的数据data = ${element.map((toElement)=>toElement.toRadixString(16)).toList()}");
@@ -328,13 +345,13 @@ class BluetoothUltTimateDataParse {
                 battery;
             // print('${targetIndex}号灯的电量变化，电量值为${battery}');
             GameUtil gameUtil = GetIt.instance<GameUtil>();
-              List<int> _batteryValues =
-                  BluetoothManager().gameData.p3DeviceBatteryValues;
-              int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
-              gameUtil.selectedDeviceModel.powerValue = minValue;
-              // 监听电量
-              BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
-              EventBus().sendEvent(kCurrent270DeviceInfoChange);
+            List<int> _batteryValues =
+                BluetoothManager().gameData.p3DeviceBatteryValues;
+            int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
+            gameUtil.selectedDeviceModel.powerValue = minValue;
+            // 监听电量
+            BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
+            EventBus().sendEvent(kCurrent270DeviceInfoChange);
           } else if (data1 == 3) {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
             // 灯板 + 电量
@@ -358,13 +375,13 @@ class BluetoothUltTimateDataParse {
             int battery = element[6];
             BluetoothManager().gameData.p3DeviceBatteryValues[targetIndex] =
                 battery;
-              List<int> _batteryValues =
-                  BluetoothManager().gameData.p3DeviceBatteryValues;
-              int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
-              gameUtil.selectedDeviceModel.powerValue = minValue;
-              // 监听电量
-              BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
-              EventBus().sendEvent(kCurrent270DeviceInfoChange);
+            List<int> _batteryValues =
+                BluetoothManager().gameData.p3DeviceBatteryValues;
+            int minValue = _batteryValues.reduce((a, b) => a < b ? a : b);
+            gameUtil.selectedDeviceModel.powerValue = minValue;
+            // 监听电量
+            BleUtil.listenPowerValue(NavigatorUtil.utilContext, minValue);
+            EventBus().sendEvent(kCurrent270DeviceInfoChange);
           }
           break;
         case ResponseCMDType.newStatuSyn:
