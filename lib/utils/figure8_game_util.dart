@@ -98,6 +98,9 @@ class Figure8GameUtil {
           if(saveBoardHitMessgeId(hitModel)){
             return;
           }
+          // 关闭当前灯
+          controSingleLightBoard(currentModel.boardIndex,
+              currentModel.ledIndex, BleULTimateLighStatu.close);
           //  响应击中的灯
           BluetoothManager().writerDataToDevice(
               gameUtil.selectedDeviceModel,responseHitModel(hitModel.boardIndex, BluetoothManager().hitModelMessageId));
@@ -147,8 +150,6 @@ class Figure8GameUtil {
       BluetoothManager().writerDataToDevice(
           gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
       if (_countTime <= 0) {
-        // 结束
-        this.stopGame();
         // 倒计时显示
         BluetoothManager().writerDataToDevice(
             gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));

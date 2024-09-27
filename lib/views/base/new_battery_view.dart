@@ -69,7 +69,7 @@ class _NewBatteryViewState extends State<NewBatteryView> {
       nameIndex = 0;
     } else if (value <= 20) {
       nameIndex = 1;
-    } else if (value > 20 && value <= 70) {
+    } else if (value > 25 && value <= 70) {
       nameIndex = 2;
     } else {
       nameIndex = 3;

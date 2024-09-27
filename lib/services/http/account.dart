@@ -36,14 +36,14 @@ class Account {
     return ApiResponse(
         success: response.success, data: User.fromJson(response.data['data']));
   }
+
   /*设置密码*/
   static Future<ApiResponse> setPwd(String pwd) async {
     final email = await NSUserDefault.getValue<String>(kInputEmail);
-    final _data = {"account": email ?? '',  "password": pwd};
+    final _data = {"account": email ?? '', "password": pwd};
     final response =
-    await HttpUtil.post('/api/login/forgetPwd', _data, showLoading: true);
-    return ApiResponse(
-        success: response.success);
+        await HttpUtil.post('/api/login/forgetPwd', _data, showLoading: true);
+    return ApiResponse(success: response.success);
   }
 
   /*发送验证码*/
@@ -98,9 +98,8 @@ class Account {
     CheckResultModel model = CheckResultModel();
     Map _map = response.data['data'];
     if (_map != null) {
-      model.thirdLoginType = ISEmpty(_map['thirdLoginType'])
-          ? 0
-          : (_map['thirdLoginType']);
+      model.thirdLoginType =
+          ISEmpty(_map['thirdLoginType']) ? 0 : (_map['thirdLoginType']);
       model.setPwdFlag =
           ISEmpty(_map['setPwdFlag']) ? false : (_map['setPwdFlag']) != 0;
     }
@@ -259,5 +258,15 @@ class Account {
     } else {
       return ApiResponse(success: false);
     }
+  }
+
+/*上传积分信息*/
+  static Future<ApiResponse> saveIntegral({int integralSource = 0}) async {
+    final _data = {
+      'integralSource': integralSource,
+    };
+    final response = await HttpUtil.post('/api/member/integral/save', _data,
+        showLoading: true);
+    return ApiResponse(success: response.success);
   }
 }

@@ -8,6 +8,7 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/game/game_over_model.dart';
+import '../../utils/toast.dart';
 
 class TodayDataController extends StatefulWidget {
   const TodayDataController({super.key});
@@ -18,28 +19,32 @@ class TodayDataController extends StatefulWidget {
 
 class _TodayDataControllerState extends State<TodayDataController> {
   List<GameOverModel> _datas = [];
-
+  bool _hasMode = false;
+  int _page = 1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getData();
   }
-
-  getData() async {
+  getData({bool loadMore = false}) async {
     if (!UserProvider.of(context).hasLogin) {
       // 未登录
       final _result = await DatabaseHelper().getData(kDataBaseTableName);
       _datas = _result;
-    setState(() {
+      setState(() {
     });
     } else {
+      if(loadMore){
+        TTToast.showLoading();
+      }
       // 已登录进行数据请求
       final _todayDate = DateTime.now();
       String _todayString =  StringUtil.dateTimeToString(_todayDate);
       final _response = await Participants.queryTrainListData(1, _todayString, _todayString);
       if(_response.success && _response.data != null){
-        _datas.addAll(_response.data!);
+        _datas.addAll(_response.data!.datas);
+        _hasMode = (_datas.length < _response.data!.count);
         setState(() {
 
         });
@@ -74,6 +79,12 @@ class _TodayDataControllerState extends State<TodayDataController> {
             Expanded(
                 child: TodayDataListView(
               datas: _datas,
+                  loadMore: (){
+                if(_hasMode){
+                  _page ++;
+                  getData(loadMore: true);
+                }
+                  },
             ))
           ],
         ),

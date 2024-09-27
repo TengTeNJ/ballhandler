@@ -46,6 +46,11 @@ class SceneModel {
   String dictRemark = 'Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials, and push your limits.';
 }
 
+class TrainListModel {
+  List<GameOverModel> datas = [];
+  int count = 0;
+}
+
 class Participants {
   /*获取首页用户的数据*/
   static Future<ApiResponse<HomeUsermodel>> getHomeUserData() async {
@@ -153,7 +158,7 @@ class Participants {
   }
 
   /*查询训练列表接口*/
-  static Future<ApiResponse<List<GameOverModel>>> queryTrainListData(
+  static Future<ApiResponse<TrainListModel>> queryTrainListData(
       int page, String startDate, String endDate) async {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
@@ -166,10 +171,12 @@ class Participants {
     };
     final response =
         await HttpUtil.get('/api/train/list', _data, showLoading: true);
-    List<GameOverModel> _list = [];
 
+    TrainListModel trainModel = TrainListModel();
+    List<GameOverModel> _list = [];
     if (response.success && response.data['data'] != null) {
       final _array = response.data['data'] as List;
+      int _count =  response.data['count'] ?? 0;
       _array.forEach((element) {
         GameOverModel model = GameOverModel();
         final _map = element;
@@ -190,7 +197,9 @@ class Participants {
         !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
         _list.add(model);
       });
-      return ApiResponse(success: response.success, data: _list);
+      trainModel.datas = _list;
+      trainModel.count = _count;
+      return ApiResponse(success: response.success, data: trainModel);
     } else {
       return ApiResponse(success: false);
     }

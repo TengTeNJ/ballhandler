@@ -81,7 +81,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             gameUtil.modelId = index + 1;
             if (gameUtil.gameScene == GameScene.five) {
               // 记录选择的场景 放入缓存
-              NSUserDefault.setKeyValue<int>(kSceneSelectCache, gameUtil.gameScene.index);
+              NSUserDefault.setKeyValue<int>(
+                  kSceneSelectCache, gameUtil.gameScene.index);
               NavigatorUtil.push(Routes.recordselect);
             } else if (gameUtil.gameScene == GameScene.erqiling) {
               // 主机状态
@@ -111,11 +112,12 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               // 清空上次选择的组合
               // gameUtil.selectdP3Indexs.clear();
               // 记录选择的场景 放入缓存
-              NSUserDefault.setKeyValue<int>(kSceneSelectCache, gameUtil.gameScene.index);
+              NSUserDefault.setKeyValue<int>(
+                  kSceneSelectCache, gameUtil.gameScene.index);
               NavigatorUtil.present(_controllers[index]);
               // 模式切换锁定
-              BluetoothManager().writerDataToDevice(
-                  gameUtil.selectedDeviceModel, lockMode());
+              BluetoothManager()
+                  .writerDataToDevice(gameUtil.selectedDeviceModel, lockMode());
             }
           }
         },
@@ -230,6 +232,13 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
   void dispose() {
     // TODO: implement dispose
     BluetoothManager().conectedDeviceCount.removeListener(_listener);
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    if (gameUtil.gameScene == GameScene.erqiling) {
+      gameUtil.modelId = 1;
+      // 恢复270的游戏模式
+      BluetoothManager()
+          .writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(0));
+    }
     super.dispose();
   }
 }

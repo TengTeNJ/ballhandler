@@ -4,6 +4,7 @@ import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/control_time_out_util.dart';
+import 'package:code/utils/game_util.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/utils/toast.dart';
@@ -196,8 +197,11 @@ class BluetoothUltTimateDataParse {
             ControlTimeOutUtil().timeOutTimer!.cancel();
             ControlTimeOutUtil().timeOutTimer = null;
           }
+          // 控制id自增
           ControlTimeOutUtil().controlLedId++;
+          // 控制流程完成
           ControlTimeOutUtil().completer.complete(true);
+          // 重置控制超时util
           ControlTimeOutUtil().reset();
           break;
         case ResponseCMDType.masterStatu:
@@ -207,10 +211,10 @@ class BluetoothUltTimateDataParse {
           BluetoothManager().gameData.masterStatu = data;
           if (data == 2) {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
-            if (gameUtil.gameScene == GameScene.erqiling) {
+            if (gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3) {
               print('重新打开p3');
               // 有时候 检测到某子设备掉线 然后又恢复后 就会重新变为2 然后 也会被熄屏 所以 如果是p3模式的话 就重新初始化一下显示屏显示
-             Future.delayed(Duration(milliseconds: 300),(){
+             Future.delayed(Duration(milliseconds: 2000),(){
                BluetoothManager().writerDataToDevice(
                    gameUtil.selectedDeviceModel, p3ScreenShow());
                BluetoothManager().writerDataToDevice(
@@ -273,6 +277,8 @@ class BluetoothUltTimateDataParse {
           // print(
           //     '击中了${targetIndex}号控制板的${data1}号灯板,状态为${StringUtil.lightToStatu(binaryString)}');
           BluetoothManager().p3TriggerCallback(type: BLEDataType.targetIn);
+          // 响应击中
+          saveBoardHitMessgeId(model);
           break;
         case ResponseCMDType.allBoardStatu:
           // 初始时 所有灯板的状态 CENTRAL(中心主机)向APP同步所有灯板数据及状态。

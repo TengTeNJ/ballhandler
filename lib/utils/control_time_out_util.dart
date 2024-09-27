@@ -26,9 +26,10 @@ class ControlTimeOutUtil{
 /*改变重试的次数*/
   set retryTimes(int times){
     _retryTimes = times;
-    if(_retryTimes > 5){
+    if(_retryTimes > 10){
       TTToast.showErrorInfo('超时次数达到上限');
       ControlTimeOutUtil().controlLedId ++;
+      print('超时次数到达上限===${ControlTimeOutUtil().controlLedId}');
       this.completer.complete(true);
       reset();
     }else{
@@ -65,5 +66,6 @@ class ControlTimeOutUtil{
     this._retryTimes = 0;
     this.ongoingData.clear();
     this.controling.value = false;
+    ControlTimeOutUtil().controling.removeListener(() {});
   }
 }

@@ -295,7 +295,7 @@ class BluetoothManager {
     //  数据校验
     if (data == null || data.length == 0) {
       ControlTimeOutUtil().completer.complete(true);
-      ControlTimeOutUtil().completer = Completer();
+      ControlTimeOutUtil().reset();
     }
     // 确认蓝牙设备已连接 并保存对应的特征值
     if (model == null ||

@@ -7,6 +7,7 @@ import '../models/game/light_ball_model.dart';
 import 'package:code/utils/string_util.dart';
 import 'dart:math';
 import '../models/game/light_ball_model.dart';
+import 'ble_ultimate_data.dart';
 import 'ble_ultimate_service_data.dart';
 import 'blue_tooth_manager.dart';
 import 'control_time_out_util.dart';
@@ -83,14 +84,12 @@ List<LightBallModel> initUltimateLightModels() {
     model.bottom = _bottoms[i];
     model.show = true;
     if ([2, 7, 10, 13].contains(i)) {
-
       model.color = Constants.baseLightBlueColor;
     }
     _list.add(model);
   }
   return _list;
 }
-
 
 /*模拟灯控*/
 List<LightBallModel> simulatorLighs() {
@@ -206,7 +205,6 @@ List<LightBallModel> simulatorLighs() {
 
 /*初始化灯光状态数据数组*/
 List<LightBallModel> initLighs() {
-
   List<LightBallModel> _list = [];
   List<double> _lefts = [
     0.0526,
@@ -312,29 +310,28 @@ List<BleULTimateLighStatu> parseAllLedStatu(List<int> element) {
   return _tempLists;
 }
 
-String getGameDutation(){
+String getGameDutation() {
   GameUtil gameUtil = GetIt.instance<GameUtil>();
-  if(gameUtil.gameScene == GameScene.five){
+  if (gameUtil.gameScene == GameScene.five) {
     // 五节
     return '45';
-  }else if(gameUtil.gameScene == GameScene.erqiling){
+  } else if (gameUtil.gameScene == GameScene.erqiling) {
     // 270
-    if(gameUtil.modelId == 1){
+    if (gameUtil.modelId == 1) {
       return kP1Duration.toString();
-    }else if(gameUtil.modelId == 2){
+    } else if (gameUtil.modelId == 2) {
       return kP2Duration.toString();
-    }else{
+    } else {
       List<int> indexs = gameUtil.selectdP3Indexs;
       int duration = 0;
-      indexs.forEach((element){
+      indexs.forEach((element) {
         Map? _map = kP3IndexAndDurationMap[element];
-        if(_map != null){
+        if (_map != null) {
           int _duration = _map['duration'];
           duration = duration + _duration;
         }
-
       });
-      String durationString = (duration/1000).toInt().toString();
+      String durationString = (duration / 1000).toInt().toString();
       return durationString;
     }
   }
@@ -342,78 +339,167 @@ String getGameDutation(){
 }
 
 /*P3模式倒计时结束或者进行下一个组合游戏时监听确认是否上一个控制未返回*/
-listenControlutil(Completer<bool> completer) {
-  if (!ControlTimeOutUtil().controling.value) {
-    completer.complete(true);
-  } else {
-    // 监听此时是否正在控制
-    print('等待控制完成----${ ControlTimeOutUtil().controlLedId}');
-    ControlTimeOutUtil().controling.addListener(() {
-      if (!ControlTimeOutUtil().controling.value) {
-        ControlTimeOutUtil().controling.removeListener(() {});
+listenControlutil(Completer<bool> completer, {Function? callBack = null}) {
+  void Function() _listen = () {
+    if (!ControlTimeOutUtil().controling.value) {
+      if (callBack != null) {
+        callBack();
+      }
+      if (!completer.isCompleted) {
         completer.complete(true);
       }
-    });
+    }
+  };
+  if (!ControlTimeOutUtil().controling.value) {
+    print('101010101001');
+    ControlTimeOutUtil().controling.removeListener(_listen);
+    if (!completer.isCompleted) {
+      completer.complete(true);
+    }
+  } else {
+    // 监听此时是否正在控制
+    print('等待控制完成----${ControlTimeOutUtil().controlLedId}');
+    ControlTimeOutUtil().controling.addListener(_listen);
   }
 }
 
-bool saveBoardHitMessgeId(HitTargetModel model){
-   switch (model.boardIndex){
-     case 0:{
-       if(BluetoothManager().board1HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
-         return true;
-       }
-       if(BluetoothManager().board1HitMessageIdList.length == 255){
-         BluetoothManager().board1HitMessageIdList.clear();
-       }
-       BluetoothManager().board1HitMessageIdList.add(BluetoothManager().hitModelMessageId);
-     }
-     case 1:{
-       if(BluetoothManager().board2HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
-         return true;
-       }
-       if(BluetoothManager().board2HitMessageIdList.length == 255){
-         BluetoothManager().board2HitMessageIdList.clear();
-       }
-       BluetoothManager().board2HitMessageIdList.add(BluetoothManager().hitModelMessageId);
-     }
-     case 2:{
-       if(BluetoothManager().board3HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
-         return true;
-       }
-       if(BluetoothManager().board3HitMessageIdList.length == 255){
-         BluetoothManager().board3HitMessageIdList.clear();
-       }
-       BluetoothManager().board3HitMessageIdList.add(BluetoothManager().hitModelMessageId);
-     }
-     case 3:{
-       if(BluetoothManager().board4HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
-         return true;
-       }
-       if(BluetoothManager().board4HitMessageIdList.length == 255){
-         BluetoothManager().board4HitMessageIdList.clear();
-       }
-       BluetoothManager().board4HitMessageIdList.add(BluetoothManager().hitModelMessageId);
-     }
-     case 4:{
-       if(BluetoothManager().board5HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
-         return true;
-       }
-       if(BluetoothManager().board5HitMessageIdList.length == 255){
-         BluetoothManager().board5HitMessageIdList.clear();
-       }
-       BluetoothManager().board5HitMessageIdList.add(BluetoothManager().hitModelMessageId);
-     }
-     case 5:{
-       if(BluetoothManager().board6HitMessageIdList.contains(BluetoothManager().hitModelMessageId)){
-         return true;
-       }
-       if(BluetoothManager().board6HitMessageIdList.length == 255){
-         BluetoothManager().board6HitMessageIdList.clear();
-       }
-       BluetoothManager().board6HitMessageIdList.add(BluetoothManager().hitModelMessageId);
-     }
-   }
-   return false;
-}
+listenHandle() {}
 
+bool saveBoardHitMessgeId(HitTargetModel model) {
+  GameUtil gameUtil = GetIt.instance<GameUtil>();
+  switch (model.boardIndex) {
+    case 0:
+      {
+        if (BluetoothManager()
+            .board1HitMessageIdList
+            .contains(BluetoothManager().hitModelMessageId)) {
+          //  如果已经处理过 仅仅响应击中的灯
+          if (BluetoothManager().gameData.hitTargetModel != null) {
+            BluetoothManager().writerDataToDevice(
+                gameUtil.selectedDeviceModel,
+                responseHitModel(
+                    BluetoothManager().gameData.hitTargetModel!.boardIndex,
+                    BluetoothManager().hitModelMessageId));
+          }
+          return true;
+        }
+        if (BluetoothManager().board1HitMessageIdList.length == 255) {
+          BluetoothManager().board1HitMessageIdList.clear();
+        }
+        BluetoothManager()
+            .board1HitMessageIdList
+            .add(BluetoothManager().hitModelMessageId);
+      }
+    case 1:
+      {
+        if (BluetoothManager()
+            .board2HitMessageIdList
+            .contains(BluetoothManager().hitModelMessageId)) {
+          //  如果已经处理过 仅仅响应击中的灯
+          if (BluetoothManager().gameData.hitTargetModel != null) {
+            BluetoothManager().writerDataToDevice(
+                gameUtil.selectedDeviceModel,
+                responseHitModel(
+                    BluetoothManager().gameData.hitTargetModel!.boardIndex,
+                    BluetoothManager().hitModelMessageId));
+          }
+          return true;
+        }
+        if (BluetoothManager().board2HitMessageIdList.length == 255) {
+          BluetoothManager().board2HitMessageIdList.clear();
+        }
+        BluetoothManager()
+            .board2HitMessageIdList
+            .add(BluetoothManager().hitModelMessageId);
+      }
+    case 2:
+      {
+        if (BluetoothManager()
+            .board3HitMessageIdList
+            .contains(BluetoothManager().hitModelMessageId)) {
+          //  如果已经处理过 仅仅响应击中的灯
+          if (BluetoothManager().gameData.hitTargetModel != null) {
+            BluetoothManager().writerDataToDevice(
+                gameUtil.selectedDeviceModel,
+                responseHitModel(
+                    BluetoothManager().gameData.hitTargetModel!.boardIndex,
+                    BluetoothManager().hitModelMessageId));
+          }
+          return true;
+        }
+        if (BluetoothManager().board3HitMessageIdList.length == 255) {
+          BluetoothManager().board3HitMessageIdList.clear();
+        }
+        BluetoothManager()
+            .board3HitMessageIdList
+            .add(BluetoothManager().hitModelMessageId);
+      }
+    case 3:
+      {
+        if (BluetoothManager()
+            .board4HitMessageIdList
+            .contains(BluetoothManager().hitModelMessageId)) {
+          //  如果已经处理过 仅仅响应击中的灯
+          if (BluetoothManager().gameData.hitTargetModel != null) {
+            BluetoothManager().writerDataToDevice(
+                gameUtil.selectedDeviceModel,
+                responseHitModel(
+                    BluetoothManager().gameData.hitTargetModel!.boardIndex,
+                    BluetoothManager().hitModelMessageId));
+          }
+          return true;
+        }
+        if (BluetoothManager().board4HitMessageIdList.length == 255) {
+          BluetoothManager().board4HitMessageIdList.clear();
+        }
+        BluetoothManager()
+            .board4HitMessageIdList
+            .add(BluetoothManager().hitModelMessageId);
+      }
+    case 4:
+      {
+        if (BluetoothManager()
+            .board5HitMessageIdList
+            .contains(BluetoothManager().hitModelMessageId)) {
+          //  如果已经处理过 仅仅响应击中的灯
+          if (BluetoothManager().gameData.hitTargetModel != null) {
+            BluetoothManager().writerDataToDevice(
+                gameUtil.selectedDeviceModel,
+                responseHitModel(
+                    BluetoothManager().gameData.hitTargetModel!.boardIndex,
+                    BluetoothManager().hitModelMessageId));
+          }
+          return true;
+        }
+        if (BluetoothManager().board5HitMessageIdList.length == 255) {
+          BluetoothManager().board5HitMessageIdList.clear();
+        }
+        BluetoothManager()
+            .board5HitMessageIdList
+            .add(BluetoothManager().hitModelMessageId);
+      }
+    case 5:
+      {
+        if (BluetoothManager()
+            .board6HitMessageIdList
+            .contains(BluetoothManager().hitModelMessageId)) {
+          //  如果已经处理过 仅仅响应击中的灯
+          if (BluetoothManager().gameData.hitTargetModel != null) {
+            BluetoothManager().writerDataToDevice(
+                gameUtil.selectedDeviceModel,
+                responseHitModel(
+                    BluetoothManager().gameData.hitTargetModel!.boardIndex,
+                    BluetoothManager().hitModelMessageId));
+          }
+          return true;
+        }
+        if (BluetoothManager().board6HitMessageIdList.length == 255) {
+          BluetoothManager().board6HitMessageIdList.clear();
+        }
+        BluetoothManager()
+            .board6HitMessageIdList
+            .add(BluetoothManager().hitModelMessageId);
+      }
+  }
+  return false;
+}
