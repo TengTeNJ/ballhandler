@@ -1269,6 +1269,9 @@ class P3GameManager {
                   BleULTimateLighStatu.close);
               this._index++;
               if (this._index >= _allDatas.length || _countTime == 0) {
+                if(_countTime == 0){
+                  return;
+                }
                 // 结束本组合中的某个模式
                 await this.stopGame();
                 print('3+++++++++++++');

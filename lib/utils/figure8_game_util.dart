@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 
 import '../models/game/hit_target_model.dart';
@@ -64,6 +65,7 @@ class Figure8GameUtil {
   int _process3EveryUnitIndex = 0; // 每个单元的红灯索引
   int _countTime = 30; // 倒计时
   Timer? durationTimer;
+  ValueNotifier<bool> isControl = ValueNotifier<bool>(false);
 
   Completer<bool> completer = Completer();
   static final Figure8GameUtil _instance = Figure8GameUtil._internal();
@@ -76,6 +78,7 @@ class Figure8GameUtil {
 
   Future<bool> startGame() async {
     this.completer = Completer();
+    isControl.value = false;
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 监听击中
     BluetoothManager().p3DataChange = (BLEDataType type) async {
@@ -151,16 +154,37 @@ class Figure8GameUtil {
           gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
       if (_countTime <= 0) {
         // 倒计时显示
-        BluetoothManager().writerDataToDevice(
-            gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
-        this.stopGame();
-        listenControlutil(this.completer);
+        if (isControl.value) {
+          // sleep(Duration(milliseconds: 1000));
+          isControl.addListener(controlListen);
+        } else {
+          BluetoothManager().writerDataToDevice(
+              gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
+          this.stopGame();
+          listenControlutil(this.completer);
+        }
+
       }
     });
     _process3Control();
     return completer.future;
   }
 
+  controlListen() {
+    handle();
+  }
+
+  handle() async {
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    if (!isControl.value) {
+      print('移除isControl监听');
+      isControl.removeListener(controlListen);
+      BluetoothManager().writerDataToDevice(
+          gameUtil.selectedDeviceModel, cutDownShow(value: _countTime));
+      this.stopGame();
+      listenControlutil(this.completer);
+    }
+  }
   stopGame() async{
     if (this.durationTimer != null) {
       this.durationTimer!.cancel();
@@ -169,10 +193,14 @@ class Figure8GameUtil {
     _process3Index = 0; // 索引
     _process3EveryUnitIndex = 0; // 每个单元的红灯索引
     _countTime = 30; // 倒计时
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    BluetoothManager().writerDataToDevice(
+        gameUtil.selectedDeviceModel, closeAllBoardLight());
   }
 
   // 第三进度控制
   _process3Control() async {
+    isControl.value = true;
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     if (_process3Index >= thirdProcessRedData().length) {
       this.stopGame();
@@ -210,5 +238,6 @@ class Figure8GameUtil {
         gameUtil.selectedDeviceModel,
         controSingleLightBoard(
             redmodel.boardIndex, redmodel.ledIndex, redmodel.statu));
+    isControl.value = false;
   }
 }
