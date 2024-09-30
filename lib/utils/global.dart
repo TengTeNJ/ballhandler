@@ -4,6 +4,7 @@ import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
+// 这个顺序需要和后台管理上的数据的dickey的场景值的顺序保持一致
 enum GameScene { five, erqiling,threee}
 
 class GameUtil {

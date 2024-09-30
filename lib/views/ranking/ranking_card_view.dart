@@ -38,6 +38,11 @@ String _title = 'Digital Stickhandling Trainer';
   @override
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
+    // List<GameScene> array = [GameScene.five,GameScene.erqiling,GameScene.threee];
+    SceneModel _matchModel = gameUtil.sceneList.firstWhere(
+            (element) =>
+        (int.parse(element.dictKey) - 1) == gameUtil.gameScene.index,
+        orElse: null);
     return Container(
       height: 130,
       width: Constants.screenWidth(context) ,
@@ -56,7 +61,7 @@ String _title = 'Digital Stickhandling Trainer';
               children: [
                 Container(
                   child: Constants.mediumWhiteTextWidget(
-                      gameUtil.sceneList[gameUtil.gameScene.index].dictValue ?? _title, 14,
+                      _matchModel != null ? _matchModel.dictValue : _title, 14,
                       textAlign: TextAlign.left),
                 ),
                 Image(

@@ -111,11 +111,13 @@ class _HomePageViewState extends State<HomePageController> {
         print('_currentIndex= ${_currentIndex} currentpage = ${currentpage}');
         setState(() {
           _currentIndex = currentpage;
+          SceneModel model = gameUtil.sceneList[_currentIndex];
+          int value = int.parse(model.dictKey) - 1;
           gameUtil.gameScene = [
             GameScene.five,
             GameScene.erqiling,
             GameScene.threee
-          ][_currentIndex];
+          ][value];
         });
         // 延迟100毫秒进行数据请求，防止初始化本地用户信息未完成
         Future.delayed(Duration(milliseconds: 100), () {
@@ -178,8 +180,12 @@ class _HomePageViewState extends State<HomePageController> {
         // 获取场景缓存
         List<GameScene> array = [GameScene.five,GameScene.erqiling,GameScene.threee];
         gameUtil.gameScene = array[value];
-        _pageController.jumpToPage(value);
-        _currentIndex = value;
+       SceneModel _matchModel = gameUtil.sceneList.firstWhere((element)=>(int.parse(element.dictKey) - 1) == array[value].index,orElse: null);
+       if(_matchModel != null){
+         int index = gameUtil.sceneList.indexOf(_matchModel);
+         _pageController.jumpToPage(index);
+         _currentIndex = index;
+       }
       }
       if(mounted){
         setState(() {

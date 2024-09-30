@@ -12,8 +12,10 @@ import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 
 import '../../models/global/user_info.dart';
+import '../../services/http/participants.dart';
 import '../../utils/dialog.dart';
 import '../../utils/global.dart';
+import '../../utils/nsuserdefault_util.dart';
 
 class RankingController extends StatefulWidget {
   const RankingController({super.key});
@@ -30,19 +32,25 @@ class _RankingControllerState extends State<RankingController> {
 
   // 卡片页滑动监听
   void _pageViewOnChange(int index) {
+    print('index = ${index}');
     if(index == _currentPageIndex){
       return;
     }
     setState(() {
       _page = 1;
       _datas.clear();
-      _currentPageIndex = index;
       GameUtil gameUtil = GetIt.instance<GameUtil>();
+      SceneModel model = gameUtil.sceneList[index];
+      int value = int.parse(model.dictKey) - 1;
       gameUtil.gameScene = [
         GameScene.five,
         GameScene.erqiling,
         GameScene.threee
-      ][_currentPageIndex];
+      ][value];
+      // 放入缓存
+      // NSUserDefault.setKeyValue<int>(
+      //     kSceneSelectCache, gameUtil.gameScene.index);
+      _currentPageIndex = index;
     });
     queryRankList();
   }

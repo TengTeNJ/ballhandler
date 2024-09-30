@@ -233,7 +233,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     // TODO: implement dispose
     BluetoothManager().conectedDeviceCount.removeListener(_listener);
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-    if (gameUtil.gameScene == GameScene.erqiling) {
+    if (gameUtil.gameScene == GameScene.erqiling && gameUtil.selectedDeviceModel.writerCharacteristic != null) {
       gameUtil.modelId = 1;
       // 恢复270的游戏模式
       BluetoothManager()
