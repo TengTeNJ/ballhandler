@@ -255,6 +255,36 @@ class TTDialog {
         });
   }
 
+  static channelDialog(BuildContext context, Function confirm) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return ChannelDialog(
+            confirm: confirm,
+          );
+        });
+  }
+
+  static setRemainTimeDialog(BuildContext context, Function confirm) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return RemainTimeDialog(
+            confirm: confirm,
+          );
+        });
+  }
+
+  static setInterferenceLevelDialog(BuildContext context, Function confirm) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return InterferenceLevelDialog(
+            confirm: confirm,
+          );
+        });
+  }
+
   static airplayDialog(BuildContext context) {
     return showDialog(
         context: context,

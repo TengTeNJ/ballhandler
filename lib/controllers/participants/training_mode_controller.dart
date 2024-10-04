@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/participants/p1_controller.dart';
 import 'package:code/controllers/participants/p2_controller.dart';
@@ -40,7 +42,8 @@ class TrainingModeController extends StatefulWidget {
 class _TrainingModeControllerState extends State<TrainingModeController> {
   List<GameModel> _datas = [];
   String title = 'Stickhandling';
-
+  int tapCount = 0;
+  Timer? timer;
   // List View
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
@@ -125,6 +128,48 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     );
   }
 
+  void _handleTap() {
+    const maxTaps = 5;
+    const tapSpeed = 2000; // 300毫秒内完成点击
+
+    if (timer == null || !timer!.isActive) {
+      print('0000');
+      tapCount = 1;
+      timer = Timer(Duration(milliseconds: tapSpeed), () {
+        print('连续点击次数不足$maxTaps次');
+        tapCount = 0;
+      });
+    } else {
+      print('1111');
+      tapCount++;
+    }
+
+    if (tapCount >= maxTaps) {
+      print('连续点击了$maxTaps次!');
+      tapCount = 0;
+      timer?.cancel();
+      timer = null;
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      if (gameUtil.gameScene == GameScene.erqiling &&
+          BluetoothManager()
+              .hasConnectedDeviceList
+              .isNotEmpty) {
+        // 确认已连接的设备中是否有和当前模式匹配的,有的话则取第一个
+        List<BLEModel> devices = BluetoothManager()
+            .hasConnectedDeviceList
+            .where((element) =>
+            element.deviceName.contains(k270_Name))
+            .toList();
+        if (devices != null) {
+          gameUtil.selectedDeviceModel = devices.first;
+          NavigatorUtil.push(Routes.devicedebug);
+        }
+      }
+    } else {
+
+    }
+  }
+
   void _listener() {
     print('蓝牙连接的设备的数量变化');
     setState(() {
@@ -178,7 +223,16 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Constants.boldWhiteTextWidget(title, 30, height: 0.8),
+                  GestureDetector(
+                    child:
+                        Constants.boldWhiteTextWidget(title, 30, height: 0.8),
+                    onTap: (){
+                      _handleTap();
+                    },
+                    onLongPress: () {
+                      print('长按');
+                    },
+                  ),
                   GestureDetector(
                     onTap: () async {
                       if (await SystemUtil.isIPad()) {
@@ -233,7 +287,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     // TODO: implement dispose
     BluetoothManager().conectedDeviceCount.removeListener(_listener);
     GameUtil gameUtil = GetIt.instance<GameUtil>();
-    if (gameUtil.gameScene == GameScene.erqiling && gameUtil.selectedDeviceModel.writerCharacteristic != null) {
+    if (gameUtil.gameScene == GameScene.erqiling &&
+        gameUtil.selectedDeviceModel.writerCharacteristic != null) {
       gameUtil.modelId = 1;
       // 恢复270的游戏模式
       BluetoothManager()

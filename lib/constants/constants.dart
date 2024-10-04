@@ -330,6 +330,8 @@ const kDataBaseSubscripeName = 'subscription'; // 订阅
 
 const kGameDuration = 45; // 游戏时常
 
+const kChannelArray = [0,1,3, 19,21,23,25,27, 47,49,51,52, 71,73,75,77,79];
+
 double kFontSize(BuildContext context, double size) {
   // double font =Constants.screenWidth(context) / 375 * size;
   return size;

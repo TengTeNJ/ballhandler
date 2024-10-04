@@ -29,6 +29,7 @@ import 'package:code/controllers/participants/video_guide_controller.dart';
 import 'package:code/controllers/participants/video_list_controller.dart';
 import 'package:code/controllers/participants/video_play_controller.dart';
 import 'package:code/controllers/profile/Integral_detail_controller.dart';
+import 'package:code/controllers/profile/device_debug_controller.dart';
 import 'package:code/controllers/profile/integral_controller.dart';
 import 'package:code/controllers/profile/membership_detail_controller.dart';
 import 'package:code/controllers/profile/setting_controller.dart';
@@ -77,6 +78,7 @@ class Routes {
   static const String webview= 'webView'; //
   static const String membership= 'membershipDetail'; //
   static const String gameready= 'gameReady'; // 游戏准备页面
+  static const String devicedebug= 'deviceDebug'; // 设备参数调节页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -172,6 +174,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => MemberShipDetailController());
       case gameready:
         return MaterialPageRoute(builder: (_) => ReadyController());
+      case devicedebug:
+        return MaterialPageRoute(builder: (_) => DeviceDebugController());
     // EmailPageController
      // IntegralController MyAccountDataModel
       default:

@@ -1733,6 +1733,238 @@ class _UserNameDialogState extends State<UserNameDialog> {
   }
 }
 
+class ChannelDialog extends StatefulWidget {
+  Function? confirm;
+
+  ChannelDialog({this.confirm});
+
+  @override
+  State<ChannelDialog> createState() => _ChannelDialogState();
+}
+
+class _ChannelDialogState extends State<ChannelDialog> {
+  TextEditingController _usernameController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: hexStringToColor('#3E3E55'),
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      title: Constants.boldWhiteTextWidget('输入你需要设置的信道', 20,
+          textAlign: TextAlign.left),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            controller: _usernameController,
+            decoration: InputDecoration(
+                labelText: '信道',
+                labelStyle: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            NavigatorUtil.pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseGreyStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Cancel', 16),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            String username = _usernameController.text;
+            if (widget.confirm != null) {
+              widget.confirm!(username);
+            }
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Confirm', 16),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    super.dispose();
+  }
+}
+
+class RemainTimeDialog extends StatefulWidget {
+  Function? confirm;
+
+  RemainTimeDialog({this.confirm});
+
+  @override
+  State<RemainTimeDialog> createState() => _RemainTimeDialogState();
+}
+
+class _RemainTimeDialogState extends State<RemainTimeDialog> {
+  TextEditingController _usernameController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: hexStringToColor('#3E3E55'),
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      title: Constants.boldWhiteTextWidget('设置自动关机时间', 20,
+          textAlign: TextAlign.left),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            keyboardType: TextInputType.number,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            controller: _usernameController,
+            decoration: InputDecoration(
+                labelText: '单位为分钟',
+                labelStyle: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            NavigatorUtil.pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseGreyStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Cancel', 16),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            String username = _usernameController.text;
+            if (widget.confirm != null) {
+              widget.confirm!(username);
+            }
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Confirm', 16),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    super.dispose();
+  }
+}
+
+class InterferenceLevelDialog extends StatefulWidget {
+  Function? confirm;
+
+  InterferenceLevelDialog({this.confirm});
+
+  @override
+  State<InterferenceLevelDialog> createState() => _InterferenceLevelDialogState();
+}
+
+class _InterferenceLevelDialogState extends State<InterferenceLevelDialog> {
+  TextEditingController _usernameController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: hexStringToColor('#3E3E55'),
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      title: Constants.boldWhiteTextWidget('设定抗干扰容错级别', 20,
+          textAlign: TextAlign.left),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            controller: _usernameController,
+            decoration: InputDecoration(
+                labelText: '0，1，2，3分别对应 最高，高，中，低四个等级',
+                labelStyle: TextStyle(color: Constants.baseStyleColor,fontSize: 10)),
+          ),
+        ],
+      ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            NavigatorUtil.pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseGreyStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Cancel', 16),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            String username = _usernameController.text;
+            if (widget.confirm != null) {
+              widget.confirm!(username);
+            }
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Confirm', 16),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    super.dispose();
+  }
+}
+
 class AirPlayView extends StatelessWidget {
   const AirPlayView({super.key});
 

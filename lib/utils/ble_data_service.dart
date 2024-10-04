@@ -26,6 +26,8 @@ enum BLEDataType {
   refreshSingleLedStatu, // 刷新某面板上的单个灯光
   masterStatu, // Central主机当前的系统状态：1字节0: 系统初始化；1: 系统配网；2: 系统游戏；3: 系统设置；4: 系统管理
   onLine, // 在线状态
+  queryDeviceParameter, // 查询管理参数
+  setDeviceParameter, // 设置管理参数
 }
 class ResponseCMDType {
   static const int deviceInfo = 0x20; // 设备信息，包含开机状态、电量等

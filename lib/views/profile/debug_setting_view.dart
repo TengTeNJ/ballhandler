@@ -7,8 +7,9 @@ import 'package:get_it/get_it.dart';
 
 import '../../utils/blue_tooth_manager.dart';
 import '../../utils/global.dart';
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 
-class SettingView extends StatefulWidget {
+class DebugSettingView extends StatefulWidget {
   List<String> datas;
   List<String> detailTitles;
   List<bool> showArrows;
@@ -18,20 +19,20 @@ class SettingView extends StatefulWidget {
   String title;
   Function? selectItem;
 
-  SettingView(
+  DebugSettingView(
       {required this.title,
-      required this.datas,
-      this.selectItem,
-      this.showSwitchs,
-      this.showDropDown,
-      required this.detailTitles,
-      required this.showArrows});
+        required this.datas,
+        this.selectItem,
+        this.showSwitchs,
+        this.showDropDown,
+        required this.detailTitles,
+        required this.showArrows});
 
   @override
-  State<SettingView> createState() => _SettingViewState();
+  State<DebugSettingView> createState() => _DebugSettingViewState();
 }
 
-class _SettingViewState extends State<SettingView> {
+class _DebugSettingViewState extends State<DebugSettingView> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -63,35 +64,36 @@ class _SettingViewState extends State<SettingView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Constants.regularGreyTextWidget(widget.datas[index], 18),
+                      widget.showDropDown!= null && widget.showDropDown![index] == true ? Expanded(child: DropDownView()):
                       Row(
                         children: [
-                               Constants.regularGreyTextWidget(
-                                  widget.detailTitles[index], 18),
+                          Constants.regularGreyTextWidget(
+                              widget.detailTitles[index], 18),
                           SizedBox(
                             width: 12,
                           ),
                           widget.showSwitchs != null &&
-                                  widget.showSwitchs![index]
+                              widget.showSwitchs![index]
                               ? Switch(
-                                  value:
-                                      BluetoothManager().debugModel.debugSwitch,
-                                  onChanged: (value) {
-                                    // 设置debug
-                                    GameUtil gameUtil =
-                                        GetIt.instance<GameUtil>();
-                                    print('value = ${value}');
-                                    BluetoothManager().writerDataToDevice(
-                                        gameUtil.selectedDeviceModel,
-                                        setDebug(value));
-                                  })
+                              value:
+                              BluetoothManager().debugModel.debugSwitch,
+                              onChanged: (value) {
+                                // 设置debug
+                                GameUtil gameUtil =
+                                GetIt.instance<GameUtil>();
+                                print('value = ${value}');
+                                BluetoothManager().writerDataToDevice(
+                                    gameUtil.selectedDeviceModel,
+                                    setDebug(value));
+                              })
                               : (widget.showArrows[index]
-                                  ? Image(
-                                      image: AssetImage(
-                                          'images/airbattle/next_white.png'),
-                                      width: 12,
-                                      height: 12,
-                                    )
-                                  : Container())
+                              ? Image(
+                            image: AssetImage(
+                                'images/airbattle/next_white.png'),
+                            width: 12,
+                            height: 12,
+                          )
+                              : Container())
                         ],
                       ),
                     ],

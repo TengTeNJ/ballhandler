@@ -48,8 +48,8 @@ class _RankingControllerState extends State<RankingController> {
         GameScene.threee
       ][value];
       // 放入缓存
-      // NSUserDefault.setKeyValue<int>(
-      //     kSceneSelectCache, gameUtil.gameScene.index);
+      NSUserDefault.setKeyValue<int>(
+          kSceneSelectCache, gameUtil.gameScene.index);
       _currentPageIndex = index;
     });
     queryRankList();

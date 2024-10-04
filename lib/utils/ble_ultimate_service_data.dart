@@ -77,6 +77,8 @@ class ResponseCMDType {
       0x12; // Central主机当前的系统状态：1字节0: 系统初始化；1: 系统配网；2: 系统游戏；3: 系统设置；4: 系统管理
   static const int queryMasterStatuResponse =
       0x15; // APP查询中心主机当前系统状态的返回 字节1：0x01（成功），字节2：当前中心主机的系统状态，状态值定义同0x12命令；
+  static const int queryDeviceParameter = 0x0F; // 查询管理参数查询返回
+  static const int setDeviceParameter = 0x11; // 设置管理参数查询返回
 }
 
 List<int> bleNotAllData = []; // 不完整数据 被分包发送的蓝牙数据
@@ -179,6 +181,100 @@ class BluetoothUltTimateDataParse {
       // 代表数据是发送给app的
       int cmd = element[3];
       switch (cmd) {
+        case ResponseCMDType.queryDeviceParameter:
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          if (gameUtil.nowISGamePage) {
+            return;
+          }
+          // 查询管理参数的返回
+          int parameter = element[4];
+          int result = element[5];
+          int value = element[6];
+          String errorString = '查询';
+          if (parameter == 4) {
+            // 4：查询当前RF24G通信信道；
+            errorString = '查询当前RF24G通信信道';
+            if (result == 0x01) {
+              BluetoothManager().debugModel.channel = kChannelArray[value];
+            }
+          } else if (parameter == 5) {
+            // 5：查询当前干扰容错级别；
+            errorString = '查询当前干扰容错级别';
+            if (result == 0x01) {
+              BluetoothManager().debugModel.interferenceLevel = value;
+            }
+          } else if (parameter == 6) {
+            // 6：查询当前自动关机时间；
+            int value2 = element[7];
+            int value3 = element[8];
+            int value4 = element[9];
+            // 时间占据4个四节
+            String binaryString1 = StringUtil.decimalToBinary(value4);
+            String binaryString2 = StringUtil.decimalToBinary(value3);
+            String binaryString3 = StringUtil.decimalToBinary(value2);
+            String binaryString4 = StringUtil.decimalToBinary(value);
+            String totalValue =
+                binaryString1 + binaryString2 + binaryString3 + binaryString4;
+            errorString = '查询当前自动关机时间';
+            if (result == 0x01) {
+              BluetoothManager().debugModel.autooffTime =
+                  StringUtil.binaryStringToDecimal(totalValue);
+            }
+          } else if (parameter == 7) {
+            // 7：查询DEBUG开关；
+            errorString = '查询DEBUG开关';
+            if (result == 0x01) {
+              BluetoothManager().debugModel.debugSwitch = value == 0x01;
+            }
+          }
+          if ([4, 5, 6, 7].contains(parameter) && result == 0x00) {
+            TTToast.showErrorInfo(errorString + '失败');
+          } else {
+            BluetoothManager()
+                .triggerCallback(type: BLEDataType.queryDeviceParameter);
+          }
+          break;
+        case ResponseCMDType.setDeviceParameter:
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          if (gameUtil.nowISGamePage) {
+            return;
+          }
+          // 设置管理参数的返回
+          BluetoothManager().writerDataToDevice(mode, responseHearBeat());
+          int parameter = element[4];
+          int result = element[5];
+          String errorString = '设置';
+          if (parameter == 1) {
+            // 4：查询当前RF24G通信信道；
+            errorString = '关机';
+          } else if (parameter == 2) {
+            // REBOOT；
+            errorString = 'REBOOT';
+          } else if (parameter == 3) {
+            // 重置自动关机定时器；
+            errorString = '重置自动关机定时器';
+          } else if (parameter == 4) {
+            // 设定RF24G模块通信信道；
+            errorString = '设定RF24G模块通信信道';
+          } else if (parameter == 5) {
+            // 设定RF24G模块通信信道；
+            errorString = '设定抗干扰容错级别';
+          } else if (parameter == 6) {
+            // 设置自动关机时间；
+            errorString = '设置自动关机时间';
+          } else if (parameter == 7) {
+            // 设置DEBUG指示开关；
+            errorString = '设置DEBUG指示开关';
+          }
+          if (result == 0x00) {
+            TTToast.showErrorInfo(errorString + '失败');
+          } else {
+            TTToast.showSuccessInfo(errorString + '成功');
+            BluetoothManager()
+                .triggerCallback(type: BLEDataType.setDeviceParameter);
+          }
+          break;
+
         case ResponseCMDType.heartBeat:
           // 心跳查询，直接回复心跳响应
           BluetoothManager().writerDataToDevice(mode, responseHearBeat());
@@ -211,15 +307,16 @@ class BluetoothUltTimateDataParse {
           BluetoothManager().gameData.masterStatu = data;
           if (data == 2) {
             GameUtil gameUtil = GetIt.instance<GameUtil>();
-            if (gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3) {
+            if (gameUtil.gameScene == GameScene.erqiling &&
+                gameUtil.modelId == 3) {
               print('重新打开p3');
               // 有时候 检测到某子设备掉线 然后又恢复后 就会重新变为2 然后 也会被熄屏 所以 如果是p3模式的话 就重新初始化一下显示屏显示
-             Future.delayed(Duration(milliseconds: 2000),(){
-               BluetoothManager().writerDataToDevice(
-                   gameUtil.selectedDeviceModel, p3ScreenShow());
-               BluetoothManager().writerDataToDevice(
-                   gameUtil.selectedDeviceModel, scoreShow(0));
-             });
+              Future.delayed(Duration(milliseconds: 2000), () {
+                BluetoothManager().writerDataToDevice(
+                    gameUtil.selectedDeviceModel, p3ScreenShow());
+                BluetoothManager().writerDataToDevice(
+                    gameUtil.selectedDeviceModel, scoreShow(0));
+              });
             }
           }
           BluetoothManager().triggerCallback(type: BLEDataType.masterStatu);

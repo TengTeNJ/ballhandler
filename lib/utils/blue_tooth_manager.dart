@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:code/constants/constants.dart';
+import 'package:code/models/ble/device_debug_model.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
@@ -31,6 +32,8 @@ class BluetoothManager {
 
   // 蓝牙列表
   List<BLEModel> deviceList = [];
+
+  DeviceDebugModel debugModel = DeviceDebugModel();
 
   // 页面上展示的蓝牙列表
   List<BLEModel> get showDeviceList {
