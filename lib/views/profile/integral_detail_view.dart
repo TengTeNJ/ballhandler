@@ -35,7 +35,7 @@ class _IntegralViewState extends State<IntegralView> {
              SingleChildScrollView(child:  Row(
                children: [
                  widget.model.integralType == 1 ? Constants.regularGreyTextWidget(widget.model.modelName, 14) :Container() ,
-                 SizedBox(width: widget.model.integralType == 1 ? 8 : 0,),
+                 SizedBox(width: widget.model.integralType == 1 && widget.model.sourceType !='4'  && widget.model.sourceType !='5' ? 8 : 0,),
                  Constants.regularGreyTextWidget(StringUtil.serviceStringToShowMinuteString(widget.model.createTime), 14),
                ],
              ),scrollDirection: Axis.horizontal,)

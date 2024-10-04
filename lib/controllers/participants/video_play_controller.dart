@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/game/game_over_model.dart';
+import 'package:code/services/http/account.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/toast.dart';
@@ -27,7 +28,8 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.fromGameFinishPage != null && widget.fromGameFinishPage == true){
+    if (widget.fromGameFinishPage != null &&
+        widget.fromGameFinishPage == true) {
       queryRankBaseScore();
     }
   }
@@ -47,13 +49,13 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
       body: Stack(
         children: [
           Positioned(
-            left: 0,
+              left: 0,
               right: 0,
               top: 100,
               bottom: 130,
               child: VideoPlayView(
-            videoPath: widget.model.videoPath ?? '',
-          )),
+                videoPath: widget.model.videoPath ?? '',
+              )),
           Positioned(
               left: 16,
               top: 60,
@@ -85,7 +87,19 @@ class _VideoPlayControllerState extends State<VideoPlayController> {
                     _downloadAndShareVideo(widget.model.videoPath);
                   } else {
                     XFile file = XFile(widget.model.videoPath);
-                    Share.shareXFiles([file], text: "Good Game");
+                    ShareResult result =
+                        await Share.shareXFiles([file], text: "Good Game");
+                    print('分享结果:${result.status}:');
+                    if (result.status == ShareResultStatus.success) {
+                      final _result = await Account.saveIntegral(
+                          widget.model.videoPath,
+                          integralSource: 4);
+                      if (!_result.success) {
+                        // 分享失败重试一次
+                        await Account.saveIntegral(widget.model.videoPath,
+                            integralSource: 4);
+                      }
+                    }
                   }
                 },
                 child: Container(
@@ -125,9 +139,20 @@ Future<void> _downloadAndShareVideo(String videoUrl) async {
   TTToast.showLoading();
   final appDocumentsDirectory = await getApplicationDocumentsDirectory();
   String savePath = appDocumentsDirectory.path + '/video.mp4';
-  final response = await dio.download(videoUrl, savePath);
+  await dio.download(videoUrl, savePath);
   TTToast.hideLoading();
-  await Share.shareXFiles([XFile(savePath)]);
+  ShareResult result = await Share.shareXFiles([XFile(savePath)]);
+  print('分享结果:${result.status}:');
+  if (result.status == ShareResultStatus.success) {
+    final _result = await Account.saveIntegral(
+        videoUrl,
+        integralSource: 4);
+    if (!_result.success) {
+      // 分享失败重试一次
+      await Account.saveIntegral(videoUrl,
+          integralSource: 4);
+    }
+  }
   // 分享完成，删除视频
   final file = File(savePath);
   if (file.existsSync()) {

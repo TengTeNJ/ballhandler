@@ -260,10 +260,13 @@ class Account {
     }
   }
 
-/*上传积分信息*/
-  static Future<ApiResponse> saveIntegral({int integralSource = 0}) async {
+/*上传积分信息
+* integralSource 积分类型4:社交分享、5好友推荐
+* */
+  static Future<ApiResponse> saveIntegral(String shareUrl,{int integralSource = 4}) async {
     final _data = {
       'integralSource': integralSource,
+      'shareUrl':shareUrl
     };
     final response = await HttpUtil.post('/api/member/integral/save', _data,
         showLoading: true);
