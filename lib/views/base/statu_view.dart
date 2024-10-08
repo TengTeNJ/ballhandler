@@ -75,9 +75,9 @@ class _DeviceStatuViewState extends State<DeviceStatuView> {
     int nameIndex = 0;
     if (BluetoothManager().hasConnectedDeviceList.isEmpty || !connected) {
       nameIndex = 0;
-    } else if (value <= 20) {
+    } else if (value <= 25) {
       nameIndex = 1;
-    } else if (value > 20 && value <= 70) {
+    } else if (value > 25 && value <= 75) {
       nameIndex = 2;
     } else {
       nameIndex = 3;

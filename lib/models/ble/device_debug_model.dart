@@ -3,6 +3,8 @@ class DeviceDebugModel {
   int interferenceLevel = 2; //  干扰容错级别
   int autooffTime = 1200000; // 自动关机时间
   bool debugSwitch = false; //  debug开关
+  bool btSwitch = false; //  bt自动断连开关
+  bool preSwitch = false; //  321 pre开关
  String get autoOffRemainString{
   // 自动关机剩余时间
   int second = (this.autooffTime/ 1000).floor() as int ;

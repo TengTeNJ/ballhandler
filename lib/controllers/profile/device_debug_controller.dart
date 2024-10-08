@@ -35,7 +35,7 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 10), (timer) {
+    timer = Timer.periodic(Duration(seconds: 30), (timer) {
       queryParameter();
     });
     queryParameter();
@@ -82,6 +82,12 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
     // 查询debug开关
     BluetoothManager()
         .writerDataToDevice(gameUtil.selectedDeviceModel, queryDebugSwitch());
+    // 查询BT开关
+    BluetoothManager()
+        .writerDataToDevice(gameUtil.selectedDeviceModel, querybBTSwitch());
+    // 查询321预备开关
+    BluetoothManager()
+        .writerDataToDevice(gameUtil.selectedDeviceModel, querypRESwitch());
   }
 
   @override
@@ -107,14 +113,16 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
               Consumer<UserModel>(builder: (context, userModel, child) {
                 return SettingView(
                   showArrows: [true, true, true, true],
-                  showSwitchs: [false, false, false, true],
-                  showDropDown: [true, false, false, false],
+                  showSwitchs: [false, false, false, true,true,true],
+                  showDropDown: [true, false, false, false,false,false],
                   title: '状态',
-                  datas: ['通信信道', '干扰容错级别', '自动关机时间', 'DEBUG'],
+                  datas: ['通信信道', '干扰容错级别', '自动关机时间', 'DEBUG','BT自动断连','321预备'],
                   detailTitles: [
                     '通道' + BluetoothManager().debugModel.channel.toString(),
                     ['最高', '高', '中', '低','最低(测试)','极限(测试)'][BluetoothManager().debugModel.interferenceLevel],
                     BluetoothManager().debugModel.autoOffRemainString,
+                    '',
+                    '',
                     ''
                   ],
                   selectItem: (index) {

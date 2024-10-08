@@ -12,6 +12,7 @@ class GameData extends ChangeNotifier {
   int sendCurrentTarget = 0; // P3模式下 app端发送的控制的当前的板子的索引0-5(0为主控板，1-5为从控板)
   int _score = 0; // 得分
   int utimateGameSatatu = 0; // 270模式游戏的状态0x00-IDLE(选择模式状态)；0x01-游戏预备；0x02-游戏开始；0x03-游戏结束
+  int preValue = 0; // 预备阶段的灯管显示 如果有倒计时 则显示 3 2 1  GO(返回的值为3 2 1 0)
   bool _gameStart = false; // 游戏状态
   int _powerValue = 100; // 电量值
   int _remainTime = 45; // 剩余时长

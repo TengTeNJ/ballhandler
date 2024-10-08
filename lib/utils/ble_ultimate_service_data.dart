@@ -226,8 +226,20 @@ class BluetoothUltTimateDataParse {
             if (result == 0x01) {
               BluetoothManager().debugModel.debugSwitch = value == 0x01;
             }
+          } else if (parameter == 8) {
+            // 7：查询DEBUG开关；
+            errorString = '查询BT自动断连开关';
+            if (result == 0x01) {
+              BluetoothManager().debugModel.btSwitch = value == 0x01;
+            }
+          }else if (parameter == 9) {
+            // 7：查询DEBUG开关；
+            errorString = '查询321预备开关';
+            if (result == 0x01) {
+              BluetoothManager().debugModel.preSwitch = value == 0x01;
+            }
           }
-          if ([4, 5, 6, 7].contains(parameter) && result == 0x00) {
+          if ([4, 5, 6, 7,8,9].contains(parameter) && result == 0x00) {
             TTToast.showErrorInfo(errorString + '失败');
           } else {
             BluetoothManager()
@@ -265,6 +277,12 @@ class BluetoothUltTimateDataParse {
           } else if (parameter == 7) {
             // 设置DEBUG指示开关；
             errorString = '设置DEBUG指示开关';
+          }else if (parameter == 8) {
+            // 设置DEBUG指示开关；
+            errorString = '设置BT自动断连开关';
+          }else if (parameter == 9) {
+            // 设置DEBUG指示开关；
+            errorString = '设置321预备开关';
           }
           if (result == 0x00) {
             TTToast.showErrorInfo(errorString + '失败');
@@ -498,14 +516,21 @@ class BluetoothUltTimateDataParse {
                 // 游戏状态变化 0x00-IDLE(选择模式状态) 0x01-游戏预备；0x02-游戏开始；0x03-游戏结束。
                 int statu = element[5];
                 BluetoothManager().gameData.utimateGameSatatu = statu;
-                print('----------------utimateGameSatatu----------------');
+                if(statu == 1){
+                  int preStatu = element[6];
+                  BluetoothManager().gameData.preValue = preStatu;
+                  EventBus().sendEvent(kGamePre);
+                  //BluetoothManager().triggerCallback(type: BLEDataType.preStatu);
+                }else{
+                  BluetoothManager().gameData.preValue = -1;
+                }
                 BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
                 break;
               }
             case 2:
               {
                 // 模式选择变化 0x00-P1模式，0x01-P2模式，0x02-P3模式；
-                int modeStatu = element[6];
+                int modeStatu = element[5];
                 GameUtil gameUtil = GetIt.instance<GameUtil>();
                 // 主动切换模式时 如果app已经进入到了选择模式后的步骤 则进行手动切换
                 if (gameUtil.selectedDeviceModel.device != null &&
@@ -518,8 +543,8 @@ class BluetoothUltTimateDataParse {
             case 4:
               {
                 // 倒计时变化 两个字节
-                int count_data1 = element[7];
-                int count_data2 = element[8];
+                int count_data1 = element[5];
+                int count_data2 = element[6];
                 String count1String = StringUtil.decimalToBinary(count_data1);
                 String count2String = StringUtil.decimalToBinary(count_data2);
                 String valueString = count1String + count2String;
@@ -532,8 +557,8 @@ class BluetoothUltTimateDataParse {
             case 8:
               {
                 // 得分态变化
-                int count_data1 = element[9];
-                int count_data2 = element[10];
+                int count_data1 = element[5];
+                int count_data2 = element[6];
                 String count1String = StringUtil.decimalToBinary(count_data1);
                 String count2String = StringUtil.decimalToBinary(count_data2);
                 String valueString = count1String + count2String;
@@ -545,11 +570,26 @@ class BluetoothUltTimateDataParse {
               {
                 int statu = element[5];
                 BluetoothManager().gameData.utimateGameSatatu = statu;
+                if(statu == 1){
+                  int preStatu = element[6];
+                  BluetoothManager().gameData.preValue = preStatu;
+                  EventBus().sendEvent(kGamePre);
+                  //BluetoothManager().triggerCallback(type: BLEDataType.preStatu);
+                }else{
+                  BluetoothManager().gameData.preValue = -1;
+                }
                 // 模式选择变化 0x01-P1模式，0x02-P2模式，0x03-P3模式；
-                int mode = element[6];
+                int modeStatu = element[7];
+                GameUtil gameUtil = GetIt.instance<GameUtil>();
+                // 主动切换模式时 如果app已经进入到了选择模式后的步骤 则进行手动切换
+                if (gameUtil.selectedDeviceModel.device != null &&
+                    gameUtil.selectedDeviceModel.device!.id ==
+                        mode.device!.id) {
+                  gameUtil.modelId = modeStatu + 1;
+                }
                 // 倒计时变化 两个字节
-                int count_data1 = element[7];
-                int count_data2 = element[8];
+                int count_data1 = element[8];
+                int count_data2 = element[9];
                 String count1String = StringUtil.decimalToBinary(count_data1);
                 String count2String = StringUtil.decimalToBinary(count_data2);
                 String valueString = count1String + count2String;
@@ -557,8 +597,8 @@ class BluetoothUltTimateDataParse {
                 // print('倒计时变化=${remain_time}');
                 BluetoothManager().gameData.remainTime = remain_time;
                 // 得分态变化
-                int score_data1 = element[9];
-                int score_data2 = element[10];
+                int score_data1 = element[10];
+                int score_data2 = element[11];
                 String score1String = StringUtil.decimalToBinary(score_data1);
                 String score2String = StringUtil.decimalToBinary(score_data2);
                 String scoreValueString = score1String + score2String;

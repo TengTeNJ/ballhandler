@@ -34,6 +34,11 @@ class SettingView extends StatefulWidget {
 class _SettingViewState extends State<SettingView> {
   @override
   Widget build(BuildContext context) {
+    List<bool> _switchs = [
+      BluetoothManager().debugModel.debugSwitch,
+      BluetoothManager().debugModel.btSwitch,
+      BluetoothManager().debugModel.preSwitch
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -74,15 +79,16 @@ class _SettingViewState extends State<SettingView> {
                                   widget.showSwitchs![index]
                               ? Switch(
                                   value:
-                                      BluetoothManager().debugModel.debugSwitch,
+                                  _switchs[index-3],
                                   onChanged: (value) {
+                                    List<List<int>> _datas = [setDebug(value),setBT(value),setPre(value)];
                                     // 设置debug
                                     GameUtil gameUtil =
                                         GetIt.instance<GameUtil>();
                                     print('value = ${value}');
                                     BluetoothManager().writerDataToDevice(
                                         gameUtil.selectedDeviceModel,
-                                        setDebug(value));
+                                        _datas[index-3]);
                                   })
                               : (widget.showArrows[index]
                                   ? Image(

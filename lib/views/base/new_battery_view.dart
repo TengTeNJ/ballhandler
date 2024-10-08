@@ -67,9 +67,9 @@ class _NewBatteryViewState extends State<NewBatteryView> {
     int nameIndex = 0;
     if (!connected) {
       nameIndex = 0;
-    } else if (value <= 20) {
+    } else if (value <= 25) {
       nameIndex = 1;
-    } else if (value > 25 && value <= 70) {
+    } else if (value > 25 && value <= 75) {
       nameIndex = 2;
     } else {
       nameIndex = 3;

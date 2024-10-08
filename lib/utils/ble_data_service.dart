@@ -28,6 +28,7 @@ enum BLEDataType {
   onLine, // 在线状态
   queryDeviceParameter, // 查询管理参数
   setDeviceParameter, // 设置管理参数
+  preStatu
 }
 class ResponseCMDType {
   static const int deviceInfo = 0x20; // 设备信息，包含开机状态、电量等

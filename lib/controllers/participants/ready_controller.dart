@@ -12,6 +12,7 @@ import '../../utils/color.dart';
 import '../../utils/global.dart';
 import '../../utils/notification_bloc.dart';
 import '../../utils/system_device.dart';
+
 class ReadyController extends StatefulWidget {
   const ReadyController({super.key});
 
@@ -22,43 +23,65 @@ class ReadyController extends StatefulWidget {
 class _ReadyControllerState extends State<ReadyController> {
   late StreamSubscription subscription;
   String centerText = 'READY';
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    subscription = EventBus().stream.listen((event){
-      if(event == kGameReady){
+    subscription = EventBus().stream.listen((event) {
+      GameUtil gameUtil = GetIt.instance<GameUtil>();
+      if (event == kGameReady && gameUtil.modelId == 3) {
         timerPeriodRefreshText();
         playLocalAudio('pre.wav');
+      } else if (event == kGamePre) {
+        // P1 P2的准备阶段
+        setState(() {
+          String value = BluetoothManager().gameData.preValue.toString();
+          if (value == '0') {
+            value = 'GO';
+          }
+          centerText = value;
+        });
       }
     });
   }
+
   /*倒计时刷新*/
-  timerPeriodRefreshText(){
+  timerPeriodRefreshText() {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     int count = 3;
-    BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
-        cutDownAndGoShow(value:3));
+
+    if (gameUtil.modelId == 3) {
+      // p3模式才发送
+      BluetoothManager().writerDataToDevice(
+          gameUtil.selectedDeviceModel, cutDownAndGoShow(value: 3));
+    }
     // 开始游戏前 重置定时器
-    BluetoothManager().writerDataToDevice(
-        gameUtil.selectedDeviceModel, resetTimer());
+    BluetoothManager()
+        .writerDataToDevice(gameUtil.selectedDeviceModel, resetTimer());
     setState(() {
       centerText = count.toString();
     });
     Timer.periodic(Duration(seconds: 1), (timer) {
-     count --;
-     setState(() {
-       if(count == 0){
-         centerText = 'GO';
-         BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
-             cutDownAndGoShow(value:3,isGo: true));
-         timer.cancel();
-       }else{
-         BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
-             cutDownAndGoShow(value: count));
-         centerText = count.toString();
-       }
-     });
+      count--;
+      setState(() {
+        if (count == 0) {
+          centerText = 'GO';
+          if (gameUtil.modelId == 3) {
+            // p3模式才发送
+            BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel,
+                cutDownAndGoShow(value: 3, isGo: true));
+          }
+          timer.cancel();
+        } else {
+          if (gameUtil.modelId == 3) {
+            // p3模式才发送
+            BluetoothManager().writerDataToDevice(
+                gameUtil.selectedDeviceModel, cutDownAndGoShow(value: count));
+          }
+          centerText = count.toString();
+        }
+      });
     });
   }
 

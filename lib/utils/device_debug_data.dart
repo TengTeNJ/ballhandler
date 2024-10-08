@@ -77,6 +77,42 @@ List<int> queryDebugSwitch() {
   cs = StringUtil.binaryStringToDecimal(binaryString);
   return [start, source, destination, length, cmd, data, cs, end];
 }
+/*查询BT开关*/
+List<int> querybBTSwitch() {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
+  int length = 8;
+  int cmd = 0x0E;
+  int data = 0x08;
+  int cs = start + source + destination + length + cmd + data;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  return [start, source, destination, length, cmd, data, cs, end];
+}
+/*查询321预备开关*/
+List<int> querypRESwitch() {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
+  int length = 8;
+  int cmd = 0x0E;
+  int data = 0x09;
+  int cs = start + source + destination + length + cmd + data;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  return [start, source, destination, length, cmd, data, cs, end];
+}
 
 /*关机*/
 List<int> turnoff() {
@@ -220,6 +256,44 @@ List<int> setDebug(bool debug) {
   int length = 9;
   int cmd = 0x10;
   int data = 0x07;
+  int data2 = debug ? 0x01 : 0x00;
+  int cs = start + source + destination + length + cmd + data + data2;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  return [start, source, destination, length, cmd, data, data2, cs, end];
+}
+/*设置BT开关*/
+List<int> setBT(bool debug) {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
+  int length = 9;
+  int cmd = 0x10;
+  int data = 0x08;
+  int data2 = debug ? 0x01 : 0x00;
+  int cs = start + source + destination + length + cmd + data + data2;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  return [start, source, destination, length, cmd, data, data2, cs, end];
+}
+/*设置321Pre开关*/
+List<int> setPre(bool debug) {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  int destination = int.parse('00000001', radix: 2);
+  int length = 9;
+  int cmd = 0x10;
+  int data = 0x09;
   int data2 = debug ? 0x01 : 0x00;
   int cs = start + source + destination + length + cmd + data + data2;
   String binaryString = StringUtil.decimalToBinary(cs);
