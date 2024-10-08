@@ -41,9 +41,9 @@ class GameJoinCountModel{
 }
 
 class SceneModel {
-  String dictKey = '1';
-  String dictValue = 'Digital Stickhandling Trainer';
-  String dictRemark = 'Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials, and push your limits.';
+  String dictKey = '2';
+  String dictValue = 'Ultimater Dangler ';
+  String dictRemark = 'A groundbreaking training tool meticulously engineered to elevate your stickhandling, enhance your puck control, and secure your competitive advantage. This cutting-edge system sets a new standard in hockey training. With its innovative 270° design and smart technologies you\'re not just practicing with a static tool; you\'re immersing yourself in a holistic training environment.';
 }
 
 class Participants {

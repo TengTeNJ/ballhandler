@@ -7,7 +7,7 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 enum GameScene { five, erqiling,threee}
 
 class GameUtil {
-  GameScene gameScene = GameScene.five; // 默认为五节控球器
+  GameScene gameScene = GameScene.erqiling; // 默认为五节控球器
   bool fiveLowPower1 = false; // 第一次低电量提示
   bool fiveLowPower2 = false; // 第二次低电量提示
   bool uliLowPower1 = false; // 第一次低电量提示

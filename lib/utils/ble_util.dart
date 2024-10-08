@@ -183,6 +183,7 @@ class BleUtil {
       // 270
       int index =
           BluetoothManager().gameData.p3DeviceBatteryValues.indexOf(powerValue);
+      index = k270IndexAndProductMap[index] ?? index;
       if (powerValue == 25) {
         if(gameUtil.uliLowPower1){
           return;

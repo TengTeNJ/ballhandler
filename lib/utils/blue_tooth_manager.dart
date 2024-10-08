@@ -113,7 +113,7 @@ class BluetoothManager {
       );
       _bleListen = _scanStream!.listen((DiscoveredDevice event) {
         // 处理扫描到的蓝牙设备
-        print('event.name=${event.name}');
+        //print('event.name=${event.name}');
         //model.deviceName .contains(k270_Name)
         // kBLEDevice_Names.indexOf(event.name) != -1
         if (event.name.contains(k270_Name) ||

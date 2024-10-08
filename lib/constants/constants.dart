@@ -537,6 +537,14 @@ const Map<int, int> kP3DataAndProductIndexMap = {
   5:6
 }; // 270灯板的蓝牙数据索引和产品标签上的实际索引的映射表
 
+const Map<int, int> k270IndexAndProductMap = {
+  0:4,
+  1:1,
+  2:2,
+  3:3,
+  4:5,
+  5:6
+};
 const Map<String,int> kBoardIndexToRobotIndexMap = {
   '13':1,
   '12':2,

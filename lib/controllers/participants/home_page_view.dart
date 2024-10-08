@@ -93,7 +93,7 @@ class _HomePageViewState extends State<HomePageController> {
     });
 
     // 初始化pageView
-    _currentIndex = gameUtil.gameScene.index;
+    _currentIndex = 0;
     _pageController = PageController(initialPage: _currentIndex);
     _pageController.addListener(() {
       // 获取当前滑动页面的索引 (取整)
@@ -102,11 +102,11 @@ class _HomePageViewState extends State<HomePageController> {
         print('_currentIndex= ${_currentIndex} currentpage = ${currentpage}');
         setState(() {
           _currentIndex = currentpage;
-          gameUtil.gameScene = [
-            GameScene.five,
-            GameScene.erqiling,
-            GameScene.threee
-          ][_currentIndex];
+          // gameUtil.gameScene = [
+          //   GameScene.five,
+          //   GameScene.erqiling,
+          //   GameScene.threee
+          // ][_currentIndex];
         });
         // 延迟100毫秒进行数据请求，防止初始化本地用户信息未完成
         Future.delayed(Duration(milliseconds: 100), () {
@@ -122,7 +122,7 @@ class _HomePageViewState extends State<HomePageController> {
         if(event == kLoginSucess){
           // 设置埋点通用参数
          // EventTrackUtil.setDefaultParameters();
-          querySceneListdata(); // 防止初次安装用户未选择网络
+         // querySceneListdata(); // 防止初次安装用户未选择网络
           final _email =  UserProvider.of(context).email;
           if(ISEmpty(_email)){
             // 如果邮箱为空，则提示用户去绑定
@@ -152,7 +152,7 @@ class _HomePageViewState extends State<HomePageController> {
       getHomeData(context);
     });
     // 查询场景列表
-    querySceneListdata();
+ //   querySceneListdata();
   }
   Future<void> querySceneListdata() async {
     final _response = await Participants.querySceneListData();
