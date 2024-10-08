@@ -2,9 +2,12 @@ import 'dart:async';
 import 'package:code/utils/ble_robot_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/notification_bloc.dart';
+import 'package:code/utils/p3_robot_test_util.dart';
+import 'package:get_it/get_it.dart';
 
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
+import 'global.dart';
 
 List<int> bleNotAllData = []; // 不完整数据 被分包发送的蓝牙数据
 bool isNew = true;
@@ -101,12 +104,26 @@ class BluetoothRobotDataParse {
       // 到达指定灯位
       int index = element[2];
       BluetoothManager().robotIndex = index;
-      BluetoothManager().hitModel.addListener((){
-      // BluetoothManager().writerDataToDevice(BluetoothManager().robotModel, noticeRobotIndex( BluetoothManager().hitModel.value));
-      });
-      Future.delayed(Duration(milliseconds: 200),(){
-        BluetoothManager().hitModel.removeListener((){});
-      });
+      String? key = getKeyByValue(kBoardIndexToRobotIndexMap, index);
+      if(key != null && key.length == 2){
+        int boardIndex = int.parse(key!.substring(0,1));
+        int ledIndex = int.parse(key!.substring(1,2));
+        if(P3RobotTestUtil().randomModel.boardIndex == boardIndex && P3RobotTestUtil().randomModel.ledIndex == ledIndex){
+          // 一致的话 继续游戏
+          P3RobotTestUtil().randomControlLed();
+        }else{
+          // 不一致 发送warn数据
+          BluetoothManager().writerDataToDevice(BluetoothManager().robotModel, lightWarn());
+        }
+      }
     }
   }
+}
+String? getKeyByValue(Map<String, int> map, int value) {
+  for (var entry in map.entries) {
+    if (entry.value == value) {
+      return entry.key;
+    }
+  }
+  return null;
 }

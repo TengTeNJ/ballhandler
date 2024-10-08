@@ -100,17 +100,18 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                 BluetoothManager().writerDataToDevice(
                     gameUtil.selectedDeviceModel, scoreShow(0));
               }
-              const List<Widget> _controllers = [
-                P1Controller(),
-                P2Controller(),
-                P3Controller(),
-              ];
-              // 清空上次选择的组合
-              // gameUtil.selectdP3Indexs.clear();
-              NavigatorUtil.present(_controllers[index]);
-              // 模式切换锁定
-              BluetoothManager().writerDataToDevice(
-                  gameUtil.selectedDeviceModel, lockMode());
+              NavigatorUtil.push(Routes.robottest);
+              // const List<Widget> _controllers = [
+              //   P1Controller(),
+              //   P2Controller(),
+              //   P3Controller(),
+              // ];
+              // // 清空上次选择的组合
+              // // gameUtil.selectdP3Indexs.clear();
+              // NavigatorUtil.present(_controllers[index]);
+              // // 模式切换锁定
+              // BluetoothManager().writerDataToDevice(
+              //     gameUtil.selectedDeviceModel, lockMode());
             }
           }
         },

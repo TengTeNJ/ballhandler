@@ -21,6 +21,7 @@ import 'package:code/controllers/participants/p2_controller.dart';
 import 'package:code/controllers/participants/p3_controller.dart';
 import 'package:code/controllers/participants/p3_game_process_controller.dart';
 import 'package:code/controllers/participants/p3_record_select_controller.dart';
+import 'package:code/controllers/participants/p3_robot_test_controller.dart';
 import 'package:code/controllers/participants/ready_controller.dart';
 import 'package:code/controllers/participants/record_select_controller.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
@@ -77,6 +78,7 @@ class Routes {
   static const String webview= 'webView'; //
   static const String membership= 'membershipDetail'; //
   static const String gameready= 'gameReady'; // 游戏准备页面
+  static const String robottest= 'robotTest'; // 机器人测试页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -172,6 +174,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => MemberShipDetailController());
       case gameready:
         return MaterialPageRoute(builder: (_) => ReadyController());
+      case robottest:
+        return MaterialPageRoute(builder: (_) => P3RobotTestController());
     // EmailPageController
      // IntegralController MyAccountDataModel
       default:
