@@ -75,6 +75,18 @@ List<List<ClickTargetModel>> wideDatas() {
     fourData,
     fiveData,
     sixData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    fiveData,
+    sixData,
+    oneData,
+    twoData,
+    threeData,
+    fourData,
+    fiveData,
+    sixData,
   ];
   return datas;
 }

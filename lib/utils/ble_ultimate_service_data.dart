@@ -374,8 +374,10 @@ class BluetoothUltTimateDataParse {
           // print(
           //     '击中了${targetIndex}号控制板的${data1}号灯板,状态为${StringUtil.lightToStatu(binaryString)}');
           BluetoothManager().p3TriggerCallback(type: BLEDataType.targetIn);
-          // 响应击中
-          saveBoardHitMessgeId(model);
+         Future.delayed(Duration(milliseconds: 20),(){
+           // 响应击中
+           saveBoardHitMessgeId(model);
+         });
           break;
         case ResponseCMDType.allBoardStatu:
           // 初始时 所有灯板的状态 CENTRAL(中心主机)向APP同步所有灯板数据及状态。

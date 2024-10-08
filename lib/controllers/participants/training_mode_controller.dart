@@ -101,11 +101,15 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               BluetoothManager().writerDataToDevice(
                   gameUtil.selectedDeviceModel, selectMode(index));
               if (index == 2) {
+                // 设置游戏状态idle状态
+                BluetoothManager().gameData.utimateGameSatatu = 0;
                 // 270的P3自由控制模式
-                BluetoothManager().writerDataToDevice(
-                    gameUtil.selectedDeviceModel, p3ScreenShow());
-                BluetoothManager().writerDataToDevice(
-                    gameUtil.selectedDeviceModel, scoreShow(0));
+               Future.delayed(Duration(milliseconds: 500),(){
+                 BluetoothManager().writerDataToDevice(
+                     gameUtil.selectedDeviceModel, p3ScreenShow());
+                 BluetoothManager().writerDataToDevice(
+                     gameUtil.selectedDeviceModel, scoreShow(0));
+               });
               }
               const List<Widget> _controllers = [
                 P1Controller(),

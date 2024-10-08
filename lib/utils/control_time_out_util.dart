@@ -14,7 +14,7 @@ class ControlTimeOutUtil{
   //bool controling = false; // 是否正在控制 而且没有返回
   Timer? timeOutTimer;
   int controlBoard = -1; //  控制的灯板 超时重发的不记录
-  int _controlLedId = 0; // 控制等的索引 最大为255
+  int _controlLedId = 1; // 控制等的索引 最大为255
   static final ControlTimeOutUtil _instance = ControlTimeOutUtil._internal();
   factory ControlTimeOutUtil() {
     return _instance;
@@ -40,7 +40,7 @@ class ControlTimeOutUtil{
   }
   set controlLedId(int idValue){
     if(idValue > 255){
-      idValue = 0;
+      idValue = 1;
     }
     _controlLedId = idValue;
   }
@@ -50,7 +50,7 @@ class ControlTimeOutUtil{
       this.timeOutTimer!.cancel();
       this.timeOutTimer = null;
     }
-    this.timeOutTimer =  Timer(Duration(milliseconds: 200), (){
+    this.timeOutTimer =  Timer(Duration(milliseconds: 300), (){
       this.retryTimes ++;
      print('超时${retryTimes}次---${controlLedId}');
     });
