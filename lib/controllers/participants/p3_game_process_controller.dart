@@ -53,6 +53,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
   DateTime? endTime;
   bool backFlag = false; // 点击了返回按钮
   String timeLeftText = 'TIME LEFT';
+
   @override
   void initState() {
     // TODO: implement initState
@@ -195,12 +196,12 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           model.endTime = StringUtil.dateToGameTimeString();
           int timeBetween = StringUtil.differenceInSeconds(startTime, endTime);
           model.time = timeBetween.toString();
-          if(gameUtil.modelId == 3){
+          if (gameUtil.modelId == 3) {
             // p3模式减去每个组合之间的时间间隔
             model.time = ((int.parse(model.time))).toString();
-          }else if(gameUtil.modelId == 1){
+          } else if (gameUtil.modelId == 1) {
             model.time = '90';
-          }else if(gameUtil.modelId == 2){
+          } else if (gameUtil.modelId == 2) {
             model.time = '120';
           }
           if (BluetoothManager().gameData.score == 0) {
@@ -273,7 +274,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         if (mounted) {
           setState(() {});
         }
-      }else if(event == kCurrentDeviceDisconnectedUli){
+      } else if (event == kCurrentDeviceDisconnectedUli) {
         // 蓝牙断开连接
         Figure8GameUtil().stopGame();
         P3GameManager().stopGame();
@@ -468,8 +469,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                         // top: Constants.screenHeight(context) - 45,
                         child: Container(
                           // color: Colors.red,
-                          margin: EdgeInsets.only(left: 12, right: 12
-                              ),
+                          margin: EdgeInsets.only(left: 12, right: 12),
                           child: GameProcessStatuView(),
                         ),
                       ),

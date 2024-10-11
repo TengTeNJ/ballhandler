@@ -110,7 +110,8 @@ class _RankingControllerState extends State<RankingController> {
               // 跳转到数据分析页面
               if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
                 // 未订阅 则限制进入
-                TTDialog.subscribeDialog(context);
+                NavigatorUtil.push(Routes.subscribeintroduce);
+                // TTDialog.subscribeDialog(context);
                 return;
               }
               NavigatorUtil.push(Routes.mystats);

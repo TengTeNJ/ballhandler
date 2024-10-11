@@ -1,7 +1,9 @@
 import 'package:code/utils/dialog.dart';
 import 'package:flutter/material.dart';
 
+import '../../route/route.dart';
 import '../../utils/color.dart';
+import '../../utils/navigator_util.dart';
 class MemberShipScbView extends StatefulWidget {
   const MemberShipScbView({super.key});
 
@@ -14,7 +16,8 @@ class _MemberShipScbViewState extends State<MemberShipScbView> {
   Widget build(BuildContext context) {
     return  GestureDetector(
       onTap: (){
-        TTDialog.subscribeDialog(context);
+        NavigatorUtil.push(Routes.subscribeintroduce);
+        //TTDialog.subscribeDialog(context);
       },
       behavior: HitTestBehavior.opaque,
       child: Column(

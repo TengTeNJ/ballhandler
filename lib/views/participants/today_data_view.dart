@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../models/global/user_info.dart';
+import '../../route/route.dart';
 import '../../utils/dialog.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
@@ -41,7 +42,8 @@ class _TodayDataViewState extends State<TodayDataView> {
         }
         if (UserProvider.of(context).subscribeModel.subscribeStatus != 1) {
           // 未订阅 则限制进入
-          TTDialog.subscribeDialog(context);
+          NavigatorUtil.push(Routes.subscribeintroduce);
+         // TTDialog.subscribeDialog(context);
           return;
         }
         NavigatorUtil.push('videoPlay',

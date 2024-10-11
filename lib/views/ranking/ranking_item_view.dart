@@ -6,6 +6,7 @@ import 'package:code/widgets/base/base_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/global/user_info.dart';
+import '../../route/route.dart';
 import '../../utils/dialog.dart';
 import '../../utils/navigator_util.dart';
 
@@ -30,7 +31,9 @@ class _RankingItemViewState extends State<RankingItemView> {
         }
         if (UserProvider.of(context).subscribeModel.subscribeStatus != 1) {
           // 未订阅 则限制进入
-          TTDialog.subscribeDialog(context);
+         // NavigatorUtil.push(Route)
+          NavigatorUtil.push(Routes.subscribeintroduce);
+          //TTDialog.subscribeDialog(context);
           return;
         }
         GameOverModel model = GameOverModel();

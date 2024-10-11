@@ -35,6 +35,8 @@ import 'package:code/controllers/profile/membership_detail_controller.dart';
 import 'package:code/controllers/profile/setting_controller.dart';
 import 'package:code/controllers/profile/sub_setting_controller.dart';
 import 'package:code/controllers/ranking/my_stats_controller.dart';
+import 'package:code/controllers/subscribe/subscribe_controller.dart';
+import 'package:code/controllers/subscribe/ult_subscribe_home_controller.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/profile.dart';
@@ -79,6 +81,8 @@ class Routes {
   static const String membership= 'membershipDetail'; //
   static const String gameready= 'gameReady'; // 游戏准备页面
   static const String devicedebug= 'deviceDebug'; // 设备参数调节页面
+  static const String subscribe= 'subscribe'; // 新订阅页面
+  static const String subscribeintroduce= 'subscribeIntroduce'; // 订阅介绍页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -169,13 +173,21 @@ class Routes {
       case launch3:
         return MaterialPageRoute(builder: (_) => LaunchThreeController());
       case webview:
-        return MaterialPageRoute(builder: (_) => TTWebViewController());
+        String _webUrl = '';
+        if(settings.arguments != null){
+          _webUrl = settings.arguments as String;
+        }
+        return MaterialPageRoute(builder: (_) => _webUrl.isEmpty ?  TTWebViewController() : TTWebViewController(webUrl: _webUrl,));
       case membership:
         return MaterialPageRoute(builder: (_) => MemberShipDetailController());
       case gameready:
         return MaterialPageRoute(builder: (_) => ReadyController());
       case devicedebug:
         return MaterialPageRoute(builder: (_) => DeviceDebugController());
+      case subscribe:
+        return MaterialPageRoute(builder: (_) => SubscribeController());
+      case subscribeintroduce:
+        return MaterialPageRoute(builder: (_) => UltSubscribeHomeController());
     // EmailPageController
      // IntegralController MyAccountDataModel
       default:

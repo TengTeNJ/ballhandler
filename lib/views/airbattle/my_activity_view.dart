@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/game/game_over_model.dart';
 import '../../models/global/user_info.dart';
+import '../../route/route.dart';
 import '../../utils/dialog.dart';
 import '../../utils/navigator_util.dart';
 class MyActivityDataView extends StatefulWidget {
@@ -39,7 +40,8 @@ class _MyActivityDataViewState extends State<MyActivityDataView> {
                     onTap: (){
                       if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
                         // 未订阅 则限制进入
-                        TTDialog.subscribeDialog(context);
+                        NavigatorUtil.push(Routes.subscribeintroduce);
+                        //TTDialog.subscribeDialog(context);
                         return;
                       }
                       GameOverModel model = GameOverModel();

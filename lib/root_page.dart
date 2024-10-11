@@ -5,6 +5,7 @@ import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
 import 'package:code/controllers/ranking/ranking_controller.dart';
+import 'package:code/models/global/user_info.dart';
 import 'package:code/models/http/subscribe_model.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/account.dart';
@@ -64,11 +65,23 @@ class _RootPageControllerState extends State<RootPageController> {
       });
 
     refreshTokenAndDeleteLocanVideo();
-    subscription = EventBus().stream.listen((event) {
+    subscription = EventBus().stream.listen((event) async{
       if (event == kLoginSucess) {
+        await querySubScribeInfo();
         loadLaunchPage();
       }
     });
+  }
+
+  /*查询订阅信息 */
+  Future<void> querySubScribeInfo() async{
+    final _response = await Account.querySubscribeInfo();
+    if(_response.success){
+      SubscribeModel? model = _response.data;
+      if(model != null){
+        UserProvider.of(context).subscribeModel = model;
+      }
+    }
   }
 
   /*处理内购*/
@@ -87,13 +100,14 @@ class _RootPageControllerState extends State<RootPageController> {
     final _token = await NSUserDefault.getValue(kAccessToken);
     if (_token != null && _token.length > 0) {
       String? _launchFlag = await NSUserDefault.getValue<String>(kShowLaunch);
-      if (_launchFlag != null && _launchFlag == 'done') {
-        // 已经加载过启动页 不需要重新加载
+      if ((_launchFlag != null &&
+          _launchFlag == 'done') || UserProvider.of(context).subscribeModel.subscribeStatus == 1) {
+        // 已经加载过启动页  而且是订阅用户的话 则不需要重新加载
       } else {
         // 订阅启动页入口暂时屏蔽
-          Future.delayed(Duration(milliseconds: 500), () {
-            NavigatorUtil.push(Routes.launch1);
-          });
+        Future.delayed(Duration(milliseconds: 500), () {
+          NavigatorUtil.push(Routes.subscribeintroduce);
+        });
       }
     }
   }

@@ -94,7 +94,7 @@ class Account {
     Map<String, dynamic> _data = {
       "account": account,
     };
-    final response = await HttpUtil.get('/api/login/checkEmail', _data);
+    final response = await HttpUtil.get('/api/login/checkEmail', _data,showLoading: true);
     CheckResultModel model = CheckResultModel();
     Map _map = response.data['data'];
     if (_map != null) {

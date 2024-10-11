@@ -72,7 +72,7 @@ class _HomePageViewState extends State<HomePageController> {
         }
       });
       // 请求订阅数据
-      querySubScribeInfo();
+     querySubScribeInfo();
     } else {
       // 未登录状态
       haslogin = false;
@@ -142,7 +142,8 @@ class _HomePageViewState extends State<HomePageController> {
         }
       }else if(event == kPopSubscribeDialog){
         // 订阅弹窗
-        TTDialog.subscribeDialog(context);
+        NavigatorUtil.push(Routes.subscribeintroduce);
+       // TTDialog.subscribeDialog(context);
         // 防止首次调用poproroot后把设置邮箱的弹窗dismiss
         final _email =  UserProvider.of(context).email;
         if(ISEmpty(_email)){
@@ -165,6 +166,7 @@ class _HomePageViewState extends State<HomePageController> {
     // 查询场景列表
     querySceneListdata();
   }
+  /*查询场景列表数据*/
   Future<void> querySceneListdata() async {
     final _response = await Participants.querySceneListData();
     if (_response.success && _response.data != null) {
@@ -221,7 +223,8 @@ class _HomePageViewState extends State<HomePageController> {
               child: UserInfoView(
                 hasLogin: haslogin,
                 subscribeTap: (){
-                  TTDialog.subscribeDialog(context);
+                  NavigatorUtil.push(Routes.subscribeintroduce);
+                  //TTDialog.subscribeDialog(context);
                 },
               ),
             ),

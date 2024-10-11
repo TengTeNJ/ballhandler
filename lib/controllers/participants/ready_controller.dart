@@ -38,6 +38,7 @@ class _ReadyControllerState extends State<ReadyController> {
         setState(() {
           String value = BluetoothManager().gameData.preValue.toString();
           if (value == '0') {
+            playLocalAudio('start.mp3');
             value = 'GO';
           }
           centerText = value;

@@ -5,7 +5,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TTWebViewController extends StatefulWidget {
-  const TTWebViewController({super.key});
+  String? webUrl;
+   TTWebViewController({this.webUrl});
 
   @override
   State<TTWebViewController> createState() => _TTWebViewControllerState();
@@ -44,7 +45,7 @@ class _TTWebViewControllerState extends State<TTWebViewController> {
         ),
       )
       ..loadRequest(Uri.parse(
-          'https://potent-hockey.s3.eu-north-1.amazonaws.com/h5/service.html'));
+          widget.webUrl ??  'https://potent-hockey.s3.eu-north-1.amazonaws.com/h5/service.html'));
   }
 
   @override

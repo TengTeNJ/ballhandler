@@ -146,11 +146,11 @@ class Constants {
   }
 
   static Text mediumWhiteTextWidget(String text, double fontSize,
-      {int maxLines = 1,
+      {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
-      maxLines: maxLines,
+      maxLines: maxLines ?? null,
       textAlign: textAlign,
       text,
       style: TextStyle(

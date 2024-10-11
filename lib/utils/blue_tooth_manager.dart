@@ -118,9 +118,10 @@ class BluetoothManager {
       );
       _bleListen = _scanStream!.listen((DiscoveredDevice event) {
         // 处理扫描到的蓝牙设备
-        // print('event.name=${event.name}');
-        //model.deviceName .contains(k270_Name)
-        // kBLEDevice_Names.indexOf(event.name) != -1
+        if(event.name.isEmpty){
+          return;
+        }
+        print('event.name=${event.name}====${event.name.length}');
         if (event.name.contains(k270_Name) ||
             kBLEDevice_Names.indexOf(event.name) != -1) {
           // 如果设备列表数组中无，则添加
@@ -145,11 +146,20 @@ class BluetoothManager {
     }
     // 连接弹窗
     EasyLoading.show();
+    // 防止长时间连不上导致loading框下不去
+    Future.delayed(Duration(seconds: 10),(){
+      EasyLoading.dismiss();
+    });
     StreamSubscription<ConnectionStateUpdate> stream = _ble
         .connectToDevice(
             id: model.device!.id, connectionTimeout: Duration(seconds: 5))
         .listen((ConnectionStateUpdate connectionStateUpdate) {
       print('connectionStateUpdate = ${connectionStateUpdate.connectionState}');
+      if(connectionStateUpdate.failure != null){
+        print('connectionStateUpdate.failure = ${connectionStateUpdate.failure!.message}');
+        print('connectionStateUpdate.failure = ${connectionStateUpdate.failure!.code}');
+
+      }
       if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.connected) {
         if(Platform.isAndroid){
@@ -219,7 +229,12 @@ class BluetoothManager {
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
         // 蓝牙失去连接弹窗
-        TTDialog.blueToothDeviceDisconnectedDialog(NavigatorUtil.utilContext);
+        if(connectionStateUpdate.failure == null || connectionStateUpdate.failure!.message.contains('Disconnected')){
+          // 说明是正常断开连接
+          TTDialog.blueToothDeviceDisconnectedDialog(NavigatorUtil.utilContext);
+        }else{
+          EasyLoading.showError('fail');
+        }
         if (conectedDeviceCount.value > 0) {
           conectedDeviceCount.value--;
           if (conectedDeviceCount.value == 0) {
