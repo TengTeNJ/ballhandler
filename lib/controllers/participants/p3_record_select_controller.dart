@@ -1,10 +1,11 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:code/models/airbattle/270_record_view.dart';
 import 'package:code/route/route.dart';
 import 'package:code/utils/system_device.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import '../../constants/constants.dart';
 import '../../utils/ble_ultimate_data.dart';
 import '../../utils/blue_tooth_manager.dart';
@@ -14,6 +15,7 @@ import '../../utils/navigator_util.dart';
 import '../../utils/toast.dart';
 import '../../views/participants/record_select_view.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
+
 class P3RecordSelectController extends StatefulWidget {
   CameraDescription camera;
 
@@ -24,37 +26,20 @@ class P3RecordSelectController extends StatefulWidget {
       _P3RecordSelectControllerState();
 }
 
-class _P3RecordSelectControllerState extends State<P3RecordSelectController> with WidgetsBindingObserver{
+class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
   bool _recordSelect = false;
-  bool _lockScreen = false;
   bool _isPortrait = true;
+  bool _lockPortrait = false; // 锁定横屏是否打开
+  Timer? timer;
+  late StreamSubscription subscription;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Stream<NativeDeviceOrientation>  stream = NativeDeviceOrientationCommunicator().onOrientationChanged(
-      useSensor: true,
-    );
-    stream.listen((value){
-print('value=${value}');
-    });
-    WidgetsBinding.instance.addObserver(this);
-    // 锁定屏幕为横屏
-    Future.delayed(Duration(milliseconds: 200), () async {
-     // await SystemUtil.lockScreenHorizontalDirection();
-      _controller = CameraController(
-        widget.camera,
-        ResolutionPreset.high,
-      );
-      _initializeControllerFuture = _controller.initialize();
-      _lockScreen = true;
-      setState(() {
-
-      });
-    });
+    deviceOrientationListen();
     _controller = CameraController(
       widget.camera,
       ResolutionPreset.high,
@@ -62,31 +47,60 @@ print('value=${value}');
     _initializeControllerFuture = _controller.initialize();
   }
 
-  @override
-  void didChangeMetrics() {
-    // TODO: implement didChangeMetrics
-    super.didChangeMetrics();
-    final size = MediaQuery.of(context).size;
-    print('size.height = ${size.height} size.width = ${size.width}');
-
-    setState(() {
-      _isPortrait = size.height < size.width;
+  /*设备方向监听*/
+  deviceOrientationListen() async {
+    if (Platform.isAndroid) {
+      await SystemUtil.lockScreenHorizontalDirection();
+      return;
+    }
+    await SystemUtil.resetScreenDirection();
+    Stream<NativeDeviceOrientation> stream =
+        NativeDeviceOrientationCommunicator().onOrientationChanged(
+      useSensor: true,
+    );
+    subscription = stream.listen((value) {
+      timer?.cancel();
+      timer = Timer(Duration(milliseconds: 1000), () async{
+        print('NativeDeviceOrientationCommunicator() = ${await NativeDeviceOrientationCommunicator().orientation(useSensor: true)}');
+        print('value = ${value}  height = ${Constants.screenHeight(context)} width = ${Constants.screenWidth(context)}');
+        if (value == NativeDeviceOrientation.landscapeLeft ||
+            value == NativeDeviceOrientation.landscapeRight) {
+          // 横屏
+          _isPortrait = false;
+          if (Constants.screenWidth(context) <
+              Constants.screenHeight(context)) {
+            _lockPortrait = true;
+          } else {
+            _lockPortrait = false;
+          }
+        } else {
+          // 竖屏
+          _isPortrait = true;
+        }
+        if (mounted) {
+          setState(() {});
+        }
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isPortrait
-        ? VerticalScreenWidget(context)
-        : HorizontalScreenWidget(context);
-    // return OrientationBuilder(
-    //   builder: (context, orientation) {
-    //     print('++++orientation=${orientation}');
-    //     return orientation == Orientation.portrait
-    //         ? VerticalScreenWidget(context)
-    //         : HorizontalScreenWidget(context);
-    //   },
-    // );
+    if((Platform.isAndroid) ){
+      return HorizontalScreenWidget(context);
+    }else{
+      return OrientationBuilder(
+        builder: (context, orientation) {
+          return _isPortrait
+              ? HorizontalScreenWhenLockPortraitWidget(context)
+              : (_lockPortrait
+              ? HorizontalScreenWhenLockPortraitWidget(context)
+              : HorizontalScreenWidget(context));
+        },
+      );
+    }
+
+
   }
 
   //  屏幕竖直方向
@@ -104,12 +118,11 @@ print('value=${value}');
                         Opacity(
                           opacity: 0.4,
                           child: SizedBox(
-                            width: Constants.screenWidth(context),
-                            height: Constants.screenHeight(context),
-                            child: _lockScreen ? CameraPreview(
-                              _controller,
-                            ) : Container(),
-                          ),
+                              width: Constants.screenWidth(context),
+                              height: Constants.screenHeight(context),
+                              child: CameraPreview(
+                                _controller,
+                              )),
                         ),
                         Positioned(
                             left: 0,
@@ -131,11 +144,11 @@ print('value=${value}');
                                         decoration: BoxDecoration(
                                             color: hexStringToColor('#65657D'),
                                             borderRadius:
-                                            BorderRadius.circular(5)),
+                                                BorderRadius.circular(5)),
                                         child: Center(
                                           child:
-                                          Constants.regularWhiteTextWidget(
-                                              'Back', 14),
+                                              Constants.regularWhiteTextWidget(
+                                                  'Back', 14),
                                         ),
                                       ),
                                     ),
@@ -149,16 +162,16 @@ print('value=${value}');
                                           color: _recordSelect
                                               ? hexStringToColor('#204DD1')
                                               : hexStringToColor(
-                                            '#65657D',
-                                          ),
+                                                  '#65657D',
+                                                ),
                                           borderRadius:
-                                          BorderRadius.circular(5)),
+                                              BorderRadius.circular(5)),
                                       child: ErQilingRecordSelectView(
                                         onTap: (value) {
                                           setState(() {
                                             _recordSelect = value;
                                             GameUtil gameUtil =
-                                            GetIt.instance<GameUtil>();
+                                                GetIt.instance<GameUtil>();
                                             gameUtil.selectRecord = value;
                                           });
                                         },
@@ -168,25 +181,20 @@ print('value=${value}');
                                 ))),
                         Positioned(
                           top: (Constants.screenHeight(context) - 300) / 2.0,
-                          left: (Constants.screenWidth(context) - 300 / _controller.value.aspectRatio)/ 2,
+                          left: (Constants.screenWidth(context) -
+                                  300 / _controller.value.aspectRatio) /
+                              2,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(30),
                             child: Container(
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(30),
-                                border: Border.all(
-                                    color: Color.fromRGBO(39, 182, 245, 1.0),
-                                    width: 0.5),
-                              ),
-                              width:  300 / _controller.value.aspectRatio,
+                              width: 300 / _controller.value.aspectRatio,
                               height: 300,
                               child: SizedBox(
-                                width: 300  /  _controller.value.aspectRatio,
-                                height: 300,
-                                child: _lockScreen ? CameraPreview(
-                                  _controller,
-                                ) : Container(),
-                              ),
+                                  width: 300 / _controller.value.aspectRatio,
+                                  height: 300,
+                                  child: CameraPreview(
+                                    _controller,
+                                  )),
                             ),
                           ),
                         ),
@@ -211,7 +219,7 @@ print('value=${value}');
                               _controller.dispose();
                               await SystemUtil.lockScreenHorizontalDirection();
                               List<CameraDescription> cameras =
-                              await availableCameras();
+                                  await availableCameras();
                               NavigatorUtil.popAndThenPush(
                                 Routes.process270,
                                 arguments: cameras[cameras.length > 1 ? 1 : 0],
@@ -233,7 +241,7 @@ print('value=${value}');
                               ),
                               child: Center(
                                 child:
-                                Constants.boldBlackTextWidget('START', 16),
+                                    Constants.boldBlackTextWidget('START', 16),
                               ),
                             ),
                           ),
@@ -248,7 +256,6 @@ print('value=${value}');
               }),
           onWillPop: () async {
             SystemUtil.lockScreenDirection();
-            print('监测到安卓按钮的返回');
             return true;
           }),
     );
@@ -269,12 +276,11 @@ print('value=${value}');
                         Opacity(
                           opacity: 0.4,
                           child: SizedBox(
-                            width: Constants.screenWidth(context),
-                            height: Constants.screenHeight(context),
-                            child: _lockScreen ? CameraPreview(
-                              _controller,
-                            ) : Container(),
-                          ),
+                              width: Constants.screenWidth(context),
+                              height: Constants.screenHeight(context),
+                              child: CameraPreview(
+                                _controller,
+                              )),
                         ),
                         Positioned(
                             left: 0,
@@ -296,11 +302,11 @@ print('value=${value}');
                                         decoration: BoxDecoration(
                                             color: hexStringToColor('#65657D'),
                                             borderRadius:
-                                            BorderRadius.circular(5)),
+                                                BorderRadius.circular(5)),
                                         child: Center(
                                           child:
-                                          Constants.regularWhiteTextWidget(
-                                              'Back', 14),
+                                              Constants.regularWhiteTextWidget(
+                                                  'Back', 14),
                                         ),
                                       ),
                                     ),
@@ -314,16 +320,16 @@ print('value=${value}');
                                           color: _recordSelect
                                               ? hexStringToColor('#204DD1')
                                               : hexStringToColor(
-                                            '#65657D',
-                                          ),
+                                                  '#65657D',
+                                                ),
                                           borderRadius:
-                                          BorderRadius.circular(5)),
+                                              BorderRadius.circular(5)),
                                       child: ErQilingRecordSelectView(
                                         onTap: (value) {
                                           setState(() {
                                             _recordSelect = value;
                                             GameUtil gameUtil =
-                                            GetIt.instance<GameUtil>();
+                                                GetIt.instance<GameUtil>();
                                             gameUtil.selectRecord = value;
                                           });
                                         },
@@ -337,21 +343,15 @@ print('value=${value}');
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(30),
                             child: Container(
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(30),
-                                border: Border.all(
-                                    color: Color.fromRGBO(39, 182, 245, 1.0),
-                                    width: 0.5),
-                              ),
                               width: Constants.screenWidth(context) * 0.65,
                               height: Constants.screenHeight(context) * 0.72,
                               child: SizedBox(
-                                width: Constants.screenWidth(context) * 0.65,
-                                height: Constants.screenHeight(context) * 0.72,
-                                child: _lockScreen ? CameraPreview(
-                                  _controller,
-                                ) : Container(),
-                              ),
+                                  width: Constants.screenWidth(context) * 0.65,
+                                  height:
+                                      Constants.screenHeight(context) * 0.72,
+                                  child: CameraPreview(
+                                    _controller,
+                                  )),
                             ),
                           ),
                         ),
@@ -376,7 +376,7 @@ print('value=${value}');
                               _controller.dispose();
                               await SystemUtil.lockScreenHorizontalDirection();
                               List<CameraDescription> cameras =
-                              await availableCameras();
+                                  await availableCameras();
                               NavigatorUtil.popAndThenPush(
                                 Routes.process270,
                                 arguments: cameras[cameras.length > 1 ? 1 : 0],
@@ -398,7 +398,176 @@ print('value=${value}');
                               ),
                               child: Center(
                                 child:
-                                Constants.boldBlackTextWidget('START', 16),
+                                    Constants.boldBlackTextWidget('START', 16),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+                ;
+              }),
+          onWillPop: () async {
+            SystemUtil.lockScreenDirection();
+            print('监测到安卓按钮的返回');
+            return true;
+          }),
+    );
+  }
+
+  // 屏幕水平方向 锁定了竖屏但是
+  Widget HorizontalScreenWhenLockPortraitWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: hexStringToColor('#292936'),
+      body: WillPopScope(
+          child: FutureBuilder(
+              future: _initializeControllerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return SingleChildScrollView(
+                    child: Stack(
+                      children: [
+                        Opacity(
+                          opacity: 0.4,
+                          child: SizedBox(
+                              width: Constants.screenWidth(context),
+                              height: Constants.screenHeight(context),
+                              child: CameraPreview(
+                                _controller,
+                              )),
+                        ),
+                        Positioned(
+                            left: 0,
+                            right: 0,
+                            top: 50,
+                            child: Container(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Transform(
+                                  child: Container(
+                                    height: 58,
+                                    width: 77,
+                                    decoration: BoxDecoration(
+                                        color: _recordSelect
+                                            ? hexStringToColor('#204DD1')
+                                            : hexStringToColor(
+                                                '#65657D',
+                                              ),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    child: ErQilingRecordSelectView(
+                                      onTap: (value) {
+                                        setState(() {
+                                          _recordSelect = value;
+                                          GameUtil gameUtil =
+                                              GetIt.instance<GameUtil>();
+                                          gameUtil.selectRecord = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  transform: Matrix4.rotationZ(0.5 * 3.1416),
+                                  // 0.5 * 2pi 弧度
+                                  alignment: Alignment.center,
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    SystemUtil.lockScreenDirection();
+                                    NavigatorUtil.pop();
+                                  },
+                                  child: Transform(
+                                    transform: Matrix4.rotationZ(
+                                        0.5 * 3.1416), // 0.5 * 2pi 弧度
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      width: 77,
+                                      height: 58,
+                                      decoration: BoxDecoration(
+                                          color: hexStringToColor('#65657D'),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: Center(
+                                        child: Constants.regularWhiteTextWidget(
+                                            'Back', 14),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ))),
+                        Positioned(
+                          top: 150,
+                          left: 54,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30),
+                            child: Container(
+                              width: Constants.screenWidth(context) - 108,
+                              height: Constants.screenHeight(context) - 300,
+                              child: SizedBox(
+                                  width: Constants.screenWidth(context) - 108,
+                                  height: Constants.screenHeight(context) - 300,
+                                  child: CameraPreview(
+                                    _controller,
+                                  )),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: (Constants.screenWidth(context) - 90) / 2.0,
+                          bottom: 22,
+                          child: GestureDetector(
+                            onTap: () async {
+                              // 确认网络构建完成 才可以进行游戏
+                              if (BluetoothManager().gameData.masterStatu !=
+                                  2) {
+                                TTToast.showErrorInfo(
+                                    'The device is not ready yet, please check the device');
+                                GameUtil gameUtil = GetIt.instance<GameUtil>();
+                                // 查询主机状态
+                                BluetoothManager().writerDataToDevice(
+                                    gameUtil.selectedDeviceModel,
+                                    queryMasterSystemStatu());
+                                return;
+                              }
+                              _controller.dispose();
+                              await SystemUtil.lockScreenHorizontalDirection();
+                              List<CameraDescription> cameras =
+                                  await availableCameras();
+                              NavigatorUtil.popAndThenPush(
+                                Routes.process270,
+                                arguments: cameras[cameras.length > 1 ? 1 : 0],
+                              );
+                            },
+                            child: Transform(
+                              transform: Matrix4.rotationZ(0.5 * 3.1416),
+                              // 0.5 * 2pi 弧度
+                              alignment: Alignment.center,
+                              // 确保旋转中心是Widget的中心
+                              child: Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color.fromRGBO(182, 246, 29, 1.0),
+                                      Color.fromRGBO(219, 219, 20, 1.0)
+                                    ],
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Constants.boldBlackTextWidget(
+                                      'START', 16),
+                                ),
                               ),
                             ),
                           ),
@@ -423,8 +592,9 @@ print('value=${value}');
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
     _controller.dispose();
+    subscription.cancel();
+    timer?.cancel();
   }
 }
 

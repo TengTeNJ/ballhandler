@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: Routes.onGenerateRoute,
       home: RootPageController(),
       builder: EasyLoading.init(),
+      useInheritedMediaQuery: true,
     );
   }
 }
