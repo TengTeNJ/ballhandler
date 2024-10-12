@@ -9,6 +9,7 @@ import '../../utils/blue_tooth_manager.dart';
 import '../../utils/color.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
+import '../../utils/system_device.dart';
 import '../../utils/toast.dart';
 
 class P1Controller extends StatelessWidget {
@@ -210,6 +211,8 @@ class P1Controller extends StatelessWidget {
                   onTap: () async{
                     TTToast.showLoading();
                     // NavigatorUtil.pop();
+                   // await SystemUtil.lockScreenHorizontalDirection();
+                    await SystemUtil.resetScreenDirection();
                     List<CameraDescription> cameras = await availableCameras();
                     NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                     TTToast.hideLoading();

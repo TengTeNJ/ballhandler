@@ -121,7 +121,7 @@ class BluetoothManager {
         if(event.name.isEmpty){
           return;
         }
-        print('event.name=${event.name}====${event.name.length}');
+       // print('event.name=${event.name}====${event.name.length}');
         if (event.name.contains(k270_Name) ||
             kBLEDevice_Names.indexOf(event.name) != -1) {
           // 如果设备列表数组中无，则添加
