@@ -12,6 +12,7 @@ import '../../utils/color.dart';
 import '../../utils/global.dart';
 import '../../utils/notification_bloc.dart';
 import '../../utils/system_device.dart';
+import '../../widgets/account/cancel_button.dart';
 
 class ReadyController extends StatefulWidget {
   const ReadyController({super.key});
@@ -23,6 +24,7 @@ class ReadyController extends StatefulWidget {
 class _ReadyControllerState extends State<ReadyController> {
   late StreamSubscription subscription;
   String centerText = 'READY';
+  bool lock = false;
 
   @override
   void initState() {
@@ -31,6 +33,7 @@ class _ReadyControllerState extends State<ReadyController> {
     subscription = EventBus().stream.listen((event) {
       GameUtil gameUtil = GetIt.instance<GameUtil>();
       if (event == kGameReady && gameUtil.modelId == 3) {
+        lock = true;
         timerPeriodRefreshText();
         playLocalAudio('pre.wav');
       } else if (event == kGamePre) {
@@ -38,6 +41,7 @@ class _ReadyControllerState extends State<ReadyController> {
         setState(() {
           String value = BluetoothManager().gameData.preValue.toString();
           if (value == '0') {
+            lock = true;
             playLocalAudio('start.mp3');
             value = 'GO';
           }
@@ -90,8 +94,24 @@ class _ReadyControllerState extends State<ReadyController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Constants.baseControllerColor,
-      body: Center(
-        child: Constants.boldWhiteTextWidget(centerText, 75),
+      body:
+      Stack(
+        children: [
+          Positioned(
+            child: CancelButton(
+              close: (){
+                if(!lock){
+                  EventBus().sendEvent(kReadyBack);
+                }
+              },
+            ),
+            right: 32,
+            top: 32,
+          ),
+          Center(
+            child: Constants.boldWhiteTextWidget(centerText, 75),
+          )
+        ],
       ),
     );
   }
@@ -101,5 +121,6 @@ class _ReadyControllerState extends State<ReadyController> {
     // TODO: implement dispose
     super.dispose();
     subscription.cancel();
+    lock = false;
   }
 }

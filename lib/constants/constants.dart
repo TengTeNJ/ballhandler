@@ -375,6 +375,7 @@ const kInitiativeDisconnectFive = 'initiative_disconnect_five'; // 主动断开
 const kCurrentDeviceDisconnectedUli = 'current_device_disconnected_uli'; // 当前游戏设备断开连接
 const kCurrentDeviceDisconnectedFive = 'current_device_disconnected_five'; // 当前游戏设备断开连接
 const kGamePre = 'game_pre'; // 游戏pre阶段的屏幕显示 仅针对p1和p2
+const kReadyBack = 'game_ready_page_back'; // 点击游戏ready页面右上角的返回按钮
 
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {

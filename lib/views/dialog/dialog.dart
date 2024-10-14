@@ -2460,3 +2460,162 @@ class LowPowerTipDialog extends StatelessWidget {
     );
   }
 }
+
+
+/*蓝牙mac地址*/
+class BltMacDialog extends StatefulWidget {
+  Function? confirm;
+
+  BltMacDialog({this.confirm});
+
+  @override
+  State<BltMacDialog> createState() => _BltMacDialogState();
+}
+class _BltMacDialogState extends State<BltMacDialog> {
+  TextEditingController _usernameController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: hexStringToColor('#3E3E55'),
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      title: Constants.boldWhiteTextWidget('设置蓝牙Mac地址', 20,
+          textAlign: TextAlign.left),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            keyboardType: TextInputType.text,
+            maxLength: 16,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            controller: _usernameController,
+            decoration: InputDecoration(
+                labelText: '只能为数字或者字母，字母只能为[a-f]',
+                labelStyle: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            NavigatorUtil.pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseGreyStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Cancel', 16),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            String username = _usernameController.text;
+            if (widget.confirm != null) {
+              widget.confirm!(username);
+            }
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Confirm', 16),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    super.dispose();
+  }
+}
+
+/*蓝牙名称*/
+class BltNameDialog extends StatefulWidget {
+  Function? confirm;
+
+  BltNameDialog({this.confirm});
+
+  @override
+  State<BltNameDialog> createState() => _BltNameDialogState();
+}
+class _BltNameDialogState extends State<BltNameDialog> {
+  TextEditingController _usernameController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: hexStringToColor('#3E3E55'),
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      title: Constants.boldWhiteTextWidget('设置蓝牙名称', 20,
+          textAlign: TextAlign.left),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            keyboardType: TextInputType.text,
+            maxLength: 16,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            controller: _usernameController,
+            decoration: InputDecoration(
+                labelText: '请不要输入特殊字符,最多为16个字符',
+                labelStyle: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            NavigatorUtil.pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseGreyStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Cancel', 16),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            String username = _usernameController.text;
+            if (widget.confirm != null) {
+              widget.confirm!(username);
+            }
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+                color: Constants.baseStyleColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: Center(
+              child: Constants.regularWhiteTextWidget('Confirm', 16),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    super.dispose();
+  }
+}

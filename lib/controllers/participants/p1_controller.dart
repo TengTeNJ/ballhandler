@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -212,6 +214,10 @@ class P1Controller extends StatelessWidget {
                     TTToast.showLoading();
                     // NavigatorUtil.pop();
                    // await SystemUtil.lockScreenHorizontalDirection();
+                    if (Platform.isAndroid) {
+                      await SystemUtil.lockScreenHorizontalDirection();
+                     // return;
+                    }
                     await SystemUtil.resetScreenDirection();
                     List<CameraDescription> cameras = await availableCameras();
                     NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);

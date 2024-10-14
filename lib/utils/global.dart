@@ -5,7 +5,7 @@ import 'package:code/services/http/participants.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 // 这个顺序需要和后台管理上的数据的dickey的场景值的顺序保持一致
-enum GameScene { five, erqiling,threee}
+enum GameScene { five, erqiling, threee }
 
 class GameUtil {
   GameScene gameScene = GameScene.erqiling; // 默认为五节控球器
@@ -23,25 +23,33 @@ class GameUtil {
   BLEModel selectedDeviceModel = BLEModel(deviceName: 'deviceName'); // 选择的游戏设备
   BleStatus bleStatus = BleStatus.unknown; // 蓝牙的状态
   double get imageWidth {
-    if(this.modelId == 1){
+    if (this.modelId == 1) {
       return 200;
-    }else  if(this.modelId == 6){
+    } else if (this.modelId == 6) {
       return 64;
-    }else  if(this.modelId == 7){
+    } else if (this.modelId == 7) {
       return 128;
     }
     return 0;
   }
+
   double get gameImageWidth {
-    if(this.modelId == 1){
+    if (this.modelId == 1) {
       return 128;
-    }else  if(this.modelId == 6){
+    } else if (this.modelId == 6) {
       return 64;
     }
     return 0;
   }
-  List<SceneModel> sceneList = [SceneModel()]; // 场景列表
+
+  List<SceneModel> sceneList = [
+    SceneModel(),
+    SceneModel(
+        dictKey: '1',
+        dictValue: 'Digital Stickhandling Trainer',
+        dictRemark:
+            'Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials, and push your limits.')
+  ]; // 场景列表
   List<int> selectdP3Indexs = []; // 270P3模式选择的组合的索引
   List<P3ItemModel> selectdP3Items = []; // 270P3模式选择的组合的索引
-
 }

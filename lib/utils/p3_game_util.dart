@@ -1373,7 +1373,7 @@ class P3GameManager {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     List<List<ClickTargetModel>> _allDatas =
         p3ModeDatas[this.currentInGameIndex];
-    int index = _countTime == 0 ? this._index : (this._index - 1);
+    int index = _countTime == 0 ? this._index : ((this._index - 1) >= 0 ? (this._index - 1) : 0);
     List<ClickTargetModel> currentDatas = _allDatas[index];
     for (int i = 0; i < currentDatas.length; i++) {
       ClickTargetModel element = currentDatas[i];

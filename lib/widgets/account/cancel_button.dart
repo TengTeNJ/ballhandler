@@ -10,9 +10,10 @@ class CancelButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.pop();
         if (close != null) {
           close!();
+        }else{
+          NavigatorUtil.pop();
         }
       },
       child: Container(

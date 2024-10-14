@@ -4,6 +4,7 @@ import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/control_time_out_util.dart';
+import 'package:code/utils/device_debug_data.dart';
 import 'package:code/utils/game_util.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/string_util.dart';
@@ -191,19 +192,19 @@ class BluetoothUltTimateDataParse {
           int result = element[5];
           int value = element[6];
           String errorString = '查询';
-          if (parameter == 4) {
+          if (parameter == kChannel) {
             // 4：查询当前RF24G通信信道；
             errorString = '查询当前RF24G通信信道';
             if (result == 0x01) {
               BluetoothManager().debugModel.channel = kChannelArray[value];
             }
-          } else if (parameter == 5) {
+          } else if (parameter == kReferenceLevel) {
             // 5：查询当前干扰容错级别；
             errorString = '查询当前干扰容错级别';
             if (result == 0x01) {
               BluetoothManager().debugModel.interferenceLevel = value;
             }
-          } else if (parameter == 6) {
+          } else if (parameter == kAutoOffDuration) {
             // 6：查询当前自动关机时间；
             int value2 = element[7];
             int value3 = element[8];
@@ -220,26 +221,57 @@ class BluetoothUltTimateDataParse {
               BluetoothManager().debugModel.autooffTime =
                   StringUtil.binaryStringToDecimal(totalValue);
             }
-          } else if (parameter == 7) {
+          } else if (parameter == kDebugSwitch) {
             // 7：查询DEBUG开关；
             errorString = '查询DEBUG开关';
             if (result == 0x01) {
               BluetoothManager().debugModel.debugSwitch = value == 0x01;
             }
-          } else if (parameter == 8) {
-            // 7：查询DEBUG开关；
+          } else if (parameter == kBTAuto) {
+            //  查询BT自动断连开关；
             errorString = '查询BT自动断连开关';
             if (result == 0x01) {
               BluetoothManager().debugModel.btSwitch = value == 0x01;
             }
-          }else if (parameter == 9) {
+          }else if (parameter == k321Pre) {
             // 7：查询DEBUG开关；
             errorString = '查询321预备开关';
             if (result == 0x01) {
               BluetoothManager().debugModel.preSwitch = value == 0x01;
             }
+          } else if (parameter == kLongPressCheck) {
+            // 长按检测功能选择；
+            errorString = '查询长按检测功能选择';
+            if (result == 0x01) {
+              BluetoothManager().debugModel.longPressCheckSwitch = value;
+            }
+          }else if (parameter == kBLTMacAdress) {
+            // 蓝牙MAC地址；
+            errorString = '查询蓝牙MAC地址';
+            if (result == 0x01) {
+              BluetoothManager().debugModel.bltMac = '';
+              for(int i = 0; i < 6; i++){
+                int valueChar = element[i + 6];
+                BluetoothManager().debugModel.bltMac = BluetoothManager().debugModel.bltMac +  (i != 5 ? '${valueChar.toRadixString(16)}:' : '${valueChar.toRadixString(16)}');
+              }
+            }
+          }else if (parameter == kBLTName) {
+            // 蓝牙名称；
+            errorString = '蓝牙名称';
+            if (result == 0x01) {
+              BluetoothManager().debugModel.bltName = '';
+              String name = '';
+              for(int i = 0; i < 16; i++){
+                int valueChar = element[i + 6];
+                if(valueChar != 0){
+                  name = name +  String.fromCharCode(valueChar);
+                }
+              }
+              print('蓝牙名称 === ${name}');
+              BluetoothManager().debugModel.bltName = name;
+            }
           }
-          if ([4, 5, 6, 7,8,9].contains(parameter) && result == 0x00) {
+          if (result == 0x00) {
             TTToast.showErrorInfo(errorString + '失败');
           } else {
             BluetoothManager()
@@ -256,33 +288,48 @@ class BluetoothUltTimateDataParse {
           int parameter = element[4];
           int result = element[5];
           String errorString = '设置';
-          if (parameter == 1) {
-            // 4：查询当前RF24G通信信道；
+          if (parameter == kPowerOff) {
+            // 关机；
             errorString = '关机';
-          } else if (parameter == 2) {
+          } else if (parameter == kReboot) {
             // REBOOT；
             errorString = 'REBOOT';
-          } else if (parameter == 3) {
+          } else if (parameter == kResetAutoOffTimer) {
             // 重置自动关机定时器；
             errorString = '重置自动关机定时器';
-          } else if (parameter == 4) {
+          } else if (parameter == kChannel) {
             // 设定RF24G模块通信信道；
             errorString = '设定RF24G模块通信信道';
-          } else if (parameter == 5) {
-            // 设定RF24G模块通信信道；
+          } else if (parameter == kReferenceLevel) {
+            // 设定抗干扰容错级别；
             errorString = '设定抗干扰容错级别';
-          } else if (parameter == 6) {
+          } else if (parameter == kAutoOffDuration) {
             // 设置自动关机时间；
             errorString = '设置自动关机时间';
-          } else if (parameter == 7) {
+          } else if (parameter == kDebugSwitch) {
             // 设置DEBUG指示开关；
             errorString = '设置DEBUG指示开关';
-          }else if (parameter == 8) {
-            // 设置DEBUG指示开关；
+          }else if (parameter == kBTAuto) {
+            // 设置BT自动断连开关；
             errorString = '设置BT自动断连开关';
-          }else if (parameter == 9) {
-            // 设置DEBUG指示开关；
+          }else if (parameter == k321Pre) {
+            // 设置321预备开关；
             errorString = '设置321预备开关';
+          }else if (parameter == kFactoryReset) {
+            // 恢复出厂设置；
+            errorString = '恢复出厂设置';
+          } else if (parameter == kLongPressCheck) {
+            // 长按检测功能选择；
+            errorString = '长按检测功能选择';
+          }else if (parameter == kBLTMacAdress) {
+            // 设置蓝牙MAC地址；
+            errorString = '设置蓝牙MAC地址';
+          }else if (parameter == kBLTName) {
+            // 设置蓝牙名称；
+            errorString = '设置蓝牙名称';
+          } else if (parameter == kBLTReset) {
+            // 重置蓝牙模块；
+            errorString = '重置蓝牙模块';
           }
           if (result == 0x00) {
             TTToast.showErrorInfo(errorString + '失败');

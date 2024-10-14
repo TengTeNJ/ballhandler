@@ -275,6 +275,26 @@ class TTDialog {
         });
   }
 
+  static setBLTMacDialog(BuildContext context, Function confirm) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return BltMacDialog(
+            confirm: confirm,
+          );
+        });
+  }
+
+  static setBLTNameDialog(BuildContext context, Function confirm) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return BltNameDialog(
+            confirm: confirm,
+          );
+        });
+  }
+
   static setInterferenceLevelDialog(BuildContext context, Function confirm) {
     return showDialog(
         context: context,

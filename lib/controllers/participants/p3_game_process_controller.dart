@@ -280,6 +280,11 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         P3GameManager().stopGame();
         BluetoothManager().gameData.utimateGameSatatu = 0;
         NavigatorUtil.pop();
+      }else if(event == kReadyBack){
+        if (!_ready) {
+          backHandle();
+        }
+        NavigatorUtil.pop();
       }
     });
     // 如果是P3模式 则需要app进行控制
@@ -564,7 +569,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
               ),
         onWillPop: () async {
           if (_ready) {
-            return false;
+            return true;
           } else {
             backHandle();
             return true;

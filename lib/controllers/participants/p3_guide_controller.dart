@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +8,7 @@ import '../../models/airbattle/p3_item_model.dart';
 import '../../route/route.dart';
 import '../../utils/color.dart';
 import '../../utils/navigator_util.dart';
+import '../../utils/system_device.dart';
 import '../../utils/toast.dart';
 
 class P3GuideController extends StatefulWidget {
@@ -107,6 +110,10 @@ class _P3GuideControllerState extends State<P3GuideController> {
                   onTap: () async {
                     TTToast.showLoading();
                     NavigatorUtil.pop();
+                    if (Platform.isAndroid) {
+                      await SystemUtil.lockScreenHorizontalDirection();
+                     // return;
+                    }
                     List<CameraDescription> cameras = await availableCameras();
                     NavigatorUtil.push(Routes.p3check,
                         arguments: cameras[cameras.length > 1 ? 1 : 0]);

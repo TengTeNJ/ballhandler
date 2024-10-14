@@ -34,6 +34,13 @@ class StringUtil {
     return regExp.hasMatch(nickname);
   }
 
+  /*蓝牙Mac地址校验*/
+  static bool isValidBltMac(String mac) {
+    String pattern = r'^[a-fA-F0-9]{12}$';
+    RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(mac);
+  }
+
   /*时间转字符串*/
   static String dateTimeToString(DateTime datetime) {
     String _string = formatDate(datetime, [yyyy, '-', mm, '-', dd]);

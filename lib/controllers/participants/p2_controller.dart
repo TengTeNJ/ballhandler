@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -9,6 +11,7 @@ import '../../utils/ble_ultimate_data.dart';
 import '../../utils/blue_tooth_manager.dart';
 import '../../utils/color.dart';
 import '../../utils/global.dart';
+import '../../utils/system_device.dart';
 import '../../utils/toast.dart';
 
 class P2Controller extends StatelessWidget {
@@ -182,6 +185,10 @@ class P2Controller extends StatelessWidget {
                   onTap: () async{
                     TTToast.showLoading();
                     //NavigatorUtil.pop();
+                    if (Platform.isAndroid) {
+                      await SystemUtil.lockScreenHorizontalDirection();
+                      //return;
+                    }
                     List<CameraDescription> cameras = await availableCameras();
                     NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                     TTToast.hideLoading();

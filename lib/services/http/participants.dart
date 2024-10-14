@@ -44,6 +44,7 @@ class SceneModel {
   String dictKey = '2';
   String dictValue = 'Ultimater Dangler';
   String dictRemark = 'A groundbreaking training tool meticulously engineered to elevate your stickhandling, enhance your puck control, and secure your competitive advantage. This cutting-edge system sets a new standard in hockey training. With its innovative 270° design and smart technologies you\'re not just practicing with a static tool; you\'re immersing yourself in a holistic training environment.';
+  SceneModel({this.dictKey = '2',this.dictValue = 'Ultimater Dangler',this.dictRemark = 'A groundbreaking training tool meticulously engineered to elevate your stickhandling, enhance your puck control, and secure your competitive advantage. This cutting-edge system sets a new standard in hockey training. With its innovative 270° design and smart technologies you\'re not just practicing with a static tool; you\'re immersing yourself in a holistic training environment.'});
 }
 
 class TrainListModel {

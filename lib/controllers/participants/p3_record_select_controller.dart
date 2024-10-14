@@ -51,14 +51,17 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
   deviceOrientationListen() async {
     if (Platform.isAndroid) {
       await SystemUtil.lockScreenHorizontalDirection();
-      return;
+    }else{
+      await SystemUtil.resetScreenDirection();
     }
-    await SystemUtil.resetScreenDirection();
     Stream<NativeDeviceOrientation> stream =
         NativeDeviceOrientationCommunicator().onOrientationChanged(
       useSensor: true,
     );
     subscription = stream.listen((value) {
+      if (Platform.isAndroid) {
+        return;
+      }
       timer?.cancel();
       timer = Timer(Duration(milliseconds: 1000), () async{
         print('NativeDeviceOrientationCommunicator() = ${await NativeDeviceOrientationCommunicator().orientation(useSensor: true)}');
@@ -99,8 +102,6 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
         },
       );
     }
-
-
   }
 
   //  屏幕竖直方向

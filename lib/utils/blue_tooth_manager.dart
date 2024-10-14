@@ -131,7 +131,12 @@ class BluetoothManager {
                 .add(BLEModel(deviceName: event.name, device: event));
             deviceListLength.value = this.deviceList.length;
           } else {
-            // 设备列表数组中已有，则忽略
+            // 设备列表数组中已有，则替换
+            BLEModel model =   this.deviceList.firstWhere((element) => element.deviceName == event.name,orElse: null);
+            if(model != null){
+             model.deviceName = event.name;
+             model.device = event;
+            }
           }
         }
       });

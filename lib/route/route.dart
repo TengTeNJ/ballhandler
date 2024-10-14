@@ -174,8 +174,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => LaunchThreeController());
       case webview:
         String _webUrl = '';
-        if(settings.arguments != null){
-          _webUrl = settings.arguments as String;
+        print('settings.arguments.toString() = ${settings.arguments.toString()}');
+        if(settings.arguments != null && settings.arguments is String){
+          _webUrl = settings.arguments.toString();
         }
         return MaterialPageRoute(builder: (_) => _webUrl.isEmpty ?  TTWebViewController() : TTWebViewController(webUrl: _webUrl,));
       case membership:
