@@ -50,7 +50,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
           )),
           Positioned(
             child: CancelButton(),
-            top: 16,
+            top: 32,
             right: 16,
           ),
           Positioned(
@@ -106,8 +106,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
                 },
               )),
           Positioned(
-              left: 64,
-              right: 64,
+              left: 44,
+              right: 44,
               top: Constants.screenHeight(context) * 0.59 + 88 + 99,
               child: Constants.regularWhiteTextWidget(
                   'The Ultimate training companion for your Ultimater Dangler 2.0 and more',

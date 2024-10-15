@@ -9,6 +9,7 @@ class CancelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         if (close != null) {
           close!();
