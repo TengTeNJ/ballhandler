@@ -3,7 +3,6 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 class TTWebViewController extends StatefulWidget {
   String? webUrl;
    TTWebViewController({this.webUrl});

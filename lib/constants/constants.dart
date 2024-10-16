@@ -305,6 +305,10 @@ const kBLEDevice_Names = [
   k270_Name
 ];
 
+// 隐私政策网址
+const kPrivacyPolicyUrl = 'https://potent-hockey.s3.eu-north-1.amazonaws.com/h5/privacy.html';
+// Terms of service网址
+const kTermsOfServiceUrl = 'https://potent-hockey.s3.eu-north-1.amazonaws.com/h5/service.html';
 const kBLEDevice_ReleaseNames = [
   kFiveBallHandler_Name,
   k270_Name,

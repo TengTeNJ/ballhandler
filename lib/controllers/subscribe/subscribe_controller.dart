@@ -123,7 +123,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    NavigatorUtil.push(Routes.webview);
+                    NavigatorUtil.push(Routes.webview,arguments: kTermsOfServiceUrl);
                   },
                   child: Constants.mediumBaseTextWidget('Terms of Service', 14),
                 ),
@@ -131,8 +131,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
                     NavigatorUtil.push(Routes.webview,
-                        arguments:
-                            'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/');
+                        arguments: kPrivacyPolicyUrl);
                   },
                   child:
                       Constants.mediumBaseTextWidget('Privacy Statement', 14),

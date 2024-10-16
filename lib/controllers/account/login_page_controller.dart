@@ -200,7 +200,7 @@ class _LoginPageControllerState extends State<LoginPageController> with SingleTi
                 PrivacyCheckView(onSelected: (value){
                   privacyChecked = value;
                 },goToPrivacy: (){
-                  NavigatorUtil.push(Routes.webview);
+                  NavigatorUtil.push(Routes.webview,arguments: kPrivacyPolicyUrl);
                   //NavigatorUtil.present(PrivacyPageController());
                 },),
               ],
