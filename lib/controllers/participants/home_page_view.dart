@@ -102,7 +102,12 @@ class _HomePageViewState extends State<HomePageController> {
     });
 
     // 初始化pageView
-    _currentIndex = gameUtil.gameScene.index;
+   // _currentIndex = gameUtil.gameScene.index;
+    SceneModel _matchModel = gameUtil.sceneList.firstWhere((element)=>(int.parse(element.dictKey) - 1) == gameUtil.gameScene.index,orElse: null);
+    if(_matchModel != null){
+      int index = gameUtil.sceneList.indexOf(_matchModel);
+      _currentIndex = index;
+    }
     _pageController = PageController(initialPage: _currentIndex);
     _pageController.addListener(() {
       // 获取当前滑动页面的索引 (取整)
@@ -178,9 +183,10 @@ class _HomePageViewState extends State<HomePageController> {
         _pageViews.add(HomeBodyView(model: element));
       });
       int? value = await NSUserDefault.getValue<int>(kSceneSelectCache);
+      print('value == ${value}');
+      List<GameScene> array = [GameScene.five,GameScene.erqiling,GameScene.threee];
       if(value!=null && _pageViews.length > value){
         // 获取场景缓存
-        List<GameScene> array = [GameScene.five,GameScene.erqiling,GameScene.threee];
         gameUtil.gameScene = array[value];
        SceneModel _matchModel = gameUtil.sceneList.firstWhere((element)=>(int.parse(element.dictKey) - 1) == array[value].index,orElse: null);
        if(_matchModel != null){
