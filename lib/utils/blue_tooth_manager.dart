@@ -121,9 +121,6 @@ class BluetoothManager {
         if(event.name.isEmpty){
           return;
         }
-       // print('event.name=${event.name}====${event.name.length}');
-        if (event.name.contains(k270_Name) ||
-            kBLEDevice_Names.indexOf(event.name) != -1) {
           // 如果设备列表数组中无，则添加
           if (!hasDevice(event.id)) {
             this
@@ -138,7 +135,7 @@ class BluetoothManager {
              model.device = event;
             }
           }
-        }
+
       });
     }
   }
@@ -173,13 +170,15 @@ class BluetoothManager {
         }
         // 设备连接成功
         EventBus().sendEvent(kDeviceConnected);
+        // 连接成功弹窗
+        EasyLoading.showSuccess('Bluetooth connection successful',
+            maskType: EasyLoadingMaskType.black);
         // 连接设备数量+1
         conectedDeviceCount.value++;
         // 已连接
         model.hasConected = true;
         final notifyCharacteristic;
         final writerCharacteristic;
-        if (model.deviceName.contains(k270_Name)) {
           // 保存读写特征值 270设备
           notifyCharacteristic = QualifiedCharacteristic(
               serviceId: Uuid.parse(kBLE_270_SERVICE_UUID),
@@ -191,44 +190,31 @@ class BluetoothManager {
               deviceId: model.device!.id);
           model.notifyCharacteristic = notifyCharacteristic;
           model.writerCharacteristic = writerCharacteristic;
-          Future.delayed(Duration(milliseconds: 500),(){
-            // 发送 APP上线
-            BluetoothManager().writerDataToDevice(model, appOnLine());
-            // 查询主机状态
-            BluetoothManager()
-                .writerDataToDevice(model, queryMasterSystemStatu());
-          });
-        } else {
-          // 保存读写特征值
-          notifyCharacteristic = QualifiedCharacteristic(
-              serviceId: Uuid.parse(kBLE_SERVICE_NOTIFY_UUID),
-              characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_NOTIFY_UUID),
-              deviceId: model.device!.id);
-          writerCharacteristic = QualifiedCharacteristic(
-              serviceId: Uuid.parse(kBLE_SERVICE_WRITER_UUID),
-              characteristicId: Uuid.parse(kBLE_CHARACTERISTIC_WRITER_UUID),
-              deviceId: model.device!.id);
-          model.notifyCharacteristic = notifyCharacteristic;
-          model.writerCharacteristic = writerCharacteristic;
-          writerDataToDevice(model, questDeviceInfoData());
-        }
-        // 连接成功弹窗
-        EasyLoading.showSuccess('Bluetooth connection successful',
-            maskType: EasyLoadingMaskType.black);
-        // 监听数据
-        _ble
-            .subscribeToCharacteristic(notifyCharacteristic)
-            .listen((List<int> data) {
-          if (model.deviceName.contains(k270_Name)) {
-            print(
-                "deviceName =${model.device!.name} 上报来的数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
-            // 解析270
-            BluetoothUltTimateDataParse.parseData(data, model);
-          } else {
-            // 解析五节
-            BluetoothDataParse.parseData(data, model);
+          if(notifyCharacteristic != null && writerCharacteristic != null){
+           // model.is270 = true;
+            Future.delayed(Duration(milliseconds: 500),(){
+              // 发送 APP上线
+              BluetoothManager().writerDataToDevice(model, appOnLine());
+              // 查询主机状态
+              BluetoothManager()
+                  .writerDataToDevice(model, queryMasterSystemStatu());
+            });
+            // 监听数据
+            _ble
+                .subscribeToCharacteristic(notifyCharacteristic)
+                .listen((List<int> data) {
+              if (model.deviceName.contains(k270_Name)) {
+                print(
+                    "deviceName =${model.device!.name} 上报来的数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
+                // 解析270
+                BluetoothUltTimateDataParse.parseData(data, model);
+              } else {
+                // 解析五节
+                BluetoothDataParse.parseData(data, model);
+              }
+            });
           }
-        });
+
         // 连接成功，则设备列表页面弹窗消失
         NavigatorUtil.pop();
       } else if (connectionStateUpdate.connectionState ==

@@ -92,7 +92,11 @@ class _BLEListViewState extends State<BLEListView> {
                               ? Constants.mediumWhiteTextWidget(
                                   BluetoothManager()
                                       .showDeviceList[index]
-                                      .deviceName,
+                                      .deviceName + ( BluetoothManager()
+                                      .showDeviceList[index]
+                                      .hasConected ==
+                                      true ? ( BluetoothManager()
+                                      .showDeviceList[index].is270 ? ' (270设备)' : ' (非270设备)') : ''),
                                   16,
                                 )
                               : Constants.customTextWidget(

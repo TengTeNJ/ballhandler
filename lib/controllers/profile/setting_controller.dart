@@ -139,7 +139,7 @@ class _SettingControllerState extends State<SettingController> {
               SettingView(
                 showArrows: [true,false],
                 title: 'More',
-                detailTitles: ['',_version],
+                detailTitles: ['','(内部测试)${_version}'],
                 datas: ['Terms of Service','Version'],
                 selectItem: (index) {
                 if (index == 0){

@@ -159,13 +159,10 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               .hasConnectedDeviceList
               .isNotEmpty) {
         // 确认已连接的设备中是否有和当前模式匹配的,有的话则取第一个
-        List<BLEModel> devices = BluetoothManager()
-            .hasConnectedDeviceList
-            .where((element) =>
-            element.deviceName.contains(k270_Name))
-            .toList();
-        if (devices != null) {
-          gameUtil.selectedDeviceModel = devices.first;
+        BLEModel device =    BluetoothManager()
+            .hasConnectedDeviceList.first;
+        if (device.is270) {
+          gameUtil.selectedDeviceModel = device;
           NavigatorUtil.push(Routes.devicedebug);
         }
       }

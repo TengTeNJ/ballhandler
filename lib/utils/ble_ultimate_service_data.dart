@@ -387,6 +387,8 @@ class BluetoothUltTimateDataParse {
           BluetoothManager().triggerCallback(type: BLEDataType.masterStatu);
           break;
         case ResponseCMDType.queryMasterStatuResponse:
+          BluetoothManager().hasConnectedDeviceList.first.is270 = true;
+          print('是270----');
           //   字节1：0x01（成功），字节2：当前中心主机的系统状态，状态值定义同0x12命令； Central主机当前的系统状态：1字节0: 系统初始化；1: 系统配网；2: 系统游戏；3: 系统设置；4: 系统管理
           int data1 = element[4];
           int data2 = element[5];

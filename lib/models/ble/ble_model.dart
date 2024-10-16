@@ -14,6 +14,7 @@ class BLEModel {
   int powerValue = 100; // 电量值
   DiscoveredDevice? device; // 蓝牙设备信息
   bool? hasConected; // 连接状态
+  bool is270 = false;
   QualifiedCharacteristic? notifyCharacteristic; // notify特征值
   QualifiedCharacteristic? writerCharacteristic; // writer特征值
   StreamSubscription<ConnectionStateUpdate>? bleStream;
