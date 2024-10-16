@@ -44,7 +44,11 @@ class _TTWebViewControllerState extends State<TTWebViewController> {
         ),
       )
       ..loadRequest(Uri.parse(
-          widget.webUrl ??  'https://potent-hockey.s3.eu-north-1.amazonaws.com/h5/service.html'));
+          widget.webUrl ??  kTermsOfServiceUrl),headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },);
   }
 
   @override
