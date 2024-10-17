@@ -272,4 +272,13 @@ class Account {
         showLoading: true);
     return ApiResponse(success: response.success);
   }
+
+  /*注销账号*/
+  static Future<ApiResponse> logoff() async {
+    final _data = {
+    };
+    final response = await HttpUtil.post('/api/member/logoff', _data,
+        showLoading: true);
+    return ApiResponse(success: response.success);
+  }
 }

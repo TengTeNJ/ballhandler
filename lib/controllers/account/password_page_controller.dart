@@ -21,7 +21,7 @@ class PasswordPageController extends StatefulWidget {
 class _PasswordPageControllerState extends State<PasswordPageController> {
   final TextEditingController _nameController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  String _nameText = '';
+  String _nameText = 'Default';
   DateTime selectedDate = DateTime.now();
   String _countryText = '';
 
@@ -68,7 +68,24 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                     child: Stack(
                       children: [
                         Positioned(
-                          child: CancelButton(),
+                          child: CancelButton(
+                            close: () async{
+                              FocusScope.of(context).unfocus();
+                              ApiResponse _response = await Account.registerWithEmail(
+                                  widget.password ?? '',
+                                  StringUtil.dateTimeToString(selectedDate),
+                                  _nameText,
+                                  _countryText);
+                              if (_response.success == true) {
+                                final _response =
+                                    await Account.emailLogin(widget.password ?? '');
+                                if (_response.success == true) {
+                                  Account.handleUserData(_response, context);
+                                  NavigatorUtil.popToRoot();
+                                }
+                              }
+                            },
+                          ),
                           right: 0,
                         )
                       ],

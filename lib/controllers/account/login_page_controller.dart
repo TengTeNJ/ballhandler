@@ -29,7 +29,7 @@ class _LoginPageControllerState extends State<LoginPageController> with SingleTi
   final List<Map> _thirdMaps = [
     {'icon': 'images/account/apple.png', 'label': 'Continue with Apple'},
     {'icon': 'images/account/google.png', 'label': 'Continue with Google'},
-    {'icon': 'images/account/facebook.png', 'label': 'Continue with FaceBook'},
+    // {'icon': 'images/account/facebook.png', 'label': 'Continue with FaceBook'},
   ];
 
   @override

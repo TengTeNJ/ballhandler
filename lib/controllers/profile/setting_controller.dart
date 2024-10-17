@@ -188,6 +188,48 @@ class _SettingControllerState extends State<SettingController> {
                   ],
                 ),
               ),
+              SizedBox(height: 32,),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async{
+                  final _response = await  Account.logoff();
+                  if(_response.success){
+                    NSUserDefault.clearUserInfo(context);
+                    EventBus().sendEvent(kSignOut);
+                    NavigatorUtil.pop();
+                  }
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      color: hexStringToColor('#707070'),
+                      height: 0.5,
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Constants.regularGreyTextWidget('Logout', 16),
+                        Image(
+                          image: AssetImage('images/airbattle/next_white.png'),
+                          width: 12,
+                          height: 12,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                      color: hexStringToColor('#707070'),
+                      height: 0.5,
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
