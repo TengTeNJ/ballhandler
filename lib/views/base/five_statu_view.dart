@@ -17,7 +17,6 @@ class FiveStatuView extends StatefulWidget {
 }
 
 class _FiveStatuViewState extends State<FiveStatuView> {
-  List<int> batteryValues = [100, 100, 100, 100, 100, 100];
   bool connected = false;
   List<String> imageNames = ['gray', 'red', 'yellow', 'green'];
   String batteryImageName = 'gray';
