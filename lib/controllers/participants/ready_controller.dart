@@ -34,8 +34,11 @@ class _ReadyControllerState extends State<ReadyController> {
       GameUtil gameUtil = GetIt.instance<GameUtil>();
       if (event == kGameReady && gameUtil.modelId == 3) {
         lock = true;
-        timerPeriodRefreshText();
-        playLocalAudio('pre.wav');
+        setState(() {
+          centerText = 'GO';
+        });
+      //  timerPeriodRefreshText();
+       // playLocalAudio('pre.wav');
       } else if (event == kGamePre) {
         // P1 P2的准备阶段
         setState(() {

@@ -205,7 +205,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
                   selectItem: (ActivityModel model) {
                     if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
                       // 未订阅 则限制进入
-                      NavigatorUtil.push(Routes.subscribeintroduce);
+                      NavigatorUtil.push(Routes.subscribe);
                       //TTDialog.subscribeDialog(context);
                       return;
                     }

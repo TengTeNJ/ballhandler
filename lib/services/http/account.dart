@@ -215,7 +215,7 @@ class Account {
   /*获取订阅信息*/
   static Future<ApiResponse<SubscribeModel>> querySubscribeInfo() async {
     final response =
-        await HttpUtil.get('/api/member/index', null, showLoading: false);
+        await HttpUtil.get('/api/member/index', null, showLoading: true);
     SubscribeModel model = SubscribeModel();
     if (response.success && response.data['data'] != null) {
       final element = response.data['data'];

@@ -16,7 +16,7 @@ class _MemberShipScbViewState extends State<MemberShipScbView> {
   Widget build(BuildContext context) {
     return  GestureDetector(
       onTap: (){
-        NavigatorUtil.push(Routes.subscribeintroduce);
+        NavigatorUtil.push(Routes.subscribe);
         //TTDialog.subscribeDialog(context);
       },
       behavior: HitTestBehavior.opaque,

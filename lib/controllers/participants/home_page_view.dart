@@ -229,7 +229,7 @@ class _HomePageViewState extends State<HomePageController> {
               child: UserInfoView(
                 hasLogin: haslogin,
                 subscribeTap: (){
-                  NavigatorUtil.push(Routes.subscribeintroduce);
+                  NavigatorUtil.push(Routes.subscribe);
                   //TTDialog.subscribeDialog(context);
                 },
               ),

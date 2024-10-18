@@ -4,6 +4,7 @@ import 'package:code/constants/constants.dart';
 
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/http_util.dart';
+import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -75,8 +76,9 @@ class AppPurse {
           if (_response != null && _response.success) {
             InAppPurchase.instance.completePurchase(purchaseDetails);
             DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
+            EventBus().sendEvent(kFinishSubscribe);
             // 刷新账号订阅信息
-            querySubScribeInfo(buildContext);
+            // querySubScribeInfo(buildContext);
           }
         }
       }

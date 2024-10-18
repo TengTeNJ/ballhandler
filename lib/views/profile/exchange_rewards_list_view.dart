@@ -2,6 +2,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/notification_bloc.dart';
+import 'package:code/views/base/no_data_view.dart';
 import 'package:code/views/profile/exchange_rewards_view.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,7 @@ class _ExchangeRewardListViewState extends State<ExchangeRewardListView> {
   Widget build(BuildContext context) {
     return Container(
       width: Constants.screenWidth(context) - 32,
-      child: ListView.separated(
+      child: _datas.length == 0 ? NoDataView() : ListView.separated(
           itemBuilder: (context, index) {
             return GestureDetector(
               child: ExchangeRewardsView(model: _datas[index]),

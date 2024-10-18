@@ -295,7 +295,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
         EventBus().sendEvent(kGameReady);
       });
       // 正式进入到p3控制 p3控制时会发送游戏开始命令 上面可以监听到 则进行展示游戏页面 刷新led状态
-      Future.delayed(Duration(seconds: 4), () {
+      Future.delayed(Duration(seconds: 1), () {
         p3Control();
       });
     }

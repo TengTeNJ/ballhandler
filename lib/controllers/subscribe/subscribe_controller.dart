@@ -1,14 +1,20 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/toast.dart';
 import 'package:code/views/participants/subscribe_new_border_view.dart';
+import 'package:code/views/subscribe/subscribe_page_views.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:status_bar_control/status_bar_control.dart';
 
+import '../../models/global/user_info.dart';
 import '../../route/route.dart';
+import '../../services/http/account.dart';
 import '../../utils/app_purse.dart';
 import '../../utils/navigator_util.dart';
+import '../../utils/notification_bloc.dart';
 
 class SubscribeController extends StatefulWidget {
   const SubscribeController({super.key});
@@ -19,18 +25,41 @@ class SubscribeController extends StatefulWidget {
 
 class _SubscribeControllerState extends State<SubscribeController> {
   AppPurse purse = AppPurse();
+  late StreamSubscription subscription;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(milliseconds: 200), () {
+    Future.delayed(Duration(milliseconds: 500), () {
       // 开始监听
       purse.startSubscription(context);
     });
     StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
+    subscription = EventBus().stream.listen((event) {
+      if(event == kFinishSubscribe){
+        querySubScribeInfo(context);
+      }
+    });
   }
 
+  /*查询订阅信息 */
+  querySubScribeInfo(BuildContext buildContext) async{
+    final _response = await Account.querySubscribeInfo();
+    if(_response.success){
+      var model = _response.data;
+      if(model != null){
+        if(mounted){
+          UserProvider.of(buildContext).subscribeModel = model;
+          TTToast.showSuccessInfo('Success!');
+          // Future.delayed(Duration(milliseconds: 50),(){
+          //   NavigatorUtil.pop();
+          // });
+        }
+      }
+
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +83,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
             right: 16,
           ),
           Positioned(
-              top: Constants.screenHeight(context) * 0.48,
+              top: Constants.screenHeight(context) * 0.114,
               left: 32,
               right: 32,
               child: Container(
@@ -63,6 +92,12 @@ class _SubscribeControllerState extends State<SubscribeController> {
                     textAlign: TextAlign.center),
                 // color: Colors.red,
               )),
+          Positioned(
+            left: 0,
+              right: 0,
+              top: Constants.screenHeight(context) * 0.24,
+              bottom: Constants.screenHeight(context) * 0.45,
+              child: SubscribePageViews()),
           Positioned(
               left: 24,
               right: 24,
@@ -148,6 +183,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
   void dispose() {
     // TODO: implement dispose
     StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
+    subscription.cancel();
     super.dispose();
   }
 }
