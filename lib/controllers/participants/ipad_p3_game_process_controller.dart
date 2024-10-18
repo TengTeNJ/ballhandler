@@ -30,15 +30,16 @@ import '../../utils/notification_bloc.dart';
 import '../../utils/string_util.dart';
 import '../../utils/system_device.dart';
 
-class P3GameProcesController extends StatefulWidget {
+class IpadP3GameProcesController extends StatefulWidget {
   CameraDescription camera;
-  P3GameProcesController({required this.camera});
+
+  IpadP3GameProcesController({required this.camera});
 
   @override
-  State<P3GameProcesController> createState() => _P3GameProcesControllerState();
+  State<IpadP3GameProcesController> createState() => _IpadP3GameProcesControllerState();
 }
 
-class _P3GameProcesControllerState extends State<P3GameProcesController> {
+class _IpadP3GameProcesControllerState extends State<IpadP3GameProcesController> {
   double _left = 45; // 产品图片距离左右的间距
   double _height = 0;
   double _width = 0;
@@ -60,13 +61,13 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     timeLeftText = timeLeftLabel();
     //  更好计算图片宽高 以及实际渲染led的位置效果
     Future.delayed(Duration(milliseconds: 50), () async {
-     await SystemUtil.lockScreenHorizontalDirection();
-     Future.delayed(Duration(milliseconds: 300),(){
-       emulateSpace(context);
-     });
+      await SystemUtil.lockScreenHorizontalDirection();
+      Future.delayed(Duration(milliseconds: 300),(){
+        emulateSpace(context);
+      });
     });
     SystemUtil.wakeUpDevice(); // 保持屏幕活跃
-    //SystemUtil.lockScreenHorizontalDirection();
+    SystemUtil.lockScreenHorizontalDirection();
     // 初始化所有灯的位置
     setState(() {
       datas = initLighs();
@@ -360,6 +361,8 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     // 先让高度为屏幕高度。然后按照图片比例计算宽度
     double _tempHeight = Constants.screenHeight(context);
     double _tempWidth = _tempHeight * k270ProductImageScale;
+    print('Constants.screenHeight(context) = ${Constants.screenHeight(context)}');
+    print('Constants.screenWidth(context) = ${Constants.screenWidth(context)}');
     if (_tempWidth > Constants.screenWidth(context) - 90) {
       //  如果宽度大于了最大的宽度，则重新计算高度,根据宽度计算高度
       _tempWidth = Constants.screenWidth(context) - 90;
@@ -371,6 +374,8 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       _top = (Constants.screenHeight(context) - _tempHeight) / 2.0;
       _left = (Constants.screenWidth(context) - _tempWidth) / 2.0;
       _width = _tempWidth;
+      print('_height = ${_height}');
+      print('_width = ${_width}');
     });
   }
 
@@ -482,7 +487,10 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
                       Positioned(
                           left: _left + _width * 0.245,
                           right: _left + _width * 0.245,
-                          bottom: 53,
+                          bottom: ((Constants.screenHeight(context) - _height)
+                              .abs()) /
+                              2.0 +
+                              52,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

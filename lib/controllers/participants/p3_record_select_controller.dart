@@ -32,7 +32,9 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
   bool _recordSelect = false;
   bool _isPortrait = true;
   bool _lockPortrait = false; // 锁定横屏是否打开
+  bool isIpad = false;
   Timer? timer;
+  CameraDescription? cameraDescription;
   late StreamSubscription subscription;
 
   @override
@@ -85,6 +87,13 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
         }
       });
     });
+    judleIsIpad();
+  }
+  // 确认是否是ipad
+  judleIsIpad() async{
+    isIpad = await SystemUtil.isIPad();
+    List<CameraDescription> cameras = await availableCameras();
+    cameraDescription = cameras[cameras.length > 1 ? 1 : 0];
   }
 
   @override
@@ -217,14 +226,19 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                                     queryMasterSystemStatu());
                                 return;
                               }
+                             // await SystemUtil.lockScreenHorizontalDirection();
                               _controller.dispose();
-                              await SystemUtil.lockScreenHorizontalDirection();
-                              List<CameraDescription> cameras =
-                                  await availableCameras();
-                              NavigatorUtil.popAndThenPush(
-                                Routes.process270,
-                                arguments: cameras[cameras.length > 1 ? 1 : 0],
-                              );
+                              if(isIpad){
+                                NavigatorUtil.popAndThenPush(
+                                  Routes.ipadprocess270,
+                                  arguments: cameraDescription!,
+                                );
+                              }else{
+                                NavigatorUtil.popAndThenPush(
+                                  Routes.process270,
+                                  arguments: cameraDescription!,
+                                );
+                              }
                             },
                             child: Container(
                               width: 90,
@@ -375,13 +389,18 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                                 return;
                               }
                               _controller.dispose();
-                              await SystemUtil.lockScreenHorizontalDirection();
-                              List<CameraDescription> cameras =
-                                  await availableCameras();
-                              NavigatorUtil.popAndThenPush(
-                                Routes.process270,
-                                arguments: cameras[cameras.length > 1 ? 1 : 0],
-                              );
+                             // await SystemUtil.lockScreenHorizontalDirection();
+                              if(isIpad){
+                                NavigatorUtil.popAndThenPush(
+                                  Routes.ipadprocess270,
+                                  arguments: cameraDescription!,
+                                );
+                              }else{
+                                NavigatorUtil.popAndThenPush(
+                                  Routes.process270,
+                                  arguments: cameraDescription!,
+                                );
+                              }
                             },
                             child: Container(
                               width: 90,
@@ -538,13 +557,18 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                                 return;
                               }
                               _controller.dispose();
-                              await SystemUtil.lockScreenHorizontalDirection();
-                              List<CameraDescription> cameras =
-                                  await availableCameras();
-                              NavigatorUtil.popAndThenPush(
-                                Routes.process270,
-                                arguments: cameras[cameras.length > 1 ? 1 : 0],
-                              );
+                             // await SystemUtil.lockScreenHorizontalDirection();
+                              if(isIpad){
+                                NavigatorUtil.popAndThenPush(
+                                  Routes.ipadprocess270,
+                                  arguments: cameraDescription!,
+                                );
+                              }else{
+                                NavigatorUtil.popAndThenPush(
+                                  Routes.process270,
+                                  arguments: cameraDescription!,
+                                );
+                              }
                             },
                             child: Transform(
                               transform: Matrix4.rotationZ(0.5 * 3.1416),

@@ -16,6 +16,7 @@ import 'package:code/controllers/participants/game_finish_controller.dart';
 import 'package:code/controllers/participants/game_process_controller.dart';
 import 'package:code/controllers/participants/game_video_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
+import 'package:code/controllers/participants/ipad_p3_game_process_controller.dart';
 import 'package:code/controllers/participants/p1_controller.dart';
 import 'package:code/controllers/participants/p2_controller.dart';
 import 'package:code/controllers/participants/p3_controller.dart';
@@ -70,6 +71,7 @@ class Routes {
   static const String p3 = 'p3'; // 270度的P3模式选择组合页面
   static const String p3check = 'p3Check';
   static const String process270 = '270Process';
+  static const String ipadprocess270 = 'iPad270Process';
   static const String videolist = 'videoList'; // 视频列表页面
   static const String videoguide = 'videoGuide'; // 游戏视频指导页面
   static const String emailpage = 'emailPage'; //
@@ -153,6 +155,10 @@ class Routes {
       case process270:{
         final  CameraDescription camera = settings.arguments as CameraDescription;
         return MaterialPageRoute(builder: (_)=> P3GameProcesController(camera: camera,));
+      }
+      case ipadprocess270:{
+        final  CameraDescription camera = settings.arguments as CameraDescription;
+        return MaterialPageRoute(builder: (_)=> IpadP3GameProcesController(camera: camera,));
       }
       case videolist:
         return MaterialPageRoute(builder: (_) => VideoListController());

@@ -147,15 +147,16 @@ class _SettingControllerState extends State<SettingController> {
                   }
                 },
               ),
-              SizedBox(
-                height: 32,
-              ),
+              SizedBox(height: 32,),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  NSUserDefault.clearUserInfo(context);
-                  EventBus().sendEvent(kSignOut);
-                  NavigatorUtil.pop();
+                onTap: () async{
+                  final _response = await  Account.logoff();
+                  if(_response.success){
+                    NSUserDefault.clearUserInfo(context);
+                    EventBus().sendEvent(kSignOut);
+                    NavigatorUtil.pop();
+                  }
                 },
                 child: Column(
                   children: [
@@ -170,7 +171,7 @@ class _SettingControllerState extends State<SettingController> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Constants.regularGreyTextWidget('Logout', 16),
+                        Constants.regularGreyTextWidget('Delete Account', 16),
                         Image(
                           image: AssetImage('images/airbattle/next_white.png'),
                           width: 12,
@@ -188,16 +189,12 @@ class _SettingControllerState extends State<SettingController> {
                   ],
                 ),
               ),
-              SizedBox(height: 32,),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () async{
-                  final _response = await  Account.logoff();
-                  if(_response.success){
-                    NSUserDefault.clearUserInfo(context);
-                    EventBus().sendEvent(kSignOut);
-                    NavigatorUtil.pop();
-                  }
+                onTap: () {
+                  NSUserDefault.clearUserInfo(context);
+                  EventBus().sendEvent(kSignOut);
+                  NavigatorUtil.pop();
                 },
                 child: Column(
                   children: [
