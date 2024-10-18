@@ -151,12 +151,30 @@ class _SettingControllerState extends State<SettingController> {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async{
-                  final _response = await  Account.logoff();
-                  if(_response.success){
-                    NSUserDefault.clearUserInfo(context);
-                    EventBus().sendEvent(kSignOut);
-                    NavigatorUtil.pop();
-                  }
+                  showDialog(context: context, builder: (BuildContext context){
+                    return  AlertDialog(
+                      backgroundColor: hexStringToColor('#3E3E55'),
+                      title: Text('Confirm',style: TextStyle(color: Colors.white),),
+                      content: Text('Are you sure you want to delete your account?',style: TextStyle(color: Colors.white),),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: Text('Cancel',style: TextStyle(color: Constants.baseStyleColor),),
+                        ),
+                        TextButton(
+                          onPressed: () async{
+                            final _response = await  Account.logoff();
+                            if(_response.success){
+                              NSUserDefault.clearUserInfo(context);
+                              EventBus().sendEvent(kSignOut);
+                              NavigatorUtil.pop();
+                            }
+                          },
+                          child: Text('Delete',style: TextStyle(color: Constants.baseGreyStyleColor),),
+                        ),
+                      ],
+                    );
+                  });
                 },
                 child: Column(
                   children: [
