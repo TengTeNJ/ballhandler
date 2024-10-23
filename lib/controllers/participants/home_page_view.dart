@@ -144,6 +144,7 @@ class _HomePageViewState extends State<HomePageController> {
             // 如果邮箱为空，则提示用户去绑定
             NavigatorUtil.present(SetEmailController());
           }
+          querySubScribeInfo();
         }
       }else if(event == kPopSubscribeDialog){
         // 订阅弹窗
@@ -162,6 +163,8 @@ class _HomePageViewState extends State<HomePageController> {
           // 如果邮箱为空，则提示用户去绑定
           NavigatorUtil.present(SetEmailController());
         }
+      } else if(event == kFinishSubscribe){
+        querySubScribeInfo();
       }
     });
 

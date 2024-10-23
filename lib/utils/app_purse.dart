@@ -7,11 +7,13 @@ import 'package:code/utils/http_util.dart';
 import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 import '../models/global/user_info.dart';
 import '../models/http/subscribe_model.dart';
 import '../services/http/account.dart';
+import 'global.dart';
 
 class AppPurse {
   StreamSubscription<dynamic>? _subscription;
@@ -55,6 +57,12 @@ class AppPurse {
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           // bool valid = await _verifyPurchase(purchaseDetails);
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+         if( gameUtil.notClickSubscribeDialog){
+           InAppPurchase.instance.completePurchase(purchaseDetails);
+         //  DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
+           return;
+         }
           // 去服务端进行验证
           ApiResponse _response;
           if (Platform.isAndroid) {
@@ -70,6 +78,7 @@ class AppPurse {
               productNo: purchaseDetails.productID,
               receiptDate:
               purchaseDetails.verificationData.serverVerificationData,
+               // originalThirdPayNo:    purchaseDetails.
             );
           }
           // 验证成功 则结束购买流程
@@ -130,6 +139,11 @@ class AppPurse {
     } else {
       TTToast.showToast('Not avaliable');
     }
+  }
+
+  /*恢复购买*/
+  restorePurchase(){
+    InAppPurchase.instance.restorePurchases();
   }
 
   /*

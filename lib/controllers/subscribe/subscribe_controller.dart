@@ -6,6 +6,7 @@ import 'package:code/views/participants/subscribe_new_border_view.dart';
 import 'package:code/views/subscribe/subscribe_page_views.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:status_bar_control/status_bar_control.dart';
 
@@ -13,6 +14,7 @@ import '../../models/global/user_info.dart';
 import '../../route/route.dart';
 import '../../services/http/account.dart';
 import '../../utils/app_purse.dart';
+import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 import '../../utils/notification_bloc.dart';
 
@@ -38,7 +40,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
     StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
     subscription = EventBus().stream.listen((event) {
       if(event == kFinishSubscribe){
-        querySubScribeInfo(context);
+        TTToast.showSuccessInfo('Success!');
+        NavigatorUtil.pop();
       }
     });
   }
@@ -52,7 +55,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
         if(mounted){
           UserProvider.of(buildContext).subscribeModel = model;
           TTToast.showSuccessInfo('Success!');
-          // Future.delayed(Duration(milliseconds: 50),(){
+          // Future.delayed(Duration(milliseconds: 2000),(){
           //   NavigatorUtil.pop();
           // });
         }
@@ -84,8 +87,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
           ),
           Positioned(
               top: Constants.screenHeight(context) * 0.114,
-              left: 32,
-              right: 32,
+              left: 16,
+              right: 16,
               child: Container(
                 width: Constants.screenWidth(context) - 64,
                 child: Constants.boldWhiteTextWidget('Membership Options', 30,
@@ -114,6 +117,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
                           .queryProductDetails(kYearProductIds);
                   if (yearResponse.productDetails.isNotEmpty) {
                     // 开始购买
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    gameUtil.notClickSubscribeDialog = false;
                     TTToast.hideLoading();
                     purse.begainBuy(yearResponse.productDetails.first);
                   }
@@ -149,8 +154,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
                   14,
                   height: 1.3)),
           Positioned(
-            left: 54,
-            right: 54,
+            left: 16,
+            right: 16,
             top: Constants.screenHeight(context) * 0.59 + 88 + 99 + 56,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -160,7 +165,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
                   onTap: () {
                     NavigatorUtil.push(Routes.webview,arguments: kTermsOfServiceUrl);
                   },
-                  child: Constants.mediumBaseTextWidget('Terms of Service', 14),
+                  child: Constants.mediumBaseTextWidget('Terms of Service', 12),
                 ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
@@ -169,7 +174,15 @@ class _SubscribeControllerState extends State<SubscribeController> {
                         arguments: kPrivacyPolicyUrl);
                   },
                   child:
-                      Constants.mediumBaseTextWidget('Privacy Statement', 14),
+                      Constants.mediumBaseTextWidget('Privacy Statement', 12),
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    purse.restorePurchase();
+                  },
+                  child:
+                  Constants.mediumBaseTextWidget('Restore Purchase', 12),
                 )
               ],
             ),

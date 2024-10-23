@@ -50,8 +50,8 @@ class LoginUtil {
         return ApiResponse(success: false, errorMessage: error.toString());
       }
     } else if (type == LoginType.appleID) {
-      if(Platform.isAndroid){
-        final _accessToken = await  AndroidAppleLoginUtil.appleIdLogin();
+      if (Platform.isAndroid) {
+        final _accessToken = await AndroidAppleLoginUtil.appleIdLogin();
         final _map = {
           "avatarUrl": '',
           "gender": 0,
@@ -65,21 +65,26 @@ class LoginUtil {
           NSUserDefault.setKeyValue(kUserEmail, '');
         }
         return _response;
-      }else{
+      } else {
         final credential = await SignInWithApple.getAppleIDCredential(
-            scopes: [
-              AppleIDAuthorizationScopes.email,
-              AppleIDAuthorizationScopes.fullName,
-            ],);
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+        );
         final _map = {
           "avatarUrl": '',
           "gender": 0,
-          "nickName": credential.givenName.toString() +
-              ' ' +
-              credential.familyName.toString(),
+          "nickName": ISEmpty(credential.givenName)
+              ? 'Default'
+              : credential.givenName! +
+                  ' ' +
+                  (ISEmpty(credential.familyName)
+                      ? 'Default'
+                      : credential.familyName!),
           "thirdLoginType": 1,
           "thirdOpenId": credential.userIdentifier,
-          "accountNo": credential.email
+          "accountNo": ISEmpty(credential.email) ? '' : credential.email
         };
         final _response = await Account.thirdLogin(_map);
         if (_response.success) {
@@ -87,8 +92,7 @@ class LoginUtil {
         }
         return _response;
       }
-
-    }else {
+    } else {
       // facebook登录
       FaceBookLoginUtil.facebookLogin();
     }

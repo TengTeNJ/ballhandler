@@ -52,4 +52,5 @@ class GameUtil {
   ]; // 场景列表
   List<int> selectdP3Indexs = []; // 270P3模式选择的组合的索引
   List<P3ItemModel> selectdP3Items = []; // 270P3模式选择的组合的索引
+  bool notClickSubscribeDialog = true; // 标记是否打开过订阅的弹窗并点击购买
 }

@@ -184,12 +184,14 @@ class Account {
   static Future<ApiResponse> applePayVertify(
       {String thirdPayNo = '',
       String productNo = '',
-      String receiptDate = ''}) async {
+      String receiptDate = '',
+      String originalThirdPayNo = ''}) async {
     final _data = {
       'thirdPayNo': thirdPayNo,
       'productNo': productNo,
       'receiptDate': receiptDate,
-      'packageName': 'com.potent.dangle',
+      'packageName': 'com.potent.dangleios',
+      'originalThirdPayNo' : originalThirdPayNo,
     };
     final response =
         await HttpUtil.post('/api/pay/apple', _data, showLoading: true);
