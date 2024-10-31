@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/profile/Integral_detail_controller.dart';
+import 'package:code/controllers/profile/integral_list_controller.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/profile/exchange_rewards_list_view.dart';
 import 'package:code/views/profile/integral_next_view.dart';
+import 'package:code/views/profile/integral_show_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
 
@@ -22,24 +24,32 @@ class IntegralController extends StatefulWidget {
 }
 
 class _IntegralControllerState extends State<IntegralController> {
-
+  List<int> _pucks = [
+    2000,
+    5000,
+    10000
+  ];
+  List<int> _maxPucks = [
+    5000,
+    10000,
+    15000
+  ];
   late StreamSubscription subscription;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    subscription = EventBus().stream.listen((event) async{
-    if(event == kIntegralChange){
-      final _response =  await Profile.queryIMyIntegralData();
-      if(_response.success){
-       widget.model.integral = _response.data ?? 0;
-       if(mounted){
-         setState(() {
-         });
-       }
+    subscription = EventBus().stream.listen((event) async {
+      if (event == kIntegralChange) {
+        final _response = await Profile.queryIMyIntegralData();
+        if (_response.success) {
+          widget.model.integral = _response.data ?? 0;
+          if (mounted) {
+            setState(() {});
+          }
+        }
       }
-    }
     });
   }
 
@@ -57,7 +67,8 @@ class _IntegralControllerState extends State<IntegralController> {
                 children: [
                   Positioned(right: 16, child: CancelButton()),
                   Center(
-                    child: Constants.boldWhiteTextWidget('Your Rewards Progress', 20),
+                    child: Constants.boldWhiteTextWidget(
+                        'Your Rewards Progress', 20),
                   )
                 ],
               ),
@@ -66,7 +77,7 @@ class _IntegralControllerState extends State<IntegralController> {
               height: 16,
             ),
             Container(
-              margin: EdgeInsets.only(left: 16,right: 16),
+              margin: EdgeInsets.only(left: 16, right: 16),
               color: hexStringToColor('#565674'),
               height: 0.5,
             ),
@@ -99,7 +110,8 @@ class _IntegralControllerState extends State<IntegralController> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Center(
-                      child: Padding(padding: EdgeInsets.only(left: 8,right: 8),child: Row(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 8, right: 8), child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Constants.regularBaseTextWidget('Pucks History', 12),
@@ -138,7 +150,29 @@ class _IntegralControllerState extends State<IntegralController> {
             SizedBox(
               height: 16,
             ),
-            Expanded(child: ExchangeRewardListView())
+            Container(
+              margin: EdgeInsets.only(left: 16),
+              width: Constants.screenWidth(context) - 16,
+              height: 161,
+              child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return IntegralShowView(
+                      onTap: () {
+                        NavigatorUtil.present(IntegralListController(
+                            userIntegral: widget.model.integral,
+                            integralMinLevel: _pucks[index],
+                            integralMaxLevel: _maxPucks[index]));
+                      },
+                      userIntegral: widget.model.integral,
+                      integralMinLevel: _pucks[index],
+                      integralMaxLevel: _maxPucks[index],
+                    );
+                  }, separatorBuilder: (context, index) {
+                return SizedBox(width: 8,);
+              }, itemCount: _pucks.length),
+            )
+            //Expanded(child: ExchangeRewardListView())
           ],
         ),
         decoration: BoxDecoration(

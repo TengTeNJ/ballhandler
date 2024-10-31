@@ -98,6 +98,19 @@ class Participants {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     print('score=${data.score}');
+
+    // 保存groupId,只有P3模式下才有效
+    List<int> indexs = gameUtil.selectdP3Indexs;
+    String groupId = '';
+    if(indexs.isNotEmpty && gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+      for(int i = 0; i < indexs.length; i  ++){
+        groupId = groupId + indexs[i].toString() +  ',';
+      }
+      if(groupId.length > 0){
+        groupId = groupId.substring(0,groupId.length - 1);
+      }
+    }
+
     // 组装数据
     final _data = {
       "activityId":
@@ -110,7 +123,8 @@ class Participants {
       "trainVideo": data.videoPath ?? '',
       "trainIntegral": data.Integral,
       "trainType": gameUtil.isFromAirBattle ? 1 : 0,
-      "videoSize": size.toString()
+      "videoSize": size.toString(),
+      'groupId' : groupId
     };
     final response =
         await HttpUtil.post('/api/train/save', _data, showLoading: true);

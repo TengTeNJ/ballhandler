@@ -9,7 +9,10 @@ import 'package:flutter/material.dart';
 import '../../services/http/profile.dart';
 
 class ExchangeRewardListView extends StatefulWidget {
-  const ExchangeRewardListView({super.key});
+  int integralMinLevel = 0;
+  int integralMaxLevel = 2000;
+  int userIntegral = 0; // 用户的积分
+  ExchangeRewardListView({this.integralMinLevel = 0,this.integralMaxLevel = 2000,this.userIntegral = 0});
 
   @override
   State<ExchangeRewardListView> createState() => _ExchangeRewardListViewState();
@@ -23,6 +26,7 @@ class _ExchangeRewardListViewState extends State<ExchangeRewardListView> {
     // TODO: implement initState
     super.initState();
     queryExchangeGoodsData();
+    print('widget.integralMinLevel = ${widget.integralMinLevel} widget.integralMaxLevel = ${widget.integralMaxLevel}');
   }
 
 
@@ -30,14 +34,22 @@ class _ExchangeRewardListViewState extends State<ExchangeRewardListView> {
   queryExchangeGoodsData() async {
     final _response = await Profile.queryIExchangeGoodsListData(1);
     if (_response.success && _response.data != null) {
-      _datas.addAll(_response.data!);
-      setState(() {});
+      _datas.clear();
+      _response.data!.forEach((element){
+          if( widget.integralMaxLevel >= element.goodsIntegral ){
+            _datas.add(element);
+          }
+      });
+      setState(() {
+        print('_datas = ${_datas}');
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(left: 16,right: 16),
       width: Constants.screenWidth(context) - 32,
       child: _datas.length == 0 ? NoDataView() : ListView.separated(
           itemBuilder: (context, index) {

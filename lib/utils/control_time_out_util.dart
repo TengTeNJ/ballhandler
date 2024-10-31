@@ -27,7 +27,7 @@ class ControlTimeOutUtil{
   set retryTimes(int times){
     _retryTimes = times;
     if(_retryTimes > 10){
-      TTToast.showErrorInfo('超时次数达到上限');
+      TTToast.showErrorInfo('The timeout limit has been reached. Please check the device.');
       ControlTimeOutUtil().controlLedId ++;
       print('超时次数到达上限===${ControlTimeOutUtil().controlLedId}');
       this.completer.complete(true);

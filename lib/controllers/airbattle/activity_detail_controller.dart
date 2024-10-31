@@ -162,7 +162,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                           )
                         : Container(), // 冠军
                     (detailModel.activityStatus != 0 &&
-                            detailModel.self.nickName != null)
+                            detailModel.self.nickName != null && detailModel.self.trainScore != '-')
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
