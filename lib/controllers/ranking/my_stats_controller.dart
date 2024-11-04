@@ -261,9 +261,9 @@ class _MyStatsControllerState extends State<MyStatsController> {
 
 /*折线图*/
 Widget LineAreaView(List<MyStatsModel> datas) {
-  if(datas.length == 0){
-    return NoDataView();
-  }
+  // if(datas.length == 0){
+  //   return NoDataView();
+  // }
   int page = 1;
   if (datas.length > 30) {
     page = (datas.length / 30).ceil();
@@ -283,9 +283,9 @@ Widget LineAreaView(List<MyStatsModel> datas) {
 
 /*柱状图*/
 Widget BarView(List<MyStatsModel> datas) {
-  if(datas.length == 0){
-    return NoDataView();
-  }
+  // if(datas.length == 0){
+  //   return NoDataView();
+  // }
   int page = 1;
   if (datas.length > 20) {
     page = 2;

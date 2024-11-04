@@ -32,7 +32,8 @@ class _RankingItemViewState extends State<RankingItemView> {
         if (UserProvider.of(context).subscribeModel.subscribeStatus != 1) {
           // 未订阅 则限制进入
          // NavigatorUtil.push(Route)
-          NavigatorUtil.push(Routes.subscribeintroduce);
+          NavigatorUtil.push(Routes.subscribe);
+          // NavigatorUtil.push(Routes.subscribeintroduce);
           //TTDialog.subscribeDialog(context);
           return;
         }

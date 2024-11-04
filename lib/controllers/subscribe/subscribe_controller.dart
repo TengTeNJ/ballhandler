@@ -167,6 +167,14 @@ class _SubscribeControllerState extends State<SubscribeController> {
                   },
                   child: Constants.mediumBaseTextWidget('Terms of Service', 12),
                 ),
+                Container(
+                  width: 1,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6)
+                  ),
+                ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
@@ -175,6 +183,14 @@ class _SubscribeControllerState extends State<SubscribeController> {
                   },
                   child:
                       Constants.mediumBaseTextWidget('Privacy Statement', 12),
+                ),
+                Container(
+                  width: 1,
+                  height: 12,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6)
+                  ),
                 ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,

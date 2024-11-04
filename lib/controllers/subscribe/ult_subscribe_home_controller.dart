@@ -61,6 +61,17 @@ class _UltSubscribeHomeControllerState
       backgroundColor: Constants.baseControllerColor,
       body: Stack(
         children: [
+          _currentIndex == 0 ? Positioned(
+              child: Container(
+                decoration: BoxDecoration(
+                  // color: Colors.red,
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    image: AssetImage('images/launch/subscribe_background.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              )) : Container(),
           Positioned(
               left: 0,
               right: 0,
