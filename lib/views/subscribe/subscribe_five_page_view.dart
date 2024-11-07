@@ -24,9 +24,8 @@ class SubscribeFivePageView extends StatelessWidget {
           height: 16,
         ),
         Container(
-          width: Constants.screenWidth(context) - 108,
           child: Constants.mediumWhiteTextWidget(
-              'Monitor your improvements over time.Gain insights into your training, and identify areas to focus on.',
+              'Monitor your improvements over time.\nGain insights into your training, and identify areas\nto focus on.',
               14,height: 1.3),
         )
       ],

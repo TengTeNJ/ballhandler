@@ -13,7 +13,6 @@ import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/app_purse.dart';
-import 'package:code/utils/event_track.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/message_ytil.dart';
 import 'package:code/utils/navigator_util.dart';

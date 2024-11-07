@@ -24,9 +24,8 @@ class SubscribeFourPageView extends StatelessWidget {
           height: 16,
         ),
         Container(
-          width: Constants.screenWidth(context) - 108,
           child: Constants.mediumWhiteTextWidget(
-              'Track your progress and see how you rank against players worldwide',
+              'Track your progress and see how you rank against\nplayers worldwide',
               14,height: 1.3),
         )
       ],

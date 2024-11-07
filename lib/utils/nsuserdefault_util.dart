@@ -83,6 +83,7 @@ class NSUserDefault {
     NSUserDefault.setKeyValue(kUserName, 'Guest');
     NSUserDefault.setKeyValue(kAvatar, '');
     NSUserDefault.setKeyValue(kBrithDay, '--');
+    NSUserDefault.setKeyValue(kShowLaunch, '');
     initUserInfo(context);
   }
 }

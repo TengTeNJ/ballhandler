@@ -171,7 +171,11 @@ class _IntegralControllerState extends State<IntegralController> {
                   }, separatorBuilder: (context, index) {
                 return SizedBox(width: 8,);
               }, itemCount: _pucks.length),
-            )
+            ),
+            SizedBox(
+              height: 32,
+            ),
+            Constants.regularWhiteTextWidget('Gear up with our referral rewards!\nGet enough pucks will unlockawesome gifts.', 14,height: 1.2),
             //Expanded(child: ExchangeRewardListView())
           ],
         ),

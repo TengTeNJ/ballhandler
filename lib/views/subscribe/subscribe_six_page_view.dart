@@ -24,9 +24,8 @@ class SubscribeSixPageView extends StatelessWidget {
           height: 16,
         ),
         Container(
-          width: Constants.screenWidth(context) - 108,
           child: Constants.mediumWhiteTextWidget(
-              'Earn pucks by completing challenges and battles.Redeem your pucks for exclusive gifts and prizes!',
+              'Earn pucks by completing challenges and battles.\nRedeem your pucks for exclusive gifts and prizes!',
               14,height: 1.3),
         )
       ],

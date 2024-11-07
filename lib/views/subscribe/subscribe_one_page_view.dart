@@ -25,13 +25,10 @@ class SubscribeOnePageView extends StatelessWidget {
         SizedBox(
           height: Constants.screenHeight(context) * 0.26,
         ),
-        Padding(
-          padding: EdgeInsets.only(left: 44, right: 44),
-          child: Constants.mediumWhiteTextWidget(
-              'Elevate your training and dominate the game Let’s take your skills to the next level!',
-              14,
-              height: 1.3),
-        )
+        Constants.mediumWhiteTextWidget(
+            'Elevate your training and dominate the game\nLet’s take your skills to the next level!',
+            14,
+            height: 1.3)
       ],
     );
   }
