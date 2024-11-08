@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/views/base/user_header_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,21 +26,7 @@ class _UserInfoViewState extends State<UserInfoView> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(27),
-                child: userModel.avatar.length > 0
-                    ? Image.network(
-                        userModel.avatar,
-                        width: 54,
-                        height: 54,
-                        fit: BoxFit.fill,
-                      )
-                    : Container(
-                        width: 54,
-                        height: 54,
-                        color: hexStringToColor('#AA9155'),
-                      ),
-              ),
+              UserHeaderView(size: 54,),
               SizedBox(
                 width: 16,
               ),

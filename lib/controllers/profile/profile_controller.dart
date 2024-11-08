@@ -12,6 +12,7 @@ import 'package:code/utils/milestone_util.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/string_util.dart';
+import 'package:code/views/base/user_header_view.dart';
 import 'package:code/views/profile/membership_scb_view.dart';
 import 'package:code/views/profile/profile_grid_list_view.dart';
 import 'package:code/views/profile/progress_data_view.dart';
@@ -185,20 +186,8 @@ int scoreLevel = -1;
                             }
                           }
                         },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(32),
-                          child: userModel.avatar.length > 0
-                              ? Image.network(
-                                  userModel.avatar,
-                                  width: 64,
-                                  height: 64,
-                                  fit: BoxFit.fill,
-                                )
-                              : Container(
-                                  width: 54,
-                                  height: 54,
-                                  color: hexStringToColor('#AA9155'),
-                                ),
+                        child: UserHeaderView(
+                          size: 64,
                         ),
                       ),
                     ],
