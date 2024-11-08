@@ -24,9 +24,8 @@ class SubscribeThreePageView extends StatelessWidget {
           height: 16,
         ),
         Container(
-          width: Constants.screenWidth(context) - 108,
           child: Constants.mediumWhiteTextWidget(
-              'Get automated stats, record your session for video highlights and replay',
+              'Get automated stats, record your session for\nvideo highlights and replay',
               14,height: 1.3),
         )
       ],

@@ -268,7 +268,7 @@ int scoreLevel = -1;
                   SizedBox(
                     height: 40,
                   ),
-                  Constants.mediumWhiteTextWidget('Pending discussion', 16),
+                  Constants.mediumWhiteTextWidget('My Career', 16),
                   SizedBox(
                     height: 12,
                   ),

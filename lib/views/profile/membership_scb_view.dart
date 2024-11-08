@@ -33,7 +33,7 @@ class _MemberShipScbViewState extends State<MemberShipScbView> {
               ),
               SizedBox(width: 10,),
               Text(
-                'Membership Subscription',
+                'Subscribe to DanglerElite',
                 style: TextStyle(
                     decoration: TextDecoration.underline,
                     // 添加下划线

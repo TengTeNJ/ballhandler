@@ -14,6 +14,10 @@ Map getScoreMileStoneData(int score) {
   if(_map != -1){
     int index = _avgDatas.indexOf(_map);
     level = index + 1;
+  }else{
+    if(score > 0){
+      level = 0;
+    }
   }
   return {'data': array, "level": level};
 }
@@ -31,6 +35,10 @@ Map getAvgPaceMileStoneData(num avgPace) {
   if(_map != -1 && avgPace != 0){
     int index = _avgDatas.indexOf(_map);
     level = index + 1;
+  }else{
+    if(avgPace > 0){
+      level = 0;
+    }
   }
   return {'data': array, "level": level};
 }
