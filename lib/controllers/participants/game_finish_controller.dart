@@ -147,7 +147,8 @@ class _GameFinishControllerState extends State<GameFinishController> {
                     .of(context)
                     .hasLogin) {
                   final _filePath = widget.dataModel.videoPath;
-                  if (widget.dataModel.videoPath.length > 0) {
+                  if (widget.dataModel.videoPath.length > 0  && UserProvider.of(context).subscribeModel.subscribeStatus ==1) {
+                    // 登录的订阅用户视频才上传
                     final _urlResponse = await Participants.uploadAsset(
                         widget.dataModel.videoPath);
                     widget.dataModel.videoPath = _urlResponse.data ?? '';

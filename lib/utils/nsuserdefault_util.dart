@@ -85,5 +85,6 @@ class NSUserDefault {
     NSUserDefault.setKeyValue(kBrithDay, '--');
     NSUserDefault.setKeyValue(kShowLaunch, '');
     initUserInfo(context);
+    UserProvider.of(context).hasLogin = false;
   }
 }

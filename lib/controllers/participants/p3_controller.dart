@@ -52,7 +52,7 @@ class _P3ControllerState extends State<P3Controller> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Constants.mediumWhiteTextWidget('Free Mode Training', 22),
+                      Constants.mediumWhiteTextWidget('Customize Your Training', 22),
                       SizedBox(
                         height: 40,
                       ),

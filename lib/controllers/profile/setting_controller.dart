@@ -130,6 +130,12 @@ class _SettingControllerState extends State<SettingController> {
                   detailTitles: [''],
                   selectItem: (index) {
                     if(index == 0){
+                      if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
+                        // 未订阅 则限制进入
+                        NavigatorUtil.push(Routes.subscribe);
+                        //TTDialog.subscribeDialog(context);
+                        return;
+                      }
                       NavigatorUtil.push(Routes.videolist);
                     }
                   }),

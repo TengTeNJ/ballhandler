@@ -11,6 +11,8 @@ import 'package:code/views/profile/integral_show_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/global/user_info.dart';
+import '../../route/route.dart';
 import '../../services/http/profile.dart';
 import '../../utils/notification_bloc.dart';
 
@@ -159,6 +161,12 @@ class _IntegralControllerState extends State<IntegralController> {
                   itemBuilder: (context, index) {
                     return IntegralShowView(
                       onTap: () {
+                        if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
+                          // 未订阅 则限制进入
+                          NavigatorUtil.push(Routes.subscribe);
+                          //TTDialog.subscribeDialog(context);
+                          return;
+                        }
                         NavigatorUtil.present(IntegralListController(
                             userIntegral: widget.model.integral,
                             integralMinLevel: _pucks[index],

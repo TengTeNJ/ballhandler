@@ -40,7 +40,7 @@ class _P3GuideControllerState extends State<P3GuideController> {
                child: Column(
                  children: [
                    SizedBox(height: 59,),
-                   Constants.mediumWhiteTextWidget('P3 Free Mode Training', 24),
+                   Constants.mediumWhiteTextWidget('Customize Your Training', 24),
                    SizedBox(height: 62,),
                    Expanded(child: ListView.separated(
                        itemBuilder: (context, index) {
