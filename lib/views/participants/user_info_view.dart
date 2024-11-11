@@ -7,6 +7,9 @@ import 'package:code/views/base/user_header_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../controllers/account/login_page_controller.dart';
+import '../../utils/navigator_util.dart';
+
 class UserInfoView extends StatefulWidget {
   bool hasLogin;
   Function? subscribeTap;
@@ -48,7 +51,7 @@ class _UserInfoViewState extends State<UserInfoView> {
                             fontWeight: FontWeight.w500));
                   }),
                   widget.hasLogin &&
-                      UserProvider.of(context).subscribeModel.subscribeStatus != 1 ? GestureDetector(
+                      UserProvider.of(context).subscribeModel.subscribeStatus != 1 || !widget.hasLogin  ? GestureDetector(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -76,6 +79,12 @@ class _UserInfoViewState extends State<UserInfoView> {
                     behavior: HitTestBehavior.opaque,
                     onTap: (){
                       if (widget.subscribeTap != null) {
+                        // 未登录的话拦截
+                        final _hasLogin = UserProvider.of(context).hasLogin;
+                        if (_hasLogin == false) {
+                          NavigatorUtil.present(LoginPageController());
+                          return;
+                        }
                         widget.subscribeTap!();
                       }
                     },
