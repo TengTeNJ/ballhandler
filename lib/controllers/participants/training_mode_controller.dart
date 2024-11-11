@@ -24,6 +24,7 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import '../../models/global/user_info.dart';
 import '../../utils/ble_util.dart';
 import '../../utils/event_track.dart';
 import '../../utils/global.dart';
@@ -32,6 +33,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 
 import '../../utils/toast.dart';
+import '../account/login_page_controller.dart';
 
 class TrainingModeController extends StatefulWidget {
   const TrainingModeController({super.key});
@@ -45,6 +47,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
   String title = 'Stickhandling';
   int tapCount = 0;
   Timer? timer;
+
   // List View
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
@@ -52,6 +55,22 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
         model: _datas[index],
         scanBleList: () async {
           GameUtil gameUtil = GetIt.instance<GameUtil>();
+          // 270的P3模式需要订阅才能玩耍未登录的话拦截
+          if (gameUtil.gameScene == GameScene.erqiling && index == 2) {
+            final _hasLogin = UserProvider.of(context).hasLogin;
+            if (_hasLogin == false) {
+              NavigatorUtil.present(LoginPageController());
+              return;
+            } else {
+              if (UserProvider.of(context).subscribeModel.subscribeStatus !=
+                  1) {
+                // 未订阅 则限制进入
+                NavigatorUtil.push(Routes.subscribe);
+                //TTDialog.subscribeDialog(context);
+                return;
+              }
+            }
+          }
           gameUtil.selectRecord = false;
           if (BluetoothManager().conectedDeviceCount.value == 0) {
             if (await SystemUtil.isIPad()) {
@@ -105,12 +124,12 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                 // 设置游戏状态idle状态
                 BluetoothManager().gameData.utimateGameSatatu = 0;
                 // 270的P3自由控制模式
-               Future.delayed(Duration(milliseconds: 500),(){
-                 BluetoothManager().writerDataToDevice(
-                     gameUtil.selectedDeviceModel, p3ScreenShow());
-                 BluetoothManager().writerDataToDevice(
-                     gameUtil.selectedDeviceModel, scoreShow(0));
-               });
+                Future.delayed(Duration(milliseconds: 500), () {
+                  BluetoothManager().writerDataToDevice(
+                      gameUtil.selectedDeviceModel, p3ScreenShow());
+                  BluetoothManager().writerDataToDevice(
+                      gameUtil.selectedDeviceModel, scoreShow(0));
+                });
               }
               const List<Widget> _controllers = [
                 P1Controller(),
@@ -156,23 +175,18 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       timer = null;
       GameUtil gameUtil = GetIt.instance<GameUtil>();
       if (gameUtil.gameScene == GameScene.erqiling &&
-          BluetoothManager()
-              .hasConnectedDeviceList
-              .isNotEmpty) {
+          BluetoothManager().hasConnectedDeviceList.isNotEmpty) {
         // 确认已连接的设备中是否有和当前模式匹配的,有的话则取第一个
         List<BLEModel> devices = BluetoothManager()
             .hasConnectedDeviceList
-            .where((element) =>
-            element.deviceName.contains(k270_Name))
+            .where((element) => element.deviceName.contains(k270_Name))
             .toList();
         if (devices != null) {
           gameUtil.selectedDeviceModel = devices.first;
           NavigatorUtil.push(Routes.devicedebug);
         }
       }
-    } else {
-
-    }
+    } else {}
   }
 
   void _listener() {
@@ -231,7 +245,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
                   GestureDetector(
                     child:
                         Constants.boldWhiteTextWidget(title, 30, height: 0.8),
-                    onTap: (){
+                    onTap: () {
                       _handleTap();
                     },
                     onLongPress: () {
