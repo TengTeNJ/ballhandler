@@ -62,7 +62,7 @@ class HttpUtil {
       }
     } catch (e) {
       if (showLoading) {
-        TTToast.showErrorInfo('unknow error');
+        TTToast.showErrorInfo('Unknown error');
       }
       _handleError(e);
       rethrow;
@@ -77,7 +77,6 @@ class HttpUtil {
     }
     try {
       print('post数据请求data:${path}');
-      print('post数据请求data:${data}');
       // 根据登录状态判断是否传入token
       Options _options = Options();
       final _token =  await NSUserDefault.getValue<String>(kAccessToken);

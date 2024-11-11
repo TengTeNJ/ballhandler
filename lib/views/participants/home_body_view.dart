@@ -50,11 +50,11 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 24,
                 ),
                 Container(
                   // color: Colors.red,
-                  child: Constants.regularWhiteTextWidget(widget.model.dictRemark,10,height: 1.5),
+                  child: Constants.regularWhiteTextWidget(widget.model.dictRemark,12,height: 1.5),
                 ),
               ],
             ),

@@ -17,7 +17,7 @@ class _ProgressDataViewState extends State<ProgressDataView> {
   Widget build(BuildContext context) {
     return Container(
       height: 91,
-      padding: EdgeInsets.only(left: 12,right: 36),
+      padding: EdgeInsets.only(left: 12,right: 32),
       decoration: BoxDecoration(
           color: hexStringToColor('#3E3E55'),
           borderRadius: BorderRadius.circular(5)),
@@ -25,33 +25,34 @@ class _ProgressDataViewState extends State<ProgressDataView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Constants.regularWhiteTextWidget('Your  Rewards Progress', 16),
-          Column(
+          Transform.translate(child:  Constants.regularWhiteTextWidget('Your  Rewards Progress', 16,height: 0.8), offset: Offset(0.0,6.0)),
+          Container(
+            child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(width: Constants.screenWidth(context) * 0.53,height: 6,child: LinearProgressIndicator(
+                  Container(width: Constants.screenWidth(context) * 0.56,height: 6,child: LinearProgressIndicator(
                     minHeight: 6,
                     borderRadius: BorderRadius.circular(10),
                     value: widget.model.integral/widget.model.upperLimit,
                     valueColor: AlwaysStoppedAnimation<Color>(
                         Constants.baseStyleColor),
                   ),),
-                  Image(image: AssetImage('images/profile/progress_${widget.model.memberLevel}.png'),width: 37,height: 42,)
+                  Image(image: AssetImage('images/profile/progress_${widget.model.memberLevel}.png'),width: 46,height: 50,)
                 ],
               ),
-             Transform.translate(child:  Row(
-               children: [
-                 Text(widget.model.integral.toString(),style: TextStyle(color: Constants.baseStyleColor,fontSize: 14,height: 1.0),),
-                 Text('/' + widget.model.upperLimit.toString(), style: TextStyle(color: Colors.white,fontSize: 14,height: 1.0),),
-               ],
-             ),  offset: Offset(0.0, -10.0),
-             ),
+              Transform.translate(child:  Row(
+                children: [
+                  Text(widget.model.integral.toString(),style: TextStyle(color: Constants.baseStyleColor,fontSize: 14,height: 0.8),),
+                  Text('/' + widget.model.upperLimit.toString(), style: TextStyle(color: Colors.white,fontSize: 14,height: 0.8),),
+                ],
+              ),  offset: Offset(0.0, -6.0),
+              ),
             ],
-          )
+          ),),
         ],
       ),
     );
