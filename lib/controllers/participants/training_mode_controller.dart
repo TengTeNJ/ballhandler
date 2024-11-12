@@ -26,12 +26,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import '../../models/global/user_info.dart';
 import '../../utils/ble_util.dart';
-import '../../utils/event_track.dart';
 import '../../utils/global.dart';
 import '../../utils/system_device.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
-
 import '../../utils/toast.dart';
 import '../account/login_page_controller.dart';
 
@@ -157,7 +153,6 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     const tapSpeed = 2000; // 300毫秒内完成点击
 
     if (timer == null || !timer!.isActive) {
-      print('0000');
       tapCount = 1;
       timer = Timer(Duration(milliseconds: tapSpeed), () {
         print('连续点击次数不足$maxTaps次');
