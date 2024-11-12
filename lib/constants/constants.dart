@@ -48,6 +48,7 @@ class Constants {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           height: height,
@@ -66,6 +67,7 @@ class Constants {
     return Text(
       maxLines: maxLines ?? null,
       textAlign: textAlign,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           overflow: overflow,
@@ -84,6 +86,7 @@ class Constants {
     return Text(
       maxLines: maxLines ?? null,
       textAlign: textAlign,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           height: height,
@@ -101,6 +104,7 @@ class Constants {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           height: height,
@@ -118,6 +122,7 @@ class Constants {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           height: height,
@@ -135,6 +140,7 @@ class Constants {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           height: height,
@@ -152,6 +158,7 @@ class Constants {
     return Text(
       maxLines: maxLines ?? null,
       textAlign: textAlign,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           height: height,
@@ -169,6 +176,7 @@ class Constants {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
         height: height,
@@ -187,6 +195,7 @@ class Constants {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           height: height,
@@ -204,6 +213,7 @@ class Constants {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           height: height,
@@ -223,6 +233,7 @@ class Constants {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines ?? null,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           overflow: overflow,
@@ -234,6 +245,26 @@ class Constants {
     );
   }
 
+  static Text customTextBaseColorWidget(String text, double fontSize, Color color,
+      {int? maxLines,
+        TextAlign textAlign = TextAlign.center,
+        double height = 1.0,
+        FontWeight? fontWeight,
+        TextOverflow? overflow}) {
+    return Text(
+      textAlign: textAlign,
+      maxLines: maxLines ?? null,
+      textScaler: TextScaler.noScaling,
+      text,
+      style: TextStyle(
+          overflow: overflow,
+          height: height,
+          fontFamily: 'SanFranciscoDisplay',
+          fontWeight: fontWeight,
+          color: color,
+          fontSize: fontSize),
+    );
+  }
   // DS-DIGI
   static Text digiRegularWhiteTextWidget(String text, double fontSize,
       {int maxLines = 1,
@@ -242,6 +273,7 @@ class Constants {
     return Text(
       textAlign: textAlign,
       maxLines: maxLines,
+      textScaler: TextScaler.noScaling,
       text,
       style: TextStyle(
           height: height,

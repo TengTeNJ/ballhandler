@@ -43,12 +43,15 @@ class _UserInfoViewState extends State<UserInfoView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Consumer<UserModel>(builder: (context, user, child) {
-                    return Text('Hello, ' + user.userName + '!',
-                        style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white,
-                            fontFamily: 'SanFranciscoDisplay',
-                            fontWeight: FontWeight.w500));
+
+                   return Constants.mediumWhiteTextWidget('Hello, ' + user.userName + '!', 24,height: 1.3);
+
+                    // return Text('Hello, ' + user.userName + '!',
+                    //     style: TextStyle(
+                    //         fontSize: 24,
+                    //         color: Colors.white,
+                    //         fontFamily: 'SanFranciscoDisplay',
+                    //         fontWeight: FontWeight.w500));
                   }),
                   widget.hasLogin &&
                       UserProvider.of(context).subscribeModel.subscribeStatus != 1 || !widget.hasLogin  ? GestureDetector(

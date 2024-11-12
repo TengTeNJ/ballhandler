@@ -30,27 +30,11 @@ class TBTextView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: crossAxisAlignment,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-              color: titleColor,
-              fontFamily: 'SanFranciscoDisplay',
-              fontSize: titleFontSize,
-              height: 1.0),
-        ),
+        Constants.customTextBaseColorWidget(title, fontWeight: detailFontWeight, titleFontSize ?? 20, titleColor ?? Colors.white),
         SizedBox(
           height: 6,
         ),
-        Text(
-          detailTitle,
-          maxLines: 3,
-          style: TextStyle(
-              color: detailColor,
-              fontWeight: detailFontWeight,
-              fontFamily: 'SanFranciscoDisplay',
-              fontSize: detailFontSize,
-              height: 1.0),
-        ),
+        Constants.customTextBaseColorWidget(detailTitle, fontWeight: detailFontWeight, detailFontSize ?? 12, detailColor ?? Color.fromRGBO(177, 177, 177, 1)),
       ],
     );
   }

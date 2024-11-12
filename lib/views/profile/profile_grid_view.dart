@@ -54,6 +54,7 @@ class _ProfileGridViewState extends State<ProfileGridView> {
                     Container(
                       constraints: BoxConstraints(maxWidth: (Constants.screenWidth(context) - 56) / 2.0 - 44),
                       child: Text(
+                        textScaler: TextScaler.noScaling,
                         widget.title ?? '--',
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -64,6 +65,7 @@ class _ProfileGridViewState extends State<ProfileGridView> {
                     ),
                     SizedBox(width: 4,),
                     Text(
+                      textScaler: TextScaler.noScaling,
                       widget.unit ?? 'Sec',
                       style: TextStyle(
                           fontFamily: 'SanFranciscoDisplay',
@@ -75,6 +77,7 @@ class _ProfileGridViewState extends State<ProfileGridView> {
                   height: 4,
                 ),
                 Text(
+                  textScaler: TextScaler.noScaling,
                   widget.des ?? 'Best React Time',
                   style: TextStyle(
                       fontFamily: 'SanFranciscoDisplay',

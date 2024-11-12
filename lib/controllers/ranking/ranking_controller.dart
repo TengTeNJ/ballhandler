@@ -10,10 +10,8 @@ import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
-
 import '../../models/global/user_info.dart';
 import '../../services/http/participants.dart';
-import '../../utils/dialog.dart';
 import '../../utils/global.dart';
 import '../../utils/nsuserdefault_util.dart';
 

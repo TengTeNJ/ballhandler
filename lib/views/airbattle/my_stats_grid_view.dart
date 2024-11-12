@@ -118,6 +118,7 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
                       children: [
                         Text(
                           widget.value ?? '-',
+                          textScaler: TextScaler.noScaling,
                           style: TextStyle(
                               fontSize: kFontSize(context, 40),
                               color: Colors.white,
@@ -129,6 +130,7 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
                         ),
                         Text(
                           _desTitles[widget.index ?? 0],
+                          textScaler: TextScaler.noScaling,
                           style: TextStyle(
                               fontSize: kFontSize(context, 10),
                               color: Colors.white,
@@ -151,6 +153,7 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
                           children: [
                             Text(
                               _vsTitles[widget.selectType],
+                              textScaler: TextScaler.noScaling,
                               style: TextStyle(
                                   color: hexStringToColor('#B1B1B1'),
                                   fontFamily: 'SanFranciscoDisplay',
