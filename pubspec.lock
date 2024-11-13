@@ -1861,6 +1861,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.14.0"
+  widget_tooltip:
+    dependency: "direct main"
+    description:
+      name: widget_tooltip
+      sha256: cc528c0fed31e468315e49d397aa0af4fbd120686592d3843c638e225ff7feda
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.5"
   win32:
     dependency: transitive
     description:

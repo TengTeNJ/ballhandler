@@ -92,6 +92,7 @@ dependencies:
   animated_custom_dropdown: ^3.1.1
   firebase_crashlytics: ^3.5.7
   native_device_orientation: ^2.0.3
+  widget_tooltip: ^1.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

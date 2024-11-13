@@ -1,6 +1,7 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:widget_tooltip/widget_tooltip.dart';
 
 class ProfileGridView extends StatefulWidget {
   String? assetPath;
@@ -52,37 +53,32 @@ class _ProfileGridViewState extends State<ProfileGridView> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      constraints: BoxConstraints(maxWidth: (Constants.screenWidth(context) - 56) / 2.0 - 44),
-                      child: Text(
-                        textScaler: TextScaler.noScaling,
-                        widget.title ?? '--',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontFamily: 'SanFranciscoDisplay',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 40, color: Colors.white, height: 0.8),
-                      ),
+                      constraints: BoxConstraints(
+                          maxWidth:
+                              (Constants.screenWidth(context) - 56) / 2.0 - 44),
+                      child: widget.title != null && widget.title!.length > 4
+                          ? WidgetTooltip(
+                              triggerMode: WidgetTooltipTriggerMode.tap,
+                              message: Constants.boldWhiteTextWidget(
+                                  widget.title ?? '--', 30, height: 0.8),
+                              child: Constants.boldWhiteTextWidget(
+                                  widget.title ?? '--', 40, height: 0.8))
+                          : Constants.boldWhiteTextWidget(
+                              widget.title ?? '--', 40,
+                              height: 0.8),
                     ),
-                    SizedBox(width: 4,),
-                    Text(
-                      textScaler: TextScaler.noScaling,
-                      widget.unit ?? 'Sec',
-                      style: TextStyle(
-                          fontFamily: 'SanFranciscoDisplay',
-                          fontSize: 10, color: Colors.white, height: 0.8),
-                    )
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Constants.regularWhiteTextWidget(widget.unit ?? 'Sec', 10,
+                        height: 0.8)
                   ],
                 ),
                 SizedBox(
                   height: 4,
                 ),
-                Text(
-                  textScaler: TextScaler.noScaling,
-                  widget.des ?? 'Best React Time',
-                  style: TextStyle(
-                      fontFamily: 'SanFranciscoDisplay',
-                      color: hexStringToColor('#B1B1B1'), fontSize: 14),
-                )
+                Constants.regularGreyTextWidget(
+                    widget.des ?? 'Best React Time', 14)
               ],
             ),
           ),
