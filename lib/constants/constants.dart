@@ -156,6 +156,7 @@ class Constants {
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
+      overflow: TextOverflow.ellipsis,
       maxLines: maxLines ?? null,
       textAlign: textAlign,
       textScaler: TextScaler.noScaling,
@@ -174,6 +175,7 @@ class Constants {
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
+      overflow: TextOverflow.ellipsis,
       textAlign: textAlign,
       maxLines: maxLines,
       textScaler: TextScaler.noScaling,

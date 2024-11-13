@@ -34,17 +34,23 @@ class GameModel {
   String modeVideo = ''; // 指导视频
 }
 
-class GameJoinCountModel{
-  int totalMemberCount  = 0; // 活动+日常训练总人数
-  int activityMemberCount = 0;// 活动参与总人数
+class GameJoinCountModel {
+  int totalMemberCount = 0; // 活动+日常训练总人数
+  int activityMemberCount = 0; // 活动参与总人数
   int trainMemberCount = 0; // 日常训练总人数
 }
 
 class SceneModel {
   String dictKey = '2';
   String dictValue = 'Ultimater Dangler';
-  String dictRemark = 'A groundbreaking training tool meticulously engineered to elevate your stickhandling, enhance your puck control, and secure your competitive advantage. This cutting-edge system sets a new standard in hockey training. With its innovative 270° design and smart technologies you\'re not just practicing with a static tool; you\'re immersing yourself in a holistic training environment.';
-  SceneModel({this.dictKey = '2',this.dictValue = 'Ultimater Dangler',this.dictRemark = 'A groundbreaking training tool meticulously engineered to elevate your stickhandling, enhance your puck control, and secure your competitive advantage. This cutting-edge system sets a new standard in hockey training. With its innovative 270° design and smart technologies you\'re not just practicing with a static tool; you\'re immersing yourself in a holistic training environment.'});
+  String dictRemark =
+      'A groundbreaking training tool meticulously engineered to elevate your stickhandling, enhance your puck control, and secure your competitive advantage. This cutting-edge system sets a new standard in hockey training. With its innovative 270° design and smart technologies you\'re not just practicing with a static tool; you\'re immersing yourself in a holistic training environment.';
+
+  SceneModel(
+      {this.dictKey = '2',
+      this.dictValue = 'Ultimater Dangler',
+      this.dictRemark =
+          'A groundbreaking training tool meticulously engineered to elevate your stickhandling, enhance your puck control, and secure your competitive advantage. This cutting-edge system sets a new standard in hockey training. With its innovative 270° design and smart technologies you\'re not just practicing with a static tool; you\'re immersing yourself in a holistic training environment.'});
 }
 
 class TrainListModel {
@@ -94,20 +100,23 @@ class Participants {
   }
 
 /*保存游戏数据*/
-  static Future<ApiResponse<String>> saveGameData(GameOverModel data,{double size = 0}) async {
+  static Future<ApiResponse<String>> saveGameData(GameOverModel data,
+      {double size = 0}) async {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     print('score=${data.score}');
-
+    print('end time = ${data.endTime}');
     // 保存groupId,只有P3模式下才有效
     List<int> indexs = gameUtil.selectdP3Indexs;
     String groupId = '';
-    if(indexs.isNotEmpty && gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
-      for(int i = 0; i < indexs.length; i  ++){
-        groupId = groupId + indexs[i].toString() +  ',';
+    if (indexs.isNotEmpty &&
+        gameUtil.gameScene == GameScene.erqiling &&
+        gameUtil.modelId == 3) {
+      for (int i = 0; i < indexs.length; i++) {
+        groupId = groupId + indexs[i].toString() + ',';
       }
-      if(groupId.length > 0){
-        groupId = groupId.substring(0,groupId.length - 1);
+      if (groupId.length > 0) {
+        groupId = groupId.substring(0, groupId.length - 1);
       }
     }
 
@@ -124,7 +133,8 @@ class Participants {
       "trainIntegral": data.Integral,
       "trainType": gameUtil.isFromAirBattle ? 1 : 0,
       "videoSize": size.toString(),
-      'groupId' : groupId
+      'groupId': groupId,
+      'createTime' : data.endTime
     };
     final response =
         await HttpUtil.post('/api/train/save', _data, showLoading: true);
@@ -191,7 +201,7 @@ class Participants {
     List<GameOverModel> _list = [];
     if (response.success && response.data['data'] != null) {
       final _array = response.data['data'] as List;
-      int _count =  response.data['count'] ?? 0;
+      int _count = response.data['count'] ?? 0;
       _array.forEach((element) {
         GameOverModel model = GameOverModel();
         final _map = element;
@@ -199,9 +209,8 @@ class Participants {
             !ISEmpty(_map['avgPace']) ? _map['avgPace'].toString() : '--';
         model.score =
             !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '--';
-        model.endTime = !ISEmpty(_map['createTime'])
-            ? _map['createTime'].toString()
-            : '--';
+        model.endTime =
+            !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
         model.videoPath =
             !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '--';
         model.sceneId =
@@ -209,7 +218,7 @@ class Participants {
         model.modeId =
             !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
         model.trainTime =
-        !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
+            !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
         _list.add(model);
       });
       trainModel.datas = _list;
@@ -246,7 +255,7 @@ class Participants {
         model.trainTime =
             !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
         model.modeVideo =
-        !ISEmpty(_map['modeVideo']) ? _map['modeVideo'].toString() : '';
+            !ISEmpty(_map['modeVideo']) ? _map['modeVideo'].toString() : '';
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);
@@ -256,12 +265,13 @@ class Participants {
   }
 
   /*根据本人最好成绩的排名和速度*/
-  static Future<ApiResponse<GameJoinCountModel>> queryJoinCount(String modeId) async {
+  static Future<ApiResponse<GameJoinCountModel>> queryJoinCount(
+      String modeId) async {
     // 获取场景ID
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     final _data = {
       "sceneId": (gameUtil.gameScene.index + 1).toString(),
-      "modeId" : modeId
+      "modeId": modeId
     };
     final response = await HttpUtil.get('/api/train/getTrainMemberCount', _data,
         showLoading: false);
@@ -280,7 +290,7 @@ class Participants {
   /*查询训练场景列表接口*/
   static Future<ApiResponse<List<SceneModel>>> querySceneListData() async {
     final response =
-    await HttpUtil.get('/api/train/scene/list', null, showLoading: false);
+        await HttpUtil.get('/api/train/scene/list', null, showLoading: false);
     List<SceneModel> _list = [];
     if (response.success && response.data['data'] != null) {
       final _array = response.data['data'] as List;
@@ -288,11 +298,10 @@ class Participants {
         SceneModel model = SceneModel();
         final _map = element;
         model.dictKey =
-        !ISEmpty(_map['dictKey']) ? _map['dictKey'].toString() : '1';
-        model.dictValue =
-        !ISEmpty(_map['dictValue']) ? _map['dictValue'] : '-';
+            !ISEmpty(_map['dictKey']) ? _map['dictKey'].toString() : '1';
+        model.dictValue = !ISEmpty(_map['dictValue']) ? _map['dictValue'] : '-';
         model.dictRemark =
-        !ISEmpty(_map['dictRemark']) ? _map['dictRemark'] : '-';
+            !ISEmpty(_map['dictRemark']) ? _map['dictRemark'] : '-';
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);

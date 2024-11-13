@@ -218,6 +218,8 @@ class P1Controller extends StatelessWidget {
                       await SystemUtil.lockScreenHorizontalDirection();
                      // return;
                     }
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    gameUtil.selectRecord = false;
                     await SystemUtil.resetScreenDirection();
                     List<CameraDescription> cameras = await availableCameras();
                     NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);

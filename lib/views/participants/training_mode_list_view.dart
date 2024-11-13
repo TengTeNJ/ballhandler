@@ -94,16 +94,7 @@ class _TrainingModeListViewState extends State<TrainingModeListView> {
                   Container(
                       constraints: BoxConstraints(
                           maxWidth: Constants.screenWidth(context) - 124),
-                      child: Text(
-                        widget.model.modeName,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            height: 0.7,
-                            fontFamily: 'SanFranciscoDisplay',
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24),
-                      )),
+                      child: Constants.boldWhiteTextWidget(widget.model.modeName, 24,height: 0.7,textAlign: TextAlign.start)),
                   SizedBox(
                     width: 2,
                   ),

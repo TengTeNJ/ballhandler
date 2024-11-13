@@ -58,6 +58,12 @@ class StringUtil {
     return formattedDate;
   }
 
+  static String dateToGameTimeSecondString() {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    return formattedDate;
+  }
+
   static String dateToBrithString(DateTime date) {
     String formattedDate = DateFormat('MMM. dd,yyyy').format(date);
     return formattedDate;

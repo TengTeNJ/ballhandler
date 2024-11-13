@@ -16,7 +16,6 @@ import '../../utils/toast.dart';
 
 class P2Controller extends StatelessWidget {
   const P2Controller({super.key});
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(child: Scaffold(
@@ -189,6 +188,8 @@ class P2Controller extends StatelessWidget {
                       await SystemUtil.lockScreenHorizontalDirection();
                       //return;
                     }
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    gameUtil.selectRecord = false;
                     List<CameraDescription> cameras = await availableCameras();
                     NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                     TTToast.hideLoading();

@@ -28,6 +28,7 @@ class _P3ControllerState extends State<P3Controller> {
     // TODO: implement initState
     super.initState();
     GameUtil gameUtil = GetIt.instance<GameUtil>();
+    gameUtil.selectRecord = false;
     selectedIndexs.addAll(gameUtil.selectdP3Items);
     _selectModels.addAll(gameUtil.selectdP3Items);
     setState(() {});

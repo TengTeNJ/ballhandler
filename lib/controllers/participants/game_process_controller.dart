@@ -105,7 +105,7 @@ class _GameProcessControllerState extends State<GameProcessController>
           model.videoPath = (gameUtil.selectRecord || gameUtil.isFromAirBattle)
               ? videoFile.path
               : '';
-          model.endTime = StringUtil.dateToGameTimeString();
+          model.endTime = StringUtil.dateToGameTimeSecondString();
 
           // 释放摄像头控制器
           // await _controller.dispose();

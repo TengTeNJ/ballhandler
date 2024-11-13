@@ -194,7 +194,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
           model.videoPath = (gameUtil.selectRecord || gameUtil.isFromAirBattle)
               ? videoFile.path
               : '';
-          model.endTime = StringUtil.dateToGameTimeString();
+          model.endTime = StringUtil.dateToGameTimeSecondString();
           int timeBetween = StringUtil.differenceInSeconds(startTime, endTime);
           model.time = timeBetween.toString();
           if (gameUtil.modelId == 3) {
