@@ -219,6 +219,7 @@ class Participants {
             !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
         model.trainTime =
             !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
+        model.rank =  !ISEmpty(_map['rankNumber']) ? _map['rankNumber'].toString() : '-';
         _list.add(model);
       });
       trainModel.datas = _list;
