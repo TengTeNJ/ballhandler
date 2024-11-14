@@ -32,7 +32,7 @@ class _MyStatsTipViewState extends State<MyStatsTipView> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Constants.boldBaseTextWidget(widget.dataModel.speed > 9999 ? '9999' : widget.dataModel.speed.toString(), 24,height: 0.8),
-                Constants.mediumBaseTextWidget('Point/s', 10),
+                Constants.mediumBaseTextWidget('sec/pts', 10),
               ],
             ),
             Constants.customTextWidget('Rank '+ widget.dataModel.rank, 10, '#B1B1B1'),

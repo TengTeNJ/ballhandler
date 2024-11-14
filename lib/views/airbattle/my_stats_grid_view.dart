@@ -151,8 +151,8 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              _vsTitles[widget.selectType],
+                            widget.comparevalue == '-' ? Container() : Text(
+                               _vsTitles[widget.selectType],
                               textScaler: TextScaler.noScaling,
                               style: TextStyle(
                                   color: hexStringToColor('#B1B1B1'),
@@ -160,7 +160,7 @@ class _MyStatsGridViewState extends State<MyStatsGridView> {
                                   fontSize: widget.comparevalue.length > 1 ?  kFontSize(context, 12) : kFontSize(context, 14),
                               ),
                             ),
-                            Row(
+                            widget.comparevalue == '-'  ? Container() : Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Constants.customTextWidget(widget.comparevalue,

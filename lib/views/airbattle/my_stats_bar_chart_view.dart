@@ -1,3 +1,4 @@
+import 'package:code/constants/constants.dart';
 import 'package:code/models/mystats/my_stats_model.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/views/airbattle/my_stats_tip_view.dart';
@@ -43,10 +44,11 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
 
 /*根据数据量计算宽度*/
   calculateWidthBaseDatas(){
+    print('widget.datas.length = ${widget.datas.length}');
     if(widget.datas.length == 1){
       _width = 0.05;
     } else if(widget.datas.length >1 && widget.datas.length <= 6){
-      _width = 0.15;
+      _width = 0.1;
     }else  if(widget.datas.length >6 && widget.datas.length <= 9){
       _width = 0.2;
     }else  if(widget.datas.length >9 && widget.datas.length <= 13){
@@ -70,87 +72,99 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
 
   @override
   Widget build(BuildContext context) {
-    return SfCartesianChart(
-        margin:EdgeInsets.only(left: 0,right: 0,top: 10),
-        plotAreaBorderWidth: 0,
-        // 设置绘图区域的边框宽度为0，隐藏边框
-        plotAreaBorderColor: Colors.transparent,
-        // 设置绘图区域的边框颜色为透明色
-        primaryYAxis: NumericAxis(
-          labelStyle: TextStyle(
-            color: hexStringToColor('#B1B1B1'),
-            fontSize: 14,
-            fontFamily: 'SanFranciscoDisplay',
-            fontWeight: FontWeight.w400,
-          ),
-          maximum: 5,
-          labelAlignment: LabelAlignment.center,
-          interval: 0.5,
-          axisLine: AxisLine(width: 1, color: Colors.transparent),
-          // 设置 X 轴轴线颜色和宽度
-          plotOffset: 0,
-          labelPosition: ChartDataLabelPosition.outside,
-          // labelStyle: TextStyle(fontSize: 12, color: Colors.black), // 设置标签样式
-          majorGridLines: MajorGridLines(
-              color: Color.fromRGBO(112, 112, 112, 1.0), dashArray: [5, 5]),
-          majorTickLines: MajorTickLines(width: 0),
-
-          //opposedPosition: true, // 将 Y 轴放置在图表的右侧
-          // minimum: 0, // 设置 Y 轴的最小值为0
-          // maximum: 50, // 设置 Y 轴的最大值
-          // interval: 10, // 设置 Y 轴的间隔
-          //  edgeLabelPlacement: EdgeLabelPlacement.shift, // 调整标签位置，使得第一个数据和 Y 轴有间隔
-        ),
-        primaryXAxis: CategoryAxis(
-          labelStyle: widget.datas.length >= 20
-              ? TextStyle(
-                  color: hexStringToColor('#B1B1B1'),
-                  fontSize: 12,
-                  fontFamily: 'SanFranciscoDisplay',
-                  fontWeight: FontWeight.w400,
-                )
-              : TextStyle(
-                  color: hexStringToColor('#B1B1B1'),
-                  fontSize: 14,
-                  fontFamily: 'SanFranciscoDisplay',
-                  fontWeight: FontWeight.w400,
-                ),
-          plotOffset: 1,
-          interval: 1,
-          axisLine:
-              AxisLine(width: 1, color: Color.fromRGBO(112, 112, 112, 1.0)),
-          // 设置 X 轴轴线颜色和宽度
-          edgeLabelPlacement: EdgeLabelPlacement.shift,
-          // 调整标签位置，使得第一个数据和 Y 轴有间隔
-          majorGridLines:
-              MajorGridLines(color: Colors.transparent, dashArray: [5, 5]),
-          majorTickLines: MajorTickLines(width: 0),
-          // minimum: 0, // 设置Y轴的最小值
-          // maximum: 10, // 设置Y轴的最大值
-        ),
-        tooltipBehavior: _tooltipBehavior,
-        series: <CartesianSeries<MyStatsModel, num>>[
-          // Renders column chart
-          ColumnSeries<MyStatsModel, num>(
-              selectionBehavior: SelectionBehavior(
-                enable: true, // 这个设置为true,会在选中时，其他的置灰
-                // toggleSelection: false,
-                //  overlayMode: ChartSelectionOverlayMode.top, // 设置选中视图显示在柱状图上面
+    // initstate方法只会调用一次 所以请求完成数据后数据不会重新调用initstate方法计算柱状图的宽度
+    calculateWidthBaseDatas();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Constants.regularGreyTextWidget('AVG(Sec/pt)', 10),
+        SizedBox(height: 10,),
+        SfCartesianChart(
+            margin:EdgeInsets.only(left: 0,right: 0,top: 10),
+            plotAreaBorderWidth: 0,
+            // 设置绘图区域的边框宽度为0，隐藏边框
+            plotAreaBorderColor: Colors.transparent,
+            // 设置绘图区域的边框颜色为透明色
+            primaryYAxis: NumericAxis(
+              axisLabelFormatter: (AxisLabelRenderDetails args) {
+                // 格式化为保留一位小数的字符串
+                return ChartAxisLabel(args.value.toStringAsFixed(1), null);
+              },
+              labelStyle: TextStyle(
+                color: hexStringToColor('#B1B1B1'),
+                fontSize: 14,
+                fontFamily: 'SanFranciscoDisplay',
+                fontWeight: FontWeight.w400,
               ),
-              borderRadius: BorderRadius.circular(5),
-              // 设置柱状图的圆角
-              dataSource: widget.datas,
-              width: _width,
-              // 设置柱状图的宽度，值为 0.0 到 1.0 之间，表示相对于间距的比例
-              spacing: 0.0,
-              //
-              xValueMapper: (MyStatsModel data, _) =>
-                  int.parse(data.indexString),
-              yValueMapper: (MyStatsModel data, _) =>
+              maximum: 5.0,
+              labelAlignment: LabelAlignment.center,
+              interval: 0.5,
+              axisLine: AxisLine(width: 1, color: Colors.transparent),
+              // 设置 X 轴轴线颜色和宽度
+              plotOffset: 0,
+              labelPosition: ChartDataLabelPosition.outside,
+              // labelStyle: TextStyle(fontSize: 12, color: Colors.black), // 设置标签样式
+              majorGridLines: MajorGridLines(
+                  color: Color.fromRGBO(112, 112, 112, 1.0), dashArray: [5, 5]),
+              majorTickLines: MajorTickLines(width: 0),
+              //opposedPosition: true, // 将 Y 轴放置在图表的右侧
+              // minimum: 0, // 设置 Y 轴的最小值为0
+              // maximum: 50, // 设置 Y 轴的最大值
+              // interval: 10, // 设置 Y 轴的间隔
+              //  edgeLabelPlacement: EdgeLabelPlacement.shift, // 调整标签位置，使得第一个数据和 Y 轴有间隔
+            ),
+            primaryXAxis: CategoryAxis(
+              labelStyle: widget.datas.length >= 20
+                  ? TextStyle(
+                color: hexStringToColor('#B1B1B1'),
+                fontSize: 12,
+                fontFamily: 'SanFranciscoDisplay',
+                fontWeight: FontWeight.w400,
+              )
+                  : TextStyle(
+                color: hexStringToColor('#B1B1B1'),
+                fontSize: 14,
+                fontFamily: 'SanFranciscoDisplay',
+                fontWeight: FontWeight.w400,
+              ),
+              plotOffset: 1,
+              interval: 1,
+              axisLine:
+              AxisLine(width: 1, color: Color.fromRGBO(112, 112, 112, 1.0)),
+              // 设置 X 轴轴线颜色和宽度
+              edgeLabelPlacement: EdgeLabelPlacement.shift,
+              // 调整标签位置，使得第一个数据和 Y 轴有间隔
+              majorGridLines:
+              MajorGridLines(color: Colors.transparent, dashArray: [5, 5]),
+              majorTickLines: MajorTickLines(width: 0),
+              // minimum: 0, // 设置Y轴的最小值
+              // maximum: 10, // 设置Y轴的最大值
+            ),
+            tooltipBehavior: _tooltipBehavior,
+            series: <CartesianSeries<MyStatsModel, num>>[
+              // Renders column chart
+              ColumnSeries<MyStatsModel, num>(
+                  selectionBehavior: SelectionBehavior(
+                    enable: true, // 这个设置为true,会在选中时，其他的置灰
+                    // toggleSelection: false,
+                    //  overlayMode: ChartSelectionOverlayMode.top, // 设置选中视图显示在柱状图上面
+                  ),
+                  borderRadius: BorderRadius.circular(5),
+                  // 设置柱状图的圆角
+                  dataSource: widget.datas,
+                  width: _width,
+                  // 设置柱状图的宽度，值为 0.0 到 1.0 之间，表示相对于间距的比例
+                  spacing: 0.0,
+                  //
+                  xValueMapper: (MyStatsModel data, _) =>
+                      int.parse(data.indexString),
+                  yValueMapper: (MyStatsModel data, _) =>
                   data.speed > 5 ? 5 : data.speed,
-              pointColorMapper: (MyStatsModel data, _) =>
-                  hexStringToColor('#F8850B'))
-        ]);
+                  pointColorMapper: (MyStatsModel data, _) =>
+                      hexStringToColor('#F8850B'))
+            ])
+      ],
+    );
   }
 
   @override

@@ -48,6 +48,9 @@ class AnalyzeDataModel{
     if(somparedString.lastIndexOf('.') > 0){
       somparedString = somparedString.replaceAll('.', '');
     }
+    if(comparedValue > 100){
+      somparedString = '999';
+    }
     print('somparedString=${somparedString}');
     return (rise ?('+' + somparedString): ('-' + somparedString)) + '%' ;
   }
@@ -68,8 +71,11 @@ class AnalyzeDataModel{
     bool rise = (this.trainScore - this.lastTrainScore) > 0;
     double comparedValue = (this.trainScore - this.lastTrainScore).abs()/this.lastTrainScore;
     String somparedString = convertToPercentage(comparedValue);
-    if(somparedString.length >compareLength){
+    if(somparedString.length >compareLength  ){
       somparedString = somparedString.substring(0,compareLength);
+    }
+    if(comparedValue > 100){
+      somparedString = '999';
     }
     if(somparedString.lastIndexOf('.') >0){
       somparedString = somparedString.replaceAll('.', '');
@@ -90,6 +96,9 @@ class AnalyzeDataModel{
     String somparedString = convertToPercentage(comparedValue);
     if(somparedString.length >compareLength){
       somparedString = somparedString.substring(0,compareLength);
+    }
+    if(comparedValue > 100){
+      somparedString = '999';
     }
     if(somparedString.lastIndexOf('.') >0){
       somparedString = somparedString.replaceAll('.', '');
@@ -114,6 +123,9 @@ class AnalyzeDataModel{
     }
     if(somparedString.lastIndexOf('.') >0){
       somparedString = somparedString.replaceAll('.', '');
+    }
+    if(comparedValue > 100){
+      somparedString = '999';
     }
     return (rise ?('+' + somparedString): ('-' + somparedString)) + '%' ;
   }

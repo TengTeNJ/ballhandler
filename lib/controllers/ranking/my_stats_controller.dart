@@ -8,7 +8,6 @@ import 'package:code/utils/system_device.dart';
 import 'package:code/views/airbattle/my_stats_bar_chart_view.dart';
 import 'package:code/views/airbattle/my_stats_grid_list_view.dart';
 import 'package:code/views/airbattle/my_stats_line_area_view.dart';
-import 'package:code/views/base/no_data_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -229,26 +228,26 @@ class _MyStatsControllerState extends State<MyStatsController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Constants.regularWhiteTextWidget(
-                      'Training Growth', 14),
+                      'Best of the Day', 14),
                 ],
               ),
               SizedBox(
-                height: 36,
+                height: 16,
               ),
               Container(
-                height: 8* 36 + 36,
+                height: 8* 36 + 36 + 20,
                 child: LineAreaView(datas),
               ),
               SizedBox(
                 height: 40,
               ),
               Constants.regularWhiteTextWidget(
-                  'Best In History',14),
+                  'My Top 20',14),
               SizedBox(
-                height: 36,
+                height: 16,
               ),
               Container(
-                height: 8 * 36 + 36 ,
+                height: 8 * 36 + 36 + 32 ,
                 child: BarView(barViewDatas),
               ),
             ],
@@ -286,6 +285,7 @@ Widget BarView(List<MyStatsModel> datas) {
   // if(datas.length == 0){
   //   return NoDataView();
   // }
+  print('datas.lemgth = ${datas.length}');
   int page = 1;
   if (datas.length > 20) {
     page = 2;
