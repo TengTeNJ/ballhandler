@@ -1,3 +1,5 @@
+import 'package:code/utils/string_util.dart';
+
 import '../../constants/constants.dart';
 
 class MyStatsModel {
@@ -9,14 +11,23 @@ class MyStatsModel {
   String modeId = '1';
   String sceneId = '1';
   bool selected = false; // 选中状态，用于标记数据选中
+
+  String get simpleMonth {
+    return StringUtil.stringToMonthDay(gameTimer);
+  }
+
+  String get simpleWeekDay {
+    return StringUtil.stringToWeekDay(gameTimer);
+  }
+
   String get trainingMode {
-    if(kGameSceneAndModelMap[this.sceneId] != null){
-      Map<String,String> _sceneMap = kGameSceneAndModelMap[this.sceneId]!;
-      if(_sceneMap[this.modeId] != null){
+    if (kGameSceneAndModelMap[this.sceneId] != null) {
+      Map<String, String> _sceneMap = kGameSceneAndModelMap[this.sceneId]!;
+      if (_sceneMap[this.modeId] != null) {
         String _model = _sceneMap[this.modeId]!;
         return _model;
       }
     }
     return 'ZIGZAG Challenge';
-}
+  }
 }

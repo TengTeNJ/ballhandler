@@ -72,11 +72,56 @@ class StringUtil {
   /*时间字符串转换为日期*/
   static DateTime stringToDate(String timeString) {
     print('timeString=${timeString}');
-    if(timeString.contains('/')){
+    if (timeString.contains('/')) {
       timeString = timeString.replaceAll('/', '-');
     }
     DateTime dateTime = DateTime.parse(timeString);
     return dateTime;
+  }
+
+  /*时间字符串转换成星期几(英文简写)*/
+  static String stringToWeekDay(String timeString) {
+    print('timeString =  ${timeString}');
+    DateTime date = stringToDate(timeString);
+    int weekdayNumber = date.weekday;
+    print('weekdayNumber =  ${weekdayNumber}');
+    if (weekdayNumber == null || weekdayNumber > 7 || weekdayNumber < 1) {
+      return 'Unknown';
+    }
+    List<String> weekStrings = [
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+      'Sun'
+    ];
+    return weekStrings[weekdayNumber - 1];
+  }
+
+/*时间字符串转换成月份(英文简写)*/
+  static String stringToMonthDay(String timeString) {
+    DateTime date = stringToDate(timeString);
+    int monthNumber = date.month;
+    if (monthNumber == null || monthNumber > 12 || monthNumber < 1) {
+      return 'Unknown';
+    }
+    List<String> monthStrings = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    return monthStrings[monthNumber - 1];
   }
 
   /*UI上展示的时间字符串转换为DateTime*/
@@ -91,7 +136,6 @@ class StringUtil {
     DateTime dateTime = formatter.parse(timeString);
     return dateTime;
   }
-
 
   /*服务器返回的时间字符串转换为界面上需要展示的时间格式字符串*/
   static String serviceStringToShowDateString(String timeString) {
@@ -131,7 +175,7 @@ class StringUtil {
     try {
       DateTime dateTime = stringToDate(timeString);
       String formattedDate = DateFormat('MMM. dd,yyyy HH:mm').format(dateTime);
-      if(formattedDate.isEmpty){
+      if (formattedDate.isEmpty) {
         return timeString;
       }
       return formattedDate;
@@ -147,21 +191,21 @@ class StringUtil {
   0b01-红灯;
   0b10-蓝灯;
   0b11-红灯+蓝灯。*/
-  static BleULTimateLighStatu lightToStatu(String lightStatu){
-   if(lightStatu == '00'){
-     return BleULTimateLighStatu.close;
-   }else if(lightStatu == '01'){
-     return BleULTimateLighStatu.red;
-   }else if(lightStatu == '10'){
-     return BleULTimateLighStatu.blue;
-   }else if(lightStatu == '11'){
-     return BleULTimateLighStatu.redAndBlue;
-   }
-   return BleULTimateLighStatu.close;
+  static BleULTimateLighStatu lightToStatu(String lightStatu) {
+    if (lightStatu == '00') {
+      return BleULTimateLighStatu.close;
+    } else if (lightStatu == '01') {
+      return BleULTimateLighStatu.red;
+    } else if (lightStatu == '10') {
+      return BleULTimateLighStatu.blue;
+    } else if (lightStatu == '11') {
+      return BleULTimateLighStatu.redAndBlue;
+    }
+    return BleULTimateLighStatu.close;
   }
 
   /*10进制转换为2进制字符串*/
- static String decimalToBinary(int decimal) {
+  static String decimalToBinary(int decimal) {
     if (decimal < 0) {
       return "负数不能直接转换为二进制";
     }
@@ -170,7 +214,7 @@ class StringUtil {
       binary = (decimal % 2).toString() + binary;
       decimal = decimal ~/ 2;
     }
-    binary = binary.padLeft(8,'0');
+    binary = binary.padLeft(8, '0');
     return binary;
   }
 
@@ -179,26 +223,27 @@ class StringUtil {
     // 将二进制字符串转换为十进制数
     return int.parse(binaryString, radix: 2);
   }
+
 /*记录两个时间点的时间差*/
- static  int differenceInSeconds(DateTime? startTime , DateTime? endTime) {
-   if(startTime == null || endTime == null){
-     return 0;
-   }
+  static int differenceInSeconds(DateTime? startTime, DateTime? endTime) {
+    if (startTime == null || endTime == null) {
+      return 0;
+    }
     final Duration duration = endTime.difference(startTime);
-   GameUtil gameUtil = GetIt.instance<GameUtil>();
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
     return duration.inSeconds.ceil(); // 计算秒数并向上取整
   }
 
   /*时间字符串(秒数)转成格式00:00这样*/
-  static String timeStringFormat(String timeString){
-    if(timeString.isEmpty){
+  static String timeStringFormat(String timeString) {
+    if (timeString.isEmpty) {
       return '00:30';
     }
     int timeValue = int.parse(timeString);
     int minute = (timeValue / 60).toInt();
     int second = timeValue % 60;
-    String minuteString = minute.toString().padLeft(2,'0');
-    String secondString = second.toString().padLeft(2,'0');
+    String minuteString = minute.toString().padLeft(2, '0');
+    String secondString = second.toString().padLeft(2, '0');
     return minuteString + ':' + secondString;
   }
 }

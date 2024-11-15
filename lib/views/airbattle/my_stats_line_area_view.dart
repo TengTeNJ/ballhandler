@@ -7,8 +7,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MyStatsLineAreaView extends StatefulWidget {
   List<MyStatsModel> datas = [];
+  int selectType = 1;
 
-  MyStatsLineAreaView({required this.datas});
+  MyStatsLineAreaView({required this.datas, required this.selectType});
 
   @override
   State<MyStatsLineAreaView> createState() => _MyStatsLineAreaViewState();
@@ -29,10 +30,12 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Constants.regularGreyTextWidget('AVG(Sec/pt)', 10),
-        SizedBox(height: 10,),
+        Constants.regularGreyTextWidget('AVG.(Sec/pt)', 10),
+        SizedBox(
+          height: widget.selectType > 10 ? 1 : 10,
+        ),
         SfCartesianChart(
-          margin:EdgeInsets.only(left: 0,right: 0,top: 10),
+          margin: EdgeInsets.only(left: 0, right: 0, top: 10),
           // legend: Legend(isVisible: true),
           selectionType: SelectionType.point,
           plotAreaBorderColor: Colors.transparent,
@@ -42,8 +45,9 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
                 // 格式化为保留一位小数的字符串
                 return ChartAxisLabel(args.value.toStringAsFixed(1), null);
               },
-             //isInversed:true, // Y轴倒序排列
-              edgeLabelPlacement: EdgeLabelPlacement.none, // 移除左侧的填充
+              //isInversed:true, // Y轴倒序排列
+              edgeLabelPlacement: EdgeLabelPlacement.none,
+              // 移除左侧的填充
               labelStyle: TextStyle(
                 color: hexStringToColor('#B1B1B1'),
                 fontSize: 14,
@@ -61,26 +65,38 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
               majorGridLines: MajorGridLines(
                   color: Color.fromRGBO(112, 112, 112, 1.0),
                   dashArray: [5, 5]) // 设置Y轴网格竖线为虚线,
-          ),
+              ),
           // backgroundColor: Color.fromRGBO(41, 41, 54, 1.0),
           onSelectionChanged: (SelectionArgs args) {
             //selectedIndexes.clear(); // 清空之前选中的索引
           },
           primaryXAxis: CategoryAxis(
+            axisLabelFormatter: (AxisLabelRenderDetails args) {
+              var _week = widget.datas[int.parse(args.text) - 1].simpleWeekDay;
+              var _month = widget.datas[int.parse(args.text) - 1].simpleMonth;
+              print('widget.selectType = ${widget.selectType}');
+              if(widget.selectType == 1){
+                return ChartAxisLabel(_week, TextStyle(fontSize: 14,));
+              }else{
+                return ChartAxisLabel(_month, TextStyle(fontSize: 14,));
+              }
+             // return  ChartAxisLabel('123', TextStyle());
+            },
             labelStyle: TextStyle(
               color: hexStringToColor('#B1B1B1'),
               fontSize: 14,
               fontFamily: 'SanFranciscoDisplay',
               fontWeight: FontWeight.w400,
             ),
-            axisLine: AxisLine(width: 1, color: Color.fromRGBO(112, 112, 112, 1.0)),
+            axisLine:
+                AxisLine(width: 1, color: Color.fromRGBO(112, 112, 112, 1.0)),
             // 设置 X 轴轴线颜色和宽度
             labelPosition: ChartDataLabelPosition.outside,
             //interval: 2,
             majorGridLines:
-            MajorGridLines(color: Colors.transparent, dashArray: [5, 5]),
+                MajorGridLines(color: Colors.transparent, dashArray: [5, 5]),
             majorTickLines:
-            MajorTickLines(color: Colors.yellow, size: 0), // 超出坐标系部分的线条设置
+                MajorTickLines(color: Colors.yellow, size: 0), // 超出坐标系部分的线条设置
           ),
           tooltipBehavior: _tooltipBehavior,
           series: <CartesianSeries<MyStatsModel, String>>[
@@ -124,7 +140,7 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
                 pointColorMapper: (MyStatsModel data, _) => Colors.yellow,
                 xValueMapper: (MyStatsModel data, _) => data.indexString,
                 yValueMapper: (MyStatsModel data, _) =>
-                data.speed > 5 ? 5 : data.speed),
+                    data.speed > 5 ? 5 : data.speed),
             // AreaSeries(
             //   color: Colors.red,
             //     borderColor: Colors.blue, // 设置边界线颜色

@@ -7,8 +7,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MyStatsBarChatView extends StatefulWidget {
   List<MyStatsModel> datas = [];
-
-  MyStatsBarChatView({required this.datas});
+  int selectType = 1;
+  MyStatsBarChatView({required this.datas,int selectType = 1});
 
   @override
   State<MyStatsBarChatView> createState() => _MyStatsBarChatViewState();
@@ -49,14 +49,10 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
       _width = 0.05;
     } else if(widget.datas.length >1 && widget.datas.length <= 6){
       _width = 0.1;
-    }else  if(widget.datas.length >6 && widget.datas.length <= 9){
+    }else  if(widget.datas.length >6 && widget.datas.length <= 10){
       _width = 0.2;
-    }else  if(widget.datas.length >9 && widget.datas.length <= 13){
-      _width = 0.3;
-    }else if(widget.datas.length >13 && widget.datas.length <= 17){
-      _width = 0.5;
     }else{
-      _width = 0.6;
+      _width = 0.4;
     }
   }
 
@@ -77,7 +73,7 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Constants.regularGreyTextWidget('AVG(Sec/pt)', 10),
+        Constants.regularGreyTextWidget('AVG.(Sec/pt)', 10),
         SizedBox(height: 10,),
         SfCartesianChart(
             margin:EdgeInsets.only(left: 0,right: 0,top: 10),
@@ -114,6 +110,11 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
               //  edgeLabelPlacement: EdgeLabelPlacement.shift, // 调整标签位置，使得第一个数据和 Y 轴有间隔
             ),
             primaryXAxis: CategoryAxis(
+              // axisLabelFormatter:  (AxisLabelRenderDetails args) {
+              //   print('args.text = ${args.text}');
+              //   var _week = widget.datas[int.parse(args.text) - 1].simpleWeekDay;
+              //    return ChartAxisLabel(_week, TextStyle());
+              // },
               labelStyle: widget.datas.length >= 20
                   ? TextStyle(
                 color: hexStringToColor('#B1B1B1'),
@@ -155,7 +156,6 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
                   width: _width,
                   // 设置柱状图的宽度，值为 0.0 到 1.0 之间，表示相对于间距的比例
                   spacing: 0.0,
-                  //
                   xValueMapper: (MyStatsModel data, _) =>
                       int.parse(data.indexString),
                   yValueMapper: (MyStatsModel data, _) =>
