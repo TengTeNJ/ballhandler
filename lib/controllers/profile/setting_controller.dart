@@ -143,14 +143,16 @@ class _SettingControllerState extends State<SettingController> {
                 height: 32,
               ),
               SettingView(
-                showArrows: [true,false],
+                showArrows: [true,true,false],
                 title: 'More',
-                detailTitles: ['',_version],
-                datas: ['Terms of Service','Version'],
+                detailTitles: ['','',_version],
+                datas: ['Terms of Service','Privacy Policy','Version'],
                 selectItem: (index) {
                 if (index == 0){
                     NavigatorUtil.push(Routes.webview);
-                  }
+                  }else if(index == 1){
+                  NavigatorUtil.push(Routes.webview,arguments: kPrivacyPolicyUrl);
+                }
                 },
               ),
               SizedBox(height: 32,),
