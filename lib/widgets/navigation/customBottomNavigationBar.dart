@@ -36,7 +36,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             width: 20,
             height: 20
         ),
-        label: 'Ranking'),
+        label: 'Leaderboards'),
     BottomNavigationBarItem(
         icon: Image(
           fit: BoxFit.cover,

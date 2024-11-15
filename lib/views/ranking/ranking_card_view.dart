@@ -87,7 +87,7 @@ String _title = 'Digital Stickhandling Trainer';
                     children: [
                       Image(image: AssetImage('images/ranking/rank.png'),width: 12,height: 15,),
                       SizedBox(width: 4,),
-                      Constants.regularWhiteTextWidget('Rank ' + (_rankNumber == '0' ? '-' : _rankNumber), 14),
+                      Constants.regularWhiteTextWidget('Ranking #' + (_rankNumber == '0' ? '-' : _rankNumber), 14),
                     ],
                   ),
                 ],),

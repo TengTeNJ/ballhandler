@@ -4,7 +4,7 @@ import 'package:code/utils/color.dart';
 import 'package:code/views/airbattle/my_stats_tip_view.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
+List<String> _months = [];
 class MyStatsLineAreaView extends StatefulWidget {
   List<MyStatsModel> datas = [];
   int selectType = 1;
@@ -27,6 +27,7 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
 
   @override
   Widget build(BuildContext context) {
+    _months.clear();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -74,10 +75,19 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
             axisLabelFormatter: (AxisLabelRenderDetails args) {
               var _week = widget.datas[int.parse(args.text) - 1].simpleWeekDay;
               var _month = widget.datas[int.parse(args.text) - 1].simpleMonth;
-              print('widget.selectType = ${widget.selectType}');
+              var _day = widget.datas[int.parse(args.text) - 1].simpleDay;
               if(widget.selectType == 1){
                 return ChartAxisLabel(_week, TextStyle(fontSize: 14,));
               }else{
+                if(_months.contains(_month)){
+                  // 使用where方法过滤数组，并计算出现次数
+                  //int count = _months.where((element) => element == _month).length;
+                  _months.add(_month);
+                  return ChartAxisLabel(_day, TextStyle(fontSize: 14,));
+                }else{
+                  _months.add(_month);
+                  return ChartAxisLabel(_month + '.${_day}', TextStyle(fontSize: 14,));
+                }
                 return ChartAxisLabel(_month, TextStyle(fontSize: 14,));
               }
              // return  ChartAxisLabel('123', TextStyle());

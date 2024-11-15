@@ -41,7 +41,7 @@ class _OverAllDataViewState extends State<OverAllDataView> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 20),
-                  child: Constants.regularGreyTextWidget('My Stats', 14),
+                  child: Constants.regularGreyTextWidget('Career Stats', 14),
                 ),
                 Padding(
                   padding: EdgeInsets.only(right: 20),

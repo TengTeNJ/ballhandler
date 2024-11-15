@@ -20,6 +20,10 @@ class MyStatsModel {
     return StringUtil.stringToWeekDay(gameTimer);
   }
 
+  String get simpleDay {
+    return StringUtil.stringToDay(gameTimer);
+  }
+
   String get trainingMode {
     if (kGameSceneAndModelMap[this.sceneId] != null) {
       Map<String, String> _sceneMap = kGameSceneAndModelMap[this.sceneId]!;

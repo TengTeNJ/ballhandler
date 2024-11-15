@@ -11,7 +11,6 @@ import 'package:code/views/airbattle/my_stats_line_area_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../utils/event_track.dart';
 
 class MyStatsController extends StatefulWidget {
   const MyStatsController({super.key});
@@ -118,7 +117,7 @@ class _MyStatsControllerState extends State<MyStatsController> {
               SizedBox(
                 height: 16,
               ),
-              Constants.boldWhiteTextWidget('My Stats', 30),
+              Constants.boldWhiteTextWidget('Career Stats', 30),
               SizedBox(
                 height: 32,
               ),
@@ -135,8 +134,41 @@ class _MyStatsControllerState extends State<MyStatsController> {
                       SizedBox(
                         width: 6,
                       ),
+          // RichText(
+          //   text: TextSpan(
+          //     children: <TextSpan>[
+          //       TextSpan(
+          //         text: 'Top ',
+          //         style: TextStyle(
+          //             fontFamily: 'SanFranciscoDisplay',
+          //             fontWeight: FontWeight.w400,
+          //             color: Colors.white,
+          //             fontSize: 16
+          //         ),
+          //       ),
+          //       TextSpan(
+          //         text: _analyzeDataModelmodel.rankNumber == '0' ? '-' : _analyzeDataModelmodel.rankNumber,
+          //         style: TextStyle(
+          //             fontFamily: 'SanFranciscoDisplay',
+          //             fontWeight: FontWeight.bold,
+          //             color: Constants.baseStyleColor,
+          //             fontSize: 16
+          //         ),
+          //       ),
+          //       TextSpan(
+          //         text: ' Rankings',
+          //         style: TextStyle(
+          //             fontFamily: 'SanFranciscoDisplay',
+          //             fontWeight: FontWeight.w400,
+          //             color: Colors.white,
+          //             fontSize: 16
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
                       Constants.regularWhiteTextWidget(
-                          ' TOP RANK  ${_analyzeDataModelmodel.rankNumber == '0' ? '-' : _analyzeDataModelmodel.rankNumber}',
+                          ' Ranking #${_analyzeDataModelmodel.rankNumber == '0' ? '-' : _analyzeDataModelmodel.rankNumber}',
                           16),
                     ],
                   ),

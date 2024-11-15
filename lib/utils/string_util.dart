@@ -124,6 +124,14 @@ class StringUtil {
     return monthStrings[monthNumber - 1];
   }
 
+  /*时间字符串转换成日*/
+  static String stringToDay(String timeString) {
+    print('timeString =  ${timeString}');
+    DateTime date = stringToDate(timeString);
+    int day = date.day;
+    return day.toString();
+  }
+
   /*UI上展示的时间字符串转换为DateTime*/
   static DateTime showTimeStringToDate(String timeString) {
     final DateFormat formatter = DateFormat("MMM. dd,yyyy HH:mm'");
