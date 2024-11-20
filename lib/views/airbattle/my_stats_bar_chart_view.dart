@@ -47,10 +47,12 @@ class _MyStatsBarChatViewState extends State<MyStatsBarChatView> {
     print('widget.datas.length = ${widget.datas.length}');
     if(widget.datas.length == 1){
       _width = 0.05;
-    } else if(widget.datas.length >1 && widget.datas.length <= 6){
+    } else if(widget.datas.length >1 && widget.datas.length <= 2){
       _width = 0.1;
-    }else  if(widget.datas.length >6 && widget.datas.length <= 10){
-      _width = 0.2;
+    }else if(widget.datas.length >2 && widget.datas.length <= 6){
+      _width = 0.15;
+    } else  if(widget.datas.length >6 && widget.datas.length <= 10){
+      _width = 0.25;
     }else{
       _width = 0.4;
     }

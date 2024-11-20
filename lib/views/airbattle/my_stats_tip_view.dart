@@ -19,7 +19,7 @@ class _MyStatsTipViewState extends State<MyStatsTipView> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: hexStringToColor('#3E3E55')),
-      width: 110,
+      width: 116,
       height: 110,
       child: Padding(
         padding: EdgeInsets.only(left: 4,right: 0),
@@ -31,7 +31,7 @@ class _MyStatsTipViewState extends State<MyStatsTipView> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Constants.boldBaseTextWidget(widget.dataModel.speed > 9999 ? '9999' : widget.dataModel.speed.toString(), 24,height: 0.8),
+                Constants.boldBaseTextWidget(widget.dataModel.speed >= 9999 ? '9999' : widget.dataModel.speed.toString(), 24,height: 0.8),
                 Constants.mediumBaseTextWidget('sec/pts', 10),
               ],
             ),

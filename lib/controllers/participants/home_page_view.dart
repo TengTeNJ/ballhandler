@@ -164,7 +164,9 @@ class _HomePageViewState extends State<HomePageController> {
           NavigatorUtil.present(SetEmailController());
         }
       } else if(event == kFinishSubscribe){
-        querySubScribeInfo();
+        Future.delayed(Duration(milliseconds: 500),(){
+          querySubScribeInfo();
+        });
       }
     });
 

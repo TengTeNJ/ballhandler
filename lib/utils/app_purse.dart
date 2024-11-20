@@ -15,15 +15,17 @@ import '../models/http/subscribe_model.dart';
 import '../services/http/account.dart';
 import 'global.dart';
 
+
 class AppPurse {
   StreamSubscription<dynamic>? _subscription;
+  bool isVertify = false; // 正在调用验证
 
   StreamSubscription<dynamic> startSubscription(BuildContext buildContext) {
     if (this._subscription == null) {
       final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
       StreamSubscription<dynamic> _subscription =
-      purchaseUpdated.listen((purchaseDetailsList) {
-        _listenToPurchaseUpdated(purchaseDetailsList,buildContext);
+          purchaseUpdated.listen((purchaseDetailsList) {
+        _listenToPurchaseUpdated(purchaseDetailsList, buildContext);
       }, onDone: () {
         print('-------onDone-------');
         //_subscription.cancel();
@@ -38,7 +40,8 @@ class AppPurse {
     }
   }
 
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList,BuildContext buildContext) {
+  void _listenToPurchaseUpdated(
+      List<PurchaseDetails> purchaseDetailsList, BuildContext buildContext) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
         TTToast.showLoading();
@@ -58,36 +61,46 @@ class AppPurse {
             purchaseDetails.status == PurchaseStatus.restored) {
           // bool valid = await _verifyPurchase(purchaseDetails);
           GameUtil gameUtil = GetIt.instance<GameUtil>();
-         if( gameUtil.notClickSubscribeDialog){
-           InAppPurchase.instance.completePurchase(purchaseDetails);
-         //  DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
-           return;
-         }
+          if (gameUtil.notClickSubscribeDialog) {
+            InAppPurchase.instance.completePurchase(purchaseDetails);
+            //  DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
+            return;
+          }
           // 去服务端进行验证
+          if (isVertify) {
+            return;
+          }
           ApiResponse _response;
           if (Platform.isAndroid) {
+            isVertify = true;
             _response = await Account.googlePayVertify(
               purchaseId: purchaseDetails.purchaseID ?? '',
               productNo: purchaseDetails.productID,
               purchaseToken:
-              purchaseDetails.verificationData.serverVerificationData,
+                  purchaseDetails.verificationData.serverVerificationData,
             );
           } else {
+            isVertify = true;
             _response = await Account.applePayVertify(
               thirdPayNo: purchaseDetails.purchaseID ?? '',
               productNo: purchaseDetails.productID,
               receiptDate:
-              purchaseDetails.verificationData.serverVerificationData,
-               // originalThirdPayNo:    purchaseDetails.
+                  purchaseDetails.verificationData.serverVerificationData,
+              // originalThirdPayNo:    purchaseDetails.
             );
           }
           // 验证成功 则结束购买流程
           if (_response != null && _response.success) {
             InAppPurchase.instance.completePurchase(purchaseDetails);
+            GameUtil gameUtil = GetIt.instance<GameUtil>();
+            gameUtil.notClickSubscribeDialog = true;
             DatabaseHelper().deletevSubPathData(purchaseDetails.productID);
             EventBus().sendEvent(kFinishSubscribe);
+            isVertify = false;
             // 刷新账号订阅信息
             // querySubScribeInfo(buildContext);
+          } else {
+            isVertify = false;
           }
         }
       }
@@ -95,11 +108,11 @@ class AppPurse {
   }
 
   /*查询订阅信息 */
-  querySubScribeInfo(BuildContext buildContext) async{
+  querySubScribeInfo(BuildContext buildContext) async {
     final _response = await Account.querySubscribeInfo();
-    if(_response.success){
+    if (_response.success) {
       SubscribeModel? model = _response.data;
-      if(model != null){
+      if (model != null) {
         UserProvider.of(buildContext).subscribeModel = model;
       }
     }
@@ -115,13 +128,13 @@ class AppPurse {
   Future<List<ProductDetails>> getAvaliableProductList() async {
     List<ProductDetails> array = [];
     final ProductDetailsResponse yearResponse =
-    await InAppPurchase.instance.queryProductDetails(kYearProductIds);
-    if(yearResponse.productDetails.isNotEmpty){
+        await InAppPurchase.instance.queryProductDetails(kYearProductIds);
+    if (yearResponse.productDetails.isNotEmpty) {
       array.addAll(yearResponse.productDetails);
     }
     final ProductDetailsResponse monthResponse =
-    await InAppPurchase.instance.queryProductDetails(kMonthProductIds);
-    if(monthResponse.productDetails.isNotEmpty){
+        await InAppPurchase.instance.queryProductDetails(kMonthProductIds);
+    if (monthResponse.productDetails.isNotEmpty) {
       array.addAll(monthResponse.productDetails);
     }
     return array;
@@ -132,7 +145,7 @@ class AppPurse {
     final avaliable = await this.avaliable;
     if (avaliable) {
       final PurchaseParam purchaseParam =
-      PurchaseParam(productDetails: productDetail);
+          PurchaseParam(productDetails: productDetail);
       await InAppPurchase.instance
           .buyNonConsumable(purchaseParam: purchaseParam);
       DatabaseHelper().insertSubData(productDetail);
@@ -142,7 +155,7 @@ class AppPurse {
   }
 
   /*恢复购买*/
-  restorePurchase(){
+  restorePurchase() {
     InAppPurchase.instance.restorePurchases();
   }
 

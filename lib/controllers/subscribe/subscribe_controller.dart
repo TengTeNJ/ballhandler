@@ -39,20 +39,20 @@ class _SubscribeControllerState extends State<SubscribeController> {
     });
     StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
     subscription = EventBus().stream.listen((event) {
-      if(event == kFinishSubscribe){
+      if (event == kFinishSubscribe) {
         TTToast.showSuccessInfo('Success!');
-        NavigatorUtil.pop();
+        NavigatorUtil.popToRoot();
       }
     });
   }
 
   /*查询订阅信息 */
-  querySubScribeInfo(BuildContext buildContext) async{
+  querySubScribeInfo(BuildContext buildContext) async {
     final _response = await Account.querySubscribeInfo();
-    if(_response.success){
+    if (_response.success) {
       var model = _response.data;
-      if(model != null){
-        if(mounted){
+      if (model != null) {
+        if (mounted) {
           UserProvider.of(buildContext).subscribeModel = model;
           TTToast.showSuccessInfo('Success!');
           // Future.delayed(Duration(milliseconds: 2000),(){
@@ -60,9 +60,9 @@ class _SubscribeControllerState extends State<SubscribeController> {
           // });
         }
       }
-
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +75,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
               // color: Colors.red,
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
-                image: AssetImage('images/launch/subscribe_background.png'),
+                image: AssetImage('images/launch/subscribe_background1.png'),
                 fit: BoxFit.fill,
               ),
             ),
@@ -96,7 +96,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
                 // color: Colors.red,
               )),
           Positioned(
-            left: 0,
+              left: 0,
               right: 0,
               top: Constants.screenHeight(context) * 0.24,
               bottom: Constants.screenHeight(context) * 0.45,
@@ -140,6 +140,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
                           .queryProductDetails(kMonthProductIds);
                   if (yearResponse.productDetails.isNotEmpty) {
                     // 开始购买
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    gameUtil.notClickSubscribeDialog = false;
                     TTToast.hideLoading();
                     purse.begainBuy(yearResponse.productDetails.first);
                   }
@@ -163,7 +165,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    NavigatorUtil.push(Routes.webview,arguments: kTermsOfServiceUrl);
+                    NavigatorUtil.push(Routes.webview,
+                        arguments: kTermsOfServiceUrl);
                   },
                   child: Constants.mediumBaseTextWidget('Terms of Service', 12),
                 ),
@@ -171,9 +174,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
                   width: 1,
                   height: 12,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6)
-                  ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6)),
                 ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
@@ -189,16 +191,14 @@ class _SubscribeControllerState extends State<SubscribeController> {
                   height: 12,
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(6)
-                  ),
+                      borderRadius: BorderRadius.circular(6)),
                 ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
                     purse.restorePurchase();
                   },
-                  child:
-                  Constants.mediumBaseTextWidget('Restore Purchase', 12),
+                  child: Constants.mediumBaseTextWidget('Restore Purchase', 12),
                 )
               ],
             ),
@@ -213,6 +213,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
     // TODO: implement dispose
     StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
     subscription.cancel();
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    gameUtil.notClickSubscribeDialog = true;
     super.dispose();
   }
 }
