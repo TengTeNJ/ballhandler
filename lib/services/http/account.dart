@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../utils/global.dart';
+import '../../utils/string_util.dart';
 
 class CheckResultModel {
   int thirdLoginType = 0; // 账号路径(0邮箱登录、1apple、2google、3facebook、4shopify)
@@ -186,12 +187,15 @@ class Account {
       String productNo = '',
       String receiptDate = '',
       String originalThirdPayNo = ''}) async {
+    // 获取当前时间
+    String createTime =  StringUtil.dateToGameTimeSecondString();
     final _data = {
       'thirdPayNo': thirdPayNo,
       'productNo': productNo,
       'receiptDate': receiptDate,
       'packageName': 'com.potent.dangleios',
       'originalThirdPayNo' : originalThirdPayNo,
+      'createTime' : createTime
     };
     final response =
         await HttpUtil.post('/api/pay/apple', _data, showLoading: true);
@@ -203,11 +207,14 @@ class Account {
       {String purchaseId = '',
       String productNo = '',
       String purchaseToken = ''}) async {
+    // 获取当前时间
+    String createTime =  StringUtil.dateToGameTimeSecondString();
     final _data = {
       'purchaseId': purchaseId,
       'productNo': productNo,
       'purchaseToken': purchaseToken,
       'packageName': 'com.potent.dangle',
+      'createTime' : createTime
     };
     final response =
         await HttpUtil.post('/api/pay/google/sub', _data, showLoading: true);
@@ -266,9 +273,12 @@ class Account {
 * integralSource 积分类型4:社交分享、5好友推荐
 * */
   static Future<ApiResponse> saveIntegral(String shareUrl,{int integralSource = 4}) async {
+    // 获取当前时间
+    String createTime =  StringUtil.dateToGameTimeSecondString();
     final _data = {
       'integralSource': integralSource,
-      'shareUrl':shareUrl
+      'shareUrl':shareUrl,
+      'createTime' : createTime
     };
     final response = await HttpUtil.post('/api/member/integral/save', _data,
         showLoading: true);
