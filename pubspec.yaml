@@ -65,7 +65,7 @@ dependencies:
   firebase_messaging: ^14.8.1
   share_plus: ^8.0.3
   firebase_core: ^2.32.0
-  country_picker: ^2.0.25
+  country_picker: ^2.0.27
   vibration: ^1.8.4
   image_picker: ^1.1.0
   chewie: ^1.8.1

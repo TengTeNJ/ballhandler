@@ -309,10 +309,10 @@ packages:
     dependency: "direct main"
     description:
       name: country_picker
-      sha256: "327f5e15a76352089a6b5057abb761ee5202e7516c9440d8d6a7524139f9b14e"
+      sha256: "9b14c04f9a35e99f6de6bcbc453a556bb98345aecb481c7a0e843c94c2bee1f8"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.26"
+    version: "2.0.27"
   cross_file:
     dependency: transitive
     description:

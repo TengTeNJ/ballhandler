@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../utils/color.dart';
 import '../../utils/notification_bloc.dart';
+import 'package:country_picker/country_picker.dart';
 
 class SettingController extends StatefulWidget {
   const SettingController({super.key});
@@ -25,8 +26,6 @@ class SettingController extends StatefulWidget {
 class _SettingControllerState extends State<SettingController> {
   String _version = '1.0';
   DateTime selectedDate = DateTime.now();
-
-
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
       context: context,
@@ -84,13 +83,15 @@ class _SettingControllerState extends State<SettingController> {
               ),
               Consumer<UserModel>(builder: (context, userModel, child) {
                 return SettingView(
-                  showArrows:  ISEmpty(UserProvider.of(context).email) ?  [true, true, true] : [true, false, true],
+                  showArrows:   [true, true, true,true],
+                  // showArrows:  ISEmpty(UserProvider.of(context).email) ?  [true, true, true,true] : [true, false, true,true],
                   title: 'Edit Profile',
-                  datas: ['Username', 'Email', 'Birthday'],
+                  datas: ['Username', 'Email', 'Birthday','Country'],
                   detailTitles: [
                     userModel.userName,
                     userModel.email,
-                    StringUtil.serviceStringToShowDateString(userModel.brith)
+                    StringUtil.serviceStringToShowDateString(userModel.brith),
+                    userModel.country
                   ],
                   selectItem: (index) {
                     if (index == 0) {
@@ -104,9 +105,10 @@ class _SettingControllerState extends State<SettingController> {
                         }
                       });
                     }else if(index == 1){
-                       if(ISEmpty(UserProvider.of(context).email)){
-                         NavigatorUtil.present(SetEmailController());
-                       }
+                       // if(ISEmpty(UserProvider.of(context).email)){
+                       //   NavigatorUtil.present(SetEmailController());
+                       // }
+                       NavigatorUtil.present(SetEmailController());
                     } else if (index == 2) {
                       // 修改生日
                       print('userModel.brith=${userModel.brith}');
@@ -116,6 +118,24 @@ class _SettingControllerState extends State<SettingController> {
                         selectedDate = StringUtil.stringToDate(userModel.brith);
                       }
                       _selectDate(context);
+                    }else if(index == 3){
+                      // 修改国家
+                      showCountryPicker(
+                        context: context,
+                        showPhoneCode: false,
+                        // optional. Shows phone code before the country name.
+                        onSelect: (Country country) async{
+                          final _response = await Account.updateAccountInfo(
+                              {"country": country.name});
+                          if (_response.success) {
+                            UserProvider.of(context).country = country.name;
+                            NSUserDefault.setKeyValue(kCountry, country.name);
+                          }
+                          setState(() {
+
+                          });
+                        },
+                      );
                     }
                   },
                 );

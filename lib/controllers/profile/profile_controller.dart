@@ -149,8 +149,8 @@ int scoreLevel = -1;
                           }
                           final croppedFile = await ImageCropper().cropImage(
                             cropStyle: CropStyle.circle,
-                            maxHeight: 64,
-                            maxWidth: 64,
+                            // maxHeight: 64,
+                            // maxWidth: 64,
                             sourcePath:
                                 pickedFile != null ? pickedFile!.path : '',
                             aspectRatioPresets: [
