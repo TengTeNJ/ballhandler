@@ -53,4 +53,5 @@ class GameUtil {
   List<int> selectdP3Indexs = []; // 270P3模式选择的组合的索引
   List<P3ItemModel> selectdP3Items = []; // 270P3模式选择的组合的索引
   bool notClickSubscribeDialog = true; // 标记是否打开过订阅的弹窗并点击购买
+  int offLineBoardIndex = -1; // 当前正在提示断开连接的板子的索引，默认值为-1，每次只提示一个，点击取消按钮恢复默认值
 }

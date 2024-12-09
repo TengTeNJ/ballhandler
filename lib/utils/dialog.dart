@@ -430,4 +430,25 @@ class TTDialog {
       },
     );
   }
+
+  /*子板掉线提示弹窗*/
+  static boardOffLineTipDialog(BuildContext context,
+      {int boardIndex = 0}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.only(left: 32,right: 32),
+            decoration: BoxDecoration(
+              color: hexStringToColor('#3E3E55'),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: BoardOfflineTipDialog(boardIndex: boardIndex),
+          ),
+        );
+      },
+    );
+  }
 }

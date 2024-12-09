@@ -18,11 +18,13 @@ import 'package:code/views/participants/subscribe_border_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:code/widgets/base/base_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io' show Platform;
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 import '../../models/ble/ble_model.dart';
+import '../../utils/global.dart';
 import '../../utils/nsuserdefault_util.dart';
 import 'package:flutter_to_airplay/flutter_to_airplay.dart';
 import 'package:chewie/chewie.dart';
@@ -2461,6 +2463,76 @@ class LowPowerTipDialog extends StatelessWidget {
   }
 }
 
+/*子板掉线弹窗*/
+class BoardOfflineTipDialog extends StatelessWidget {
+  int boardIndex = 0;
+
+  BoardOfflineTipDialog(
+      {required this.boardIndex,});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 315,
+      width: 279,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 54,
+          ),
+          Image(
+            image: AssetImage('images/ble/board_dis.png'),
+            width: 35,
+          ),
+          SizedBox(
+            height: 24,
+          ),
+          Constants.boldWhiteTextWidget('Disconnect', 20),
+          SizedBox(
+            height: 12,
+          ),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'Board ${kP3DataAndProductIndexMap[boardIndex]}',
+              style: TextStyle(
+                  color: Constants.baseStyleColor,
+                  fontFamily: 'SanFranciscoDisplay',
+                  fontSize: 14,
+                  height: 1.3,
+                  fontWeight: FontWeight.w400),
+              children: <TextSpan>[
+                TextSpan(
+                  text:
+                  ' disconnected\nPlease check your board ',
+                  style: TextStyle(
+                    fontFamily: 'SanFranciscoDisplay',
+                    fontSize: 16,
+                    color: Colors.white,
+                    height: 1.3,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 48,
+          ),
+          BaseButton(
+            title: 'Got if',
+            onTap: () {
+              GameUtil gameUtil = GetIt.instance<GameUtil>();
+              gameUtil.offLineBoardIndex = -1;
+              NavigatorUtil.pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
 
 /*蓝牙mac地址*/
 class BltMacDialog extends StatefulWidget {

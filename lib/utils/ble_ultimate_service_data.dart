@@ -5,6 +5,7 @@ import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/control_time_out_util.dart';
 import 'package:code/utils/device_debug_data.dart';
+import 'package:code/utils/dialog.dart';
 import 'package:code/utils/game_util.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/string_util.dart';
@@ -411,8 +412,13 @@ class BluetoothUltTimateDataParse {
             String v = binaryString.substring(
                 binaryString.length - (i + 1), binaryString.length - i);
             if (v == '0') {
-              TTToast.showErrorInfo(
-                  'Board ${kP3DataAndProductIndexMap[i]} offline');
+              GameUtil gameUtil = GetIt.instance<GameUtil>();
+              if(gameUtil.offLineBoardIndex == -1){
+                gameUtil.offLineBoardIndex =  i;
+                TTDialog.boardOffLineTipDialog(NavigatorUtil.utilContext,boardIndex: i);
+              }
+              // TTToast.showErrorInfo(
+              //     'Board ${kP3DataAndProductIndexMap[i]} offline');
             }
           }
           BluetoothManager().triggerCallback(type: BLEDataType.onLine);
