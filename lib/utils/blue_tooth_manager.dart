@@ -7,6 +7,7 @@ import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
+import 'package:code/utils/ble_util.dart';
 import 'package:code/utils/control_time_out_util.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -103,6 +104,11 @@ class BluetoothManager {
   List<int> board4HitMessageIdList = []; // 每轮游戏收到的击中的消息id
   List<int> board5HitMessageIdList = []; // 每轮游戏收到的击中的消息id
   List<int> board6HitMessageIdList = []; // 每轮游戏收到的击中的消息id
+  /**
+   * 270设备的各板的在线状态 0代表不在线 1代表在线
+   * 按照索引顺序 0 1 2 3 4 5 6，0代表的是主板
+   * **/
+  List<int>boardOnlineStatu = [1,0,0,0,0,0];
 
   /*开始扫描*/
   Future<void> startScan() async {
@@ -197,6 +203,10 @@ class BluetoothManager {
             // 查询主机状态
             BluetoothManager()
                 .writerDataToDevice(model, queryMasterSystemStatu());
+            // 查询各板子状态
+            Future.delayed(Duration(milliseconds: 200),(){
+              BleUtil.queryBoardOnlineStatu();
+            });
           });
         } else {
           // 保存读写特征值

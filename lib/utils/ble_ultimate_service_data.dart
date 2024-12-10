@@ -81,6 +81,7 @@ class ResponseCMDType {
       0x15; // APP查询中心主机当前系统状态的返回 字节1：0x01（成功），字节2：当前中心主机的系统状态，状态值定义同0x12命令；
   static const int queryDeviceParameter = 0x0F; // 查询管理参数查询返回
   static const int setDeviceParameter = 0x11; // 设置管理参数查询返回
+  static const int queryBoardStatuResponse = 0x63; // 对应目标地址的灯板状态查询的返回   协议如下面，但是不准确，暂时用于查询子板是否上线 成功，返回3字节：字节1：0x01（成功），字节2：LED状态， 字节3：电量状态；失败，返回1字节：字节1： 0x00（失败）
 }
 
 List<int> bleNotAllData = []; // 不完整数据 被分包发送的蓝牙数据
@@ -183,6 +184,11 @@ class BluetoothUltTimateDataParse {
       // 代表数据是发送给app的
       int cmd = element[3];
       switch (cmd) {
+        case ResponseCMDType.queryBoardStatuResponse:
+          if(targetIndex >= 0 && targetIndex < BluetoothManager().boardOnlineStatu.length){
+            BluetoothManager().boardOnlineStatu[targetIndex] = 1;
+          }
+          break;
         case ResponseCMDType.queryDeviceParameter:
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           if (gameUtil.nowISGamePage) {

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:code/constants/constants.dart';
-
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/notification_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:code/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-
 import '../models/global/user_info.dart';
 import '../models/http/subscribe_model.dart';
 import '../services/http/account.dart';

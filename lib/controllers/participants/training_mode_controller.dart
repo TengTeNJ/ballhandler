@@ -98,6 +98,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             }
             gameUtil.selectedDeviceModel = devices.first;
             gameUtil.modelId = index + 1;
+            print("BluetoothManager().boardOnlineStatu = ${BluetoothManager().boardOnlineStatu}");
             if (gameUtil.gameScene == GameScene.five) {
               // 记录选择的场景 放入缓存
               NSUserDefault.setKeyValue<int>(

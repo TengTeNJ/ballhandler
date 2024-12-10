@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/toast.dart';
 import 'package:flutter/material.dart';
@@ -216,5 +218,18 @@ class BleUtil {
             boardIndex: 0, powerValue: powerValue, isErQiLing: false);
       }
     }
+  }
+  /*查询270各板子的在线状态*/
+  static queryBoardOnlineStatu(){
+    int _count = 0;
+     Timer.periodic(Duration(milliseconds: 100), (Timer timer) {
+       if(_count >= 6){
+         timer.cancel();
+         return;
+       }
+      // 在这里执行你的操作
+       BluetoothManager().writerDataToDevice(BluetoothManager().hasConnectedDeviceList.first, querySomeOneBoardStatu(_count));
+       _count ++;
+    });
   }
 }

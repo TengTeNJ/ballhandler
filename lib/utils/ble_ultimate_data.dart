@@ -764,6 +764,38 @@ List<int> queryMasterSystemStatu() {
   // print('发送心跳------------');;
   return [start, source, destination, length, cmd, cs, end];
 }
+/*查询某灯板的状态*/
+List<int> querySomeOneBoardStatu(int boardIndex) {
+  int start = kBLEDataFrameHeader;
+  int end = kBLEDataFramerFoot;
+  int source = int.parse('10000000', radix: 2);
+  // 数据目的地址
+  int destinationInt;
+  String destination = '00';
+  if (boardIndex == 0) {
+    // 目的设备是主控板
+    destinationInt = int.parse('00000001', radix: 2);
+  } else {
+    // 目的设备是1-5号从板
+    // 目的设备是1-5号从板
+    for (int i = 5; i >= 1; i--) {
+      destination = destination + ((i == boardIndex) ? '1' : '0');
+    }
+    destination = destination + '0';
+    destinationInt = int.parse(destination, radix: 2);
+  }
+  int length = 7;
+  int cmd = 0x62;
+  int cs = start + source + destinationInt + length + cmd;
+  String binaryString = StringUtil.decimalToBinary(cs);
+  if (binaryString.length > 8) {
+    binaryString =
+        binaryString.substring(binaryString.length - 8, binaryString.length);
+  }
+  cs = StringUtil.binaryStringToDecimal(binaryString);
+  print('[start, source, destinationInt, length, cmd, cs, end] = ${[start, source, destinationInt, length, cmd, cs, end]}');
+  return [start, source, destinationInt, length, cmd, cs, end];
+}
 
 List<int> lockMode({bool lock = true}) {
   int start = kBLEDataFrameHeader;
