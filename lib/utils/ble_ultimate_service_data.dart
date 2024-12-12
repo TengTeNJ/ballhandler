@@ -187,6 +187,8 @@ class BluetoothUltTimateDataParse {
         case ResponseCMDType.queryBoardStatuResponse:
           if(targetIndex >= 0 && targetIndex < BluetoothManager().boardOnlineStatu.length){
             BluetoothManager().boardOnlineStatu[targetIndex] = 1;
+            // 状态变化发送通知
+            EventBus().sendEvent(kBoardOnLineStatu);
           }
           break;
         case ResponseCMDType.queryDeviceParameter:
@@ -377,7 +379,8 @@ class BluetoothUltTimateDataParse {
           int data = element[4];
           print('Central主机当前的系统状态=${data}');
           BluetoothManager().gameData.masterStatu = data;
-          if (data == 2) {
+          EventBus().sendEvent(kSystemStatu);
+          if (data == 2) {;
             GameUtil gameUtil = GetIt.instance<GameUtil>();
             if (gameUtil.gameScene == GameScene.erqiling &&
                 gameUtil.modelId == 3) {

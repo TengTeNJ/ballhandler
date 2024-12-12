@@ -13,7 +13,10 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:code/views/base/no_data_view.dart';
+import 'package:code/views/base/sector_view.dart';
 import 'package:code/views/ble/ble_list_view.dart';
+import 'package:code/views/participants/sector_animation_view.dart';
+import 'package:code/views/participants/squre_animation_view.dart';
 import 'package:code/views/participants/subscribe_border_view.dart';
 import 'package:code/widgets/account/cancel_button.dart';
 import 'package:code/widgets/base/base_button.dart';
@@ -24,7 +27,9 @@ import 'dart:io' show Platform;
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 import '../../models/ble/ble_model.dart';
+import '../../utils/board_online_util.dart';
 import '../../utils/global.dart';
+import '../../utils/notification_bloc.dart';
 import '../../utils/nsuserdefault_util.dart';
 import 'package:flutter_to_airplay/flutter_to_airplay.dart';
 import 'package:chewie/chewie.dart';
@@ -288,10 +293,13 @@ class _BLEListDialogState extends State<BLEListDialog> {
                       width: 36,
                       height: 36,
                       decoration: BoxDecoration(
-                        color: hexStringToColor('#65657D'),
-                        borderRadius: BorderRadius.circular(18)
+                          color: hexStringToColor('#65657D'),
+                          borderRadius: BorderRadius.circular(18)),
+                      child: Center(
+                        child: Image(
+                            image: AssetImage('images/ble/disconnect.png'),
+                            width: 16),
                       ),
-                      child: Center(child: Image(image: AssetImage('images/ble/disconnect.png'),width: 16),),
                     )
                   ],
                 ),
@@ -313,9 +321,12 @@ class _BLEListDialogState extends State<BLEListDialog> {
                       height: 36,
                       decoration: BoxDecoration(
                           color: hexStringToColor('#65657D'),
-                          borderRadius: BorderRadius.circular(18)
+                          borderRadius: BorderRadius.circular(18)),
+                      child: Center(
+                        child: Image(
+                            image: AssetImage('images/ble/scan.png'),
+                            width: 16),
                       ),
-                      child: Center(child: Image(image: AssetImage('images/ble/scan.png'),width: 16),),
                     )
                   ],
                 ),
@@ -1761,8 +1772,7 @@ class _ChannelDialogState extends State<ChannelDialog> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             controller: _usernameController,
             decoration: InputDecoration(
-                labelText: '信道',
-                labelStyle: TextStyle(color: Colors.white)),
+                labelText: '信道', labelStyle: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -1839,8 +1849,7 @@ class _RemainTimeDialogState extends State<RemainTimeDialog> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             controller: _usernameController,
             decoration: InputDecoration(
-                labelText: '单位为分钟',
-                labelStyle: TextStyle(color: Colors.white)),
+                labelText: '单位为分钟', labelStyle: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -1896,7 +1905,8 @@ class InterferenceLevelDialog extends StatefulWidget {
   InterferenceLevelDialog({this.confirm});
 
   @override
-  State<InterferenceLevelDialog> createState() => _InterferenceLevelDialogState();
+  State<InterferenceLevelDialog> createState() =>
+      _InterferenceLevelDialogState();
 }
 
 class _InterferenceLevelDialogState extends State<InterferenceLevelDialog> {
@@ -1917,7 +1927,8 @@ class _InterferenceLevelDialogState extends State<InterferenceLevelDialog> {
             controller: _usernameController,
             decoration: InputDecoration(
                 labelText: '0，1，2，3分别对应 最高，高，中，低四个等级',
-                labelStyle: TextStyle(color: Constants.baseStyleColor,fontSize: 10)),
+                labelStyle:
+                    TextStyle(color: Constants.baseStyleColor, fontSize: 10)),
           ),
         ],
       ),
@@ -2467,8 +2478,9 @@ class LowPowerTipDialog extends StatelessWidget {
 class BoardOfflineTipDialog extends StatelessWidget {
   int boardIndex = 0;
 
-  BoardOfflineTipDialog(
-      {required this.boardIndex,});
+  BoardOfflineTipDialog({
+    required this.boardIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -2504,8 +2516,7 @@ class BoardOfflineTipDialog extends StatelessWidget {
                   fontWeight: FontWeight.w400),
               children: <TextSpan>[
                 TextSpan(
-                  text:
-                  ' disconnected\nPlease check your board ',
+                  text: ' disconnected\nPlease check your board ',
                   style: TextStyle(
                     fontFamily: 'SanFranciscoDisplay',
                     fontSize: 16,
@@ -2543,6 +2554,7 @@ class BltMacDialog extends StatefulWidget {
   @override
   State<BltMacDialog> createState() => _BltMacDialogState();
 }
+
 class _BltMacDialogState extends State<BltMacDialog> {
   TextEditingController _usernameController = TextEditingController();
 
@@ -2622,6 +2634,7 @@ class BltNameDialog extends StatefulWidget {
   @override
   State<BltNameDialog> createState() => _BltNameDialogState();
 }
+
 class _BltNameDialogState extends State<BltNameDialog> {
   TextEditingController _usernameController = TextEditingController();
 
@@ -2689,5 +2702,245 @@ class _BltNameDialogState extends State<BltNameDialog> {
   void dispose() {
     _usernameController.dispose();
     super.dispose();
+  }
+}
+
+/*板子连接状态弹窗*/
+class BoardOnLineStatuDialog extends StatefulWidget {
+  CheckResult result;
+
+  BoardOnLineStatuDialog({this.result = CheckResult.checking});
+
+  @override
+  State<BoardOnLineStatuDialog> createState() => _BoardOnLineStatuDialogState();
+}
+
+class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacityAnimation;
+  late StreamSubscription subscription;
+  String offlineString = '';
+
+  listenDevice() {
+    subscription = EventBus().stream.listen((event) async {
+      if (event == kBoardOnLineStatu) {
+        if (mounted) {
+          setState(() {});
+        }
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..repeat(reverse: true);
+
+    _opacityAnimation =
+        Tween<double>(begin: 1.0, end: 0.0).animate(_controller);
+    listenDevice();
+    if (widget.result == CheckResult.checking) {
+      for (int i = 0; i < BluetoothManager().boardOnlineStatu.length; i++) {
+        int element = BluetoothManager().boardOnlineStatu[i];
+        print('element = ${element}');
+        int _index = kP3DataAndProductIndexMap[i] ?? 1;
+        print('_index = ${_index}');
+        if (element != 1) {
+          offlineString = offlineString + 'Board ${_index}、';
+        }
+      }
+      if (offlineString.contains('、')) {
+        offlineString = offlineString.substring(0, offlineString.length - 1);
+      }
+      setState(() {});
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: Constants.screenWidth(context),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(26),
+          color: Constants.darkControllerColor),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          widget.result == CheckResult.error
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image(
+                      image: AssetImage('images/ble/exception.png'),
+                      width: 18,
+                    ),
+                    SizedBox(
+                      width: 6,
+                    ),
+                    Constants.boldWhiteTextWidget('Connection Exception', 20),
+                  ],
+                )
+              : Image(
+                  image: AssetImage(widget.result == CheckResult.checking
+                      ? 'images/ble/animation.apng.png'
+                      : 'images/ble/success.png'),
+                  width: 38,
+                  fit: BoxFit.contain,
+                ),
+          SizedBox(
+            height: 28,
+          ),
+          Container(
+            width: Constants.screenWidth(context) - 84,
+            height: (Constants.screenWidth(context) - 84) * (299.0 / 585.0),
+            child: Stack(
+              children: [
+                Image(
+                  image: AssetImage('images/ble/270_product.png'),
+                  fit: BoxFit.cover,
+                ),
+                BluetoothManager().boardOnlineStatu[1] == 1
+                    ? Container()
+                    : Positioned(
+                        child: SqureAnimationView(),
+                        left: 0,
+                        bottom: 0,
+                        width:
+                            75 * ((Constants.screenWidth(context) - 84) / 292),
+                        height:
+                            75 * ((Constants.screenWidth(context) - 84) / 292),
+                      ),
+                BluetoothManager().boardOnlineStatu[2] == 1
+                    ? Container()
+                    : Positioned(
+                        left: 0,
+                        width: 74 *
+                            ((Constants.screenWidth(context) - 84) / 292) *
+                            2,
+                        height: 75 *
+                            ((Constants.screenWidth(context) - 84) / 292) *
+                            2,
+                        top: 0,
+                        child: SectorAnimationView(),
+                      ),
+                BluetoothManager().boardOnlineStatu[3] == 1
+                    ? Container()
+                    : Positioned(
+                        child: SqureAnimationView(),
+                        left:
+                            74 * ((Constants.screenWidth(context) - 84) / 292),
+                        top: 0,
+                        width:
+                            74 * ((Constants.screenWidth(context) - 84) / 292),
+                        height:
+                            75 * ((Constants.screenWidth(context) - 84) / 292),
+                      ),
+                BluetoothManager().boardOnlineStatu[0] == 1
+                    ? Container()
+                    : Positioned(
+                        child: SqureAnimationView(),
+                        right:
+                            74 * ((Constants.screenWidth(context) - 84) / 292),
+                        top: 0,
+                        width:
+                            74 * ((Constants.screenWidth(context) - 84) / 292),
+                        height:
+                            75 * ((Constants.screenWidth(context) - 84) / 292),
+                      ),
+                BluetoothManager().boardOnlineStatu[4] == 1
+                    ? Container()
+                    : Positioned(
+                        right: 0,
+                        width: 73 *
+                            ((Constants.screenWidth(context) - 84) / 292) *
+                            2,
+                        height: 74 *
+                            ((Constants.screenWidth(context) - 84) / 292) *
+                            2,
+                        top: 0,
+                        child: SectorAnimationView(
+                          isLeft: false,
+                          color: hexStringToOpacityColor('#FF0000', 0.72),
+                        ),
+                      ),
+                BluetoothManager().boardOnlineStatu[5] == 1
+                    ? Container()
+                    : Positioned(
+                        child: SqureAnimationView(),
+                        right: 0,
+                        bottom: 0,
+                        width:
+                            75 * ((Constants.screenWidth(context) - 84) / 292),
+                        height:
+                            75 * ((Constants.screenWidth(context) - 84) / 292),
+                      ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 28,
+          ),
+          widget.result == CheckResult.error
+              ? Padding(
+                  padding: EdgeInsets.only(left: 16, right: 16),
+                  child: Column(
+                    children: [
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: offlineString,
+                          style: TextStyle(
+                              color: Constants.baseStyleColor,
+                              fontFamily: 'SanFranciscoDisplay',
+                              fontSize: 16,
+                              height: 1.2,
+                              fontWeight: FontWeight.w400),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: '  Disconnected',
+                              style: TextStyle(
+                                fontFamily: 'SanFranciscoDisplay',
+                                fontSize: 16,
+                                color: Colors.white,
+                                height: 1.2,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Constants.regularWhiteTextWidget(
+                          'Please check your board', 16)
+                    ],
+                  ),
+                )
+              : Constants.regularWhiteTextWidget(
+                  widget.result == CheckResult.checking
+                      ? 'Connecting...'
+                      : 'Connection successful.',
+                  16),
+          SizedBox(
+            height: 60,
+          ),
+          Container(
+            height: 40,
+            width: 209,
+            decoration: BoxDecoration(
+                color: widget.result == CheckResult.checking
+                    ? hexStringToColor('#B1B1B1')
+                    : Constants.baseStyleColor,
+                borderRadius: BorderRadius.circular(10)),
+            child: Center(
+              child: Constants.customTextWidget('Play Now', 16, 'E1E1E1'),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

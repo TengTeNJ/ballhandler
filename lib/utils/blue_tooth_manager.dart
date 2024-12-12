@@ -203,10 +203,6 @@ class BluetoothManager {
             // 查询主机状态
             BluetoothManager()
                 .writerDataToDevice(model, queryMasterSystemStatu());
-            // 查询各板子状态
-            Future.delayed(Duration(milliseconds: 200),(){
-              BleUtil.queryBoardOnlineStatu();
-            });
           });
         } else {
           // 保存读写特征值

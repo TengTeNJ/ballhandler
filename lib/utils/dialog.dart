@@ -451,4 +451,18 @@ class TTDialog {
       },
     );
   }
+  /*板子连接状态弹窗*/
+  static boardOnlineStatuDialog(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.57,
+          child: BoardOnLineStatuDialog(),
+        );
+      },
+    );
+  }
 }

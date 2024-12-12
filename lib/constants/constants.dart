@@ -415,6 +415,8 @@ const kCurrentDeviceDisconnectedFive = 'current_device_disconnected_five'; // �
 const kGamePre = 'game_pre'; // 游戏pre阶段的屏幕显示 仅针对p1和p2
 const kReadyBack = 'game_ready_page_back'; // 点击游戏ready页面右上角的返回按钮
 const kFinishSubscribe = 'finish_subscribe'; // 完成订阅
+const kBoardOnLineStatu = 'board_online_statu_change'; // 板子的在线状态变化
+const kSystemStatu = 'system_configure_statu'; //  系统配网的状态
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
     "7": "ZIGZAG Challenge",

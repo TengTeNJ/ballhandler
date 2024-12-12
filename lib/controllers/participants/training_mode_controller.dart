@@ -12,6 +12,7 @@ import 'package:code/services/http/participants.dart';
 import 'package:code/utils/audio_player_util.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
+import 'package:code/utils/board_online_util.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
@@ -27,6 +28,7 @@ import 'package:get_it/get_it.dart';
 import '../../models/global/user_info.dart';
 import '../../utils/ble_util.dart';
 import '../../utils/global.dart';
+import '../../utils/notification_bloc.dart';
 import '../../utils/system_device.dart';
 import '../../utils/toast.dart';
 import '../account/login_page_controller.dart';
@@ -43,7 +45,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
   String title = 'Stickhandling';
   int tapCount = 0;
   Timer? timer;
-
+  BoardOnlineUtil onlineUtil = BoardOnlineUtil();
+  late StreamSubscription subscription;
   // List View
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
@@ -205,6 +208,21 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     getTitle();
   }
 
+  listenDevice(){
+    subscription = EventBus().stream.listen((event) async{
+      if(event == kDeviceConnected){
+        if(BluetoothManager().hasConnectedDeviceList.first.deviceName.contains(k270_Name)){
+          // 270连接成功
+          TTDialog.boardOffLineTipDialog(context);
+          onlineUtil.startCheckOnlineStatu();
+          onlineUtil.checkResult = (CheckResult result){
+
+          };
+        }
+      }
+  });
+  }
+
   getTitle() {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     String _title = kTrainingMode_ReleaseNames[gameUtil.gameScene.index];
@@ -309,6 +327,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       BluetoothManager()
           .writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(0));
     }
+    subscription.cancel();
+    onlineUtil.clearHandle();
     super.dispose();
   }
 }

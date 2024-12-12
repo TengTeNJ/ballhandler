@@ -100,7 +100,9 @@ class _HomePageViewState extends State<HomePageController> {
     gameUtil.sceneList.forEach((element) {
       _pageViews.add(HomeBodyView(model: element));
     });
-
+    Future.delayed(Duration(milliseconds: 1000),(){
+      TTDialog.boardOnlineStatuDialog(context);
+    });
     // 初始化pageView
    // _currentIndex = gameUtil.gameScene.index;
     SceneModel _matchModel = gameUtil.sceneList.firstWhere((element)=>(int.parse(element.dictKey) - 1) == gameUtil.gameScene.index,orElse: null);
