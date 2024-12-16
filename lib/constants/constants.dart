@@ -417,6 +417,8 @@ const kReadyBack = 'game_ready_page_back'; // 点击游戏ready页面右上角�
 const kFinishSubscribe = 'finish_subscribe'; // 完成订阅
 const kBoardOnLineStatu = 'board_online_statu_change'; // 板子的在线状态变化
 const kSystemStatu = 'system_configure_statu'; //  系统配网的状态
+const kSystemStatuRefreshSuccess = 'system_configure_statu_refresh_success'; //  系统配网的状态刷新成功UI
+const kSystemStatuRefreshError = 'system_configure_statu_refresh_error'; //  系统配网的状态刷新错误UI
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
     "7": "ZIGZAG Challenge",

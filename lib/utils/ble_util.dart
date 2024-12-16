@@ -228,8 +228,10 @@ class BleUtil {
          return;
        }
       // 在这里执行你的操作
-       BluetoothManager().writerDataToDevice(BluetoothManager().hasConnectedDeviceList.first, querySomeOneBoardStatu(_count));
-       _count ++;
+       if(BluetoothManager().hasConnectedDeviceList.isNotEmpty){
+         BluetoothManager().writerDataToDevice(BluetoothManager().hasConnectedDeviceList.first, querySomeOneBoardStatu(_count));
+         _count ++;
+       }
     });
   }
 }

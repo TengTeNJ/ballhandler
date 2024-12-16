@@ -44,4 +44,11 @@ class _SectorAnimationViewState extends State<SectorAnimationView>  with SingleT
       ),
     );
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
 }

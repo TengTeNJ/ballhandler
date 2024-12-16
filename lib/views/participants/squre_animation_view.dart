@@ -49,4 +49,11 @@ class _SqureAnimationViewState extends State<SqureAnimationView>
         color: widget.color ??
             hexStringToOpacityColor('#4A4A4A', 0.72));
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
 }

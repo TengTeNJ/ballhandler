@@ -2707,26 +2707,34 @@ class _BltNameDialogState extends State<BltNameDialog> {
 
 /*板子连接状态弹窗*/
 class BoardOnLineStatuDialog extends StatefulWidget {
-  CheckResult result;
-
-  BoardOnLineStatuDialog({this.result = CheckResult.checking});
+  Function? onTap;
+  BoardOnLineStatuDialog({this.onTap});
 
   @override
   State<BoardOnLineStatuDialog> createState() => _BoardOnLineStatuDialogState();
 }
 
-class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _opacityAnimation;
+class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog> {
   late StreamSubscription subscription;
   String offlineString = '';
-
+  CheckResult result = CheckResult.checking;
   listenDevice() {
     subscription = EventBus().stream.listen((event) async {
       if (event == kBoardOnLineStatu) {
         if (mounted) {
           setState(() {});
+        }
+      }else if (event == kSystemStatuRefreshSuccess){
+        if (mounted) {
+          setState(() {
+            result = CheckResult.success;
+          });
+        }
+      }else if(event == kSystemStatuRefreshError){
+        if (mounted) {
+          setState(() {
+            result = CheckResult.error;
+          });
         }
       }
     });
@@ -2735,15 +2743,8 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    )..repeat(reverse: true);
-
-    _opacityAnimation =
-        Tween<double>(begin: 1.0, end: 0.0).animate(_controller);
     listenDevice();
-    if (widget.result == CheckResult.checking) {
+    if (result == CheckResult.error) {
       for (int i = 0; i < BluetoothManager().boardOnlineStatu.length; i++) {
         int element = BluetoothManager().boardOnlineStatu[i];
         print('element = ${element}');
@@ -2771,7 +2772,7 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          widget.result == CheckResult.error
+          result == CheckResult.error
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -2786,7 +2787,7 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
                   ],
                 )
               : Image(
-                  image: AssetImage(widget.result == CheckResult.checking
+                  image: AssetImage(result == CheckResult.checking
                       ? 'images/ble/animation.apng.png'
                       : 'images/ble/success.png'),
                   width: 38,
@@ -2807,9 +2808,9 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
                 BluetoothManager().boardOnlineStatu[1] == 1
                     ? Container()
                     : Positioned(
-                        child: SqureAnimationView(),
+                        child: SqureAnimationView(needAnimation:  result == CheckResult.error ? true : false, color: result == CheckResult.error ? hexStringToOpacityColor('#FF0000', 0.72) : null,),
                         left: 0,
-                        bottom: 0,
+                        bottom: 2,
                         width:
                             75 * ((Constants.screenWidth(context) - 84) / 292),
                         height:
@@ -2825,16 +2826,16 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
                         height: 75 *
                             ((Constants.screenWidth(context) - 84) / 292) *
                             2,
-                        top: 0,
-                        child: SectorAnimationView(),
+                        top: -1,
+                        child: SectorAnimationView(needAnimation:  result == CheckResult.error ? true : false,color:  result == CheckResult.error ? hexStringToOpacityColor('#FF0000', 0.72) : null),
                       ),
                 BluetoothManager().boardOnlineStatu[3] == 1
                     ? Container()
                     : Positioned(
-                        child: SqureAnimationView(),
+                        child: SqureAnimationView(needAnimation:  result == CheckResult.error ? true : false,color:  result == CheckResult.error ? hexStringToOpacityColor('#FF0000', 0.72) : null),
                         left:
                             74 * ((Constants.screenWidth(context) - 84) / 292),
-                        top: 0,
+                        top: -1,
                         width:
                             74 * ((Constants.screenWidth(context) - 84) / 292),
                         height:
@@ -2843,10 +2844,10 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
                 BluetoothManager().boardOnlineStatu[0] == 1
                     ? Container()
                     : Positioned(
-                        child: SqureAnimationView(),
+                        child: SqureAnimationView(needAnimation:  result == CheckResult.error ? true : false,color:  result == CheckResult.error ? hexStringToOpacityColor('#FF0000', 0.72) : null),
                         right:
                             74 * ((Constants.screenWidth(context) - 84) / 292),
-                        top: 0,
+                        top: -1,
                         width:
                             74 * ((Constants.screenWidth(context) - 84) / 292),
                         height:
@@ -2855,25 +2856,26 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
                 BluetoothManager().boardOnlineStatu[4] == 1
                     ? Container()
                     : Positioned(
-                        right: 0,
-                        width: 73 *
+                        right: -1,
+                        width: 75 *
                             ((Constants.screenWidth(context) - 84) / 292) *
                             2,
-                        height: 74 *
+                        height: 75 *
                             ((Constants.screenWidth(context) - 84) / 292) *
                             2,
-                        top: 0,
+                        top: -1,
                         child: SectorAnimationView(
+                          needAnimation: result == CheckResult.error ? true : false,
                           isLeft: false,
-                          color: hexStringToOpacityColor('#FF0000', 0.72),
+                          color:  result == CheckResult.error ? hexStringToOpacityColor('#FF0000', 0.72) : null,
                         ),
                       ),
                 BluetoothManager().boardOnlineStatu[5] == 1
                     ? Container()
                     : Positioned(
-                        child: SqureAnimationView(),
-                        right: 0,
-                        bottom: 0,
+                        child: SqureAnimationView(needAnimation:  result == CheckResult.error ? true : false,color:  result == CheckResult.error ? hexStringToOpacityColor('#FF0000', 0.72) : null),
+                        right: -1,
+                        bottom: 1,
                         width:
                             75 * ((Constants.screenWidth(context) - 84) / 292),
                         height:
@@ -2885,7 +2887,7 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
           SizedBox(
             height: 28,
           ),
-          widget.result == CheckResult.error
+          result == CheckResult.error
               ? Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: Column(
@@ -2920,23 +2922,34 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog>
                   ),
                 )
               : Constants.regularWhiteTextWidget(
-                  widget.result == CheckResult.checking
+                  result == CheckResult.checking
                       ? 'Connecting...'
                       : 'Connection successful.',
                   16),
           SizedBox(
             height: 60,
           ),
-          Container(
-            height: 40,
-            width: 209,
-            decoration: BoxDecoration(
-                color: widget.result == CheckResult.checking
-                    ? hexStringToColor('#B1B1B1')
-                    : Constants.baseStyleColor,
-                borderRadius: BorderRadius.circular(10)),
-            child: Center(
-              child: Constants.customTextWidget('Play Now', 16, 'E1E1E1'),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: (){
+              if(result != CheckResult.checking){
+                NavigatorUtil.pop();
+                if(widget.onTap != null){
+                  widget.onTap!();
+                }
+              }
+            },
+            child: Container(
+              height: 40,
+              width: 209,
+              decoration: BoxDecoration(
+                  color: result == CheckResult.checking
+                      ? hexStringToColor('#B1B1B1')
+                      : Constants.baseStyleColor,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Constants.customTextWidget( result == CheckResult.error ? 'Got it' : 'Play Now', 16, 'E1E1E1'),
+              ),
             ),
           ),
         ],

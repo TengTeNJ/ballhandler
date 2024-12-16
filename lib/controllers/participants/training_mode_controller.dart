@@ -46,7 +46,9 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
   int tapCount = 0;
   Timer? timer;
   BoardOnlineUtil onlineUtil = BoardOnlineUtil();
+  CheckResult checkResult = CheckResult.checking;
   late StreamSubscription subscription;
+  bool _onLineStatuFlag = false;
   // List View
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
@@ -206,18 +208,30 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     // 隐藏状态栏和底部导航栏
     // FlutterStatusbarcolor.setStatusBarColor(Colors.green);\
     getTitle();
+    listenDevice();
   }
 
   listenDevice(){
     subscription = EventBus().stream.listen((event) async{
       if(event == kDeviceConnected){
         if(BluetoothManager().hasConnectedDeviceList.first.deviceName.contains(k270_Name)){
-          // 270连接成功
-          TTDialog.boardOffLineTipDialog(context);
-          onlineUtil.startCheckOnlineStatu();
-          onlineUtil.checkResult = (CheckResult result){
+         Future.delayed(Duration(milliseconds: 200),(){
+           // 270连接成功
+           TTDialog.boardOnlineStatuDialog(context,(){},checkResult: checkResult);
+           onlineUtil.startCheckOnlineStatu();
+           onlineUtil.checkResult = (CheckResult result){
+               checkResult = result;
+               print('result = ${result}');
+               // NavigatorUtil.pop();
+             //  TTDialog.boardOnlineStatuDialog(context,checkResult: checkResult);
+               if(result == CheckResult.success){
+                 EventBus().sendEvent(kSystemStatuRefreshSuccess);
+               }else if(result == CheckResult.error){
+                 EventBus().sendEvent(kSystemStatuRefreshError);
+               }
 
-          };
+           };
+         });
         }
       }
   });

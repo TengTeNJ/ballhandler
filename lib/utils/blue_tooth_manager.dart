@@ -178,6 +178,7 @@ class BluetoothManager {
           _ble.requestConnectionPriority(deviceId: model.device!.id, priority: ConnectionPriority.highPerformance);
         }
         // 设备连接成功
+        EasyLoading.dismiss();
         EventBus().sendEvent(kDeviceConnected);
         // 连接设备数量+1
         conectedDeviceCount.value++;
@@ -185,6 +186,8 @@ class BluetoothManager {
         model.hasConected = true;
         final notifyCharacteristic;
         final writerCharacteristic;
+        // 连接成功，则设备列表页面弹窗消失
+        NavigatorUtil.pop();
         if (model.deviceName.contains(k270_Name)) {
           // 保存读写特征值 270设备
           notifyCharacteristic = QualifiedCharacteristic(
@@ -219,8 +222,8 @@ class BluetoothManager {
           writerDataToDevice(model, questDeviceInfoData());
         }
         // 连接成功弹窗
-        EasyLoading.showSuccess('Bluetooth connection successful',
-            maskType: EasyLoadingMaskType.black);
+        // EasyLoading.showSuccess('Bluetooth connection successful',
+        //     maskType: EasyLoadingMaskType.none,);
         // 监听数据
         _ble
             .subscribeToCharacteristic(notifyCharacteristic)
@@ -235,8 +238,6 @@ class BluetoothManager {
             BluetoothDataParse.parseData(data, model);
           }
         });
-        // 连接成功，则设备列表页面弹窗消失
-        NavigatorUtil.pop();
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
         // 蓝牙失去连接弹窗
@@ -261,6 +262,8 @@ class BluetoothManager {
         // 说明是当前选择的游戏设备 并且断开了连接
         EventBus().sendEvent(kCurrentDeviceDisconnected);
         if(model.deviceName.contains(k270_Name)){
+          // 板子在线状态初始化
+          BluetoothManager().boardOnlineStatu = [1,0,0,0,0,0];
           EventBus().sendEvent(kCurrentDeviceDisconnectedUli);
         }else if(model.deviceName.contains(kFiveBallHandler_Name)){
           EventBus().sendEvent(kCurrentDeviceDisconnectedFive);
@@ -289,6 +292,8 @@ class BluetoothManager {
     // 发送通知 主动断开
     EventBus().sendEvent(kInitiativeDisconnect);
     if(device.deviceName.contains(k270_Name)){
+      // 板子在线状态初始化
+      BluetoothManager().boardOnlineStatu = [1,0,0,0,0,0];
       EventBus().sendEvent(kInitiativeDisconnectUli);
     }else if(device.deviceName.contains(kFiveBallHandler_Name)){
       EventBus().sendEvent(kInitiativeDisconnectFive);
@@ -315,6 +320,9 @@ class BluetoothManager {
 
     // 多个命令同时发时 增加10ms的时间间隔
     sleep(Duration(milliseconds: 10));
+    if(model.writerCharacteristic == null){
+      return;
+    }
     await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
         value: data);
   }

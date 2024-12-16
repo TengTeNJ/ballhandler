@@ -185,6 +185,11 @@ class BluetoothUltTimateDataParse {
       int cmd = element[3];
       switch (cmd) {
         case ResponseCMDType.queryBoardStatuResponse:
+          bool allEqualOne =  BluetoothManager().boardOnlineStatu .every((element) => element == 1);
+          // 所有的都在线后 不再发送通知
+          if(allEqualOne){
+            return;
+          }
           if(targetIndex >= 0 && targetIndex < BluetoothManager().boardOnlineStatu.length){
             BluetoothManager().boardOnlineStatu[targetIndex] = 1;
             // 状态变化发送通知

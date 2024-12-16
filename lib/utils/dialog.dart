@@ -3,6 +3,8 @@ import 'package:code/utils/color.dart';
 import 'package:code/views/dialog/dialog.dart';
 import 'package:flutter/material.dart';
 
+import 'board_online_util.dart';
+
 class TTDialog {
   /**发送邮件**/
   static sendEmailDialog(BuildContext context, Function confirm) {
@@ -452,15 +454,17 @@ class TTDialog {
     );
   }
   /*板子连接状态弹窗*/
-  static boardOnlineStatuDialog(BuildContext context) {
+  static boardOnlineStatuDialog(BuildContext context, Function onTap, {CheckResult checkResult =  CheckResult.checking}) {
     showModalBottomSheet(
+      isDismissible:false,
+      enableDrag:false,
       backgroundColor: Colors.transparent,
       isScrollControlled: true, // 设置为false话 弹窗的高度就会固定
       context: context,
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.57,
-          child: BoardOnLineStatuDialog(),
+          child: BoardOnLineStatuDialog(onTap: onTap,),
         );
       },
     );
