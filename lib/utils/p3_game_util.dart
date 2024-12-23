@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:code/models/game/hit_target_model.dart';
+import 'package:code/utils/audio_player_util.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/control_time_out_util.dart';
@@ -1258,12 +1259,16 @@ class P3GameManager {
                       BluetoothManager().hitModelMessageId));
               // 击中蓝灯 减1分
               BluetoothManager().gameData.score--;
+              // 播放音效
+              playBlueAudio();
               // 得分显示
               BluetoothManager().writerDataToDevice(
                   gameUtil.selectedDeviceModel,
                   scoreShow(BluetoothManager().gameData.score));
             } else if (hitModel.statu == BleULTimateLighStatu.red) {
               print('击中红灯');
+              // 播放音效
+              playRedAudio();
               // 击中红灯加2分
               BluetoothManager().gameData.score =
                   BluetoothManager().gameData.score + 2;
@@ -1286,10 +1291,8 @@ class P3GameManager {
                 }
                 // 结束本组合中的某个模式
                 await this.stopGame();
-                print('3+++++++++++++');
                 listenControlutil(completer);
               } else {
-                print('456-----');
                 // 继续循环执行
                 _implement(completer);
               }
@@ -1368,7 +1371,6 @@ class P3GameManager {
     BluetoothManager().board4HitMessageIdList.clear();
     BluetoothManager().board5HitMessageIdList.clear();
     BluetoothManager().board6HitMessageIdList.clear();
-    print('+++++++++++');
     // 关闭所有的灯光
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     List<List<ClickTargetModel>> _allDatas =

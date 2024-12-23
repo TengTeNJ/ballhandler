@@ -19,6 +19,7 @@ import 'package:get_it/get_it.dart';
 import '../models/ble/ble_model.dart';
 import 'global.dart';
 import 'notification_bloc.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class BluetoothManager {
   static final BluetoothManager _instance = BluetoothManager._internal();
@@ -110,6 +111,9 @@ class BluetoothManager {
    * **/
   List<int>boardOnlineStatu = [1,0,0,0,0,0];
 
+  AudioPlayer redPlayer = AudioPlayer();
+  AudioPlayer bluePlayer = AudioPlayer();
+
   /*开始扫描*/
   Future<void> startScan() async {
     // 不能重复扫描
@@ -169,7 +173,6 @@ class BluetoothManager {
       if(connectionStateUpdate.failure != null){
         print('connectionStateUpdate.failure = ${connectionStateUpdate.failure!.message}');
         print('connectionStateUpdate.failure = ${connectionStateUpdate.failure!.code}');
-
       }
       if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.connected) {

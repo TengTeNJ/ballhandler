@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:code/models/airbattle/270_record_view.dart';
 import 'package:code/route/route.dart';
+import 'package:code/utils/audio_player_util.dart';
 import 'package:code/utils/system_device.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -228,6 +229,8 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                               }
                              // await SystemUtil.lockScreenHorizontalDirection();
                               _controller.dispose();
+                              // 预加载音频资源
+                              preLoadAudioAsset();
                               if(isIpad){
                                 NavigatorUtil.popAndThenPush(
                                   Routes.ipadprocess270,

@@ -13,6 +13,7 @@ import 'package:code/utils/toast.dart';
 import 'package:get_it/get_it.dart';
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
+import 'audio_player_util.dart';
 import 'ble_util.dart';
 import 'navigator_util.dart';
 import 'notification_bloc.dart';
@@ -442,6 +443,8 @@ class BluetoothUltTimateDataParse {
           if (gameUtil.modelId != 3) {
             // 只有P3模式才处理击中
             break;
+          }else{
+            print('++++++---------+++++++');
           }
           int messageId = element[4];
           BluetoothManager().hitModelMessageId = messageId;
@@ -630,7 +633,15 @@ class BluetoothUltTimateDataParse {
                 String count2String = StringUtil.decimalToBinary(count_data2);
                 String valueString = count1String + count2String;
                 int balls_count = StringUtil.binaryStringToDecimal(valueString);
+                // 通过得分变化判断是击中红灯还是蓝灯
+                bool _isRed =  (balls_count -BluetoothManager().gameData.score) > 0;
                 BluetoothManager().gameData.score = balls_count;
+                GameUtil gameUtil = GetIt.instance<GameUtil>();
+                if(_isRed && gameUtil.nowISGamePage &&BluetoothManager().gameData.utimateGameSatatu == 2){
+                  playRedAudio();
+                }else if(!_isRed && balls_count != 0 && gameUtil.nowISGamePage &&BluetoothManager().gameData.utimateGameSatatu == 2){
+                  playBlueAudio();
+                }
                 break;
               }
             case 0x0f:
