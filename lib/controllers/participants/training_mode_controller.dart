@@ -5,6 +5,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/controllers/participants/p1_controller.dart';
 import 'package:code/controllers/participants/p2_controller.dart';
 import 'package:code/controllers/participants/p3_controller.dart';
+import 'package:code/controllers/participants/razor_p1_controller.dart';
 import 'package:code/controllers/participants/test_game_controller.dart';
 import 'package:code/models/ble/ble_model.dart';
 import 'package:code/route/route.dart';
@@ -55,6 +56,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       child: TrainingModeListView(
         model: _datas[index],
         scanBleList: () async {
+          NavigatorUtil.present(RazorP1Controller());
+          return;
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           // 270的P3模式需要订阅才能玩耍未登录的话拦截
           if (gameUtil.gameScene == GameScene.erqiling && index == 2) {
