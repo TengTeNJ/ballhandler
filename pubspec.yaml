@@ -136,6 +136,7 @@ flutter:
     - images/launch/
     - images/battery/
     - images/p3/
+    - images/razor/
     - images/razor/mode/
     - assets/audio/
 
