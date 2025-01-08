@@ -57,7 +57,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       child: TrainingModeListView(
         model: _datas[index],
         scanBleList: () async {
-          NavigatorUtil.present(RazorP2SelectController());
+          NavigatorUtil.push(Routes.razorgameprocesspage);
+          //NavigatorUtil.present(RazorP2SelectController());
           return;
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           // 270的P3模式需要订阅才能玩耍未登录的话拦截

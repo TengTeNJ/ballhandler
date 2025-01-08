@@ -1,5 +1,6 @@
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/participants/razor/razor_p2_grid_list_view.dart';
+import 'package:code/views/participants/razor/recording_view.dart';
 import 'package:code/views/participants/razor/switch_view.dart';
 import 'package:code/views/participants/razor/time_and_interval_view.dart';
 import 'package:flutter/material.dart';
@@ -82,19 +83,10 @@ class _RazorP2SelectControllerState extends State<RazorP2SelectController> {
                       SizedBox(
                         height: 10,
                       ),
-                      Container(
-                        width: Constants.screenWidth(context) - 32,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SwitchView(title: 'Random',value: true,onChange: (bool value){
-                              print('value = ${value}');
-                            },),
-                            SwitchView(title: 'Recording',value: false,onChange: (bool value){
-                              print('value = ${value}');
-                            }),
-                          ],
-                        ),
+                      RecordingView(
+                        value: false,
+                        onChange: (value){
+                        },
                       ),
                       SizedBox(
                         height: 156,

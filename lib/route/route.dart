@@ -22,6 +22,7 @@ import 'package:code/controllers/participants/p2_controller.dart';
 import 'package:code/controllers/participants/p3_controller.dart';
 import 'package:code/controllers/participants/p3_game_process_controller.dart';
 import 'package:code/controllers/participants/p3_record_select_controller.dart';
+import 'package:code/controllers/participants/razor_game_process_controller.dart';
 import 'package:code/controllers/participants/ready_controller.dart';
 import 'package:code/controllers/participants/record_select_controller.dart';
 import 'package:code/controllers/participants/training_mode_controller.dart';
@@ -85,7 +86,7 @@ class Routes {
   static const String devicedebug= 'deviceDebug'; // 设备参数调节页面
   static const String subscribe= 'subscribe'; // 新订阅页面
   static const String subscribeintroduce= 'subscribeIntroduce'; // 订阅介绍页面
-
+  static const String razorgameprocesspage= 'razor_game_process_page'; // 三节游戏页面
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
@@ -195,6 +196,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SubscribeController());
       case subscribeintroduce:
         return MaterialPageRoute(builder: (_) => UltSubscribeHomeController());
+      case razorgameprocesspage:
+        return MaterialPageRoute(builder: (_) => RazorGameProcessController());
     // EmailPageController
      // IntegralController MyAccountDataModel
       default:
