@@ -11,25 +11,25 @@ void playLocalAudio(String sourceName,{double volume = 0.2}) async {
   //await player.resume();
 }
 
-void playRedAudio(){
+void playRedAudio({String audioName = 'red1.mp3' }){
   if(BluetoothManager().redPlayer.state == PlayerState.playing){
     BluetoothManager().redPlayer.stop();
     Future.delayed(Duration(milliseconds: 100),(){
-      BluetoothManager().redPlayer.play(AssetSource('audio/red2.mp3'),volume: 0.1);
+      BluetoothManager().redPlayer.play(AssetSource('audio/${audioName}'),volume: 1.0);
     });
   }else{
-    BluetoothManager().redPlayer.play(AssetSource('audio/red2.mp3'),volume: 0.1);
+    BluetoothManager().redPlayer.play(AssetSource('audio/${audioName}'),volume: 1.0);
   }
 }
 
-void playBlueAudio(){
+void playBlueAudio({String audioName = 'blue1.mp3' }){
   if(BluetoothManager().bluePlayer.state == PlayerState.playing){
     BluetoothManager().bluePlayer.stop();
     Future.delayed(Duration(milliseconds: 100),(){
-      BluetoothManager().bluePlayer.play(AssetSource('audio/blue2.wav'),volume: 1.0);
+      BluetoothManager().bluePlayer.play(AssetSource('audio/${audioName}'),volume: 1.0);
     });
   }else{
-    BluetoothManager().bluePlayer.play(AssetSource('audio/blue2.wav'),volume: 1.0);
+    BluetoothManager().bluePlayer.play(AssetSource('audio/${audioName}'),volume: 1.0);
   }
 }
 /*预加载音频资源 防止首次播放时有延迟*/

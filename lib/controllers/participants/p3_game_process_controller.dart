@@ -15,6 +15,7 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/p1_game_util_new.dart';
 import 'package:code/utils/p3_game_util.dart';
 import 'package:code/utils/toast.dart';
+import 'package:code/utils/voice_control_util.dart';
 import 'package:code/views/base/game_process_statu_view.dart';
 import 'package:code/views/participants/ultimate_lights_view.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     super.initState();
     timeLeftText = timeLeftLabel();
     //  更好计算图片宽高 以及实际渲染led的位置效果
-    Future.delayed(Duration(milliseconds: 50), () async {
+    Future.delayed(Duration(milliseconds: 100), () async {
      await SystemUtil.lockScreenHorizontalDirection();
      Future.delayed(Duration(milliseconds: 300),(){
        emulateSpace(context);
@@ -324,6 +325,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       }
     }
     print('P3模式结束组合');
+    VoiceControlUtil().reset();
     // 结束游戏指令
     Figure8GameUtil().stopGame();
     P3GameManager().stopGame();

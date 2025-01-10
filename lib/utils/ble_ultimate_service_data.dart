@@ -10,6 +10,7 @@ import 'package:code/utils/game_util.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/utils/toast.dart';
+import 'package:code/utils/voice_control_util.dart';
 import 'package:get_it/get_it.dart';
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
@@ -638,9 +639,11 @@ class BluetoothUltTimateDataParse {
                 BluetoothManager().gameData.score = balls_count;
                 GameUtil gameUtil = GetIt.instance<GameUtil>();
                 if(_isRed && gameUtil.nowISGamePage &&BluetoothManager().gameData.utimateGameSatatu == 2){
-                  playRedAudio();
+                  VoiceControlUtil().redHitHandle();
+                  //playRedAudio();
                 }else if(!_isRed && balls_count != 0 && gameUtil.nowISGamePage &&BluetoothManager().gameData.utimateGameSatatu == 2){
-                  playBlueAudio();
+                  VoiceControlUtil().blueHitHandle();
+                  //playBlueAudio();
                 }
                 break;
               }
