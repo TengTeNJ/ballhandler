@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:code/utils/voice_control_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 
@@ -107,6 +108,8 @@ class Figure8GameUtil {
           //  响应击中的灯
           BluetoothManager().writerDataToDevice(
               gameUtil.selectedDeviceModel,responseHitModel(hitModel.boardIndex, BluetoothManager().hitModelMessageId));
+          // 击中音效
+          VoiceControlUtil().redHitHandle();
           // 加分
           BluetoothManager().gameData.score =
               BluetoothManager().gameData.score + 2;
@@ -130,6 +133,8 @@ class Figure8GameUtil {
             //  响应击中的灯
             BluetoothManager().writerDataToDevice(
                 gameUtil.selectedDeviceModel,responseHitModel(hitModel.boardIndex, BluetoothManager().hitModelMessageId));
+            // 击中音效
+            VoiceControlUtil().blueHitHandle();
             // 减分
             BluetoothManager().gameData.score =
                 BluetoothManager().gameData.score - 1;
