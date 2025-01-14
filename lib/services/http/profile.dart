@@ -78,9 +78,9 @@ class Profile {
         showLoading: true);
     List<IntegralModel> _list = [];
     IntegralDataModel _model = IntegralDataModel();
-    final _count = response.data['count'];
-    _model.count = _count;
     if (response.success && response.data['data'] != null) {
+      final _count = response.data['count'];
+      _model.count = _count;
       final _array = response.data['data'] as List;
       _array.forEach((element) {
         IntegralModel model = IntegralModel();
