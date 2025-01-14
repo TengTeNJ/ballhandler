@@ -102,13 +102,14 @@ class _RankingItemViewState extends State<RankingItemView> {
                         width: 8,
                       ),
                       Container(
-                        constraints: BoxConstraints(
-                            maxWidth: Constants.screenWidth(context) - 280),
+                        // constraints: BoxConstraints(
+                        //     maxWidth: Constants.screenWidth(context) - 300),
                         child: Constants.mediumWhiteTextWidget(
-                            maxLines: 2,
+                            // maxLines: 2,
                             textAlign: TextAlign.start,
                             widget.model.nickName.toString(),
                             20),
+                        width: Constants.screenWidth(context) - 300,
                       ),
                       SizedBox(
                         width: 8,
@@ -132,8 +133,8 @@ class _RankingItemViewState extends State<RankingItemView> {
                   ),
                 ],
               ),
-              left: 24,
-              right: 24,
+              left: 16,
+              right: 16,
               top: 16,
               bottom: 16,
             ),
