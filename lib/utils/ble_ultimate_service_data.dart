@@ -586,7 +586,10 @@ class BluetoothUltTimateDataParse {
               {
                 // 游戏状态变化 0x00-IDLE(选择模式状态) 0x01-游戏预备；0x02-游戏开始；0x03-游戏结束。
                 int statu = element[5];
-                BluetoothManager().gameData.utimateGameSatatu = statu;
+                // 防止硬件返回其它无效的数据 调试过程中发现会出现4的值
+                if([0,1,2,3].indexOf(statu) != -1){
+                  BluetoothManager().gameData.utimateGameSatatu = statu;
+                }
                 if(statu == 1){
                   int preStatu = element[6];
                   BluetoothManager().gameData.preValue = preStatu;
@@ -650,7 +653,10 @@ class BluetoothUltTimateDataParse {
             case 0x0f:
               {
                 int statu = element[5];
-                BluetoothManager().gameData.utimateGameSatatu = statu;
+                // 防止硬件返回其它无效的数据 调试过程中发现会出现4的值
+                if([0,1,2,3].indexOf(statu) != -1){
+                  BluetoothManager().gameData.utimateGameSatatu = statu;
+                }
                 if(statu == 1){
                   int preStatu = element[6];
                   BluetoothManager().gameData.preValue = preStatu;

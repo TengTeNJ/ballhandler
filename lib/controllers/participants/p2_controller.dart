@@ -190,6 +190,9 @@ class P2Controller extends StatelessWidget {
                     }
                     GameUtil gameUtil = GetIt.instance<GameUtil>();
                     gameUtil.selectRecord = false;
+                    // 重置模式 防止用户已经进入游戏
+                    BluetoothManager()
+                        .writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(1));
                     List<CameraDescription> cameras = await availableCameras();
                     NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                     TTToast.hideLoading();
