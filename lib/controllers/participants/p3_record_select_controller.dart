@@ -559,19 +559,23 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                                     queryMasterSystemStatu());
                                 return;
                               }
-                              _controller.dispose();
+                             // _controller.dispose();
                              // await SystemUtil.lockScreenHorizontalDirection();
-                              if(isIpad){
-                                NavigatorUtil.popAndThenPush(
-                                  Routes.ipadprocess270,
-                                  arguments: cameraDescription!,
-                                );
-                              }else{
-                                NavigatorUtil.popAndThenPush(
-                                  Routes.process270,
-                                  arguments: cameraDescription!,
-                                );
-                              }
+                              TTToast.showLoading();
+                              Future.delayed(Duration(milliseconds: 500),(){
+                                TTToast.hideLoading();
+                                if(isIpad){
+                                  NavigatorUtil.popAndThenPush(
+                                    Routes.ipadprocess270,
+                                    arguments: cameraDescription!,
+                                  );
+                                }else{
+                                  NavigatorUtil.popAndThenPush(
+                                    Routes.process270,
+                                    arguments: cameraDescription!,
+                                  );
+                                }
+                              });
                             },
                             child: Transform(
                               transform: Matrix4.rotationZ(0.5 * 3.1416),

@@ -2,11 +2,15 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../constants/constants.dart';
 import '../../models/airbattle/p3_item_model.dart';
 import '../../route/route.dart';
+import '../../utils/ble_ultimate_data.dart';
+import '../../utils/blue_tooth_manager.dart';
 import '../../utils/color.dart';
+import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 import '../../utils/system_device.dart';
 import '../../utils/toast.dart';
@@ -115,6 +119,10 @@ class _P3GuideControllerState extends State<P3GuideController> {
                      // return;
                     }
                     List<CameraDescription> cameras = await availableCameras();
+                    // 重置模式 防止用户已经进入游戏
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    BluetoothManager()
+                        .writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(2));
                     NavigatorUtil.push(Routes.p3check,
                         arguments: cameras[cameras.length > 1 ? 1 : 0]);
                     TTToast.hideLoading();

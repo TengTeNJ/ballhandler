@@ -214,6 +214,22 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
     // FlutterStatusbarcolor.setStatusBarColor(Colors.green);\
     getTitle();
     listenDevice();
+    preLoadImage();
+  }
+
+  preLoadImage(){
+    // 预加载下个页面的的几个模式的背景图片 防止每次启动初次加载会闪屏的显现象 应该是图片过大影响的
+    Future.delayed(Duration(milliseconds: 300),(){
+      precacheImage(
+        ExactAssetImage('images/product/270.png'),
+        context,
+      );
+      precacheImage(
+        ExactAssetImage('images/participants/game_background.png'),
+        context,
+      );
+    });
+
   }
 
   listenDevice(){

@@ -10,6 +10,7 @@ import 'package:code/utils/game_util.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/utils/toast.dart';
+import 'package:code/utils/voice_control_util.dart';
 import 'package:get_it/get_it.dart';
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
@@ -585,7 +586,10 @@ class BluetoothUltTimateDataParse {
               {
                 // 游戏状态变化 0x00-IDLE(选择模式状态) 0x01-游戏预备；0x02-游戏开始；0x03-游戏结束。
                 int statu = element[5];
-                BluetoothManager().gameData.utimateGameSatatu = statu;
+                // 防止硬件返回其它无效的数据 调试过程中发现会出现4的值
+                if([0,1,2,3].indexOf(statu) != -1){
+                  BluetoothManager().gameData.utimateGameSatatu = statu;
+                }
                 if(statu == 1){
                   int preStatu = element[6];
                   BluetoothManager().gameData.preValue = preStatu;
@@ -638,16 +642,21 @@ class BluetoothUltTimateDataParse {
                 BluetoothManager().gameData.score = balls_count;
                 GameUtil gameUtil = GetIt.instance<GameUtil>();
                 if(_isRed && gameUtil.nowISGamePage &&BluetoothManager().gameData.utimateGameSatatu == 2){
-                  playRedAudio();
+                  VoiceControlUtil().redHitHandle();
+                  //playRedAudio();
                 }else if(!_isRed && balls_count != 0 && gameUtil.nowISGamePage &&BluetoothManager().gameData.utimateGameSatatu == 2){
-                  playBlueAudio();
+                  VoiceControlUtil().blueHitHandle();
+                  //playBlueAudio();
                 }
                 break;
               }
             case 0x0f:
               {
                 int statu = element[5];
-                BluetoothManager().gameData.utimateGameSatatu = statu;
+                // 防止硬件返回其它无效的数据 调试过程中发现会出现4的值
+                if([0,1,2,3].indexOf(statu) != -1){
+                  BluetoothManager().gameData.utimateGameSatatu = statu;
+                }
                 if(statu == 1){
                   int preStatu = element[6];
                   BluetoothManager().gameData.preValue = preStatu;

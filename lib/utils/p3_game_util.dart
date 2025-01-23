@@ -5,6 +5,7 @@ import 'package:code/utils/audio_player_util.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/control_time_out_util.dart';
+import 'package:code/utils/voice_control_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import '../constants/constants.dart';
@@ -1260,6 +1261,7 @@ class P3GameManager {
               // 击中蓝灯 减1分
               BluetoothManager().gameData.score--;
               // 播放音效
+              VoiceControlUtil().blueHitHandle();
               playBlueAudio();
               // 得分显示
               BluetoothManager().writerDataToDevice(
@@ -1268,7 +1270,7 @@ class P3GameManager {
             } else if (hitModel.statu == BleULTimateLighStatu.red) {
               print('击中红灯');
               // 播放音效
-              playRedAudio();
+              VoiceControlUtil().redHitHandle();
               // 击中红灯加2分
               BluetoothManager().gameData.score =
                   BluetoothManager().gameData.score + 2;

@@ -1,8 +1,11 @@
 
 import 'package:code/constants/constants.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/toast.dart';
 import 'package:dio/dio.dart';
+
+import 'notification_bloc.dart';
 
 class ApiResponse<T> {
   final T? data;
@@ -16,7 +19,7 @@ final dio = Dio();
 
 class HttpUtil {
   static final Dio _dio = Dio(BaseOptions(
-    baseUrl: kBaseUrl_Pro, // 设置请求的基础域名
+    baseUrl:   isTestEnvironment ?  kBaseUrl_Dev : kBaseUrl_Pro, // 设置请求的基础域名
     connectTimeout: Duration(seconds: 30), // 连接超时时间，单位是毫秒
     receiveTimeout: Duration(seconds: 30), // 接收超时时间，单位是毫秒
   ));
@@ -43,20 +46,22 @@ class HttpUtil {
           'X-Hockey-Game-Api-Token': _token,
         };
       }
-      print('get数据请求data:${path}');
+      print('get数据请求path:${path}');
       print('get数据请求data:${data}');
       final response = await _dio.get(path, data: data,options: _options);
       print('get数据请求返回data:${response}');
       if (showLoading) {
         TTToast.hideLoading();
       }
-      if ( response.data!= null && response.data['code'] == '0' ) {
+      final _code = response.data['code'];
+      if ( response.data!= null && _code != null && _code == '0' ) {
         return ApiResponse(
             success: true, data: response.data, errorMessage: 'success');
       } else {
         if (showLoading) {
           TTToast.showErrorInfo(response.data['msg']);
         }
+        _handleFailure(int.parse(_code));
         return ApiResponse(
             success: false, data: response.data, errorMessage: 'false');
       }
@@ -77,6 +82,7 @@ class HttpUtil {
     }
     try {
       print('post数据请求data:${path}');
+      print('post:${data}');
       // 根据登录状态判断是否传入token
       Options _options = Options();
       final _token =  await NSUserDefault.getValue<String>(kAccessToken);
@@ -90,13 +96,15 @@ class HttpUtil {
       if (showLoading) {
         TTToast.hideLoading();
       }
-      if ( response.data != null && response.data['code'] == '0') {
+      final _code = response.data['code'];
+      if ( response.data != null &&  _code != null && _code == '0' ) {
         return ApiResponse(
             success: true, data: response.data, errorMessage: 'success');
       } else {
         if (showLoading) {
           TTToast.showErrorInfo(response.data['msg']);
         }
+        _handleFailure(int.parse(_code));
         return ApiResponse(
             success: false, data: response.data, errorMessage: 'false');
       }
@@ -106,6 +114,16 @@ class HttpUtil {
       }
       _handleError(e);
       rethrow;
+    }
+  }
+
+  static void _handleFailure(int code){
+    if (code == kTokenTimeOutCode) {
+      // 处理401错误，例如跳转到登录页
+      // 登录Token失效
+      NSUserDefault.clearUserInfo(NavigatorUtil.utilContext);
+      EventBus().sendEvent(kSignOut);
+      NavigatorUtil.popToRoot();
     }
   }
 
@@ -126,9 +144,7 @@ class HttpUtil {
           break;
         case DioExceptionType.badResponse:
           // 响应错误
-          if (error.response!.statusCode == 401) {
-            // 处理401错误，例如跳转到登录页
-          } else if (error.response!.statusCode == 500) {
+          if (error.response!.statusCode == 500) {
             // 处理500错误，例如显示服务器错误信息
           }
           break;

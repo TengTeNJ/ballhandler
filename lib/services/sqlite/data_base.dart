@@ -166,6 +166,10 @@ class DatabaseHelper {
     _datas.forEach((element) {
       GameOverModel model = GameOverModel.fromJson(element);
       if (model.sceneId == (gameUtil.gameScene.index + 1).toString()) {
+        if(gameUtil.gameScene == GameScene.erqiling){
+          // P1和P2的时间是不一样的
+          model.trainTime = model.modeId == '1' ? '90' : '120';
+        }
         array.add(model);
       }
     });
