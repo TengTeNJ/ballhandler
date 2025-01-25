@@ -4,6 +4,8 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../controllers/account/login_page_controller.dart';
+
 class OverAllDataView extends StatefulWidget {
   const OverAllDataView({super.key});
 
@@ -28,6 +30,12 @@ class _OverAllDataViewState extends State<OverAllDataView> {
           color: Color.fromRGBO(62, 62, 85, 1)),
       child: GestureDetector(
         onTap: (){
+          // 未登录的话拦截
+          final _hasLogin = UserProvider.of(context).hasLogin;
+          if (_hasLogin == false) {
+            NavigatorUtil.present(LoginPageController());
+            return;
+          }
           NavigatorUtil.push('todayData');
         },
         behavior: HitTestBehavior.opaque,
