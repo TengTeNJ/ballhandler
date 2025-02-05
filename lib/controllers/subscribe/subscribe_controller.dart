@@ -82,7 +82,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
           )),
           Positioned(
             child:  CancelButton(),
-            top: 4,
+            top: 48,
             right: 16,
           ),
           Positioned(
