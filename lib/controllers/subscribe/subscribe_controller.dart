@@ -81,12 +81,12 @@ class _SubscribeControllerState extends State<SubscribeController> {
             ),
           )),
           Positioned(
-            child: CancelButton(),
-            top: 32,
+            child:  CancelButton(),
+            top: 4,
             right: 16,
           ),
           Positioned(
-              top: Constants.screenHeight(context) * 0.114,
+              top: Constants.screenHeight(context) * 0.114 + 16,
               left: 16,
               right: 16,
               child: Container(
@@ -107,8 +107,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
               top: Constants.screenHeight(context) * 0.59,
               child: SubscribeNewBorderView(
                 leftTitle: 'Annual',
-                des: '-30%',
-                rightTitle: '\$179.99',
+                des: '-17%',
+                rightTitle: '\$89.99',
                 onTap: () async {
                   // 点击购买年度订阅
                   TTToast.showLoading();
@@ -131,7 +131,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
               child: SubscribeNewBorderView(
                 leftTitle: 'Monthly',
                 unitText: '/mo',
-                rightTitle: '\$17.99',
+                rightTitle: '\$8.99',
                 onTap: () async {
                   // 点击月度订阅
                   TTToast.showLoading();
