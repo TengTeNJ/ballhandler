@@ -9,9 +9,16 @@ import 'package:code/views/subscribe/subscribe_three_page_view.dart';
 import 'package:code/views/subscribe/subscribe_two_page_view.dart';
 import 'package:code/widgets/base/base_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 
+import '../../utils/app_purse.dart';
+import '../../utils/global.dart';
 import '../../utils/nsuserdefault_util.dart';
+import '../../utils/toast.dart';
+import '../../widgets/account/cancel_button.dart';
+import 'dart:async';
 
 class UltSubscribeHomeController extends StatefulWidget {
   const UltSubscribeHomeController({super.key});
@@ -33,6 +40,7 @@ class _UltSubscribeHomeControllerState
     SubscribeFivePageView(),
     SubscribeSixPageView()
   ];
+  AppPurse purse = AppPurse();
 
   @override
   void initState() {
@@ -53,6 +61,10 @@ class _UltSubscribeHomeControllerState
         });
       }
     });
+    Future.delayed(Duration(milliseconds: 500), () {
+      // 开始监听
+      purse.startSubscription(context);
+    });
   }
 
   @override
@@ -61,6 +73,11 @@ class _UltSubscribeHomeControllerState
       backgroundColor: Constants.baseControllerColor,
       body: Stack(
         children: [
+          Positioned(
+            child: _currentIndex == _views.length - 1  ?  CancelButton() :Container(),
+            top: 48,
+            right: 16,
+          ),
           _currentIndex == 0 ? Positioned(
               child: Container(
                 decoration: BoxDecoration(
@@ -98,9 +115,21 @@ class _UltSubscribeHomeControllerState
           ),
           _currentIndex == _views.length-1  ? Positioned(
               child: BaseButton(
-                title: 'Subscribe Now',
-                onTap: () {
-                  NavigatorUtil.popAndThenPush(Routes.subscribe);
+                title: 'Sart Your Free 2 Week',
+                onTap: () async {
+                 // NavigatorUtil.popAndThenPush(Routes.subscribe);
+                  // 点击月度订阅
+                  TTToast.showLoading();
+                  final ProductDetailsResponse yearResponse =
+                      await InAppPurchase.instance
+                      .queryProductDetails(kMonthProductIds);
+                  if (yearResponse.productDetails.isNotEmpty) {
+                    // 开始购买
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    gameUtil.notClickSubscribeDialog = false;
+                    TTToast.hideLoading();
+                    purse.begainBuy(yearResponse.productDetails.first);
+                  }
                 },
               ),
               left: 24,
@@ -113,9 +142,9 @@ class _UltSubscribeHomeControllerState
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  NavigatorUtil.pop();
+                  //NavigatorUtil.pop();
                 },
-                child: Constants.mediumGreyTextWidget('Maybe Later', 16),
+                child: Constants.mediumGreyTextWidget('14 days free, then \$8.99 per month', 16),
               )) : Container()
         ],
       ),
