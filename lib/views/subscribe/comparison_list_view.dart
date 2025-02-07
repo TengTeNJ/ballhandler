@@ -14,6 +14,7 @@ class ComparisonListView extends StatelessWidget {
       width: Constants.screenWidth(context) - 48,
       height: _datas.length * 52,
       child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(), // 禁止滑动
           padding: EdgeInsets.zero, // 去除顶部和底部的间距
           itemCount: _datas.length,
           itemBuilder: (context, index) {
