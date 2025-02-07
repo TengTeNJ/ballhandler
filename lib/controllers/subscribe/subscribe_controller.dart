@@ -165,7 +165,8 @@ class _SubscribeControllerState extends State<SubscribeController> {
           top: Constants.screenHeight(context) * 0.59 + 88 + 64 + 12 + 16 + 34,
           child:Column(
             children: [
-              BaseButton(title: 'Sart Your Free 2-Week Trial',onTap: () async{
+              BaseButton(title: UserProvider.of(context)
+                  .subscribeModel.freeUseAccess ? 'Sart Your Free 2-Week Trial' : 'Subscribe Now',onTap: () async{
                 if(_monthSelected){
                   // 选择月度订阅
                   // 点击月度订阅

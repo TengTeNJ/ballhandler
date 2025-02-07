@@ -14,6 +14,7 @@ import 'package:get_it/get_it.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 
+import '../../models/global/user_info.dart';
 import '../../utils/app_purse.dart';
 import '../../utils/global.dart';
 import '../../utils/nsuserdefault_util.dart';
@@ -117,7 +118,8 @@ class _UltSubscribeHomeControllerState
           ),
           _currentIndex == _views.length-1  ? Positioned(
               child: BaseButton(
-                title: 'Sart Your Free 2 Week',
+                title: UserProvider.of(context)
+                    .subscribeModel.freeUseAccess ?  'Sart Your Free 2 Week' : 'Subscribe Now',
                 onTap: () async {
                  // NavigatorUtil.popAndThenPush(Routes.subscribe);
                   // 点击月度订阅
