@@ -37,7 +37,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
       // 开始监听
       purse.startSubscription(context);
     });
-    StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
+    //StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
     subscription = EventBus().stream.listen((event) {
       if (event == kFinishSubscribe) {
         TTToast.showSuccessInfo('Success!');

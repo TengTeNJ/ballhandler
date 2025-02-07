@@ -4,6 +4,7 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/subscribe/subscribe_five_page_view.dart';
 import 'package:code/views/subscribe/subscribe_four_page_view.dart';
 import 'package:code/views/subscribe/subscribe_one_page_view.dart';
+import 'package:code/views/subscribe/subscribe_seven_page_view.dart';
 import 'package:code/views/subscribe/subscribe_six_page_view.dart';
 import 'package:code/views/subscribe/subscribe_three_page_view.dart';
 import 'package:code/views/subscribe/subscribe_two_page_view.dart';
@@ -38,7 +39,8 @@ class _UltSubscribeHomeControllerState
     SubscribeThreePageView(),
     SubscribeFourPageView(),
     SubscribeFivePageView(),
-    SubscribeSixPageView()
+    SubscribeSixPageView(),
+    SubscribeSevenPageView(),
   ];
   AppPurse purse = AppPurse();
 
@@ -92,7 +94,7 @@ class _UltSubscribeHomeControllerState
           Positioned(
               left: 0,
               right: 0,
-              bottom: Constants.screenHeight(context) * 0.28,
+              bottom: Constants.screenHeight(context) * 0.2,
               top: Constants.screenHeight(context) * 0.14,
               child: PageView.builder(
                  itemCount:_views.length ,
@@ -104,14 +106,14 @@ class _UltSubscribeHomeControllerState
             child: Container(
                 child: IndicatorView(
                   currentPage: _currentIndex,
-                  count: 6,
+                  count: _views.length,
                   horizontal: 8,
                   currentPageColor: Constants.baseStyleColor,
                 ),
                 height: 6),
             left: 16,
             right: 16,
-            bottom: Constants.screenHeight(context) * 0.21,
+            bottom: Constants.screenHeight(context) * 0.175,
           ),
           _currentIndex == _views.length-1  ? Positioned(
               child: BaseButton(
@@ -134,9 +136,9 @@ class _UltSubscribeHomeControllerState
               ),
               left: 24,
               right: 24,
-              bottom: 90) : Container(),
+              bottom: 80) : Container(),
           _currentIndex == _views.length-1 ? Positioned(
-              bottom: 48,
+              bottom: 38,
               left: 32,
               right: 32,
               child: GestureDetector(
