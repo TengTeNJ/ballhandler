@@ -7,8 +7,8 @@ class SubscribeNewBorderView extends StatefulWidget {
   String unitText;
   String? des;
   Function? onTap;
-
-  SubscribeNewBorderView({required this.leftTitle, required this.rightTitle,this.des,this.unitText = '/yr',this.onTap});
+  bool selected;
+  SubscribeNewBorderView({required this.leftTitle, required this.rightTitle,this.des,this.unitText = '/yr',this.onTap,this.selected = false});
 
   @override
   State<SubscribeNewBorderView> createState() => _SubscribeNewBorderViewState();
@@ -38,7 +38,7 @@ class _SubscribeNewBorderViewState extends State<SubscribeNewBorderView> {
             children: [
               Row(
                 children: [
-                  Constants.boldWhiteTextWidget(widget.leftTitle, 20),
+                    widget.selected ? Constants.boldBaseTextWidget(widget.leftTitle, 20) : Constants.boldWhiteTextWidget(widget.leftTitle, 20),
                   SizedBox(width: widget.des != null ? 8 : 0,),
                   widget.des != null
                       ? Container(
@@ -55,11 +55,11 @@ class _SubscribeNewBorderViewState extends State<SubscribeNewBorderView> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Constants.boldBaseTextWidget(widget.rightTitle, 20),
+                  widget.selected ? Constants.boldBaseTextWidget(widget.rightTitle, 20) : Constants.boldWhiteTextWidget(widget.rightTitle, 20),
                   SizedBox(
                     width: 6,
                   ),
-                  Constants.regularBaseTextWidget(widget.unitText, 14)
+                  widget.selected ? Constants.regularBaseTextWidget(widget.unitText, 14) : Constants.regularWhiteTextWidget(widget.unitText, 14)
                 ],
               )
             ],

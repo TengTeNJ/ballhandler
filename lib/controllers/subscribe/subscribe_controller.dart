@@ -32,6 +32,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
   AppPurse purse = AppPurse();
   late StreamSubscription subscription;
   late PageController _pageController;
+  bool _monthSelected = true;
   @override
   void initState() {
     // TODO: implement initState
@@ -77,13 +78,13 @@ class _SubscribeControllerState extends State<SubscribeController> {
           itemCount: 2,
           itemBuilder: (context, index) {
             return Container(
-              child:  [topWidget(context),bottomWidget(context)][index],
+              child:  [topWidget(context,_monthSelected),bottomWidget(context)][index],
             );
           }),
     );
   }
 
-  Widget topWidget(BuildContext context){
+  Widget topWidget(BuildContext context,bool selected){
     return Stack(
       children: [
         Positioned(
@@ -123,22 +124,15 @@ class _SubscribeControllerState extends State<SubscribeController> {
             right: 24,
             top: Constants.screenHeight(context) * 0.59,
             child: SubscribeNewBorderView(
+              selected: !_monthSelected,
               leftTitle: 'Annual',
               des: '-17%',
               rightTitle: '\$89.99',
               onTap: () async {
                 // 点击购买年度订阅
-                TTToast.showLoading();
-                final ProductDetailsResponse yearResponse =
-                await InAppPurchase.instance
-                    .queryProductDetails(kYearProductIds);
-                if (yearResponse.productDetails.isNotEmpty) {
-                  // 开始购买
-                  GameUtil gameUtil = GetIt.instance<GameUtil>();
-                  gameUtil.notClickSubscribeDialog = false;
-                  TTToast.hideLoading();
-                  purse.begainBuy(yearResponse.productDetails.first);
-                }
+                setState(() {
+                  _monthSelected = false;
+                });
               },
             )),
         Positioned(
@@ -146,22 +140,15 @@ class _SubscribeControllerState extends State<SubscribeController> {
             right: 24,
             top: Constants.screenHeight(context) * 0.59 + 88,
             child: SubscribeNewBorderView(
+              selected: _monthSelected,
               leftTitle: 'Monthly',
               unitText: '/mo',
               rightTitle: '\$8.99',
               onTap: () async {
                 // 点击月度订阅
-                TTToast.showLoading();
-                final ProductDetailsResponse yearResponse =
-                await InAppPurchase.instance
-                    .queryProductDetails(kMonthProductIds);
-                if (yearResponse.productDetails.isNotEmpty) {
-                  // 开始购买
-                  GameUtil gameUtil = GetIt.instance<GameUtil>();
-                  gameUtil.notClickSubscribeDialog = false;
-                  TTToast.hideLoading();
-                  purse.begainBuy(yearResponse.productDetails.first);
-                }
+                setState(() {
+                  _monthSelected = true;
+                });
               },
             )),
         Positioned(
@@ -178,7 +165,36 @@ class _SubscribeControllerState extends State<SubscribeController> {
           top: Constants.screenHeight(context) * 0.59 + 88 + 64 + 12 + 16 + 34,
           child:Column(
             children: [
-              BaseButton(title: 'Subscribe Now'),
+              BaseButton(title: 'Sart Your Free 2-Week Trial',onTap: () async{
+                if(_monthSelected){
+                  // 选择月度订阅
+                  // 点击月度订阅
+                  TTToast.showLoading();
+                  final ProductDetailsResponse yearResponse =
+                      await InAppPurchase.instance
+                      .queryProductDetails(kMonthProductIds);
+                  if (yearResponse.productDetails.isNotEmpty) {
+                    // 开始购买
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    gameUtil.notClickSubscribeDialog = false;
+                    TTToast.hideLoading();
+                    purse.begainBuy(yearResponse.productDetails.first);
+                  }
+                }else{
+                  // 点击购买年度订阅
+                  TTToast.showLoading();
+                  final ProductDetailsResponse yearResponse =
+                  await InAppPurchase.instance
+                      .queryProductDetails(kYearProductIds);
+                  if (yearResponse.productDetails.isNotEmpty) {
+                    // 开始购买
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    gameUtil.notClickSubscribeDialog = false;
+                    TTToast.hideLoading();
+                    purse.begainBuy(yearResponse.productDetails.first);
+                  }
+                }
+              },),
               SizedBox(height: 28,),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
