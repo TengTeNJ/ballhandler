@@ -14,4 +14,6 @@ class SubscribeModel{
   String subscribeEndDate = ''; // 订阅结束日期
   ApiPayProductVo? productVo; // 商品信息
   bool freeUseAccess = false; // 免费试用是否支持
+  int freeTrial = 0; // 0 代表默认支持可使用免费订阅 1代表不可用免费订阅
+
 }

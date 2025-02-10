@@ -506,9 +506,9 @@ const Map<int, Map<String, String>> p3Maps = {
 }; // 270 P3模式 guide数据map映射表
 
 // const Set<String> kProductIds = <String>{'hockey_101', 'hockey_5'}; // 订阅产品id
-const Set<String> kProductIds = <String>{'pre_2', 'pre_4'};
+const Set<String> kProductIds = <String>{'pre_4', 'pre_5'};
 const Set<String> kMonthProductIds = <String>{'pre_4'}; // 订阅产品id
-const Set<String> kYearProductIds = <String>{'pre_2'}; // 订阅产品id
+const Set<String> kYearProductIds = <String>{'pre_5'}; // 订阅产品id
 // 订阅产品id
 const Map<int, Map<int, int>> kBoardMap = {
   0: {3: 9, 0: 10, 1: 11, 2: 12},

@@ -196,7 +196,7 @@ class Account {
       'packageName': 'com.potent.dangleios',
       'originalThirdPayNo' : originalThirdPayNo,
       'createTime' : createTime,
-      'freeUse' : freeUse
+      'freeTrial' :  freeUse ? 1 : 0
     };
     final response =
         await HttpUtil.post('/api/pay/apple', _data, showLoading: true);
@@ -216,7 +216,7 @@ class Account {
       'purchaseToken': purchaseToken,
       'packageName': 'com.potent.dangle',
       'createTime' : createTime,
-      'freeUse' : freeUse
+      'freeTrial' : freeUse ? 1 : 0
     };
     final response =
         await HttpUtil.post('/api/pay/google/sub', _data, showLoading: true);
@@ -231,6 +231,9 @@ class Account {
     if (response.success && response.data['data'] != null) {
       final element = response.data['data'];
       final _map = element;
+      model.freeTrial =
+      !ISEmpty(_map['freeTrial']) ? _map['freeTrial'] : 0;
+      model.freeUseAccess = model.freeTrial == 0;
       final _payProductVoMap = element['payProductVo'] ?? {};
       model.subscribeStartDate = !ISEmpty(_map['subscribeStartDate'])
           ? _map['subscribeStartDate'].toString()

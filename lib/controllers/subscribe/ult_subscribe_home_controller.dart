@@ -17,6 +17,7 @@ import 'package:tt_indicator/tt_indicator.dart';
 import '../../models/global/user_info.dart';
 import '../../utils/app_purse.dart';
 import '../../utils/global.dart';
+import '../../utils/notification_bloc.dart';
 import '../../utils/nsuserdefault_util.dart';
 import '../../utils/toast.dart';
 import '../../widgets/account/cancel_button.dart';
@@ -33,6 +34,8 @@ class UltSubscribeHomeController extends StatefulWidget {
 class _UltSubscribeHomeControllerState
     extends State<UltSubscribeHomeController> {
   late PageController _pageController;
+  late StreamSubscription subscription;
+
   int _currentIndex = 0;
   List<Widget> _views = [
     SubscribeOnePageView(),
@@ -67,6 +70,12 @@ class _UltSubscribeHomeControllerState
     Future.delayed(Duration(milliseconds: 500), () {
       // 开始监听
       purse.startSubscription(context);
+    });
+    subscription = EventBus().stream.listen((event) {
+      if (event == kFinishSubscribe) {
+        TTToast.showSuccessInfo('Success!');
+        NavigatorUtil.popToRoot();
+      }
     });
   }
 
@@ -153,5 +162,12 @@ class _UltSubscribeHomeControllerState
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
   }
 }
