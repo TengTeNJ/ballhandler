@@ -128,7 +128,7 @@ class _UltSubscribeHomeControllerState
           _currentIndex == _views.length-1  ? Positioned(
               child: BaseButton(
                 title: UserProvider.of(context)
-                    .subscribeModel.freeUseAccess ?  'Sart Your Free 2 Week' : 'Subscribe Now',
+                    .subscribeModel.freeUseAccess ?  'Start Your 1-Month Free Trial' : 'Subscribe Now',
                 onTap: () async {
                  // NavigatorUtil.popAndThenPush(Routes.subscribe);
                   // 点击月度订阅
@@ -157,7 +157,7 @@ class _UltSubscribeHomeControllerState
                 onTap: () {
                   //NavigatorUtil.pop();
                 },
-                child: Constants.mediumGreyTextWidget('14 days free, then \$8.99 per month', 16),
+                child: Constants.mediumGreyTextWidget('1 month free, then \$8.99 per month', 16),
               )) : Container()
         ],
       ),

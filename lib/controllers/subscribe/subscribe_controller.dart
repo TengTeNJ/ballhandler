@@ -166,7 +166,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
           child:Column(
             children: [
               BaseButton(title: UserProvider.of(context)
-                  .subscribeModel.freeUseAccess ? 'Sart Your Free 2-Week Trial' : 'Subscribe Now',onTap: () async{
+                  .subscribeModel.freeUseAccess ? 'Start Your 1-Month Free Trial' : 'Subscribe Now',onTap: () async{
                 if(_monthSelected){
                   // 选择月度订阅
                   // 点击月度订阅
