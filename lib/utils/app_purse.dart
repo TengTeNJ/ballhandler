@@ -69,6 +69,8 @@ class AppPurse {
             return;
           }
           ApiResponse _response;
+          bool _freeUse = UserProvider.of(buildContext)
+              .subscribeModel.freeUseAccess;
           if (Platform.isAndroid) {
             isVertify = true;
             _response = await Account.googlePayVertify(
@@ -76,6 +78,7 @@ class AppPurse {
               productNo: purchaseDetails.productID,
               purchaseToken:
                   purchaseDetails.verificationData.serverVerificationData,
+              freeUse: _freeUse
             );
           } else {
             isVertify = true;
@@ -84,6 +87,7 @@ class AppPurse {
               productNo: purchaseDetails.productID,
               receiptDate:
                   purchaseDetails.verificationData.serverVerificationData,
+                freeUse: _freeUse
               // originalThirdPayNo:    purchaseDetails.
             );
           }

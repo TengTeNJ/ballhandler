@@ -35,6 +35,11 @@ class _BatteryViewState extends State<BatteryView> {
     subscription = EventBus().stream.listen((event) {
       if (event == kCurrentDeviceInfoChange) {
         getBatteryAndBlestatuValues();
+      }else if (event == kInitiativeDisconnectFive ||
+          event == kCurrentDeviceDisconnectedFive) {
+        setState(() {
+          batteryImageName = 'gray';
+        });
       }
       setState(() {});
     });

@@ -4,6 +4,8 @@ import 'package:code/utils/event_track.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import '../../controllers/account/login_page_controller.dart';
+import '../../models/global/user_info.dart';
 import '../../utils/global.dart';
 
 class HomeBodyView extends StatefulWidget {
@@ -61,6 +63,12 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           ),
           GestureDetector(
             onTap: () async{
+              // 未登录的话拦截
+              final _hasLogin = UserProvider.of(context).hasLogin;
+              if (_hasLogin == false) {
+                NavigatorUtil.present(LoginPageController());
+                return;
+              }
               EventTrackUtil.eventTrack(kPlayNow,{});
               GameUtil gameUtil = GetIt.instance<GameUtil>();
               gameUtil.isFromAirBattle = false;

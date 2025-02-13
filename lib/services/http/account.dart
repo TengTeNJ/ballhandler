@@ -186,7 +186,7 @@ class Account {
       {String thirdPayNo = '',
       String productNo = '',
       String receiptDate = '',
-      String originalThirdPayNo = ''}) async {
+      String originalThirdPayNo = '',bool freeUse = false}) async {
     // 获取当前时间
     String createTime =  StringUtil.dateToGameTimeSecondString();
     final _data = {
@@ -195,7 +195,8 @@ class Account {
       'receiptDate': receiptDate,
       'packageName': 'com.potent.dangleios',
       'originalThirdPayNo' : originalThirdPayNo,
-      'createTime' : createTime
+      'createTime' : createTime,
+      'freeTrial' :  freeUse ? 1 : 0
     };
     final response =
         await HttpUtil.post('/api/pay/apple', _data, showLoading: true);
@@ -206,7 +207,7 @@ class Account {
   static Future<ApiResponse> googlePayVertify(
       {String purchaseId = '',
       String productNo = '',
-      String purchaseToken = ''}) async {
+      String purchaseToken = '',bool freeUse = false}) async {
     // 获取当前时间
     String createTime =  StringUtil.dateToGameTimeSecondString();
     final _data = {
@@ -214,7 +215,8 @@ class Account {
       'productNo': productNo,
       'purchaseToken': purchaseToken,
       'packageName': 'com.potent.dangle',
-      'createTime' : createTime
+      'createTime' : createTime,
+      'freeTrial' : freeUse ? 1 : 0
     };
     final response =
         await HttpUtil.post('/api/pay/google/sub', _data, showLoading: true);
@@ -229,6 +231,9 @@ class Account {
     if (response.success && response.data['data'] != null) {
       final element = response.data['data'];
       final _map = element;
+      model.freeTrial =
+      !ISEmpty(_map['freeTrial']) ? _map['freeTrial'] : 0;
+      model.freeUseAccess = model.freeTrial == 0;
       final _payProductVoMap = element['payProductVo'] ?? {};
       model.subscribeStartDate = !ISEmpty(_map['subscribeStartDate'])
           ? _map['subscribeStartDate'].toString()

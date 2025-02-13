@@ -167,7 +167,7 @@ class BluetoothDataParse {
         }
         int data = element[2];
         BluetoothManager().gameData.gameStart = (data == 0x01);
-        // print('游戏状态---${data}');
+        print('游戏状态---${data}');
         BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
         break;
       case ResponseCMDType.remainTime:

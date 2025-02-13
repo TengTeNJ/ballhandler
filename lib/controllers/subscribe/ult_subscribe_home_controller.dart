@@ -4,14 +4,24 @@ import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/subscribe/subscribe_five_page_view.dart';
 import 'package:code/views/subscribe/subscribe_four_page_view.dart';
 import 'package:code/views/subscribe/subscribe_one_page_view.dart';
+import 'package:code/views/subscribe/subscribe_seven_page_view.dart';
 import 'package:code/views/subscribe/subscribe_six_page_view.dart';
 import 'package:code/views/subscribe/subscribe_three_page_view.dart';
 import 'package:code/views/subscribe/subscribe_two_page_view.dart';
 import 'package:code/widgets/base/base_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 
+import '../../models/global/user_info.dart';
+import '../../utils/app_purse.dart';
+import '../../utils/global.dart';
+import '../../utils/notification_bloc.dart';
 import '../../utils/nsuserdefault_util.dart';
+import '../../utils/toast.dart';
+import '../../widgets/account/cancel_button.dart';
+import 'dart:async';
 
 class UltSubscribeHomeController extends StatefulWidget {
   const UltSubscribeHomeController({super.key});
@@ -24,6 +34,8 @@ class UltSubscribeHomeController extends StatefulWidget {
 class _UltSubscribeHomeControllerState
     extends State<UltSubscribeHomeController> {
   late PageController _pageController;
+  late StreamSubscription subscription;
+
   int _currentIndex = 0;
   List<Widget> _views = [
     SubscribeOnePageView(),
@@ -31,8 +43,10 @@ class _UltSubscribeHomeControllerState
     SubscribeThreePageView(),
     SubscribeFourPageView(),
     SubscribeFivePageView(),
-    SubscribeSixPageView()
+    SubscribeSixPageView(),
+    SubscribeSevenPageView(),
   ];
+  AppPurse purse = AppPurse();
 
   @override
   void initState() {
@@ -53,6 +67,16 @@ class _UltSubscribeHomeControllerState
         });
       }
     });
+    Future.delayed(Duration(milliseconds: 500), () {
+      // 开始监听
+      purse.startSubscription(context);
+    });
+    subscription = EventBus().stream.listen((event) {
+      if (event == kFinishSubscribe) {
+        TTToast.showSuccessInfo('Success!');
+        NavigatorUtil.popToRoot();
+      }
+    });
   }
 
   @override
@@ -61,6 +85,11 @@ class _UltSubscribeHomeControllerState
       backgroundColor: Constants.baseControllerColor,
       body: Stack(
         children: [
+          Positioned(
+            child: _currentIndex == _views.length - 1  ?  CancelButton() :Container(),
+            top: 48,
+            right: 16,
+          ),
           _currentIndex == 0 ? Positioned(
               child: Container(
                 decoration: BoxDecoration(
@@ -75,7 +104,7 @@ class _UltSubscribeHomeControllerState
           Positioned(
               left: 0,
               right: 0,
-              bottom: Constants.screenHeight(context) * 0.28,
+              bottom: Constants.screenHeight(context) * 0.2,
               top: Constants.screenHeight(context) * 0.14,
               child: PageView.builder(
                  itemCount:_views.length ,
@@ -87,38 +116,58 @@ class _UltSubscribeHomeControllerState
             child: Container(
                 child: IndicatorView(
                   currentPage: _currentIndex,
-                  count: 6,
+                  count: _views.length,
                   horizontal: 8,
                   currentPageColor: Constants.baseStyleColor,
                 ),
                 height: 6),
             left: 16,
             right: 16,
-            bottom: Constants.screenHeight(context) * 0.21,
+            bottom: Constants.screenHeight(context) * 0.175,
           ),
           _currentIndex == _views.length-1  ? Positioned(
               child: BaseButton(
-                title: 'Subscribe Now',
-                onTap: () {
-                  NavigatorUtil.popAndThenPush(Routes.subscribe);
+                title: UserProvider.of(context)
+                    .subscribeModel.freeUseAccess ?  'Start Your 1-Month Free Trial' : 'Subscribe Now',
+                onTap: () async {
+                 // NavigatorUtil.popAndThenPush(Routes.subscribe);
+                  // 点击月度订阅
+                  TTToast.showLoading();
+                  final ProductDetailsResponse yearResponse =
+                      await InAppPurchase.instance
+                      .queryProductDetails(kMonthProductIds);
+                  if (yearResponse.productDetails.isNotEmpty) {
+                    // 开始购买
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    gameUtil.notClickSubscribeDialog = false;
+                    TTToast.hideLoading();
+                    purse.begainBuy(yearResponse.productDetails.first);
+                  }
                 },
               ),
               left: 24,
               right: 24,
-              bottom: 90) : Container(),
+              bottom: 80) : Container(),
           _currentIndex == _views.length-1 ? Positioned(
-              bottom: 48,
+              bottom: 38,
               left: 32,
               right: 32,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  NavigatorUtil.pop();
+                  //NavigatorUtil.pop();
                 },
-                child: Constants.mediumGreyTextWidget('Maybe Later', 16),
+                child: Constants.mediumGreyTextWidget('1 month free, then \$8.99 per month', 16),
               )) : Container()
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
   }
 }

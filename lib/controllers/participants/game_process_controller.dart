@@ -356,11 +356,11 @@ Widget VerticalScreenWidget(BuildContext context, String path) {
             GestureDetector(
               onTap: () {
                 if(BluetoothManager().gameData.gameStart){
-                  // 初始化机器
-                  BluetoothManager()
-                      .writerDataToDevice(gameUtil.selectedDeviceModel, resumeGameData());
                   _confirmStopDialogFlag = true;
                   TTDialog.confirmStopGameDialog(context, () {
+                    // 初始化机器
+                    BluetoothManager()
+                        .writerDataToDevice(gameUtil.selectedDeviceModel, resumeGameData());
                     _confirmStopDialogFlag = false;
                     NavigatorUtil.pop();
                   });
@@ -548,13 +548,11 @@ Widget HorizontalScreenWidget(BuildContext context, String path) {
               onTap: () {
                 _confirmStopDialogFlag = true;
                 TTDialog.confirmStopGameDialog(context, () {
-                  _confirmStopDialogFlag = false;
                   if(BluetoothManager().gameData.gameStart){
-                    // 初始化机器
-                    BluetoothManager()
-                        .writerDataToDevice(gameUtil.selectedDeviceModel, resumeGameData());
-                    _confirmStopDialogFlag = true;
                     TTDialog.confirmStopGameDialog(context, () {
+                      // 初始化机器
+                      BluetoothManager()
+                          .writerDataToDevice(gameUtil.selectedDeviceModel, resumeGameData());
                       _confirmStopDialogFlag = false;
                       NavigatorUtil.pop();
                     });

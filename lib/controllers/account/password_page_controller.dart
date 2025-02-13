@@ -6,6 +6,7 @@ import 'package:code/widgets/account/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
 import '../../utils/navigator_util.dart';
+import '../../utils/notification_bloc.dart';
 import '../../widgets/account/cancel_button.dart';
 import 'package:country_picker/country_picker.dart';
 
@@ -245,6 +246,7 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                               await Account.emailLogin(widget.password ?? '');
                           if (_response.success == true) {
                             Account.handleUserData(_response, context);
+                            EventBus().sendEvent(kLoginSucess);
                             NavigatorUtil.popToRoot();
                           }
                         }
