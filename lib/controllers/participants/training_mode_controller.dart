@@ -57,9 +57,9 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
       child: TrainingModeListView(
         model: _datas[index],
         scanBleList: () async {
-          NavigatorUtil.push(Routes.razorgameprocesspage);
+          //NavigatorUtil.push(Routes.razorgameprocesspage);
           //NavigatorUtil.present(RazorP2SelectController());
-          return;
+          //return;
           GameUtil gameUtil = GetIt.instance<GameUtil>();
           // 270的P3模式需要订阅才能玩耍未登录的话拦截
           if (gameUtil.gameScene == GameScene.erqiling && index == 2) {
@@ -77,6 +77,12 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               }
             }
           }
+
+          if(gameUtil.gameScene == GameScene.threee){
+            NavigatorUtil.push(Routes.razorgameprocesspage);
+            return;
+          }
+
           gameUtil.selectRecord = false;
           if (BluetoothManager().conectedDeviceCount.value == 0) {
             if (await SystemUtil.isIPad()) {
