@@ -17,7 +17,7 @@ class _SubscribeSevenPageViewState extends State<SubscribeSevenPageView> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Constants.boldWhiteTextWidget(
-            'Unlock Elite Features with\n14 Days Free', 24),
+            'Unlock Elite Features with\n1 Month Free', 24),
         SizedBox(height: 4,),
         Constants.mediumGreyTextWidget('Activate Your Free Trial Today', 16),
         SizedBox(
