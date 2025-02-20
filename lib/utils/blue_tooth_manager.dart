@@ -56,11 +56,19 @@ class BluetoothManager {
       virtualList.insert(0, _model);
     }
     // 如果搜索到的设备列表中已经有了这样的设备 就移除虚拟设备
+   // print('this.deviceList = ${this.deviceList.length}');
     this.deviceList.forEach((element) {
       if (kBLEDevice_ReleaseNames.contains(element.device!.name)) {
         final _model = virtualList.firstWhere(
-            (virtual) => virtual.deviceName == element.device!.name);
-        virtualList.remove(_model);
+            (virtual) => (virtual.deviceName == element.device!.name));
+        if(_model != null && _model.modelStatu ==  BLEModelStatu.virtual){
+          // 移除虚拟设备
+          virtualList.remove(_model);
+         // print('移除虚拟设备---');
+        }else{
+          // 非虚拟设备
+          //print('非虚拟设备---');
+        }
       }
       // 把已连接的放到前面
       virtualList.insert(0, element);
@@ -136,17 +144,18 @@ class BluetoothManager {
             kBLEDevice_Names.indexOf(event.name) != -1) {
           // 如果设备列表数组中无，则添加
           if (!hasDevice(event.id)) {
+            print('添加新设备--${event.id}----${event.name}');
             this
                 .deviceList
                 .add(BLEModel(deviceName: event.name, device: event));
             deviceListLength.value = this.deviceList.length;
           } else {
-            // 设备列表数组中已有，则替换
-            BLEModel model =   this.deviceList.firstWhere((element) => element.deviceName == event.name,orElse: null);
-            if(model != null){
-             model.deviceName = event.name;
-             model.device = event;
-            }
+            // // 设备列表数组中已有，则替换
+            // BLEModel model =   this.deviceList.firstWhere((element) => element.deviceName == event.name,orElse: null);
+            // if(model != null){
+            //  model.deviceName = event.name;
+            //  model.device = event;
+            // }
           }
         }
       });
@@ -162,12 +171,12 @@ class BluetoothManager {
     // 连接弹窗
     EasyLoading.show();
     // 防止长时间连不上导致loading框下不去
-    Future.delayed(Duration(seconds: 10),(){
+    Timer _timer = Timer(Duration(seconds: 10), (){
       EasyLoading.dismiss();
     });
     StreamSubscription<ConnectionStateUpdate> stream = _ble
         .connectToDevice(
-            id: model.device!.id, connectionTimeout: Duration(seconds: 5))
+            id: model.device!.id, connectionTimeout: Duration(seconds: 10))
         .listen((ConnectionStateUpdate connectionStateUpdate) {
       print('connectionStateUpdate = ${connectionStateUpdate.connectionState}');
       if(connectionStateUpdate.failure != null){
@@ -176,6 +185,7 @@ class BluetoothManager {
       }
       if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.connected) {
+        _timer.cancel();
         if(Platform.isAndroid){
           // 请求高优先级连接
           _ble.requestConnectionPriority(deviceId: model.device!.id, priority: ConnectionPriority.highPerformance);
@@ -244,6 +254,7 @@ class BluetoothManager {
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
         // 蓝牙失去连接弹窗
+        _timer.cancel();
         if(connectionStateUpdate.failure == null || connectionStateUpdate.failure!.message.contains('Disconnected')){
           // 说明是正常断开连接
           TTDialog.blueToothDeviceDisconnectedDialog(NavigatorUtil.utilContext);
@@ -363,7 +374,14 @@ class BluetoothManager {
   bool hasDevice(String id) {
     Iterable<BLEModel> filteredDevice =
         this.deviceList.where((element) => element.device!.id == id);
-    return filteredDevice != null && filteredDevice.length > 0;
+    bool value = filteredDevice != null && filteredDevice.length > 0;
+    // print('value = ${value} --- ${id}---${ this.deviceList.length}');
+    // if(!value){
+    //   for (var value in this.deviceList) {
+    //     print('+++${value}+++');
+    //   }
+    // }
+    return value;
   }
 
   /*停止扫描*/
