@@ -248,7 +248,7 @@ class BluetoothManager {
           // 说明是正常断开连接
           TTDialog.blueToothDeviceDisconnectedDialog(NavigatorUtil.utilContext);
         }else{
-          EasyLoading.showError('fail');
+          EasyLoading.showError('Failed to establish Bluetooth connection. Please try again.');
         }
         if (conectedDeviceCount.value > 0) {
           conectedDeviceCount.value--;
