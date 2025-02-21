@@ -254,6 +254,7 @@ class BluetoothManager {
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
         // 蓝牙失去连接弹窗
+         EasyLoading.dismiss();
         _timer.cancel();
         if(connectionStateUpdate.failure == null || connectionStateUpdate.failure!.message.contains('Disconnected')){
           // 说明是正常断开连接
