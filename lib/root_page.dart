@@ -116,6 +116,7 @@ class _RootPageControllerState extends State<RootPageController> {
     await initFirebase(); // 初始化firebase
     // await  EventTrackUtil.setDefaultParameters();    // 设置埋点通用参数
     //  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true); // 启用调试模式 数据分析
+    final notificationSettings = await FirebaseMessaging.instance.requestPermission(provisional: true);
     // 推送token
     final fcmToken =
         await FirebaseMessaging.instance.getToken(); // 获取token 用于推送通知

@@ -48,4 +48,9 @@ class BLEModel {
       return BLEModelStatu.notconnected;
     }
   }
+
+  @override
+  String toString() {
+    return 'deviceName: $deviceName, id: ${device!.id}';  // 自定义格式
+  }
 }

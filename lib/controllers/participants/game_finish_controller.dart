@@ -38,10 +38,16 @@ class _GameFinishControllerState extends State<GameFinishController> {
     // 解除隐藏状态栏
     StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
-    queryVideoCount();
+    dataRequest();
+  }
+  // 数据请求
+  dataRequest()async{
+    await queryVideoCount();
+    await queryBestAvg();
+    await saveData();
   }
 
-  queryVideoCount() async {
+  Future<void>  queryVideoCount() async {
     if(UserProvider.of(context).hasLogin){
       final _response = await Profile.queryUserVideoCountData();
       if (_response.success && _response.data != null) {
@@ -52,6 +58,62 @@ class _GameFinishControllerState extends State<GameFinishController> {
           });
         }
       }
+    }
+  }
+  // 查询用户的生涯最好的成绩
+  Future<void> queryBestAvg()async{
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+    print('gameUtil.gameScene= ${gameUtil.gameScene}');
+    final _response = await Participants.queryRankData( gameUtil.gameScene.index + 1);
+    if(_response.success && _response.data != null){
+     String _avgPace = _response.data!.avgPace ?? '-';
+     print('最好的成绩:${_avgPace}');
+    }
+  }
+
+// 保存成绩
+  Future<void>  saveData() async{
+    if (UserProvider
+        .of(context)
+        .hasLogin) {
+      final _filePath = widget.dataModel.videoPath;
+      if (widget.dataModel.videoPath.length > 0  && UserProvider.of(context).subscribeModel.subscribeStatus ==1) {
+        // 登录的订阅用户视频才上传
+        final _urlResponse = await Participants.uploadAsset(
+            widget.dataModel.videoPath);
+        widget.dataModel.videoPath = _urlResponse.data ?? '';
+      }
+      double size =  await  VideoUtil.getVideoFileSize(_filePath);
+      // 保存游戏数据到云端
+      final _response = await Participants.saveGameData(
+          widget.dataModel,size: size);
+      if (_response.success) {
+       // NavigatorUtil.pop();
+        // 270的跳转到选择组合页面
+        // if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+        //   Future.delayed(Duration(milliseconds: 100),(){
+        //     NavigatorUtil.present(P3Controller());
+        //   });
+        // }
+        // EventBus().sendEvent(kFinishGame);
+        // EventBus().sendEvent(kBackFromFinish);
+      }
+    } else {
+      // // 未登录 数据放入缓存
+      // // 保存游戏数据到本地
+      // DatabaseHelper dbHelper = DatabaseHelper();
+      // widget.dataModel.modeId = gameUtil.modelId.toString();
+      // widget.dataModel.sceneId =
+      //     (gameUtil.gameScene.index + 1).toString();
+      // dbHelper.insertData(kDataBaseTableName, widget.dataModel);
+      // EventBus().sendEvent(kFinishGame);
+      // NavigatorUtil.pop();
+      // // 270的跳转到选择组合页面
+      // if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+      //   Future.delayed(Duration(milliseconds: 100),(){
+      //     NavigatorUtil.present(P3Controller());
+      //   });
+      // }
     }
   }
 
@@ -143,48 +205,15 @@ class _GameFinishControllerState extends State<GameFinishController> {
             SizedBox(height: Constants.screenHeight(context) * 0.05,),
             GestureDetector(
               onTap: () async {
-                if (UserProvider
-                    .of(context)
-                    .hasLogin) {
-                  final _filePath = widget.dataModel.videoPath;
-                  if (widget.dataModel.videoPath.length > 0  && UserProvider.of(context).subscribeModel.subscribeStatus ==1) {
-                    // 登录的订阅用户视频才上传
-                    final _urlResponse = await Participants.uploadAsset(
-                        widget.dataModel.videoPath);
-                    widget.dataModel.videoPath = _urlResponse.data ?? '';
-                  }
-                  double size =  await  VideoUtil.getVideoFileSize(_filePath);
-                  // 保存游戏数据到云端
-                  final _response = await Participants.saveGameData(
-                      widget.dataModel,size: size);
-                  if (_response.success) {
-                    NavigatorUtil.pop();
-                    // 270的跳转到选择组合页面
-                    if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
-                      Future.delayed(Duration(milliseconds: 100),(){
-                        NavigatorUtil.present(P3Controller());
-                      });
-                    }
-                    EventBus().sendEvent(kFinishGame);
-                    EventBus().sendEvent(kBackFromFinish);
-                  }
-                } else {
-                  // 未登录 数据放入缓存
-                  // 保存游戏数据到本地
-                  DatabaseHelper dbHelper = DatabaseHelper();
-                  widget.dataModel.modeId = gameUtil.modelId.toString();
-                  widget.dataModel.sceneId =
-                      (gameUtil.gameScene.index + 1).toString();
-                  dbHelper.insertData(kDataBaseTableName, widget.dataModel);
-                  EventBus().sendEvent(kFinishGame);
-                  NavigatorUtil.pop();
-                  // 270的跳转到选择组合页面
-                  if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
-                    Future.delayed(Duration(milliseconds: 100),(){
-                      NavigatorUtil.present(P3Controller());
-                    });
-                  }
+                NavigatorUtil.pop();
+                // 270的跳转到选择组合页面
+                if(gameUtil.gameScene == GameScene.erqiling && gameUtil.modelId == 3){
+                  Future.delayed(Duration(milliseconds: 100),(){
+                    NavigatorUtil.present(P3Controller());
+                  });
                 }
+                EventBus().sendEvent(kFinishGame);
+                EventBus().sendEvent(kBackFromFinish);
               },
               child: Container(
                 margin: EdgeInsets.only(left: 24, right: 24),
@@ -208,7 +237,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
-                  child: gameUtil.isFromAirBattle ? Constants.boldWhiteTextWidget('SAVE', 16) : Constants.boldBlackTextWidget('SAVE', 16),),
+                  child: gameUtil.isFromAirBattle ? Constants.boldWhiteTextWidget('BACK', 16) : Constants.boldBlackTextWidget('BACK', 16),),
               ),
             ),
           ],
