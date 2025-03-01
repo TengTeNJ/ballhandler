@@ -15,7 +15,7 @@ class GameData extends ChangeNotifier {
   int preValue = 0; // 预备阶段的灯管显示 如果有倒计时 则显示 3 2 1  GO(返回的值为3 2 1 0)
   bool _gameStart = false; // 游戏状态
   int _powerValue = 100; // 电量值
-  int _remainTime = 45; // 剩余时长
+  int _remainTime = 60; // 剩余时长
   int _millSecond = 0; // 剩余时长
   String _showRemainTime = '00:45'; // 需要在UI上显示的剩余时长的格式
   HitTargetModel? hitTargetModel; // 击中的面板的灯的数据模型

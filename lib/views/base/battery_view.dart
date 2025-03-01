@@ -73,7 +73,8 @@ class _BatteryViewState extends State<BatteryView> {
         batteryImageName = imageNames[nameIndex];
       }
     } else {
-      batteryImageName = 'gray';
+      batteryImageName = 'green';
+     //batteryImageName = 'gray';
     }
     if (mounted) {
       setState(() {});

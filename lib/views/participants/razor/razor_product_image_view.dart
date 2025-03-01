@@ -32,22 +32,35 @@ class _RazorProductImageViewState extends State<RazorProductImageView> with Tick
       child: Center(
         child: Container(
           // color: Colors.red,
-          child: Gif(
-            image: AssetImage(widget.imageName),
-            controller: _controller, // if duration and fps is null, original gif fps will be used.
-            //fps: 30,
-            duration: const Duration(milliseconds: 1500),
-            autostart: Autostart.no,
-            placeholder: (context) => const Text('Loading...'),
-            onFetchCompleted: () {
-              print('++++++');
-              _controller.reset();
-              _controller.forward();
-            },
+          child: Center(
+            child: Gif(
+             // width: 500,
+              //fit: BoxFit.contain,
+              useCache:false,
+              image: AssetImage(widget.imageName),
+              controller: _controller, // if duration and fps is null, original gif fps will be used.
+              // fps: 24,
+              duration: const Duration(milliseconds: 1500),
+              autostart: Autostart.no,
+              placeholder: (context) => const Text('Loading...'),
+              onFetchCompleted: () {
+                print('++++++');
+                _controller.reset();
+                _controller.forward();
+              },
+            ),
           ),
          // child: Image .asset(widget.imageName,fit: BoxFit.fill,repeat: ImageRepeat.noRepeat,),
         ),
       )
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    print('GifController----');
+    _controller.dispose();
+    super.dispose();
   }
 }

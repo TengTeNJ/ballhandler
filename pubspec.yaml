@@ -76,7 +76,7 @@ dependencies:
   flutter_app_badger: ^1.5.0
   firebase_analytics: ^10.10.5
   firebase_auth: ^4.19.5
-  flutter_facebook_auth: ^6.0.4
+#  flutter_facebook_auth: ^6.0.4
   package_info_plus: ^8.0.0
   device_info_plus: ^10.1.0
   cached_network_image: ^3.3.1
@@ -140,6 +140,22 @@ flutter:
     - images/razor/
     - images/razor/mode/
     - images/razor/progress/
+    - images/razor/progress/1/
+    - images/razor/progress/1/static/
+    - images/razor/progress/2/
+    - images/razor/progress/2/static/
+    - images/razor/progress/3/
+    - images/razor/progress/3/static/
+    - images/razor/progress/4/
+    - images/razor/progress/4/static/
+    - images/razor/progress/5/
+    - images/razor/progress/5/static/
+    - images/razor/progress/6/
+    - images/razor/progress/6/static/
+    - images/razor/progress/7/
+    - images/razor/progress/7/static/
+    - images/razor/progress/8/
+    - images/razor/progress/8/static/
     - assets/audio/
     - images/subscribe/
 
