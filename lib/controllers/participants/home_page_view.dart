@@ -91,7 +91,28 @@ class _HomePageViewState extends State<HomePageController> {
     }
   }
 
-
+_onPageChanged(int currentpage){
+  GameUtil gameUtil = GetIt.instance<GameUtil>();
+  // 获取当前滑动页面的索引 (取整)
+ // int currentpage = _pageController.page!.round();
+  if (_currentIndex != currentpage) {
+    print('_currentIndex= ${_currentIndex} currentpage = ${currentpage}');
+    setState(() {
+      _currentIndex = currentpage;
+      SceneModel model = gameUtil.sceneList[_currentIndex];
+      int value = int.parse(model.dictKey) - 1;
+      gameUtil.gameScene = [
+        GameScene.five,
+        GameScene.erqiling,
+        GameScene.threee
+      ][value];
+    });
+    // 延迟100毫秒进行数据请求，防止初始化本地用户信息未完成
+    Future.delayed(Duration(milliseconds: 100), () {
+      getHomeData(context);
+    });
+  }
+}
   @override
   void initState() {
     super.initState();
@@ -112,25 +133,7 @@ class _HomePageViewState extends State<HomePageController> {
     }
     _pageController = PageController(initialPage: _currentIndex);
     _pageController.addListener(() {
-      // 获取当前滑动页面的索引 (取整)
-      int currentpage = _pageController.page!.round();
-      if (_currentIndex != currentpage) {
-        print('_currentIndex= ${_currentIndex} currentpage = ${currentpage}');
-        setState(() {
-          _currentIndex = currentpage;
-          SceneModel model = gameUtil.sceneList[_currentIndex];
-          int value = int.parse(model.dictKey) - 1;
-          gameUtil.gameScene = [
-            GameScene.five,
-            GameScene.erqiling,
-            GameScene.threee
-          ][value];
-        });
-        // 延迟100毫秒进行数据请求，防止初始化本地用户信息未完成
-        Future.delayed(Duration(milliseconds: 100), () {
-         getHomeData(context);
-        });
-      }
+
     });
     // 监听
     subscription = EventBus().stream.listen((event) async{
@@ -195,12 +198,12 @@ class _HomePageViewState extends State<HomePageController> {
       if(value!=null && _pageViews.length > value){
         // 获取场景缓存
         gameUtil.gameScene = array[value];
-       SceneModel _matchModel = gameUtil.sceneList.firstWhere((element)=>(int.parse(element.dictKey) - 1) == array[value].index,orElse: null);
-       if(_matchModel != null){
-         int index = gameUtil.sceneList.indexOf(_matchModel);
-         _pageController.jumpToPage(index);
-         _currentIndex = index;
-       }
+        SceneModel _matchModel = gameUtil.sceneList.firstWhere((element)=>(int.parse(element.dictKey) - 1) == array[value].index,orElse: null);
+        if(_matchModel != null){
+          int index = gameUtil.sceneList.indexOf(_matchModel);
+          _currentIndex = index;
+            _pageController.jumpToPage(index);
+        }
       }
       if(mounted){
         setState(() {
@@ -255,6 +258,7 @@ class _HomePageViewState extends State<HomePageController> {
               child: PageView.builder(
                   controller: _pageController,
                   itemCount: gameUtil.sceneList.length,
+                  onPageChanged: _onPageChanged,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.only(left: 16, right: 16),

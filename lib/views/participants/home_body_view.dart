@@ -69,7 +69,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 NavigatorUtil.present(LoginPageController());
                 return;
               }
-              EventTrackUtil.eventTrack(kPlayNow,{});
+              //EventTrackUtil.eventTrack(kPlayNow,{});
               GameUtil gameUtil = GetIt.instance<GameUtil>();
               gameUtil.isFromAirBattle = false;
               gameUtil.selectRecord = false;
