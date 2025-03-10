@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/airbattle/airbattle_controller.dart';
 import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
@@ -40,7 +41,8 @@ class _RootPageControllerState extends State<RootPageController> {
   late StreamSubscription subscription;
   final List<StatefulWidget> _pageViews = [
     HomePageController(),
-    AirBattleHomeController(),
+    //AirBattleHomeController(),
+    AirbattleController(),
     RankingController(),
     ProfileController(),
   ];

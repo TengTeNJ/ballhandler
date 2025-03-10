@@ -1,0 +1,168 @@
+import 'package:code/views/airbattle/airbattle_info_card_view.dart';
+import 'package:code/views/airbattle/airbattle_list_view.dart';
+import 'package:code/views/airbattle/airbattle_page_view.dart';
+import 'package:code/views/airbattle/airbattle_tab_buttons.dart';
+import 'package:flutter/material.dart';
+
+import '../../constants/constants.dart';
+import '../../services/http/airbattle.dart';
+import '../../utils/navigator_util.dart';
+import '../../widgets/navigation/CustomAppBar.dart';
+
+class AirbattleController extends StatefulWidget {
+  const AirbattleController({super.key});
+
+  @override
+  State<AirbattleController> createState() => _AirbattleControllerState();
+}
+
+class _AirbattleControllerState extends State<AirbattleController> {
+  AirBattleHomeModel _model = AirBattleHomeModel();
+
+  queryAirBattleData() async {
+    final _response = await AirBattle.queryIAirBattleData();
+    if (_response.success && _response.data != null) {
+      _model = _response.data!;
+      if (mounted) {
+        setState(() {});
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(),
+      backgroundColor: Constants.baseControllerColor,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Constants.darkThemeColor,
+                    Constants.baseControllerColor
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              margin: EdgeInsets.only(left: 16, right: 16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Constants.boldWhiteTextWidget('Air Battle', 30),
+                  GestureDetector(
+                    onTap: () {
+                      NavigatorUtil.push('message');
+                    },
+                    child: Container(
+                      width: 20,
+                      height: 24,
+                      child: Stack(
+                        children: [
+                          Image(
+                              image: AssetImage('images/airbattle/message.png')),
+                          (_model.unreadCount != null && _model.unreadCount > 0)
+                              ? Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Container(
+                                width: 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(4)),
+                              ))
+                              : Container()
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              // color: Colors.red,
+              width: Constants.screenWidth(context) - 16,
+              height: (Constants.screenWidth(context) - 32) * (246 / 340),
+              child: AirbattlePageView(),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 16, right: 16, top: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AirbattleInfoCardView(
+                      title: 'Awards',
+                      value: 3,
+                      imageName: 'info1',
+                      des: 'See More'),
+                  AirbattleInfoCardView(
+                    title: 'My Pucks',
+                    value: 100,
+                    imageName: 'info2',
+                    des: 'Pucks',
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color.fromRGBO(239, 137, 20, 1.0),
+                        Color.fromRGBO(207, 57, 26, 1.0)
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 32,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16),
+                  child: Constants.mediumWhiteTextWidget('Leaderbroad', 16),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            AirbattleTabButtons(
+              titles: ['Highest record', 'Max times', 'Greatest progress'],
+              selectTab: (index) {
+                print('select ${[
+                  'Highest record',
+                  'Max times',
+                  'Greatest progress'
+                ][index]}');
+              },
+            ),
+            SizedBox(height: 20,),
+            Constants.regularGreyTextWidget('Ranking of the highest competition records', 14),
+            SizedBox(height: 20,),
+            Container(
+              width: Constants.screenWidth(context) - 32,
+              height: 26 + 10*54,
+              child: AirbattleListView(),
+            ),
+            SizedBox(height: 20,),
+          ],
+        ),
+      ),
+    );
+  }
+}

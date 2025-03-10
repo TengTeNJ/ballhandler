@@ -1,0 +1,76 @@
+import 'package:code/constants/constants.dart';
+import 'package:flutter/material.dart';
+
+class AirbattleInfoCardView extends StatefulWidget {
+  Gradient gradient;
+  String title;
+  int value;
+  String des;
+  String imageName;
+
+  AirbattleInfoCardView(
+      {super.key,
+      this.gradient = const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color.fromRGBO(19, 107, 146, 1.0),
+          Color.fromRGBO(20, 29, 154, 1.0)
+        ],
+      ),
+      required this.title,
+      required this.value,
+      required this.imageName,
+      required this.des});
+
+  @override
+  State<AirbattleInfoCardView> createState() => _AirbattleInfoCardViewState();
+}
+
+class _AirbattleInfoCardViewState extends State<AirbattleInfoCardView> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 165,
+      height: 140,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), gradient: widget.gradient),
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Constants.mediumWhiteTextWidget(widget.title, 14),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Constants.mediumWhiteTextWidget(
+                          widget.value.toString(), 40),
+                      Constants.regularWhiteTextWidget(
+                          widget.des.toString(), 14),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              child: Image(
+                image: AssetImage('images/airbattle/${widget.imageName}.png'),
+                width: 65,
+                fit: BoxFit.fitWidth,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

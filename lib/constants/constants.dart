@@ -358,7 +358,8 @@ const kTrainingMode_ReleaseNames = [
 const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
 const kBLEDataFramerFoot = 0xAA; // 蓝牙数据尾
 
-const String kBaseUrl_Dev = 'http://13.49.0.47:91'; // 测试环境地址
+// const String kBaseUrl_Dev = 'http://13.49.0.47:91'; // 测试环境地址(ip)
+const String kBaseUrl_Dev = 'https://testhockey.fjcctv.com'; // 测试环境地址(域名)
 // 13.49.0.47:91  http://13.49.0.47:91
 const String kBaseUrl_Pro = 'http://hockey.fjcctv.com:91'; // 生产环境地址
 const kTokenTimeOutCode = 401; // 登录失效错误码
@@ -370,7 +371,7 @@ const kGameDuration = 45; // 游戏时常
 
 const kChannelArray = [0,1,3, 19,21,23,25,27, 47,49,51,52, 71,73,75,77,79];
 
-const isTestEnvironment = false; // 是否使用测试环境 不使用则代表是生产环境 正式环境请改为false
+const isTestEnvironment = true; // 是否使用测试环境 不使用则代表是生产环境 正式环境请改为false
 double kFontSize(BuildContext context, double size) {
   // double font =Constants.screenWidth(context) / 375 * size;
   return size;
