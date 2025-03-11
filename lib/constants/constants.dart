@@ -42,11 +42,11 @@ class Constants {
   static Color baseLightRedColor = Color.fromRGBO(255, 45, 55, 1);
 
   static Text regularBaseTextWidget(String text, double fontSize,
-      {int maxLines = 1,
+      {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
-      maxLines: maxLines,
+      maxLines: maxLines ?? null,
       textAlign: textAlign,
       textScaler: TextScaler.noScaling,
       text,

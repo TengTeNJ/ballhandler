@@ -46,6 +46,16 @@ class ActivityModel {
     int minutes = remainingTime.inMinutes % 60;
     return '${days} days ${hours} hours ${minutes} minutess';
   }
+  String get timeAirBattleHomeDifferentString {
+    String targetTime = this.endDate + ' 23:59:00';
+    DateTime time = StringUtil.showTimeStringToDate(targetTime);
+    Duration remainingTime = time.difference(DateTime.now());
+    int days = remainingTime.inDays;
+    int hours = remainingTime.inHours % 24;
+    int minutes = remainingTime.inMinutes % 60;
+    int seconds = remainingTime.inSeconds % 60;
+    return '${days} days ${hours} hours ${minutes} minutes ${seconds}s';
+  }
 
   String get statuString {
     String tempString = 'Not started yet';

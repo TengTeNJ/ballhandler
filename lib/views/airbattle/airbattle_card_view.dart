@@ -1,23 +1,46 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../../services/http/airbattle.dart';
 import '../../utils/color.dart';
+import '../../utils/navigator_util.dart';
 import '../../widgets/base/base_image.dart';
+
 class AirbattleCardView extends StatefulWidget {
   ActivityModel activityModel;
-  AirbattleCardView({super.key,required this.activityModel});
+
+  AirbattleCardView({super.key, required this.activityModel});
 
   @override
   State<AirbattleCardView> createState() => _AirbattleCardViewState();
 }
 
 class _AirbattleCardViewState extends State<AirbattleCardView> {
+  Timer? _timer;
+
+  void startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    startTimer();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // print('widget.activityModel.timeAirBattleHomeDifferentString = ${widget.activityModel.timeAirBattleHomeDifferentString}');
     return Container(
       width: Constants.screenWidth(context) - 32,
-      height: (Constants.screenWidth(context) - 32)*(246/340),
+      height: (Constants.screenWidth(context) - 32) * (246 / 340),
       decoration: BoxDecoration(),
       child: Stack(
         children: [
@@ -25,33 +48,42 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
               url: widget.activityModel.activityBackground,
               placeHolderPath: 'images/airbattle/under_way.png',
               width: Constants.screenWidth(context) - 32,
-              height: (Constants.screenWidth(context) - 32)*(246/340),
+              height: (Constants.screenWidth(context) - 32) * (246 / 340),
               borderRadius: BorderRadius.circular(10)),
           Positioned(
               top: 8,
               right: 12,
-              child: Container(
-                padding: EdgeInsets.all(4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Image(
-                      image: AssetImage('images/airbattle/trophy.png'),
-                      width: 12,
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Constants.regularWhiteTextWidget(
-                        widget.activityModel.statuString, 14,
-                        height: 1.0),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                    color: hexStringToOpacityColor('#1C1E21', 0.6),
-                    borderRadius: BorderRadius.circular(5)),
-              )),
+              child: widget.activityModel.activityStatus == 1
+                  ? Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                          color: hexStringToOpacityColor('#1C1E21', 0.6),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Constants.regularWhiteTextWidget(
+                          widget.activityModel.timeAirBattleHomeDifferentString, 14),
+                    )
+                  : Container(
+                      padding: EdgeInsets.all(4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Image(
+                            image: AssetImage('images/airbattle/trophy.png'),
+                            width: 12,
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Constants.regularWhiteTextWidget(
+                              widget.activityModel.statuString, 14,
+                              height: 1.0),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          color: hexStringToOpacityColor('#1C1E21', 0.6),
+                          borderRadius: BorderRadius.circular(5)),
+                    )),
           Positioned(
             top: 30,
             left: 0,
@@ -80,12 +112,11 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
             ),
           ),
           Positioned(
-              bottom: 24,
-              left: 55,
-              right: 55,
+            bottom: 24,
+            left: 55,
+            right: 55,
             child: GestureDetector(
-              onTap: () async{
-              },
+              onTap: () async {},
               child: Container(
                 width: Constants.screenWidth(context) - 110 - 32,
                 height: 44,
@@ -100,11 +131,14 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                     ],
                   ),
                 ),
-                child: Stack(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  child: Stack(
                   children: [
                     Align(
                       alignment: Alignment.center,
-                      child: Constants.boldBlackTextWidget('Join Challenge', 16),
+                      child:
+                      Constants.boldBlackTextWidget('Join Challenge', 16),
                     ),
                     Positioned(
                         top: 6,
@@ -116,11 +150,22 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                         ))
                   ],
                 ),
+                onTap: (){
+                  NavigatorUtil.push('activityDetail',arguments: widget.activityModel);
+                },
+                ),
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _timer?.cancel();
+    super.dispose();
   }
 }

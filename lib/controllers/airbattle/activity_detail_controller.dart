@@ -67,7 +67,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
               left: 0,
               right: 0,
               top: 0,
-              bottom: 0,
+              bottom: 88,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -92,14 +92,14 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                           textAlign: TextAlign.left,height: 1.2),
                     ),
                     Container(
-                        margin: EdgeInsets.only(left: 16, top: 16),
+                        margin: EdgeInsets.only(left: 16, top: 16,right: 16),
                         decoration: BoxDecoration(
                             color: hexStringToColor('#3E3E55'),
                             borderRadius: BorderRadius.circular(5)),
                         child: Padding(
                           padding: EdgeInsets.all(8),
                           child: Constants.regularBaseTextWidget(
-                              detailModel.activityRemark, 12),
+                              detailModel.activityRemark, 12,textAlign: TextAlign.start,height: 1.2),
                         )),
                     Padding(
                       padding: EdgeInsets.all(16),
@@ -191,91 +191,6 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                             ],
                           )
                         : Container(), // 已完成的最高成绩
-                    SizedBox(
-                      height: 60,
-                    ),
-
-                    detailModel.activityStatus == 2
-                        ? _endButtonView(detailModel)
-                        : GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () async {
-                        if( detailModel.isJoin == 0){
-                          // 未加入则先加入游戏
-                          TTDialog.joinAirBattle(context, () async{
-                            final _response = await  AirBattle.joinActivity(widget.model.activityId);
-                            if(_response.success){
-                              detailModel.isJoin = 1;
-                              setState(() {
-
-                              });
-                              // 如果未连接设备 则先提示连接设备
-                              if (BluetoothManager().conectedDeviceCount.value == 0) {
-                                if(await SystemUtil.isIPad()){
-                                  print('ipad-----');
-                                  TTDialog.ipadbleListDialog(context);
-                                }else{
-                                  print('not ipad-----');
-                                  TTDialog.bleListDialog(context);
-                                }
-                                return;
-                              }
-                              GameUtil gameUtil = GetIt.instance<GameUtil>();
-                              gameUtil.isFromAirBattle = true;
-                              gameUtil.activityModel = widget.model;
-                              gameUtil.modelId = int.parse(detailModel.modeId);
-                              gameUtil.gameScene = [GameScene.five,GameScene.threee,GameScene.erqiling][int.parse(detailModel.sceneId) - 1];
-                              NavigatorUtil.push(Routes.recordselect);
-                            }
-
-                          }, () {
-                            NavigatorUtil.push(Routes.setting);
-                          });
-                        }else{
-                          // 已经报名过 直接跳转到确认页面
-                          // 如果未连接设备 则先提示连接设备
-                          if (BluetoothManager().conectedDeviceCount.value == 0) {
-                            if(await SystemUtil.isIPad()){
-                              print('ipad-----');
-                              TTDialog.ipadbleListDialog(context);
-                            }else{
-                              print('not ipad-----');
-                              TTDialog.bleListDialog(context);
-                            }
-                            return;
-                          }
-                          GameUtil gameUtil = GetIt.instance<GameUtil>();
-                          gameUtil.isFromAirBattle = true;
-                          gameUtil.activityModel = widget.model;
-                          gameUtil.modelId = int.parse(detailModel.modeId);
-                          gameUtil.gameScene = [GameScene.five,GameScene.threee,GameScene.erqiling][int.parse(detailModel.sceneId) - 1];
-                         NavigatorUtil.popAndThenPush(Routes.recordselect);
-                        }
-
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            left: 16, right: 16, bottom: 32),
-                        height: 56,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              hexStringToColor('#EF8914'),
-                              hexStringToColor('#E53F1D'),
-                            ],
-                          ),
-                        ),
-                        child: Center(
-                          child: Constants.boldWhiteTextWidget(
-                                 detailModel.isJoin == 0 ? 'JOIN' :  'End in ${detailModel.timeDifferentString}',
-                              16),
-                        ),
-                      ),
-                    )
-                  
                   ],
                 ),
               )),
@@ -302,6 +217,88 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                   ),
                 ),
               )),
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 24,
+              child:  detailModel.activityStatus == 2
+              ? _endButtonView(detailModel)
+              : GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () async {
+              if( detailModel.isJoin == 0){
+                // 未加入则先加入游戏
+                TTDialog.joinAirBattle(context, () async{
+                  final _response = await  AirBattle.joinActivity(widget.model.activityId);
+                  if(_response.success){
+                    detailModel.isJoin = 1;
+                    setState(() {
+
+                    });
+                    // 如果未连接设备 则先提示连接设备
+                    if (BluetoothManager().conectedDeviceCount.value == 0) {
+                      if(await SystemUtil.isIPad()){
+                        print('ipad-----');
+                        TTDialog.ipadbleListDialog(context);
+                      }else{
+                        print('not ipad-----');
+                        TTDialog.bleListDialog(context);
+                      }
+                      return;
+                    }
+                    GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    gameUtil.isFromAirBattle = true;
+                    gameUtil.activityModel = widget.model;
+                    gameUtil.modelId = int.parse(detailModel.modeId);
+                    gameUtil.gameScene = [GameScene.five,GameScene.threee,GameScene.erqiling][int.parse(detailModel.sceneId) - 1];
+                    NavigatorUtil.push(Routes.recordselect);
+                  }
+
+                }, () {
+                  NavigatorUtil.push(Routes.setting);
+                });
+              }else{
+                // 已经报名过 直接跳转到确认页面
+                // 如果未连接设备 则先提示连接设备
+                if (BluetoothManager().conectedDeviceCount.value == 0) {
+                  if(await SystemUtil.isIPad()){
+                    print('ipad-----');
+                    TTDialog.ipadbleListDialog(context);
+                  }else{
+                    print('not ipad-----');
+                    TTDialog.bleListDialog(context);
+                  }
+                  return;
+                }
+                GameUtil gameUtil = GetIt.instance<GameUtil>();
+                gameUtil.isFromAirBattle = true;
+                gameUtil.activityModel = widget.model;
+                gameUtil.modelId = int.parse(detailModel.modeId);
+                gameUtil.gameScene = [GameScene.five,GameScene.threee,GameScene.erqiling][int.parse(detailModel.sceneId) - 1];
+                NavigatorUtil.popAndThenPush(Routes.recordselect);
+              }
+
+            },
+            child: Container(
+              height: 56,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    hexStringToColor('#EF8914'),
+                    hexStringToColor('#E53F1D'),
+                  ],
+                ),
+              ),
+              child: Center(
+                child: Constants.boldWhiteTextWidget(
+                    detailModel.isJoin == 0 ? 'JOIN' :  'End in ${detailModel.timeDifferentString}',
+                    16),
+              ),
+            ),
+          ))
         ],
       ),
     );
@@ -315,7 +312,6 @@ Widget _endButtonView(ActivityDetailModel model) {
     // 已结束
   }
   return Container(
-    margin: EdgeInsets.only(left: 16, right: 16, bottom: 32),
     height: 56,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
