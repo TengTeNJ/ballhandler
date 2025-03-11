@@ -42,4 +42,11 @@ class _RankingListViewState extends State<RankingListView> {
             ),
         itemCount: widget.datas.length);
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _scrollController.dispose();
+    super.dispose();
+  }
 }

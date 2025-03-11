@@ -18,7 +18,7 @@ class AirbattleController extends StatefulWidget {
 
 class _AirbattleControllerState extends State<AirbattleController> {
   AirBattleHomeModel _model = AirBattleHomeModel();
-
+  int _activityId = 0;
   queryAirBattleData() async {
     final _response = await AirBattle.queryIAirBattleData();
     if (_response.success && _response.data != null) {
@@ -97,7 +97,12 @@ class _AirbattleControllerState extends State<AirbattleController> {
               // color: Colors.red,
               width: Constants.screenWidth(context) - 16,
               height: (Constants.screenWidth(context) - 32) * (246 / 340),
-              child: AirbattlePageView(),
+              child: AirbattlePageView(scrollToPage: (int activityId){
+                 // 活动切换 包含首次
+                setState(() {
+                  _activityId = activityId;
+                });
+              },),
             ),
             Container(
               margin: EdgeInsets.only(left: 16, right: 16, top: 8),
@@ -156,10 +161,9 @@ class _AirbattleControllerState extends State<AirbattleController> {
             SizedBox(height: 20,),
             Container(
               width: Constants.screenWidth(context) - 32,
-              height: 26 + 10*54,
-              child: AirbattleListView(),
+              child: AirbattleListView(activityId: _activityId,key: ValueKey(_activityId),),
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 26,),
           ],
         ),
       ),

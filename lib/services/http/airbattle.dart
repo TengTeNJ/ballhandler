@@ -1,4 +1,5 @@
 import 'package:code/models/airbattle/award_model.dart';
+import 'package:code/services/http/rank.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/string_util.dart';
@@ -476,5 +477,62 @@ class AirBattle {
         '/api/activity/join', {"activityId": activityId},
         showLoading: true);
     return ApiResponse(success: response.success);
+  }
+
+/*查询AirBattle排名数据
+* activityId 活动id
+* */
+  static Future<ApiResponse<List<List<RankModel>>>> queryIAirBattleRankData(int activityId) async {
+    final response =
+    await HttpUtil.get('/api/statistic/other/getActivityRank?activityId=${activityId}', null, showLoading: false);
+    AirBattleHomeModel model = AirBattleHomeModel();
+    if (response.success && response.data['data'] != null) {
+      final element = response.data['data'];
+      final _map = element;
+      List<List<RankModel>> _datas= [];
+      // 训练次数排名数据
+      final _countArray  = _map['trainActivityVoListForTrainCount'] as List;
+      List<RankModel> _countList = [];
+      _countArray.forEach((element){
+        RankModel model = RankModel();
+        model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
+        model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
+        model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'] : '-';
+        model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
+        // 统一用avgPace表示数据 虽然有训练次数的字段 这样在渲染页面时可以数据更统一
+        model.avgPace =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+        _countList.add(model);
+      });
+      // 速度最快的排名数据
+      final _speedArray  = _map['trainActivityVoListForAvgPace'] as List;
+      List<RankModel> _speedList = [];
+      _speedArray.forEach((element){
+        RankModel model = RankModel();
+        model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
+        model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
+        model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'].toString() : '-';
+        model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
+        model.trainCount =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+        _speedList.add(model);
+      });
+      // 进步最快的排名数据
+      final _progressArray  = _map['trainActivityVoListForProgress'] as List;
+      List<RankModel> _progressList = [];
+      _progressArray.forEach((element){
+        RankModel model = RankModel();
+        model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
+        model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
+        model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'] : '-';
+        model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
+        model.trainCount =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+        _progressList.add(model);
+      });
+      _datas.add(_speedList);
+      _datas.add(_countList);
+      _datas.add(_progressList);
+      return ApiResponse(success: response.success, data: _datas);
+    } else {
+      return ApiResponse(success: false);
+    }
   }
 }

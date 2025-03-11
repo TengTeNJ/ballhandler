@@ -1,10 +1,12 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/services/http/rank.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/base/base_image.dart';
 
 class AirbattleRankView extends StatefulWidget {
-  const AirbattleRankView({super.key});
+  RankModel model;
+  AirbattleRankView({super.key,required this.model});
 
   @override
   State<AirbattleRankView> createState() => _AirbattleRankViewState();
@@ -25,21 +27,21 @@ class _AirbattleRankViewState extends State<AirbattleRankView> {
               Constants.boldWhiteTextWidget('1', 20),
               SizedBox(width: 12,),
               TTNetImage(
-                url: '',
+                url: widget.model.avatar ?? '',
                 placeHolderPath: '',
                 width: 38,
                 height: 38,
               ),
               SizedBox(width: 12,),
-              Constants.mediumWhiteTextWidget('Mike', 20),
+              Constants.mediumWhiteTextWidget(widget.model.nickName ?? '', 20),
               SizedBox(width: 8,),
-              Constants.regularGreyTextWidget('Canda', 10),
+              Constants.regularGreyTextWidget(widget.model.country ?? '', 10),
 
             ],
           ),
           Row(
             children: [
-              Constants.boldWhiteTextWidget('0.3', 24),
+              Constants.boldWhiteTextWidget(widget.model.avgPace ?? '', 24),
               SizedBox(width: 24,),
             ],
           )

@@ -5,7 +5,8 @@ import '../../constants/constants.dart';
 import '../../services/http/airbattle.dart';
 import '../../utils/toast.dart';
 class AirbattlePageView extends StatefulWidget {
-  const AirbattlePageView({super.key});
+  Function? scrollToPage;
+  AirbattlePageView({super.key,required this.scrollToPage});
 
   @override
   State<AirbattlePageView> createState() => _AirbattlePageViewState();
@@ -27,6 +28,13 @@ class _AirbattlePageViewState extends State<AirbattlePageView> {
       _hasMore = _datas.length < _response.data!.count;
       if(mounted){
         setState(() {});
+        if(_datas.isNotEmpty){
+          ActivityModel _activity =  _datas.first;
+          if(widget.scrollToPage != null){
+            // 数据请求完成 主动传过去首个活动数据的活动id
+            widget.scrollToPage!(_activity.activityId);
+          }
+        }
       }
     }
     if(loadMore){

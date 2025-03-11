@@ -16,6 +16,7 @@ class RankModel {
   String createTime = '';
   String modeId = '';
   String sceneId = '';
+  String trainCount = '0'; // 训练次数
 }
 
 const int compareLength = 3;
