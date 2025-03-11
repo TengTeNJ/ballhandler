@@ -44,6 +44,8 @@ import 'package:code/services/http/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
+import '../controllers/airbattle/airbattle_my_pucks_controller.dart';
+
 
 class Routes {
   static const String home = '/'; // 主页
@@ -85,6 +87,7 @@ class Routes {
   static const String devicedebug= 'deviceDebug'; // 设备参数调节页面
   static const String subscribe= 'subscribe'; // 新订阅页面
   static const String subscribeintroduce= 'subscribeIntroduce'; // 订阅介绍页面
+  static const String mypucks= 'airbattleMyPucks'; // AirBattle的My Pucks的页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -195,6 +198,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SubscribeController());
       case subscribeintroduce:
         return MaterialPageRoute(builder: (_) => UltSubscribeHomeController());
+      case mypucks:
+        return MaterialPageRoute(builder: (_) => AirbattleMyPucksController());
     // EmailPageController
      // IntegralController MyAccountDataModel
       default:

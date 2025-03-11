@@ -1,4 +1,6 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/route/route.dart';
+import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
 class AirbattleInfoCardView extends StatefulWidget {
@@ -30,45 +32,51 @@ class AirbattleInfoCardView extends StatefulWidget {
 class _AirbattleInfoCardViewState extends State<AirbattleInfoCardView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 165,
-      height: 140,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), gradient: widget.gradient),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Constants.mediumWhiteTextWidget(widget.title, 14),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Constants.mediumWhiteTextWidget(
-                          widget.value.toString(), 40),
-                      Constants.regularWhiteTextWidget(
-                          widget.des.toString(), 14),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ],
-                  )
-                ],
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: (){
+        NavigatorUtil.push(Routes.mypucks);
+      },
+      child: Container(
+        width: 165,
+        height: 140,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), gradient: widget.gradient),
+        child: Padding(
+          padding: EdgeInsets.all(12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Constants.mediumWhiteTextWidget(widget.title, 14),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Constants.mediumWhiteTextWidget(
+                            widget.value.toString(), 40),
+                        Constants.regularWhiteTextWidget(
+                            widget.des.toString(), 14),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            Container(
-              child: Image(
-                image: AssetImage('images/airbattle/${widget.imageName}.png'),
-                width: 65,
-                fit: BoxFit.fitWidth,
-              ),
-            )
-          ],
+              Container(
+                child: Image(
+                  image: AssetImage('images/airbattle/${widget.imageName}.png'),
+                  width: 65,
+                  fit: BoxFit.fitWidth,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
