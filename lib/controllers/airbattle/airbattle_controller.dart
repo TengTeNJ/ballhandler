@@ -1,3 +1,4 @@
+import 'package:code/utils/notification_bloc.dart';
 import 'package:code/views/airbattle/airbattle_info_card_view.dart';
 import 'package:code/views/airbattle/airbattle_list_view.dart';
 import 'package:code/views/airbattle/airbattle_page_view.dart';
@@ -154,6 +155,7 @@ class _AirbattleControllerState extends State<AirbattleController> {
                   'Max times',
                   'Greatest progress'
                 ][index]}');
+                EventBus().sendEvent('${kAirBattleTabSelect}${index+1}');
               },
             ),
             SizedBox(height: 20,),

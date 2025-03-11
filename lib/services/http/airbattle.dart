@@ -81,6 +81,11 @@ class AwardDataModel {
   int count = 0;
 }
 
+class RankDataModel {
+  List<RankModel> data = [];
+  int count = 0;
+}
+
 class ActivityDetailModel {
   String activityBackground = '';
   String activityIcon = '';
@@ -479,13 +484,12 @@ class AirBattle {
     return ApiResponse(success: response.success);
   }
 
-/*查询AirBattle排名数据
+/*查询AirBattle排名数据 总接口 一个接口返回所有的数据
 * activityId 活动id
 * */
   static Future<ApiResponse<List<List<RankModel>>>> queryIAirBattleRankData(int activityId) async {
     final response =
     await HttpUtil.get('/api/statistic/other/getActivityRank?activityId=${activityId}', null, showLoading: false);
-    AirBattleHomeModel model = AirBattleHomeModel();
     if (response.success && response.data['data'] != null) {
       final element = response.data['data'];
       final _map = element;
@@ -497,7 +501,7 @@ class AirBattle {
         RankModel model = RankModel();
         model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
         model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
-        model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'] : '-';
+       // model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'] : '-';
         model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
         // 统一用avgPace表示数据 虽然有训练次数的字段 这样在渲染页面时可以数据更统一
         model.avgPace =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
@@ -531,6 +535,48 @@ class AirBattle {
       _datas.add(_countList);
       _datas.add(_progressList);
       return ApiResponse(success: response.success, data: _datas);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+  /*
+  * 查询AirBattle排名数据 根据type区分
+  * activityId 活动id
+  * rankType：排名类型：1-速度排名，2-训练次数排名，3-进步排名
+  * */
+  static Future<ApiResponse<RankDataModel>> queryIAirBattleRankDataBaseType(
+      int activityId,{int page = 1,int rankType = 1}) async {
+    final _data = {
+      'activityId':activityId.toString(),
+      "limit": kPageMaxLimit.toString(),
+      "page": page.toString(),
+      'rankType':rankType.toString()
+    };
+    final response =
+    await HttpUtil.get('/api/statistic/other/getActivityRankNew', _data, showLoading: true);
+    RankDataModel _model = RankDataModel();
+
+    List<RankModel> _list = [];
+    if (response.success && response.data['data'] != null) {
+      final _array = response.data['data'] as List;
+      _array.forEach((element) {
+        RankModel model = RankModel();
+        model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
+        model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
+        model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
+        if(rankType ==2){
+          // 统一用avgPace表示数据 虽然有训练次数的字段 这样在渲染页面时可以数据更统一
+          model.avgPace =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+        }else{
+          model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'].toString() : '-';
+        }
+        _list.add(model);
+      });
+      _model.count =
+      ISEmpty(response.data['count']) ? 0 : response.data['count'];
+
+      _model.data = _list;
+      return ApiResponse(success: response.success, data: _model);
     } else {
       return ApiResponse(success: false);
     }

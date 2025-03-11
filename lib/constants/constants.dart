@@ -330,6 +330,7 @@ const kBLE_270_CHARACTERISTIC_NOTIFY_UUID = "fff1";
 const kBLE_270_CHARACTERISTIC_WRITER_UUID = "fff2";
 
 const kPageLimit = 10; // 数据分页每页显示的数据量
+const kPageMaxLimit = 50; // 数据分页每页显示的数据量(最大)
 
 const kBLEDevice_Names = [
   kBLEDevice_Name,
@@ -421,6 +422,8 @@ const kBoardOnLineStatu = 'board_online_statu_change'; // 板子的在线状态�
 const kSystemStatu = 'system_configure_statu'; //  系统配网的状态
 const kSystemStatuRefreshSuccess = 'system_configure_statu_refresh_success'; //  系统配网的状态刷新成功UI
 const kSystemStatuRefreshError = 'system_configure_statu_refresh_error'; //  系统配网的状态刷新错误UI
+const kAirBattleTabSelect = 'airbattle_tab_select_'; // AirBattle的排名数据的tab切换 /*前缀*/
+
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
     "7": "ZIGZAG Challenge",

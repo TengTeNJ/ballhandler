@@ -7,7 +7,7 @@ import '../../utils/global.dart';
 
 class RankModel {
   String? rankNumber;
-  String? avgPace;
+  String? avgPace; // 正常表示速度 ，在AirBattle排名数据时 还可表示训练次数和进步程度
   String? nickName;
   String? avatar;
   String? country;
