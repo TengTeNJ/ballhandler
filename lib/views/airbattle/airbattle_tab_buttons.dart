@@ -41,7 +41,6 @@ class _AirbattleTabButtonsState extends State<AirbattleTabButtons> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     return Container(
       margin: EdgeInsets.only(left: 16, right: 16),
       height: 38,
@@ -87,5 +86,12 @@ class _AirbattleTabButtonsState extends State<AirbattleTabButtons> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
   }
 }

@@ -9,6 +9,7 @@ import 'package:code/views/airbattle/airbattle_detail_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import '../../services/http/airbattle.dart';
+import '../../utils/ble_util.dart';
 import '../../utils/blue_tooth_manager.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
@@ -244,13 +245,14 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                         print('not ipad-----');
                         TTDialog.bleListDialog(context);
                       }
+                      BleUtil.begainScan(context);
                       return;
                     }
                     GameUtil gameUtil = GetIt.instance<GameUtil>();
                     gameUtil.isFromAirBattle = true;
                     gameUtil.activityModel = widget.model;
                     gameUtil.modelId = int.parse(detailModel.modeId);
-                    gameUtil.gameScene = [GameScene.five,GameScene.threee,GameScene.erqiling][int.parse(detailModel.sceneId) - 1];
+                    gameUtil.gameScene = [GameScene.five,GameScene.erqiling,GameScene.threee][int.parse(detailModel.sceneId) - 1];
                     NavigatorUtil.push(Routes.recordselect);
                   }
 
@@ -268,13 +270,14 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                     print('not ipad-----');
                     TTDialog.bleListDialog(context);
                   }
+                  BleUtil.begainScan(context);
                   return;
                 }
                 GameUtil gameUtil = GetIt.instance<GameUtil>();
                 gameUtil.isFromAirBattle = true;
                 gameUtil.activityModel = widget.model;
                 gameUtil.modelId = int.parse(detailModel.modeId);
-                gameUtil.gameScene = [GameScene.five,GameScene.threee,GameScene.erqiling][int.parse(detailModel.sceneId) - 1];
+                gameUtil.gameScene = [GameScene.five,GameScene.erqiling,GameScene.threee][int.parse(detailModel.sceneId) - 1];
                 NavigatorUtil.popAndThenPush(Routes.recordselect);
               }
 

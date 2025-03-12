@@ -120,7 +120,7 @@ class _AirbattleControllerState extends State<AirbattleController> {
                 children: [
                   AirbattleInfoCardView(
                       title: 'Awards',
-                      value: 3,
+                      value:  _model.activityAward,
                       imageName: 'info1',
                       des: 'See More'),
                   AirbattleInfoCardView(

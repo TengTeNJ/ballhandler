@@ -40,13 +40,15 @@ class _AirbattleListViewState extends State<AirbattleListView> {
             eventString.substring(eventString.length - 1, eventString.length);
         _rankType = int.parse(rankType);
         queryRankData();
+      }else if(event is String && event == kBackFromFinish){
+        // 游戏完成返回后重新刷新页面
+        queryRankData();
       }
     });
   }
 
   // 请求活动的排名数据
   queryRankData() async {
-    print('queryRankData ==');
     if (widget.activityId == 0) {
       return;
     }
