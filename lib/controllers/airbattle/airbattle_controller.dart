@@ -20,6 +20,8 @@ class AirbattleController extends StatefulWidget {
 class _AirbattleControllerState extends State<AirbattleController> {
   AirBattleHomeModel _model = AirBattleHomeModel();
   int _activityId = 0;
+  List<String> _tabDess = ['Top scores, top players. Can you beat them?','Most improved. Progress is the real win!','Stay active, stay in the game. Keep battling!'];
+  int _tabIndex = 0;
   queryAirBattleData() async {
     final _response = await AirBattle.queryIAirBattleData();
     if (_response.success && _response.data != null) {
@@ -71,18 +73,19 @@ class _AirbattleControllerState extends State<AirbattleController> {
                       child: Stack(
                         children: [
                           Image(
-                              image: AssetImage('images/airbattle/message.png')),
+                              image:
+                                  AssetImage('images/airbattle/message.png')),
                           (_model.unreadCount != null && _model.unreadCount > 0)
                               ? Positioned(
-                              right: 0,
-                              top: 0,
-                              child: Container(
-                                width: 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(4)),
-                              ))
+                                  right: 0,
+                                  top: 0,
+                                  child: Container(
+                                    width: 8,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(4)),
+                                  ))
                               : Container()
                         ],
                       ),
@@ -98,12 +101,14 @@ class _AirbattleControllerState extends State<AirbattleController> {
               // color: Colors.red,
               width: Constants.screenWidth(context) - 16,
               height: (Constants.screenWidth(context) - 32) * (246 / 340),
-              child: AirbattlePageView(scrollToPage: (int activityId){
-                 // 活动切换 包含首次
-                setState(() {
-                  _activityId = activityId;
-                });
-              },),
+              child: AirbattlePageView(
+                scrollToPage: (int activityId) {
+                  // 活动切换 包含首次
+                  setState(() {
+                    _activityId = activityId;
+                  });
+                },
+              ),
             ),
             Container(
               margin: EdgeInsets.only(left: 16, right: 16, top: 8),
@@ -148,24 +153,48 @@ class _AirbattleControllerState extends State<AirbattleController> {
               height: 16,
             ),
             AirbattleTabButtons(
-              titles: ['Highest record', 'Max times', 'Greatest progress'],
+              titles: [
+                'Battle Champions',
+                'Rising Stars',
+                'Consistent Contenders'
+              ],
               selectTab: (index) {
                 print('select ${[
                   'Highest record',
                   'Max times',
                   'Greatest progress'
                 ][index]}');
-                EventBus().sendEvent('${kAirBattleTabSelect}${index+1}');
+                setState(() {
+                  _tabIndex = index;
+                });
+                int _index = index;
+                // 最多次数和最大进步顺序调整了
+                if (_index == 1) {
+                  _index = 2;
+                } else if (_index == 2) {
+                  _index = 1;
+                }
+                EventBus().sendEvent('${kAirBattleTabSelect}${_index + 1}');
               },
             ),
-            SizedBox(height: 20,),
-            Constants.regularGreyTextWidget('Ranking of the highest competition records', 14),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
+            Constants.regularGreyTextWidget(
+                _tabDess[_tabIndex], 14),
+            SizedBox(
+              height: 20,
+            ),
             Container(
               width: Constants.screenWidth(context) - 32,
-              child: AirbattleListView(activityId: _activityId,key: ValueKey(_activityId),),
+              child: AirbattleListView(
+                activityId: _activityId,
+                key: ValueKey(_activityId),
+              ),
             ),
-            SizedBox(height: 26,),
+            SizedBox(
+              height: 26,
+            ),
           ],
         ),
       ),
