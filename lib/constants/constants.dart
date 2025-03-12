@@ -423,6 +423,7 @@ const kSystemStatu = 'system_configure_statu'; //  系统配网的状态
 const kSystemStatuRefreshSuccess = 'system_configure_statu_refresh_success'; //  系统配网的状态刷新成功UI
 const kSystemStatuRefreshError = 'system_configure_statu_refresh_error'; //  系统配网的状态刷新错误UI
 const kAirBattleTabSelect = 'airbattle_tab_select_'; // AirBattle的排名数据的tab切换 /*前缀*/
+const kAirBattleChangeActivity = 'airbattle_change_activity'; // AirBattle首页切换上面的pageview 翻页*/
 
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {

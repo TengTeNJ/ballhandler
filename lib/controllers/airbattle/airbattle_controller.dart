@@ -105,7 +105,10 @@ class _AirbattleControllerState extends State<AirbattleController> {
                 scrollToPage: (int activityId) {
                   // 活动切换 包含首次
                   setState(() {
+                    _tabIndex = 0;
                     _activityId = activityId;
+                    // 通知tabbuttons进入默认选中首个状态
+                    EventBus().sendEvent(kAirBattleChangeActivity);
                   });
                 },
               ),
@@ -160,9 +163,9 @@ class _AirbattleControllerState extends State<AirbattleController> {
               ],
               selectTab: (index) {
                 print('select ${[
-                  'Highest record',
-                  'Max times',
-                  'Greatest progress'
+                  'Battle Champions',
+                  'Rising Stars',
+                  'Consistent Contenders'
                 ][index]}');
                 setState(() {
                   _tabIndex = index;

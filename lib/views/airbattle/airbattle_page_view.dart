@@ -53,6 +53,12 @@ class _AirbattlePageViewState extends State<AirbattlePageView> {
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
+      onPageChanged: (index){
+        if(widget.scrollToPage != null && index < _datas.length){
+          // 数据请求完成 主动传过去首个活动数据的活动id
+          widget.scrollToPage!(_datas[index].activityId);
+        }
+      },
         padEnds:false,
         controller: _pageController,
         itemCount: _datas.length,

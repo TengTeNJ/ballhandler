@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:code/constants/constants.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/views/airbattle/airbattle_rank_view.dart';
@@ -33,7 +34,7 @@ class _AirbattleListViewState extends State<AirbattleListView> {
     queryRankData();
     // 切换tab监听
     subscription = EventBus().stream.listen((event) {
-      if (event is String) {
+      if (event is String && event.contains(kAirBattleTabSelect)) {
         String eventString = event as String;
         String rankType =
             eventString.substring(eventString.length - 1, eventString.length);
