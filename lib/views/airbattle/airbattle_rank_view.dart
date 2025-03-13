@@ -20,7 +20,7 @@ class _AirbattleRankViewState extends State<AirbattleRankView> {
   Widget build(BuildContext context) {
     return Container(
       width: Constants.screenWidth(context) - 32,
-      color:    widget.model.memberId == UserProvider.of(context).userId ? hexStringToColor('#B6C5F6') : null,
+      color:   widget.model.memberId == UserProvider.of(context).userId ? hexStringToOpacityColor('#B6C5F6', 0.51) : null,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -28,7 +28,7 @@ class _AirbattleRankViewState extends State<AirbattleRankView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(width: 26,),
-              Constants.boldWhiteTextWidget('1', 20),
+              Constants.boldWhiteTextWidget(widget.model.rankNumber ?? '-', 20),
               SizedBox(width: 12,),
                [1,2,3].contains(widget.rank) ? Container(
                 width: 48,

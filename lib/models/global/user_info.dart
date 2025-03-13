@@ -137,7 +137,7 @@ class UserModel extends ChangeNotifier {
     _brith = brith;
     //  同时关联group改变 同步刷新页面 主动改变group 才会在用到group中的Consumer处刷新页面
     this.group = this.age.toString();
-    notifyListeners();
+    notifyListeners(); // 在 set group里面也主动调用了notifyListeners ，防止单独使用set group时未刷新页面
   }
 
   set country(String country) {

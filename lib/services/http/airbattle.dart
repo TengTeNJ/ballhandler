@@ -571,6 +571,7 @@ class AirBattle {
       final _array = response.data['data'] as List;
       _array.forEach((element) {
         RankModel model = RankModel();
+        model.rankNumber =  !ISEmpty(element['rankNumber']) ? element['rankNumber'].toString() : '';
         model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
         model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
         model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
