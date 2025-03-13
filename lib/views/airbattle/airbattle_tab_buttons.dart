@@ -48,43 +48,39 @@ class _AirbattleTabButtonsState extends State<AirbattleTabButtons> {
       decoration: BoxDecoration(
           color: hexStringToColor('#3E3E55'),
           borderRadius: BorderRadius.circular(26)),
-      child: Scrollbar(
-        thickness: 5, // 滚动条宽度
-        radius: Radius.circular(2),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(widget.titles.length, (index) {
-              return Container(
-                height: 38,
-                padding: EdgeInsets.only(left: 8, right: 8),
-                margin: EdgeInsets.only(
-                    right: index == (widget.titles.length - 1) ? 0 : 24),
-                decoration: BoxDecoration(
-                    color: _selectIndex == index
-                        ? Constants.baseStyleColor
-                        : hexStringToColor('#3E3E55'),
-                    borderRadius: BorderRadius.circular(26)),
-                child: Center(
-                  child: GestureDetector(
-                    child: Constants.regularWhiteTextWidget(
-                        widget.titles[index], 14,
-                        maxLines: 1),
-                    onTap: () {
-                      setState(() {
-                        _selectIndex = index;
-                      });
-                      if (widget.selectTab != null) {
-                        widget.selectTab!(index);
-                      }
-                    },
-                  ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: List.generate(widget.titles.length, (index) {
+            return Container(
+              height: 30,
+              padding: EdgeInsets.only(left: 8, right: 8),
+              margin: EdgeInsets.only(
+                  right: index == (widget.titles.length - 1) ? 0 : 24),
+              decoration: BoxDecoration(
+                  color: _selectIndex == index
+                      ? Constants.baseStyleColor
+                      : hexStringToColor('#3E3E55'),
+                  borderRadius: BorderRadius.circular(26)),
+              child: Center(
+                child: GestureDetector(
+                  child: Constants.regularWhiteTextWidget(
+                      widget.titles[index], 14,
+                      maxLines: 1),
+                  onTap: () {
+                    setState(() {
+                      _selectIndex = index;
+                    });
+                    if (widget.selectTab != null) {
+                      widget.selectTab!(index);
+                    }
+                  },
                 ),
-              );
-            }),
-          ),
+              ),
+            );
+          }),
         ),
-      ),
+      )
     );
   }
 

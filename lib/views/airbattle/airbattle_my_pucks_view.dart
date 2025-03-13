@@ -29,25 +29,25 @@ class _AirbattleMyPucksViewState extends State<AirbattleMyPucksView> {
             SizedBox(
               width: 32,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Constants.regularGreyTextWidget(widget.model.title, 16),
-                SizedBox(height: 12,),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Constants.regularWhiteTextWidget(widget.model.value, 40,height: 0.8,),
-                    SizedBox(width: 4,),
-                    Constants.regularWhiteTextWidget(widget.model.unit, 14),
-                  ],
-                ),
-                SizedBox(height: 12,),
-                widget.model.specialShow
-                    ? Constants.regularBaseTextWidget(widget.model.des, 14)
-                    : Constants.regularGreyTextWidget(widget.model.des, 14)
-              ],
-            )
+           Expanded(child:  Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               Constants.regularGreyTextWidget(widget.model.title, 16),
+               SizedBox(height: 12,),
+               Row(
+                 crossAxisAlignment: CrossAxisAlignment.end,
+                 children: [
+                   Constants.regularWhiteTextWidget(widget.model.value, 40,height: 0.8,),
+                   SizedBox(width: 4,),
+                   Constants.regularWhiteTextWidget(widget.model.unit, 14),
+                 ],
+               ),
+               SizedBox(height: 12,),
+               widget.model.specialShow
+                   ? Constants.regularBaseTextWidget(widget.model.des, 14)
+                   : Constants.regularGreyTextWidget(widget.model.des, 14,textAlign: TextAlign.start,height: 1.2)
+             ],
+           ))
           ],
         ),
         SizedBox(
