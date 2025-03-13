@@ -31,6 +31,7 @@ class _AirbattleRankViewState extends State<AirbattleRankView> {
                 placeHolderPath: '',
                 width: 38,
                 height: 38,
+                borderRadius: BorderRadius.circular(19),
               ),
               SizedBox(width: 12,),
               Constants.mediumWhiteTextWidget(widget.model.nickName ?? '', 20),

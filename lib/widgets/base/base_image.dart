@@ -60,7 +60,10 @@ class _TTNetImageState extends State<TTNetImage> {
         return Container(
           width: widget.width,
           height: widget.height,
-          color: hexStringToColor('#AA9155'),
+          decoration: BoxDecoration(
+            color: hexStringToColor('#AA9155'),
+            borderRadius: widget.borderRadius ?? BorderRadius.zero, // 设置圆角半径
+          ),
         );
       }else{
         return  Center(
