@@ -574,6 +574,7 @@ class AirBattle {
         model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
         model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
         model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
+        model.memberId = !ISEmpty(element['memberId']) ? element['memberId'].toString() : '';
         if(rankType ==2){
           // 统一用avgPace表示数据 虽然有训练次数的字段 这样在渲染页面时可以数据更统一
           model.avgPace =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';

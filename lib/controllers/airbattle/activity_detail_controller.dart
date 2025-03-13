@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
@@ -8,11 +10,13 @@ import 'package:code/views/airbattle/airbattle_data_view.dart';
 import 'package:code/views/airbattle/airbattle_detail_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import '../../services/http/airbattle.dart';
 import '../../utils/ble_util.dart';
 import '../../utils/blue_tooth_manager.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
+import '../../utils/notification_bloc.dart';
 import '../../widgets/base/base_image.dart';
 
 class ActivityDetailController extends StatefulWidget {
@@ -34,18 +38,11 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
     'images/airbattle/award.png'
   ];
   final List<String> _titles = ['TIME', 'Date', 'Player', 'Award'];
-  List<String> _details = ['', '', '', ''];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _details = [
-      '00:45 sec',
-      widget.model.startDate + '-' + widget.model.endDate,
-      UserProvider.of(context).group,
-      '${widget.model.rewardMoney}\$'
-    ];
     queryActivityDetailData();
   }
 
@@ -54,7 +51,8 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
         await AirBattle.queryIActivityDetailData(widget.model.activityId);
     if (_response.success && _response.data != null) {
       detailModel = _response.data!;
-      setState(() {});
+      setState(() {
+      });
     }
   }
 
@@ -124,10 +122,17 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                           itemCount: 4,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return AirBattleGridView(
-                                imagePath: _iconPaths[index],
-                                title: _titles[index],
-                                detail: _details[index]);
+                            return Consumer<UserModel>(builder: (context,userModel,child){
+                              return AirBattleGridView(
+                                  imagePath: _iconPaths[index],
+                                  title: _titles[index],
+                                  detail: [
+                                    '00:45 sec',
+                                    widget.model.startDate + '-' + widget.model.endDate,
+                                    userModel.group,
+                                    '${widget.model.rewardMoney}\$'
+                                  ][index]);
+                            });
                           }),
                     ),
                     detailModel.activityStatus == 2
@@ -239,10 +244,8 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                     // 如果未连接设备 则先提示连接设备
                     if (BluetoothManager().conectedDeviceCount.value == 0) {
                       if(await SystemUtil.isIPad()){
-                        print('ipad-----');
                         TTDialog.ipadbleListDialog(context);
                       }else{
-                        print('not ipad-----');
                         TTDialog.bleListDialog(context);
                       }
                       BleUtil.begainScan(context);
@@ -264,10 +267,8 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                 // 如果未连接设备 则先提示连接设备
                 if (BluetoothManager().conectedDeviceCount.value == 0) {
                   if(await SystemUtil.isIPad()){
-                    print('ipad-----');
                     TTDialog.ipadbleListDialog(context);
                   }else{
-                    print('not ipad-----');
                     TTDialog.bleListDialog(context);
                   }
                   BleUtil.begainScan(context);
@@ -305,6 +306,12 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }
 /*活动已结束End*/

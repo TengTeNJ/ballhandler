@@ -87,6 +87,7 @@ class _AirbattleListViewState extends State<AirbattleListView> {
                 itemBuilder: (context, index) {
                   return AirbattleRankView(
                     model: _currentDatas[index],
+                    rank: index + 1,
                   );
                 },
                 separatorBuilder: (context, index) => SizedBox(

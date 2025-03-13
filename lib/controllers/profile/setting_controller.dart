@@ -32,7 +32,7 @@ class _SettingControllerState extends State<SettingController> {
       initialDate: selectedDate,
       firstDate: DateTime(1900),
       // barrierColor: hexStringToColor('#3E3E55'),
-      lastDate: selectedDate,
+      lastDate: DateTime.now(),
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -45,6 +45,10 @@ class _SettingControllerState extends State<SettingController> {
             StringUtil.dateTimeToString(selectedDate);
         NSUserDefault.setKeyValue(
             kBrithDay, StringUtil.dateTimeToString(selectedDate));
+        // 修改生日信息完成
+       Future.delayed(Duration(milliseconds: 500),(){
+         EventBus().sendEvent(kBrithInfoChange);
+       });
       }
     }
   }

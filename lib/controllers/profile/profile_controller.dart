@@ -88,6 +88,9 @@ int scoreLevel = -1;
 
         NSUserDefault.setKeyValue<String>(kBrithDay, _model.birthday);
         UserProvider.of(context).brith = _model.birthday;
+
+        NSUserDefault.setKeyValue<String>(kUserID, _model.memberId.toString());
+        UserProvider.of(context).userId = _model.memberId.toString();
       }
     }
   }

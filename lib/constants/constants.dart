@@ -307,6 +307,7 @@ const kInputEmail = 'inputEmail';
 const kUserEmail = 'userEmail';
 const kBrithDay = 'brithDay';
 const kCountry = 'countryArea';
+const kUserID = 'userID';
 const kUnreadMessageCount = 'unreadMessageCount'; // 未读消息的数量
 const kShowLaunch = 'showLaunchPage'; // 是否展示启动介绍页的标识
 const kSceneSelectCache = 'scene_select_cache'; // 场景选择缓存 0 1 2
@@ -424,6 +425,7 @@ const kSystemStatuRefreshSuccess = 'system_configure_statu_refresh_success'; // 
 const kSystemStatuRefreshError = 'system_configure_statu_refresh_error'; //  系统配网的状态刷新错误UI
 const kAirBattleTabSelect = 'airbattle_tab_select_'; // AirBattle的排名数据的tab切换 /*前缀*/
 const kAirBattleChangeActivity = 'airbattle_change_activity'; // AirBattle首页切换上面的pageview 翻页*/
+const kBrithInfoChange= 'change_brith_day_info'; // 修改生日信息
 
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
