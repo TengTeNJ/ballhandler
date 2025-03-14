@@ -53,8 +53,8 @@ class _AirbattleRankViewState extends State<AirbattleRankView> {
               ) : TTNetImage(
                  url: widget.model.avatar ?? '',
                  placeHolderPath: '',
-                 width: 38,
-                 height: 38,
+                 width: 48,
+                 height: 48,
                  borderRadius: BorderRadius.circular(19),
                ),
               SizedBox(width: 12,),

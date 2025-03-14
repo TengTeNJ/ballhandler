@@ -77,8 +77,8 @@ class _AirbattleListViewState extends State<AirbattleListView> {
   Widget build(BuildContext context) {
     return _currentDatas.isNotEmpty
         ? Container(
-            height: 26 + _currentDatas.length * 64,
-            padding: EdgeInsets.only(top: 26),
+            height: 26 + _currentDatas.length * 48 + 16*(_currentDatas.length - 1) + 26,
+            padding: EdgeInsets.only(top: 26,bottom: 26),
             decoration: BoxDecoration(
                 color: hexStringToColor('#3E3E55'),
                 borderRadius: BorderRadius.circular(10)),
