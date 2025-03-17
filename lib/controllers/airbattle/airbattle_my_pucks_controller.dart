@@ -1,6 +1,7 @@
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/views/airbattle/airbattle_my_pucks_list_view.dart';
+import 'package:code/views/airbattle/heatmap_container_view.dart';
 import 'package:code/views/participants/today_data_view.dart';
 import 'package:flutter/material.dart';
 
@@ -64,6 +65,8 @@ class _AirbattleMyPucksControllerState
                       ))
                 ],
               ),
+              SizedBox(height: 24,),
+              HeatMapContainerView(),
               SizedBox(height: 12,),
               Container(
                 height: 1,

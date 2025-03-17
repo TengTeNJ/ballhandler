@@ -254,4 +254,23 @@ class StringUtil {
     String secondString = second.toString().padLeft(2, '0');
     return minuteString + ':' + secondString;
   }
+
+  /*数字月份转换为英文简写*/
+  static String monthToAbbreviation(int index){
+    List<String> monthStrings = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    return monthStrings[index - 1];
+  }
 }

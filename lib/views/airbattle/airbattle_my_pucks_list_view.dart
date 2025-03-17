@@ -38,8 +38,11 @@ class _AirbattleMyPucksListViewState extends State<AirbattleMyPucksListView> {
       model.title = _titles[i];
       model.des = _dess[i];
       model.unit = _units[i];
-      model.inageName =   'images/airbattle/${_imageNames[i]}.png';
+      model.imageName =   'images/airbattle/${_imageNames[i]}.png';
       model.specialShow = _specialShows[i];
+      if(i == 0){
+        model.upValue = '10%';
+      }
       _datas.add(model);
     }
     setState(() {
