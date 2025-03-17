@@ -4,6 +4,7 @@ import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
 import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/airbattle/activity_detail_controller.dart';
+import 'package:code/controllers/airbattle/airbattle_awards_controller.dart';
 import 'package:code/controllers/airbattle/award_list_controller.dart';
 import 'package:code/controllers/airbattle/message_controller.dart';
 import 'package:code/controllers/airbattle/my_activity_controller.dart';
@@ -88,6 +89,7 @@ class Routes {
   static const String subscribe= 'subscribe'; // 新订阅页面
   static const String subscribeintroduce= 'subscribeIntroduce'; // 订阅介绍页面
   static const String mypucks= 'airbattleMyPucks'; // AirBattle的My Pucks的页面
+  static const String airbattleawards= 'airbattleAwards'; // AirBattle的奖品页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -200,6 +202,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => UltSubscribeHomeController());
       case mypucks:
         return MaterialPageRoute(builder: (_) => AirbattleMyPucksController());
+      case airbattleawards:
+        return MaterialPageRoute(builder: (_) => AirBattleAwardsController());
     // EmailPageController
      // IntegralController MyAccountDataModel
       default:

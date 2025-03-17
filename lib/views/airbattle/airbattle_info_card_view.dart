@@ -35,7 +35,11 @@ class _AirbattleInfoCardViewState extends State<AirbattleInfoCardView> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: (){
-        NavigatorUtil.push(Routes.mypucks);
+        if(widget.title == 'Awards'){
+          NavigatorUtil.push(Routes.airbattleawards);
+        }else{
+          NavigatorUtil.push(Routes.mypucks);
+        }
       },
       child: Container(
         width: 165,
