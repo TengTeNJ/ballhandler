@@ -1,9 +1,13 @@
 
 import 'dart:async';
+import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/razor_control_util.dart';
 
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
+import 'ble_util.dart';
+import 'navigator_util.dart';
+import 'notification_bloc.dart';
 /*数码管显示*/
 const int ledControl = 0x01;
 /*灯光控制*/
@@ -40,9 +44,9 @@ class BleRazorServiceData {
     if (data.isEmpty) {
       return;
     }
-    if (data.length >= 4 && data[0] == kBLEDataFrameHeader) {
+    if (data.length >= 4 && data[0] == kBLEDataFrameRazorHeader) {
       // 取出来数据的长度标识位
-      int length = data[3];
+      int length = data[1];
       // 通过 帧头 帧尾 length数据位的值和实际的数据包length进行匹配
       if (data.length >= length && data[length - 1] == kBLEDataFramerFoot) {
         List<int> rightData = data.sublist(0, length);
@@ -81,8 +85,8 @@ class BleRazorServiceData {
     } else {
       // print('handleNotFullData3${bleNotAllData.map((toElement) => toElement.toRadixString(16)).toList()}');
       if (bleNotAllData.length >= 4 &&
-          bleNotAllData[0] == kBLEDataFrameHeader) {
-        int length = bleNotAllData[3];
+          bleNotAllData[0] == kBLEDataFrameRazorHeader) {
+        int length = bleNotAllData[1];
         if (bleNotAllData.length >= length &&
             bleNotAllData[length - 1] == kBLEDataFramerFoot) {
           List<int> rightData = bleNotAllData.sublist(0, length);
@@ -111,11 +115,63 @@ class BleRazorServiceData {
     element = element.sublist(1, element.length);
     // 数据源地址
     int cmd = element[1];
-    int id = element[2];
+    // int id = element[2]; 暂且不需要重传机制 不需要id
     switch (cmd){
       case ledControl:
-        // 数码管显示
-        CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
+        // 数码管APP控制回复
+        // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
+        print('数码管APP控制回复');
+        break;
+      case lightControl:
+      // 数码管APP控制回复
+      // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
+        print('灯光APP控制回复');
+        break;
+      case motorControl:
+      // 数码管APP控制回复
+      // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
+        print('电机APP控制回复');
+        break;
+      case powerOff:
+      // 数码管APP控制回复
+      // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
+        print('关机APP控制回复');
+        break;
+      case appOnline:
+      // 数码管APP控制回复
+      // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
+        print('上下线APP控制回复');
+        break;
+      case batteryLevelResponse:
+      // 电量
+        int value = element[2];
+        print('电量=${value}');
+        BluetoothManager().gameData.powerValue = value;
+        BleUtil.listenPowerValue(NavigatorUtil.utilContext, value);
+        EventBus().sendEvent(kCurrentDeviceInfoChange);
+        break;
+      case heartBeatResponse:
+      // 心跳上报
+        int value = element[2];
+        print('心跳上报=${value}');
+        break;
+      case hitResponse:
+      // 击打上报 0b0000 0001（如bit1:1号，0无 1击打）
+        List<int> datas = [1,2,4]; // 因为只有三个灯板 所以只有可能00000001 00000010 00000100 三种二进制的值 ，对应10进制分别为 1  2 4
+        int value = element[2];
+        String binaryString = value.toRadixString(2).padLeft(8, '0');
+        print('击打上报=${binaryString}');
+        print('击中了${datas.indexOf(value) + 1}号灯板');
+        break;
+      case gearResponse:
+      // 档位按下上报
+        int value = element[2];
+        print('档位按下上报=${value}');
+        break;
+      case motorFinishResponse:
+      // 电机控制完成上报
+        int value = element[2];
+        print('电机控制完成上报=${value}');
         break;
     }
 

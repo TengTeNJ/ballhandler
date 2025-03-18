@@ -5,6 +5,8 @@ import 'package:code/models/ble/device_debug_model.dart';
 import 'package:code/models/global/game_data.dart';
 import 'package:code/utils/ble_data.dart';
 import 'package:code/utils/ble_data_service.dart';
+import 'package:code/utils/ble_razor_data.dart';
+import 'package:code/utils/ble_razor_service_data.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/ble_ultimate_service_data.dart';
 import 'package:code/utils/ble_util.dart';
@@ -232,7 +234,13 @@ class BluetoothManager {
               deviceId: model.device!.id);
           model.notifyCharacteristic = notifyCharacteristic;
           model.writerCharacteristic = writerCharacteristic;
-          writerDataToDevice(model, questDeviceInfoData());
+          if (model.deviceName == kFiveBallHandler_Name){
+            // 五节 主动查询
+            writerDataToDevice(model, questDeviceInfoData());
+          }else if(model.deviceName == kThreeBallHandler_Name){
+            // appOnLineControlData APP上线控制
+          //  writerDataToDevice(model, appOnLineControlData());
+          }
         }
         // 连接成功弹窗
         // EasyLoading.showSuccess('Bluetooth connection successful',
@@ -247,8 +255,15 @@ class BluetoothManager {
             // 解析270
             BluetoothUltTimateDataParse.parseData(data, model);
           } else {
-            // 解析五节
-            BluetoothDataParse.parseData(data, model);
+            if (model.deviceName == kFiveBallHandler_Name){
+              // 解析五节
+              BluetoothDataParse.parseData(data, model);
+            }else if (model.deviceName == kThreeBallHandler_Name){
+              // 可变三节
+              print(
+                  "deviceName =${model.device!.name} 上报来的数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
+               BleRazorServiceData.parseData(data, model);
+            }
           }
         });
       } else if (connectionStateUpdate.connectionState ==
@@ -282,6 +297,8 @@ class BluetoothManager {
           EventBus().sendEvent(kCurrentDeviceDisconnectedUli);
         }else if(model.deviceName.contains(kFiveBallHandler_Name)){
           EventBus().sendEvent(kCurrentDeviceDisconnectedFive);
+        }else if(model.deviceName.contains(kThreeBallHandler_Name)){
+          EventBus().sendEvent(kCurrentDeviceDisconnectedThree);
         }
         deviceListLength.value = this.deviceList.length;
       }
@@ -312,11 +329,13 @@ class BluetoothManager {
       EventBus().sendEvent(kInitiativeDisconnectUli);
     }else if(device.deviceName.contains(kFiveBallHandler_Name)){
       EventBus().sendEvent(kInitiativeDisconnectFive);
+    }else if(device.deviceName.contains(kThreeBallHandler_Name)){
+      EventBus().sendEvent(kInitiativeDisconnectThree);
     }
   }
 
   /*发送数据*/
-  writerDataToDevice(BLEModel model, List<int> data) async {
+  writerDataToDevice(BLEModel? model, List<int> data) async {
     //  数据校验
     if (data == null || data.length == 0) {
       return;
@@ -328,18 +347,16 @@ class BluetoothManager {
       TTToast.showErrorInfo('Please connect your device first');
       return;
     }
-    if (data[4] == 0x60 && data[2] != 0x7f) {
-      print(
-          " 重发数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
-    }
 
     // 多个命令同时发时 增加10ms的时间间隔
     sleep(Duration(milliseconds: 10));
     if(model.writerCharacteristic == null){
       return;
     }
-    await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
-        value: data);
+    if(model != null){
+      await _ble.writeCharacteristicWithoutResponse(model.writerCharacteristic!,
+          value: data);
+    }
   }
 
   /*增加超时机制的控制*/

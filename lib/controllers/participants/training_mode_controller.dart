@@ -21,6 +21,7 @@ import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/views/airbattle/my_award_view.dart';
 import 'package:code/views/base/five_statu_view.dart';
 import 'package:code/views/base/no_data_view.dart';
+import 'package:code/views/base/razor_statu_view.dart';
 import 'package:code/views/base/statu_view.dart';
 import 'package:code/views/participants/training_mode_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
@@ -78,10 +79,10 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             }
           }
 
-          if(gameUtil.gameScene == GameScene.threee){
-            NavigatorUtil.push(Routes.razorgameprocesspage);
-            return;
-          }
+          // if(gameUtil.gameScene == GameScene.threee){
+          //   NavigatorUtil.push(Routes.razorgameprocesspage);
+          //   return;
+          // }
 
           gameUtil.selectRecord = false;
           if (BluetoothManager().conectedDeviceCount.value == 0) {
@@ -158,6 +159,19 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
               // 模式切换锁定
               BluetoothManager()
                   .writerDataToDevice(gameUtil.selectedDeviceModel, lockMode());
+            }else{
+              // 三节
+              const List<Widget> _controllers = [
+                RazorP1Controller(),
+                RazorP2SelectController(),
+              ];
+              // 清空上次选择的组合
+              // gameUtil.selectdP3Indexs.clear();
+              // 记录选择的场景 放入缓存
+              NSUserDefault.setKeyValue<int>(
+                  kSceneSelectCache, gameUtil.gameScene.index);
+              NavigatorUtil.present(_controllers[index]);
+              //NavigatorUtil.push(Routes.razorgameprocesspage);
             }
           }
         },
@@ -334,7 +348,7 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             Container(
               child: gameUtil.gameScene == GameScene.erqiling
                   ? DeviceStatuView()
-                  : FiveStatuView(),
+                  : (gameUtil.gameScene == GameScene.five) ? FiveStatuView() :RazoraStatuView(),
               margin: EdgeInsets.only(left: 16),
             ),
             SizedBox(

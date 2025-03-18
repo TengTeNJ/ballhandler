@@ -316,7 +316,8 @@ const kBLEDevice_Name = 'Myspeedz';
 const kBLEDevice_NewName = 'Stickhandling'; // StarShots Stickhandling
 // const kFiveBallHandler_Name = 'Stickhandling'; // 五节控球器的名称
 const kFiveBallHandler_Name = 'Stickhandling'; // 五节控球器的名称
-const kThreeBallHandler_Name = 'Razor Dangler 2.0'; // 三节控球器的名称
+//const kThreeBallHandler_Name = 'Razor Dangler 2.0'; // 三节控球器的名称
+const kThreeBallHandler_Name = 'Razor'; // 三节控球器的名称
 const k270_Name_Release = 'Ultimater Dangler'; // 270度
 const k270_Name = 'Dangler-M'; // 270度 蓝牙设备名称
 
@@ -357,7 +358,7 @@ const kTrainingMode_ReleaseNames = [
 
 const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
 const kBLEDataFramerFoot = 0xAA; // 蓝牙数据尾
-
+const kBLEDataFrameRazorHeader = 0x5A; // 蓝牙数据帧头,Razor三节 用来和五节以及270产品区分
 const String kBaseUrl_Dev = 'http://13.49.0.47:91'; // 测试环境地址
 // 13.49.0.47:91  http://13.49.0.47:91
 const String kBaseUrl_Pro = 'http://hockey.fjcctv.com:91'; // 生产环境地址
@@ -370,7 +371,7 @@ const kGameDuration = 45; // 游戏时常
 
 const kChannelArray = [0,1,3, 19,21,23,25,27, 47,49,51,52, 71,73,75,77,79];
 
-const isTestEnvironment = false; // 是否使用测试环境 不使用则代表是生产环境 正式环境请改为false
+const isTestEnvironment = true; // 是否使用测试环境 不使用则代表是生产环境 正式环境请改为false
 double kFontSize(BuildContext context, double size) {
   // double font =Constants.screenWidth(context) / 375 * size;
   return size;
@@ -411,8 +412,10 @@ const kInitiativeDisconnect = 'initiative_disconnect'; // 主动断开
 const kDeviceConnected = 'device_connected'; // 设备连接成功
 const kInitiativeDisconnectUli = 'initiative_disconnect_uli'; // 主动断开
 const kInitiativeDisconnectFive = 'initiative_disconnect_five'; // 主动断开
-const kCurrentDeviceDisconnectedUli = 'current_device_disconnected_uli'; // 当前游戏设备断开连接
-const kCurrentDeviceDisconnectedFive = 'current_device_disconnected_five'; // 当前游戏设备断开连接
+const kInitiativeDisconnectThree = 'initiative_disconnect_three'; // 主动断开
+const kCurrentDeviceDisconnectedUli = 'current_device_disconnected_uli'; // 当前游戏设备断开连接 270
+const kCurrentDeviceDisconnectedFive = 'current_device_disconnected_five'; // 当前游戏设备断开连接 五节
+const kCurrentDeviceDisconnectedThree = 'current_device_disconnected_three'; // 当前游戏设备断开连接 三节
 const kGamePre = 'game_pre'; // 游戏pre阶段的屏幕显示 仅针对p1和p2
 const kReadyBack = 'game_ready_page_back'; // 点击游戏ready页面右上角的返回按钮
 const kFinishSubscribe = 'finish_subscribe'; // 完成订阅

@@ -1,10 +1,15 @@
+import 'package:code/utils/ble_razor_data.dart';
+import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/views/participants/razor_grid_view.dart';
 import 'package:code/views/participants/razor_mode_scroll_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 
 import '../../constants/constants.dart';
+import '../../route/route.dart';
 import '../../utils/color.dart';
+import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 
 class RazorP1Controller extends StatelessWidget {
@@ -126,6 +131,9 @@ class RazorP1Controller extends StatelessWidget {
                         // List<CameraDescription> cameras = await availableCameras();
                         // NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                         // TTToast.hideLoading();
+                        GameUtil gameUtil = GetIt.instance<GameUtil>();
+                        BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, lightsControlData([0,0,1]));
+                        NavigatorUtil.push(Routes.razorgameprocesspage);
                       },
                       child: Container(
                           width: Constants.screenWidth(context) - 48,
