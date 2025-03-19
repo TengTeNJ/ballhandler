@@ -121,12 +121,12 @@ class _AirbattleControllerState extends State<AirbattleController> {
                   AirbattleInfoCardView(
                       title: 'Awards',
                       value:  _model.activityAward,
-                      imageName: 'info1',
-                      des: 'See More'),
+                      imageName: 'info2',
+                      des: ' More'),
                   AirbattleInfoCardView(
                     title: 'My Pucks',
                     value: 100,
-                    imageName: 'info2',
+                    imageName: 'info1',
                     des: 'Pucks',
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,

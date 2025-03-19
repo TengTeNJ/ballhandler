@@ -157,6 +157,7 @@ class Account {
         ISEmpty(_response.data!.country) ? 'Unknown' : _response.data!.country);
     NSUserDefault.setKeyValue<String>(kUserEmail, _response.data!.accountNo);
 
+    NSUserDefault.setKeyValue<String>(kUserID, _response.data!.memberId.toString());
     UserProvider.of(context).userName = ISEmpty(_response.data!.nickName)
         ? 'Unknown'
         : _response.data!.nickName;
@@ -167,7 +168,7 @@ class Account {
         ISEmpty(_response.data!.country) ? 'Unknown' : _response.data!.country;
     UserProvider.of(context).brith =
         ISEmpty(_response.data!.birthday) ? '--' : _response.data!.birthday;
-
+    UserProvider.of(context).userId = _response.data!.memberId.toString();
     UserProvider.of(context).email =
         ISEmpty(_response.data!.accountNo) ? '' : _response.data!.accountNo;
 

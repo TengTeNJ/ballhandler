@@ -42,8 +42,8 @@ class _AirbattleTabButtonsState extends State<AirbattleTabButtons> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 16, right: 16),
-      height: 38,
+        padding: EdgeInsets.only(left: 3, right: 3),
+      height: 32,
       width: Constants.screenWidth(context) - 32,
       decoration: BoxDecoration(
           color: hexStringToColor('#3E3E55'),
@@ -53,7 +53,7 @@ class _AirbattleTabButtonsState extends State<AirbattleTabButtons> {
         child: Row(
           children: List.generate(widget.titles.length, (index) {
             return Container(
-              height: 30,
+              height: 26,
               padding: EdgeInsets.only(left: 8, right: 8),
               margin: EdgeInsets.only(
                   right: index == (widget.titles.length - 1) ? 0 : 24),

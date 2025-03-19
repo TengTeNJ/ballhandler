@@ -60,7 +60,7 @@ class _AirbattleInfoCardViewState extends State<AirbattleInfoCardView> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Constants.mediumWhiteTextWidget(
+                        widget.title == 'Awards' ? Container() : Constants.mediumWhiteTextWidget(
                             widget.value.toString(), 40),
                         Constants.regularWhiteTextWidget(
                             widget.des.toString(), 14),

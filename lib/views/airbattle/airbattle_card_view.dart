@@ -22,9 +22,7 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
 
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-
-      });
+      setState(() {});
     });
   }
 
@@ -54,37 +52,62 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                 borderRadius: BorderRadius.circular(10)),
             Positioned(
                 top: 8,
-                right: 12,
+                left: 12,
                 child: widget.activityModel.activityStatus == 1
                     ? Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                      color: hexStringToOpacityColor('#1C1E21', 0.6),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Constants.regularWhiteTextWidget(
-                      widget.activityModel.timeAirBattleHomeDifferentString, 14),
-                )
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            color: hexStringToOpacityColor('#1C1E21', 0.6),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Constants.regularWhiteTextWidget(
+                            widget
+                                .activityModel.timeAirBattleHomeDifferentString,
+                            14),
+                      )
                     : Container(
-                  padding: EdgeInsets.all(4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Image(
-                        image: AssetImage('images/airbattle/trophy.png'),
-                        width: 12,
-                        height: 10,
+                        padding: EdgeInsets.all(4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Image(
+                              image: AssetImage('images/airbattle/trophy.png'),
+                              width: 12,
+                              height: 10,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Constants.regularWhiteTextWidget(
+                                widget.activityModel.statuString, 14,
+                                height: 1.0),
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                            color: hexStringToOpacityColor('#1C1E21', 0.6),
+                            borderRadius: BorderRadius.circular(5)),
+                      )),
+            Positioned(
+                right: 12,
+                top: 8,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    print('点击活动规则入口');
+                  },
+                  child: Container(
+                    width: 26,
+                    height: 26,
+                    decoration: BoxDecoration(
+                        color: hexStringToOpacityColor('#1C1E21', 0.6),
+                        borderRadius: BorderRadius.circular(13)),
+                    child: Center(
+                      child: Image(
+                        image: AssetImage('images/airbattle/question.png'),
+                        height: 13,
+                        fit: BoxFit.fitHeight,
                       ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Constants.regularWhiteTextWidget(
-                          widget.activityModel.statuString, 14,
-                          height: 1.0),
-                    ],
+                    ),
                   ),
-                  decoration: BoxDecoration(
-                      color: hexStringToOpacityColor('#1C1E21', 0.6),
-                      borderRadius: BorderRadius.circular(5)),
                 )),
             Positioned(
               top: 30,
@@ -104,23 +127,26 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                     height: 6,
                   ),
                   Constants.boldWhiteTextWidget(
-                      widget.activityModel.activityName, 20),
+                      widget.activityModel.activityTitle, 20),
                   SizedBox(
                     height: 6,
                   ),
-                  Constants.regularWhiteTextWidget(
-                      widget.activityModel.activityRemark, 14),
+                  Container(
+                    width: Constants.screenWidth(context) - 112,
+                    child: Constants.regularWhiteTextWidget(
+                        widget.activityModel.activityRemark, 14,
+                        height: 1.2),
+                  ),
                 ],
               ),
             ),
             Positioned(
               bottom: 24,
-              left: 55,
-              right: 55,
+              left: 36,
+              right: 36,
               child: GestureDetector(
                 onTap: () async {},
                 child: Container(
-                  width: Constants.screenWidth(context) - 110 - 32,
                   height: 44,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -135,25 +161,26 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                   ),
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    child: Stack(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child:
-                          Constants.boldBlackTextWidget('Join Challenge', 16),
+                        Constants.boldBlackTextWidget(
+                            widget.activityModel.activityButtonTitle, 16,
+                            height: 1.2),
+                        SizedBox(
+                          width: 6,
                         ),
-                        Positioned(
-                            top: 6,
-                            right: 6,
-                            child: Image(
-                              image: AssetImage('images/participants/next.png'),
-                              width: 31,
-                              height: 31,
-                            ))
+                        Image(
+                          image: AssetImage('images/airbattle/black_next.png'),
+                          width: 10,
+                          height: 10,
+                        )
                       ],
                     ),
-                    onTap: (){
-                      NavigatorUtil.push('activityDetail',arguments: widget.activityModel);
+                    onTap: () {
+                      NavigatorUtil.push('activityDetail',
+                          arguments: widget.activityModel);
                     },
                   ),
                 ),

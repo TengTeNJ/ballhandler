@@ -58,6 +58,33 @@ class ActivityModel {
     return '${days}day ${hours.toString().padLeft(2,'0')}:${minutes.toString().padLeft(2,'0')}:${seconds.toString().padLeft(2,'0')}';
   }
 
+  /*目前活动的标题说是硬编码，但是按钮随着不同的产品会变化，防止后续仍然会有变动，所以在后台配置activityName时中间加了个+区分，+前面的
+  * 是title,中间的是按钮名称 最后面的才是真正的之前的活动标题(活动详情页使用)
+  * */
+  String get activityTitle{
+    List<String> result = this.activityName.split("+").where((element) => element.isNotEmpty).toList();
+    if(result.isNotEmpty){
+      return result.first;
+    }
+    return 'Compete, Improve and Win!';
+  }
+
+  String get activityButtonTitle{
+    List<String> result = this.activityName.split("+").where((element) => element.isNotEmpty).toList();
+    if(result.isNotEmpty && result.length >= 3){
+      return result[1];
+    }
+    return 'Digital stickhandling trainer';
+  }
+
+  String get activityDetailTitle{
+    List<String> result = this.activityName.split("+").where((element) => element.isNotEmpty).toList();
+    if(result.isNotEmpty && result.length >= 3){
+      return result.last;
+    }
+    return 'HOW MANY IN 45S?';
+  }
+
   String get statuString {
     String tempString = 'Not started yet';
     if (this.activityStatus == 1) {
@@ -124,6 +151,14 @@ class ActivityDetailModel {
     int minutes = remainingTime.inMinutes % 60;
     print('${days}days${hours}hours${minutes}mins');
     return '${days} days ${hours} hours ${minutes} minutess';
+  }
+
+  String get activityDetailTitle{
+    List<String> result = this.activityName.split("+").where((element) => element.isNotEmpty).toList();
+    if(result.isNotEmpty && result.length >= 3){
+      return result.last;
+    }
+    return 'HOW MANY IN 45S?';
   }
 }
 

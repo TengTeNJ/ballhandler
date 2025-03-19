@@ -87,7 +87,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                     Container(
                       margin: EdgeInsets.all(16),
                       child: Constants.boldWhiteTextWidget(
-                          detailModel.activityName, 30,
+                          detailModel.activityDetailTitle, 30,
                           textAlign: TextAlign.left,height: 1.2),
                     ),
                     Container(
