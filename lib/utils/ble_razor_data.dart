@@ -2,21 +2,20 @@ import 'package:code/utils/ble_razor_service_data.dart';
 import 'package:code/utils/string_util.dart';
 import '../constants/constants.dart';
 /*数码管显示*/
-List<int> ledControlData(int value){
+List<int> ledControlData(int left,int right){
   print('数码管显示---value');
-  String score = value.toString().padLeft(2, '0');
   int start = kBLEDataFrameRazorHeader;
-  int id = 100; // 每条消息的控制id 先默认100
+ // int id = 100; // 每条消息的控制id 先默认100
   int end = kBLEDataFramerFoot;
-  int data1 = 0x30 + int.parse(score.substring(0, 1));
-  int data2 = 0x30 + int.parse(score.substring(1, 2));
-  int cs = start + 0x08 + ledControl + id + data1 + data2 + end;
+  int data1 = left;
+  int data2 = right;
+  int cs = start + 0x07 + ledControl + data1 + data2 + end;
   String binaryString = StringUtil.decimalToBinary(cs);
   if (binaryString.length > 8) {
     binaryString = binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
-  List<int> values = [start,0x08,ledControl,id,data1,data2,cs,end];
+  List<int> values = [start,0x07,ledControl,data1,data2,cs,end];
   return values;
 }
 /*灯光控制*/
@@ -28,15 +27,15 @@ List<int> lightsControlData(List<int> lightStatus){
   });
   int lightStatuData = StringUtil.binaryStringToDecimal(lightStatuString);
   int start = kBLEDataFrameRazorHeader;
-  int id = 100; // 每条消息的控制id 先默认100
+ // int id = 100; // 每条消息的控制id 先默认100
   int end = kBLEDataFramerFoot;
-  int cs = start + 0x07 + lightControl + id + lightStatuData  + end;
+  int cs = start + 0x07 + lightControl + lightStatuData  + end;
   String binaryString = StringUtil.decimalToBinary(cs);
   if (binaryString.length > 8) {
     binaryString = binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
-  List<int> values = [start,0x07,lightControl,id,lightStatuData,cs,end];
+  List<int> values = [start,0x07,lightControl,lightStatuData,cs,end];
   return values;
 }
 
@@ -44,15 +43,15 @@ List<int> lightsControlData(List<int> lightStatus){
 List<int> powerOffControlData({int value = 0x01}){
   print('关机---value');
   int start = kBLEDataFrameRazorHeader;
-  int id = 100; // 每条消息的控制id 先默认100
+  // int id = 100; // 每条消息的控制id 先默认100
   int end = kBLEDataFramerFoot;
-  int cs = start + 0x07 + powerOff + id + value  + end;
+  int cs = start + 0x06 + powerOff + value  + end;
   String binaryString = StringUtil.decimalToBinary(cs);
   if (binaryString.length > 8) {
     binaryString = binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
-  List<int> values = [start,0x07,powerOff,id,value,cs,end];
+  List<int> values = [start,0x06,powerOff,value,cs,end];
   return values;
 }
 
@@ -78,15 +77,15 @@ List<int> appOnLineControlData({int value = 0x01}){
 List<int> motorControlData({List<BleRazorMotorStatu> motorStatus = const [BleRazorMotorStatu.stop,BleRazorMotorStatu.stop],List<int>timers = const [0,0]}){
   print('电机控制---value');
   int start = kBLEDataFrameRazorHeader;
-  int id = 100; // 每条消息的控制id 先默认100
+ // int id = 100; // 每条消息的控制id 先默认100
   int end = kBLEDataFramerFoot;
-  int cs = start + 0x0a + motorControl + id + motorStatus[0].index + timers[0]  + motorStatus[1].index + timers[1] + end;
+  int cs = start + 0x09 + motorControl + motorStatus[0].index + timers[0]  + motorStatus[1].index + timers[1] + end;
   String binaryString = StringUtil.decimalToBinary(cs);
   if (binaryString.length > 8) {
     binaryString = binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
-  List<int> values = [start,0x0a,motorControl,id,motorStatus[0].index,timers[0],motorStatus[1].index,timers[1],cs,end];
+  List<int> values = [start,0x0a,motorControl,motorStatus[0].index,timers[0],motorStatus[1].index,timers[1],cs,end];
   return values;
 }
 
