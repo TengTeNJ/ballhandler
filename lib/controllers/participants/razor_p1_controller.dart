@@ -8,6 +8,7 @@ import 'package:tt_indicator/tt_indicator.dart';
 
 import '../../constants/constants.dart';
 import '../../route/route.dart';
+import '../../utils/ble_razor_service_data.dart';
 import '../../utils/color.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
@@ -132,8 +133,12 @@ class RazorP1Controller extends StatelessWidget {
                         // NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                         // TTToast.hideLoading();
                         GameUtil gameUtil = GetIt.instance<GameUtil>();
-                        BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, lightsControlData([0,0,1]));
-                        NavigatorUtil.push(Routes.razorgameprocesspage);
+                        // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, lightsControlData([0,0,1]));
+                        // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, ledControlData(13, 14));
+                        // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, motorControlData(motorStatus: [BleRazorMotorStatu.forward,BleRazorMotorStatu.forward],timers: [100,100]));
+                        BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, powerOffControlData());
+
+                        // NavigatorUtil.push(Routes.razorgameprocesspage);
                       },
                       child: Container(
                           width: Constants.screenWidth(context) - 48,
