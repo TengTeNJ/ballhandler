@@ -18,7 +18,13 @@ List<int> ledControlData(int left,int right){
   List<int> values = [start,0x07,ledControl,data1,data2,cs,end];
   return values;
 }
-/*灯光控制*/
+/*灯光控制
+*0x01,0x02，0x04，0x05（1:1号，2:2号，4:3号，5：全亮，其余全灭）
+* 00000001 1号 对应数据[0,0,1]
+* 00000010 2号 对应数据[0,0,1]
+* 00000100 3号 对应数据[0,0,1]
+* 00000101 全灭 对应数据[1,0,1]  (虽然按照规律全灭用00000000 更合适，但是协议统一(固件端已经写好了) 也可以)
+* */
 List<int> lightsControlData(List<int> lightStatus){
   print('灯光控制---');
   String lightStatuString = '00000';
