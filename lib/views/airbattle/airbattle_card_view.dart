@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:code/controllers/airbattle/airbattle_ruler_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
@@ -93,6 +94,7 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
                     print('点击活动规则入口');
+                    NavigatorUtil.present(AirBattleRulerController(startDate: widget.activityModel.startDate,endDate: widget.activityModel.endDate,));
                   },
                   child: Container(
                     width: 26,

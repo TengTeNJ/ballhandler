@@ -1,0 +1,67 @@
+import 'package:code/views/airbattle/airbattle_rule_view.dart';
+import 'package:code/widgets/account/cancel_button.dart';
+import 'package:flutter/material.dart';
+
+import '../../constants/constants.dart';
+class AirBattleRulerController extends StatelessWidget {
+  String startDate;
+  String endDate;
+  AirBattleRulerController({super.key,required this.startDate, required this.endDate});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Constants.darkThemeColor,
+      body: Padding(
+        padding: EdgeInsets.only(left: 16,right: 16,top: 16),
+        child: SingleChildScrollView(child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CancelButton()
+              ],
+            ),
+            Image(image: AssetImage('images/airbattle/airbattle.png',),width: 78,),
+            SizedBox(height: 16,),
+            Constants.mediumWhiteTextWidget('Join Spring AirBattle!', 20),
+            SizedBox(height: 16,),
+            Constants.regularGreyTextWidget('Challenge yourself in Zigzag Mode with the Digital Stickhandling Trainer. Compete, track your progress, and win amazing prizes!', 16,textAlign: TextAlign.start,height: 1.5),
+            SizedBox(height: 16,),
+            Row(children: [
+              Constants.boldWhiteTextWidget('How It Works:', 20)
+            ],),
+            SizedBox(height: 8,),
+            AirBattleRuleView(title: 'Challenge: Digital Stickhandling Trainer “Zigzag” shape.'),
+            AirBattleRuleView(title: 'ubmissions: Submit up to 5 battles per day. Aim to beat your best score each time!'),
+            AirBattleRuleView(title: 'Duration: 10 days to compete, starting [${startDate}], ending [${endDate}].'),
+            SizedBox(height: 16,),
+            Row(children: [
+              Constants.boldWhiteTextWidget('Leaderboard:', 20)
+            ],),
+            SizedBox(height: 8,),
+            Constants.regularGreyTextWidget('Compete for Top Spots!\nTrack your rank against players worldwide and see how you compare.', 16,height: 1.5,textAlign: TextAlign.start),
+            AirBattleRuleView(title: 'Categories:\nBattle Champions: Track the highest scores/best reaction time\n Rising Stars: Celebrate the most improved players.'),
+            AirBattleRuleView(title: 'Consistent Contenders: Recognize active players with the most submissions.'),
+            SizedBox(height: 16,),
+            Row(children: [
+              Constants.boldWhiteTextWidget('Leaderboard:', 20)
+            ],),
+            SizedBox(height: 8,),
+            AirBattleRuleView(title: 'Top Performer: Free Ultimater Dangler 2.0'),
+            AirBattleRuleView(title: 'Rising Star (Most Improved): \$100 Store Cash'),
+            AirBattleRuleView(title: 'Consistent Contender: \$50 Store Cash'),
+            SizedBox(height: 16,),
+            Row(children: [
+              Constants.boldWhiteTextWidget('Why Compete?:', 20)
+            ],),
+            SizedBox(height: 8,),
+            AirBattleRuleView(title: 'Top Performer: Free Ultimater Dangler 2.0'),
+            AirBattleRuleView(title: 'Rising Star (Most Improved): \$100 Store Cash'),
+            AirBattleRuleView(title: 'Consistent Contender: \$50 Store Cash'),
+          ],
+        ),),
+      ),
+    );
+  }
+}
