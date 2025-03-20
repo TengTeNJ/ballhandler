@@ -9,7 +9,9 @@ import '../../constants/constants.dart';
 import '../../widgets/navigation/CustomAppBar.dart';
 
 class AirbattleMyPucksController extends StatefulWidget {
-  const AirbattleMyPucksController({super.key});
+  int monthDay; // 月份
+  int startDayIndex;
+  AirbattleMyPucksController({super.key,required this.monthDay, this.startDayIndex = 1});
 
   @override
   State<AirbattleMyPucksController> createState() =>
@@ -66,7 +68,7 @@ class _AirbattleMyPucksControllerState
                 ],
               ),
               SizedBox(height: 24,),
-              HeatMapContainerView(),
+              HeatMapContainerView(monthDay: widget.monthDay,startDayIndex: widget.startDayIndex,),
               SizedBox(height: 12,),
               Container(
                 height: 1,

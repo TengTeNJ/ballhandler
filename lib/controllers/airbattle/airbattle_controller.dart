@@ -1,4 +1,5 @@
 import 'package:code/utils/notification_bloc.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/views/airbattle/airbattle_info_card_view.dart';
 import 'package:code/views/airbattle/airbattle_list_view.dart';
 import 'package:code/views/airbattle/airbattle_page_view.dart';
@@ -22,6 +23,7 @@ class _AirbattleControllerState extends State<AirbattleController> {
   int _activityId = 0;
   List<String> _tabDess = ['Top scores, top players. Can you beat them?','Most improved. Progress is the real win!','Stay active, stay in the game. Keep battling!'];
   int _tabIndex = 0;
+  DateTime _startDate = DateTime.now();
   queryAirBattleData() async {
     final _response = await AirBattle.queryIAirBattleData();
     if (_response.success && _response.data != null) {
@@ -102,9 +104,10 @@ class _AirbattleControllerState extends State<AirbattleController> {
               width: Constants.screenWidth(context) - 16,
               height: (Constants.screenWidth(context) - 32) * (246 / 340),
               child: AirbattlePageView(
-                scrollToPage: (int activityId) {
+                scrollToPage: (int activityId,String startDate) {
                   // 活动切换 包含首次
                   setState(() {
+                    _startDate = StringUtil.stringToDate(startDate);
                     _tabIndex = 0;
                     _activityId = activityId;
                     // 通知tabbuttons进入默认选中首个状态
@@ -119,11 +122,15 @@ class _AirbattleControllerState extends State<AirbattleController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AirbattleInfoCardView(
+                    startDayIndex: _startDate.day,
+                      monthDay: _startDate.month,
                       title: 'Awards',
                       value:  _model.activityAward,
                       imageName: 'info2',
                       des: ' More'),
                   AirbattleInfoCardView(
+                    startDayIndex: _startDate.day,
+                    monthDay: _startDate.month,
                     title: 'My Pucks',
                     value: 100,
                     imageName: 'info1',

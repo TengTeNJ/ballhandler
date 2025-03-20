@@ -6,7 +6,7 @@ class HeatMapView extends StatefulWidget {
   int monthDay; // 月份
   int startDayIndex; // 起始日期的索引 也是每个月的哪一日
   List<HeatMapModel> heatMapDats;
-  HeatMapView({super.key, required this.heatMapDats, required this.monthDay, this.startDayIndex = 0});
+  HeatMapView({super.key, required this.heatMapDats, required this.monthDay, this.startDayIndex = 1});
 
   @override
   State<HeatMapView> createState() => _HeatMapViewState();
@@ -30,8 +30,8 @@ class _HeatMapViewState extends State<HeatMapView> {
       runSpacing: 10.0, // 交叉轴方向上的间距
       children: List.generate(_has31Days ? 31 : 30, (index){
         Color color = hexStringToColor('#B1B1B1'); // 默认灰色
-        if(index >= widget.startDayIndex && index <= (widget.startDayIndex + widget.heatMapDats.length - 1)){
-          HeatMapStatu statu = widget.heatMapDats[index - widget.startDayIndex].statu;
+        if(index >= (widget.startDayIndex-1) && index <= (widget.startDayIndex - 1 + widget.heatMapDats.length - 1)){
+          HeatMapStatu statu = widget.heatMapDats[index - (widget.startDayIndex -1)].statu;
           switch (statu){
             case HeatMapStatu.Primary:
               color = hexStringToColor('#FBBA00');

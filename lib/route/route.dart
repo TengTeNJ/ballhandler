@@ -201,7 +201,8 @@ class Routes {
       case subscribeintroduce:
         return MaterialPageRoute(builder: (_) => UltSubscribeHomeController());
       case mypucks:
-        return MaterialPageRoute(builder: (_) => AirbattleMyPucksController());
+        final  Map _map = settings.arguments as Map;
+        return MaterialPageRoute(builder: (_) => AirbattleMyPucksController(startDayIndex: _map['day'] ?? 1,monthDay: _map['month'],));
       case airbattleawards:
         return MaterialPageRoute(builder: (_) => AirBattleAwardsController());
     // EmailPageController

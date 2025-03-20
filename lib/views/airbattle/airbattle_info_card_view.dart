@@ -9,9 +9,13 @@ class AirbattleInfoCardView extends StatefulWidget {
   int value;
   String des;
   String imageName;
+  int monthDay; // 月份
+  int startDayIndex;
 
   AirbattleInfoCardView(
       {super.key,
+      required this.monthDay,
+      this.startDayIndex = 0,
       this.gradient = const LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
@@ -34,11 +38,11 @@ class _AirbattleInfoCardViewState extends State<AirbattleInfoCardView> {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: (){
-        if(widget.title == 'Awards'){
+      onTap: () {
+        if (widget.title == 'Awards') {
           NavigatorUtil.push(Routes.airbattleawards);
-        }else{
-          NavigatorUtil.push(Routes.mypucks);
+        } else {
+          NavigatorUtil.push(Routes.mypucks,arguments: {"day":widget.startDayIndex,"month":widget.monthDay});
         }
       },
       child: Container(
@@ -60,8 +64,10 @@ class _AirbattleInfoCardViewState extends State<AirbattleInfoCardView> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        widget.title == 'Awards' ? Container() : Constants.mediumWhiteTextWidget(
-                            widget.value.toString(), 40),
+                        widget.title == 'Awards'
+                            ? Container()
+                            : Constants.mediumWhiteTextWidget(
+                                widget.value.toString(), 40),
                         Constants.regularWhiteTextWidget(
                             widget.des.toString(), 14),
                         SizedBox(

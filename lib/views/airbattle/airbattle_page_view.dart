@@ -32,7 +32,7 @@ class _AirbattlePageViewState extends State<AirbattlePageView> {
           ActivityModel _activity =  _datas.first;
           if(widget.scrollToPage != null){
             // 数据请求完成 主动传过去首个活动数据的活动id
-            widget.scrollToPage!(_activity.activityId);
+            widget.scrollToPage!(_activity.activityId,_activity.orignStartDate);
           }
         }
       }
@@ -56,7 +56,7 @@ class _AirbattlePageViewState extends State<AirbattlePageView> {
       onPageChanged: (index){
         if(widget.scrollToPage != null && index < _datas.length){
           // 数据请求完成 主动传过去首个活动数据的活动id
-          widget.scrollToPage!(_datas[index].activityId);
+          widget.scrollToPage!(_datas[index].activityId,_datas[index].orignStartDate);
         }
       },
         padEnds:false,

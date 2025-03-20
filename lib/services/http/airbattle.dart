@@ -34,6 +34,8 @@ class ActivityModel {
   int activityStatus = 0; // 活动状态：0未开始 1正在进行 2已结束
   String endDate = ''; // 活动结束时间
   String startDate = ''; // 活动开始时间
+  String orignEndDate = ''; // 服务端活动结束时间
+  String orignStartDate = ''; // 服务端活动开始时间
   String rewardMoney = ''; // 活动奖励
   String rewardPoint = ''; // 活动积分
   String activityRule = ''; // 活动规则
@@ -273,6 +275,8 @@ class AirBattle {
             ? StringUtil.serviceStringToShowDateString(
                 _map['startDate'].toString())
             : '--';
+        model.orignStartDate =  !ISEmpty(_map['startDate']) ? _map['startDate']  :'--';
+        model.orignEndDate =  !ISEmpty(_map['endDate']) ? _map['endDate']  :'--';
         model.activityName = !ISEmpty(_map['activityName'])
             ? _map['activityName'].toString()
             : '--';

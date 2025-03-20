@@ -6,7 +6,9 @@ import 'package:code/views/airbattle/heat_map_view.dart';
 import 'package:flutter/material.dart';
 
 class HeatMapContainerView extends StatefulWidget {
-  const HeatMapContainerView({super.key});
+  int monthDay; // 月份
+  int startDayIndex;
+  HeatMapContainerView({super.key,required this.monthDay, this.startDayIndex = 1});
 
   @override
   State<HeatMapContainerView> createState() => _HeatMapContainerViewState();
@@ -34,7 +36,7 @@ class _HeatMapContainerViewState extends State<HeatMapContainerView> {
           Expanded(child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Constants.mediumWhiteTextWidget(StringUtil.monthToAbbreviation(9), 10,height: 2.5),
+              Constants.mediumWhiteTextWidget(StringUtil.monthToAbbreviation(widget.monthDay), 10,height: 2.5),
               HeatMapView(
                 heatMapDats: [
                   HeatMapModel(),
@@ -45,8 +47,8 @@ class _HeatMapContainerViewState extends State<HeatMapContainerView> {
                   HeatMapModel(statu: HeatMapStatu.Primary),
                   HeatMapModel(statu: HeatMapStatu.Primary)
                 ],
-                monthDay: 9,
-                startDayIndex: 17,
+                monthDay: widget.monthDay,
+                startDayIndex: widget.startDayIndex,
               ),
               SizedBox(height: 16,),
             ],
