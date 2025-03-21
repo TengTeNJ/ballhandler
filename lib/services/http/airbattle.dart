@@ -1,4 +1,5 @@
 import 'package:code/models/airbattle/award_model.dart';
+import 'package:code/models/airbattle/my_airbattle_pucks_model.dart';
 import 'package:code/services/http/rank.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
@@ -302,7 +303,7 @@ class AirBattle {
   }
 
 /*查询参与AirBattle的数据*/
-  static Future<ApiResponse<AirBattleHomeModel>> queryIAirBattleData() async {
+  static Future<ApiResponse<AirBattleHomeModel>> queryAirBattleData() async {
     final response =
         await HttpUtil.get('/api/activity/index', null, showLoading: false);
     AirBattleHomeModel model = AirBattleHomeModel();
@@ -633,4 +634,32 @@ class AirBattle {
       return ApiResponse(success: false);
     }
   }
+
+  /*
+  * 查询活动中我的积分页面的数据
+  * */
+  static Future<ApiResponse<MyAirBattlePucksModel>> queryAirBattleMyPucksData(
+      int activityId) async {
+    final _data = {
+      'activityId':activityId.toString(),
+    };
+    final response =
+    await HttpUtil.get('/api/statistic/activity/getActivityTrainMember', _data, showLoading: true);
+    RankDataModel _model = RankDataModel();
+    MyAirBattlePucksModel _pucksModel = MyAirBattlePucksModel();
+    List<RankModel> _list = [];
+    if (response.success && response.data['data'] != null) {
+      final element = response.data['data'];
+      _pucksModel.trainIntegral =  !ISEmpty(element['trainIntegral']) ? element['trainIntegral'].toString() : '0';
+      _pucksModel.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'].toString() : '';
+      _pucksModel.avgPaceRank =  !ISEmpty(element['avgPaceRank']) ? element['avgPaceRank'].toString() : '';
+      _pucksModel.trainCount =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+      _pucksModel.trainCountRank = !ISEmpty(element['trainCountRank']) ? element['trainCountRank'].toString() : '';
+      _pucksModel.recordBreakCount =  !ISEmpty(element['recordBreakCount']) ? element['recordBreakCount'].toString() : '';
+      return ApiResponse(success: response.success, data: _pucksModel);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
 }

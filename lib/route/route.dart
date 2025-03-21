@@ -39,6 +39,7 @@ import 'package:code/controllers/profile/sub_setting_controller.dart';
 import 'package:code/controllers/ranking/my_stats_controller.dart';
 import 'package:code/controllers/subscribe/subscribe_controller.dart';
 import 'package:code/controllers/subscribe/ult_subscribe_home_controller.dart';
+import 'package:code/models/airbattle/my_airbattle_pucks_model.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/profile.dart';
@@ -202,7 +203,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => UltSubscribeHomeController());
       case mypucks:
         final  Map _map = settings.arguments as Map;
-        return MaterialPageRoute(builder: (_) => AirbattleMyPucksController(startDayIndex: _map['day'] ?? 1,monthDay: _map['month'],));
+        MyAirBattlePucksModel _model = _map['model'];
+        return MaterialPageRoute(builder: (_) => AirbattleMyPucksController(startDayIndex: _map['day'] ?? 1,monthDay: _map['month'],pucksModel: _model,));
       case airbattleawards:
         return MaterialPageRoute(builder: (_) => AirBattleAwardsController());
     // EmailPageController

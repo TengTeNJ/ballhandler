@@ -38,7 +38,7 @@ class _AirBattleHomeControllerState extends State<AirBattleHomeController> {
   }
 
   queryAirBattleData() async{
-    final _response = await AirBattle.queryIAirBattleData();
+    final _response = await AirBattle.queryAirBattleData();
     if(_response.success && _response.data != null){
       _model = _response.data!;
       if(mounted){

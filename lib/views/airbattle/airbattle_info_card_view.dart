@@ -3,6 +3,8 @@ import 'package:code/route/route.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/airbattle/my_airbattle_pucks_model.dart';
+
 class AirbattleInfoCardView extends StatefulWidget {
   Gradient gradient;
   String title;
@@ -11,7 +13,7 @@ class AirbattleInfoCardView extends StatefulWidget {
   String imageName;
   int monthDay; // 月份
   int startDayIndex;
-
+  MyAirBattlePucksModel? pucksModel;
   AirbattleInfoCardView(
       {super.key,
       required this.monthDay,
@@ -27,7 +29,8 @@ class AirbattleInfoCardView extends StatefulWidget {
       required this.title,
       required this.value,
       required this.imageName,
-      required this.des});
+      required this.des,
+      this.pucksModel});
 
   @override
   State<AirbattleInfoCardView> createState() => _AirbattleInfoCardViewState();
@@ -42,7 +45,7 @@ class _AirbattleInfoCardViewState extends State<AirbattleInfoCardView> {
         if (widget.title == 'Awards') {
           NavigatorUtil.push(Routes.airbattleawards);
         } else {
-          NavigatorUtil.push(Routes.mypucks,arguments: {"day":widget.startDayIndex,"month":widget.monthDay});
+          NavigatorUtil.push(Routes.mypucks,arguments: {"day":widget.startDayIndex,"month":widget.monthDay,'model':widget.pucksModel});
         }
       },
       child: Container(

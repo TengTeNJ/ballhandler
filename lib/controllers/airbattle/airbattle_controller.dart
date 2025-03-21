@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/views/airbattle/airbattle_info_card_view.dart';
@@ -7,6 +9,7 @@ import 'package:code/views/airbattle/airbattle_tab_buttons.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
+import '../../models/airbattle/my_airbattle_pucks_model.dart';
 import '../../services/http/airbattle.dart';
 import '../../utils/navigator_util.dart';
 import '../../widgets/navigation/CustomAppBar.dart';
@@ -20,14 +23,28 @@ class AirbattleController extends StatefulWidget {
 
 class _AirbattleControllerState extends State<AirbattleController> {
   AirBattleHomeModel _model = AirBattleHomeModel();
+  MyAirBattlePucksModel _pucksModel = MyAirBattlePucksModel();
   int _activityId = 0;
   List<String> _tabDess = ['Top scores, top players. Can you beat them?','Most improved. Progress is the real win!','Stay active, stay in the game. Keep battling!'];
   int _tabIndex = 0;
   DateTime _startDate = DateTime.now();
+  late StreamSubscription subscription;
+  // 查询参与的活动列表数据 比如消息未读的数量
   queryAirBattleData() async {
-    final _response = await AirBattle.queryIAirBattleData();
+    final _response = await AirBattle.queryAirBattleData();
     if (_response.success && _response.data != null) {
       _model = _response.data!;
+      if (mounted) {
+        setState(() {});
+      }
+    }
+  }
+
+  /*查询AirBattle我的积分页面数据*/
+  queryAirBattleMyPucksData() async {
+    final _response = await AirBattle.queryAirBattleMyPucksData(_activityId);
+    if (_response.success && _response.data != null) {
+      _pucksModel = _response.data!;
       if (mounted) {
         setState(() {});
       }
@@ -112,6 +129,8 @@ class _AirbattleControllerState extends State<AirbattleController> {
                     _activityId = activityId;
                     // 通知tabbuttons进入默认选中首个状态
                     EventBus().sendEvent(kAirBattleChangeActivity);
+                    // 查询AirBattle我的积分页面的数据
+                    queryAirBattleMyPucksData();
                   });
                 },
               ),
@@ -132,7 +151,7 @@ class _AirbattleControllerState extends State<AirbattleController> {
                     startDayIndex: _startDate.day,
                     monthDay: _startDate.month,
                     title: 'My Pucks',
-                    value: 100,
+                    value: int.parse(_pucksModel.trainIntegral),
                     imageName: 'info1',
                     des: 'Pucks',
                     gradient: LinearGradient(
@@ -143,6 +162,7 @@ class _AirbattleControllerState extends State<AirbattleController> {
                         Color.fromRGBO(207, 57, 26, 1.0)
                       ],
                     ),
+                    pucksModel: _pucksModel,
                   )
                 ],
               ),

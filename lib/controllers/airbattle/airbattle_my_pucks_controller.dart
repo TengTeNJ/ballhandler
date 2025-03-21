@@ -6,12 +6,14 @@ import 'package:code/views/participants/today_data_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
+import '../../models/airbattle/my_airbattle_pucks_model.dart';
 import '../../widgets/navigation/CustomAppBar.dart';
 
 class AirbattleMyPucksController extends StatefulWidget {
   int monthDay; // 月份
   int startDayIndex;
-  AirbattleMyPucksController({super.key,required this.monthDay, this.startDayIndex = 1});
+  MyAirBattlePucksModel? pucksModel;
+  AirbattleMyPucksController({super.key,required this.monthDay, this.startDayIndex = 1,this.pucksModel});
 
   @override
   State<AirbattleMyPucksController> createState() =>
@@ -54,7 +56,7 @@ class _AirbattleMyPucksControllerState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Constants.mediumWhiteTextWidget('100', 40),
+                          Constants.mediumWhiteTextWidget(widget.pucksModel?.trainIntegral ?? '0', 40),
                           SizedBox(
                             height: 8,
                           ),
@@ -80,7 +82,7 @@ class _AirbattleMyPucksControllerState
               // 在 Row 中使用 Expanded 或 Flexible 包裹 Text 组件，让 Text 组件能够获取剩余的空间并根据需要换行。示例代码如下：
               SizedBox(height: 36,),
               Constants.regularWhiteTextWidget('Activity Record', 16),
-              AirbattleMyPucksListView(),
+              AirbattleMyPucksListView(pucksModel: widget.pucksModel,),
               Container(
                 height: 1,
                 decoration: BoxDecoration(

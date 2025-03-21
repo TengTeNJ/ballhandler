@@ -2,12 +2,14 @@ import 'package:code/models/airbattle/my_pucks_model.dart';
 import 'package:code/views/airbattle/airbattle_my_pucks_view.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/airbattle/my_airbattle_pucks_model.dart';
 import '../../utils/color.dart';
 
 class AirbattleMyPucksListView extends StatefulWidget {
   List<MyPucksModel>? datas;
+  MyAirBattlePucksModel? pucksModel;
 
-  AirbattleMyPucksListView({super.key, this.datas});
+  AirbattleMyPucksListView({super.key, this.datas,this.pucksModel});
 
   @override
   State<AirbattleMyPucksListView> createState() =>
@@ -19,22 +21,26 @@ class _AirbattleMyPucksListViewState extends State<AirbattleMyPucksListView> {
 
   initDatas() {
     List<String> _titles = [
-      'Highest Record',
-      'Avg.Record',
-      'Play Times',
-      'Break Record'
+      'Best React Time',
+      'Battles Played',
+      'Personal Best Beaten'
     ];
-    List<String> _imageNames = ['highest', 'avg', 'playtimes', 'break'];
+    List<String> _imageNames = ['highest', 'playtimes', 'break'];
     List<String> _dess = [
-      'Rank 100',
-      'Your average React Time in this Air Battle',
-      'Rank 100',
-      'Rank 100'
+      'Rank ${ widget.pucksModel?.avgPaceRank ?? '-'}',
+      'Rank ${ widget.pucksModel?.trainCountRank ?? '-'}',
+      'Rank ${ widget.pucksModel?.recordBreakCountRank ?? '-'}'
     ];
-    List<String> _units = ['Sec/pt', 'Sec/pt', 'Sec/pt', 'Sec/pt'];
-    List<bool> _specialShows = [true, false, true, true];
+    List<String> _units = ['Sec/pt', 'Times', ''];
+    List<bool> _specialShows = [true, true, true];
+    List<String> values = [
+      widget.pucksModel?.avgPace ?? '-',
+      widget.pucksModel?.trainCount?? '0',
+      widget.pucksModel?.recordBreakCount?? '0',
+    ];
     for(int i = 0; i < _imageNames.length; i ++){
       MyPucksModel model = MyPucksModel();
+      model.value = values[i];
       model.title = _titles[i];
       model.des = _dess[i];
       model.unit = _units[i];
@@ -75,6 +81,6 @@ class _AirbattleMyPucksListViewState extends State<AirbattleMyPucksListView> {
                   color: hexStringToColor('#565674'),
                   borderRadius: BorderRadius.circular(1)));
         },
-        itemCount: 4);
+        itemCount: _datas.length);
   }
 }
