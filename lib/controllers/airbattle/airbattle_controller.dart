@@ -55,6 +55,13 @@ class _AirbattleControllerState extends State<AirbattleController> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    subscription = EventBus().stream.listen((event) {
+    if(event is String && event == kBackFromFinish){
+      print('----++++');
+        // 游戏完成返回后重新刷新积分等数据
+      queryAirBattleMyPucksData();
+      }
+    });
   }
 
   @override
@@ -229,5 +236,12 @@ class _AirbattleControllerState extends State<AirbattleController> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
   }
 }

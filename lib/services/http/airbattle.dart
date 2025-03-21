@@ -656,6 +656,7 @@ class AirBattle {
       _pucksModel.trainCount =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
       _pucksModel.trainCountRank = !ISEmpty(element['trainCountRank']) ? element['trainCountRank'].toString() : '';
       _pucksModel.recordBreakCount =  !ISEmpty(element['recordBreakCount']) ? element['recordBreakCount'].toString() : '';
+      _pucksModel.recordBreakCountRank = !ISEmpty(element['recordBreakRank']) ? element['recordBreakRank'].toString() : '';
       return ApiResponse(success: response.success, data: _pucksModel);
     } else {
       return ApiResponse(success: false);
