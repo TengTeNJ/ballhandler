@@ -1,4 +1,6 @@
+import '../game/game_over_model.dart';
 class MyAirBattlePucksModel{
+  List<GameOverModel>datas = [];
   String avgPace = '-'; // 最好速度
   String avgPaceRank = '-'; // 最好速度排名
   String recordBreakCount = '-'; // 打破记录次数

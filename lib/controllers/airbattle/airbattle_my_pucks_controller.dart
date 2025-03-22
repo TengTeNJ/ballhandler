@@ -13,7 +13,12 @@ class AirbattleMyPucksController extends StatefulWidget {
   int monthDay; // 月份
   int startDayIndex;
   MyAirBattlePucksModel? pucksModel;
-  AirbattleMyPucksController({super.key,required this.monthDay, this.startDayIndex = 1,this.pucksModel});
+
+  AirbattleMyPucksController(
+      {super.key,
+      required this.monthDay,
+      this.startDayIndex = 1,
+      this.pucksModel});
 
   @override
   State<AirbattleMyPucksController> createState() =>
@@ -54,49 +59,75 @@ class _AirbattleMyPucksControllerState
                   ),
                   Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Constants.mediumWhiteTextWidget(widget.pucksModel?.trainIntegral ?? '0', 40),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Constants.regularGreyTextWidget(
-                              'You can redeem prizes with the pucks you have earned.',
-                              14,
-                              textAlign: TextAlign.start,
-                              height: 1.3)
-                        ],
-                      ))
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Constants.mediumWhiteTextWidget(
+                          widget.pucksModel?.trainIntegral ?? '0', 40),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Constants.regularGreyTextWidget(
+                          'You can redeem prizes with the pucks you have earned.',
+                          14,
+                          textAlign: TextAlign.start,
+                          height: 1.3)
+                    ],
+                  ))
                 ],
               ),
-              SizedBox(height: 24,),
-              HeatMapContainerView(monthDay: widget.monthDay,startDayIndex: widget.startDayIndex,),
-              SizedBox(height: 12,),
+              SizedBox(
+                height: 24,
+              ),
+              HeatMapContainerView(
+                monthDay: widget.monthDay,
+                startDayIndex: widget.startDayIndex,
+              ),
+              SizedBox(
+                height: 12,
+              ),
               Container(
                 height: 1,
                 decoration: BoxDecoration(
                     color: hexStringToColor('#565674'),
-                    borderRadius: BorderRadius.circular(1)
-                ),
+                    borderRadius: BorderRadius.circular(1)),
               ),
               // 在 Row 中使用 Expanded 或 Flexible 包裹 Text 组件，让 Text 组件能够获取剩余的空间并根据需要换行。示例代码如下：
-              SizedBox(height: 36,),
+              SizedBox(
+                height: 36,
+              ),
               Constants.regularWhiteTextWidget('Activity Record', 16),
-              AirbattleMyPucksListView(pucksModel: widget.pucksModel,),
+              AirbattleMyPucksListView(
+                pucksModel: widget.pucksModel,
+              ),
               Container(
                 height: 1,
                 decoration: BoxDecoration(
                     color: hexStringToColor('#565674'),
-                    borderRadius: BorderRadius.circular(1)
-                ),
+                    borderRadius: BorderRadius.circular(1)),
               ),
-              SizedBox(height: 36,),
+              SizedBox(
+                height: 36,
+              ),
               Constants.mediumWhiteTextWidget('My Top 5', 16),
-              SizedBox(height: 16,),
-              TodayDataView(gameOverModel: GameOverModel(),isAirbattle: true,),
-              SizedBox(height: 36,)
+              SizedBox(
+                height: 16,
+              ),
+              widget.pucksModel != null ? ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return TodayDataView(
+                      gameOverModel:widget.pucksModel!.datas[index],
+                      isAirbattle: true,
+                    );
+                  },
+                  separatorBuilder: (context, index) => SizedBox(
+                        height: 12,
+                      ),
+                  itemCount: widget.pucksModel!.datas.length) : Container(),
+              SizedBox(
+                height: 36,
+              )
             ],
-
           ),
         ),
       ),

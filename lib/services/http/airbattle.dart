@@ -5,6 +5,7 @@ import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/string_util.dart';
 import '../../constants/constants.dart';
+import '../../models/game/game_over_model.dart';
 
 class MyActivityModel {
   String activityIcon = ''; // icon
@@ -645,11 +646,11 @@ class AirBattle {
     };
     final response =
     await HttpUtil.get('/api/statistic/activity/getActivityTrainMember', _data, showLoading: true);
-    RankDataModel _model = RankDataModel();
     MyAirBattlePucksModel _pucksModel = MyAirBattlePucksModel();
-    List<RankModel> _list = [];
+    List<GameOverModel> _list = [];
     if (response.success && response.data['data'] != null) {
       final element = response.data['data'];
+      final  _datas = element['avgPaceBastList'];
       _pucksModel.trainIntegral =  !ISEmpty(element['trainIntegral']) ? element['trainIntegral'].toString() : '0';
       _pucksModel.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'].toString() : '';
       _pucksModel.avgPaceRank =  !ISEmpty(element['avgPaceRank']) ? element['avgPaceRank'].toString() : '';
@@ -657,6 +658,29 @@ class AirBattle {
       _pucksModel.trainCountRank = !ISEmpty(element['trainCountRank']) ? element['trainCountRank'].toString() : '';
       _pucksModel.recordBreakCount =  !ISEmpty(element['recordBreakCount']) ? element['recordBreakCount'].toString() : '';
       _pucksModel.recordBreakCountRank = !ISEmpty(element['recordBreakRank']) ? element['recordBreakRank'].toString() : '';
+      if(_datas is List && _datas.length > 0){
+        _datas.forEach((element){
+          GameOverModel model = GameOverModel();
+          final _map = element;
+          model.avgPace =
+          !ISEmpty(_map['avgPace']) ? _map['avgPace'].toString() : '--';
+          model.score =
+          !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '--';
+          model.endTime =
+          !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
+          model.videoPath =
+          !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '--';
+          model.sceneId =
+          !ISEmpty(_map['sceneId']) ? _map['sceneId'].toString() : '1';
+          model.modeId =
+          !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
+          model.trainTime =
+          !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
+          model.rank =  !ISEmpty(_map['rankNumber']) ? _map['rankNumber'].toString() : '-';
+          _list.add(model);
+        });
+      }
+      _pucksModel.datas = _list;
       return ApiResponse(success: response.success, data: _pucksModel);
     } else {
       return ApiResponse(success: false);
