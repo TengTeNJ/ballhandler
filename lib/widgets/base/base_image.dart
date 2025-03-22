@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/color.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
 class TTNetImage extends StatefulWidget {
   String url;
   String placeHolderPath;
@@ -10,13 +11,14 @@ class TTNetImage extends StatefulWidget {
   double? height;
   BorderRadius? borderRadius;
   BoxFit? fit;
+
   TTNetImage(
       {required this.url,
-        required this.placeHolderPath,
-        this.width,
-        this.height,
-        this.borderRadius ,
-        this.fit = BoxFit.fill});
+      required this.placeHolderPath,
+      this.width,
+      this.height,
+      this.borderRadius,
+      this.fit = BoxFit.fill});
 
   @override
   State<TTNetImage> createState() => _TTNetImageState();
@@ -31,70 +33,86 @@ class _TTNetImageState extends State<TTNetImage> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.url.contains('http')){
+    if (widget.url.contains('http')) {
       return ClipRRect(
         borderRadius: widget.borderRadius ?? BorderRadius.zero, // 设置圆角半径
-        child:   Stack(
+        child: Stack(
           alignment: Alignment.center,
           children: [
             CachedNetworkImage(
               fit: BoxFit.fill,
               width: widget.width,
               height: widget.height,
-              imageUrl: widget.url, // 网络图片URL
-              placeholder: (context, url) => placeHolderImage()  , // 加载中的占位符
-              errorWidget: (context, url, error) =>placeHolderImage() , // 加载失败的占位符
+              imageUrl: widget.url,
+              // 网络图片URL
+              placeholder: (context, url) => placeHolderImage(),
+              // 加载中的占位符
+              errorWidget: (context, url, error) =>
+                  placeHolderImage(), // 加载失败的占位符
             )
           ],
         ),
       );
-    }else if(widget.url.contains('.png')){
-      return  Center(
+    } else if (widget.url.contains('.png')) {
+      return Center(
         child: ClipRRect(
           borderRadius: widget.borderRadius ?? BorderRadius.zero, // 设置圆角半径
-          child:    Image(image: AssetImage(widget.url),width: widget.width,height: widget.height,fit: widget.fit,),
+          child: Image(
+            image: AssetImage(widget.url),
+            width: widget.width,
+            height: widget.height,
+            fit: widget.fit,
+          ),
         ),
       );
-    }else{
-      if(widget.placeHolderPath.length == 0){
+    } else {
+      if (widget.placeHolderPath.length == 0) {
         return Container(
           width: widget.width,
           height: widget.height,
           decoration: BoxDecoration(
-            color: hexStringToColor('#AA9155'),
+            color: hexStringToColor('#204DD1'),
             borderRadius: widget.borderRadius ?? BorderRadius.zero, // 设置圆角半径
           ),
+          child: Center(
+            child: Image(
+              image: AssetImage('images/base/header.png'),
+              height: 30,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
         );
-      }else{
-        return  Center(
+      } else {
+        return Center(
           child: ClipRRect(
             borderRadius: widget.borderRadius ?? BorderRadius.zero, // 设置圆角半径
-            child:    Image(image: AssetImage(widget.placeHolderPath),width: widget.width,height: widget.height,fit: widget.fit,),
+            child: Image(
+              image: AssetImage(widget.placeHolderPath),
+              width: widget.width,
+              height: widget.height,
+              fit: widget.fit,
+            ),
           ),
         );
       }
-
     }
   }
-  Widget placeHolderImage(){
-    if(!widget.placeHolderPath.contains('png')){
+
+  Widget placeHolderImage() {
+    if (!widget.placeHolderPath.contains('png')) {
       return Container(
         width: widget.width,
         height: widget.height,
         color: hexStringToColor('#AA9155'),
       );
-    }else{
-     return  Center(
-        child: Image(image: AssetImage(widget.placeHolderPath),width: widget.width,height: widget.height,),
+    } else {
+      return Center(
+        child: Image(
+          image: AssetImage(widget.placeHolderPath),
+          width: widget.width,
+          height: widget.height,
+        ),
       );
     }
   }
-
 }
-
-
-
-
-
-
-

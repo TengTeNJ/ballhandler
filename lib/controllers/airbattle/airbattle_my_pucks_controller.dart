@@ -43,7 +43,7 @@ class _AirbattleMyPucksControllerState
               SizedBox(
                 height: 16,
               ),
-              Constants.boldWhiteTextWidget('My Pucks', 30),
+              Constants.boldWhiteTextWidget('My Journey', 30),
               SizedBox(
                 height: 48,
               ),

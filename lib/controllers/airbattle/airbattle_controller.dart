@@ -157,7 +157,7 @@ class _AirbattleControllerState extends State<AirbattleController> {
                   AirbattleInfoCardView(
                     startDayIndex: _startDate.day,
                     monthDay: _startDate.month,
-                    title: 'My Pucks',
+                    title: 'My Journey',
                     value: int.parse(_pucksModel.trainIntegral),
                     imageName: 'info1',
                     des: 'Pucks',
@@ -187,7 +187,7 @@ class _AirbattleControllerState extends State<AirbattleController> {
               ],
             ),
             SizedBox(
-              height: 16,
+              height: 24,
             ),
             AirbattleTabButtons(
               titles: [
@@ -215,12 +215,12 @@ class _AirbattleControllerState extends State<AirbattleController> {
               },
             ),
             SizedBox(
-              height: 20,
+              height: 24,
             ),
             Constants.regularGreyTextWidget(
                 _tabDess[_tabIndex], 14),
             SizedBox(
-              height: 20,
+              height: 16,
             ),
             Container(
               width: Constants.screenWidth(context) - 32,
