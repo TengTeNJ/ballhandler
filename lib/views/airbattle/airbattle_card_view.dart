@@ -46,7 +46,8 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
         child: Stack(
           children: [
             TTNetImage(
-                url: widget.activityModel.activityBackground,
+                url: '',
+                // url: widget.activityModel.activityBackground,
                 placeHolderPath: 'images/airbattle/under_way.png',
                 width: Constants.screenWidth(context) - 32,
                 height: (Constants.screenWidth(context) - 32) * (246 / 340),
@@ -94,7 +95,10 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
                     print('点击活动规则入口');
-                    NavigatorUtil.present(AirBattleRulerController(startDate: widget.activityModel.startDate,endDate: widget.activityModel.endDate,));
+                    NavigatorUtil.present(AirBattleRulerController(
+                      startDate: widget.activityModel.startDate,
+                      endDate: widget.activityModel.endDate,
+                    ));
                   },
                   child: Container(
                     width: 26,
@@ -121,9 +125,8 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                   TTNetImage(
                     url: widget.activityModel.activityIcon,
                     placeHolderPath: 'images/airbattle/icon.png',
-                    width: 58,
-                    height: 58,
-                    borderRadius: BorderRadius.circular(29),
+                    height: 38,
+                    fit: BoxFit.fitHeight,
                   ),
                   SizedBox(
                     height: 6,
@@ -136,8 +139,8 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                   Container(
                     width: Constants.screenWidth(context) - 112,
                     child: Constants.regularWhiteTextWidget(
-                        widget.activityModel.activityRemark, 14,
-                        height: 1.2),
+                       'Test your limits, improve your game,and claim your spot on the leaderboard for a chance to win amazing prizes!', 14,
+                        height: 1.5),
                   ),
                 ],
               ),

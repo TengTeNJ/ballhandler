@@ -18,6 +18,7 @@ import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
 import '../../utils/notification_bloc.dart';
 import '../../widgets/base/base_image.dart';
+import 'airbattle_ruler_controller.dart';
 
 class ActivityDetailController extends StatefulWidget {
   ActivityModel model;
@@ -33,11 +34,11 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
   ActivityDetailModel detailModel = ActivityDetailModel();
   final List<String> _iconPaths = [
     'images/airbattle/time.png',
-    'images/airbattle/date.png',
+    'images/airbattle/award.png',
     'images/airbattle/player.png',
-    'images/airbattle/award.png'
+    'images/airbattle/date.png',
   ];
-  final List<String> _titles = ['TIME', 'Date', 'Player', 'Award'];
+  final List<String> _titles = ['TIME', 'Award', 'Player', 'Date'];
 
   @override
   void initState() {
@@ -51,8 +52,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
         await AirBattle.queryIActivityDetailData(widget.model.activityId);
     if (_response.success && _response.data != null) {
       detailModel = _response.data!;
-      setState(() {
-      });
+      setState(() {});
     }
   }
 
@@ -73,14 +73,25 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: Constants.screenWidth(context)/1.8,
+                    //  height: Constants.screenWidth(context) / 1.8,
                       child: Stack(
                         children: [
                           TTNetImage(
-                              url: detailModel.activityBackground,
-                              placeHolderPath: 'images/airbattle/under_way.png',
-                              width: Constants.screenWidth(context),
-                              height: Constants.screenWidth(context)/1.8),
+                            url: detailModel.activityBackground,
+                            placeHolderPath: 'images/airbattle/under_way.png',
+                            width: Constants.screenWidth(context),
+                            fit: BoxFit.fitWidth,
+                            // height: Constants.screenWidth(context)/1.8
+                          ),
+                          Positioned(
+                            left: 36,
+                              right: 36,
+                              bottom: 36,
+                              child: Image(
+                                width: Constants.screenWidth(context) - 72,
+                                  image: AssetImage(
+                                      'images/airbattle/zigzag.png',
+                                  )))
                         ],
                       ),
                     ),
@@ -88,17 +99,18 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                       margin: EdgeInsets.all(16),
                       child: Constants.boldWhiteTextWidget(
                           detailModel.activityDetailTitle, 30,
-                          textAlign: TextAlign.left,height: 1.2),
+                          textAlign: TextAlign.left, height: 1.2),
                     ),
                     Container(
-                        margin: EdgeInsets.only(left: 16, top: 16,right: 16),
+                        margin: EdgeInsets.only(left: 16, top: 16, right: 16),
                         decoration: BoxDecoration(
                             color: hexStringToColor('#3E3E55'),
                             borderRadius: BorderRadius.circular(5)),
                         child: Padding(
                           padding: EdgeInsets.all(8),
                           child: Constants.regularBaseTextWidget(
-                              detailModel.activityRemark, 12,textAlign: TextAlign.start,height: 1.2),
+                              detailModel.activityRemark, 12,
+                              textAlign: TextAlign.start, height: 1.2),
                         )),
                     Padding(
                       padding: EdgeInsets.all(16),
@@ -106,31 +118,34 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                       // child: Text('ctivity rules Activity rulesActivity rulesActivity rulesActivity Activity rulesActivity rulesActivity rules',style: TextStyle(color: Colors.red),),
                       child: Constants.regularGreyTextWidget(
                           detailModel.activityRule, 14,
-                          height: 1.5,
-                          textAlign: TextAlign.left),
+                          height: 1.5, textAlign: TextAlign.left),
                     ),
                     Container(
                       margin: EdgeInsets.all(16),
                       height: 144,
                       child: GridView.builder(
+                          shrinkWrap:true,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio: 0.4, // 设置宽高比，否则宽度默认和撑起的高度一样
+                                  childAspectRatio: 0.3, // 设置宽高比，否则宽度默认和撑起的高度一样
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 32,
-                                  mainAxisSpacing: 64),
+                                  mainAxisSpacing: 16),
                           itemCount: 4,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return Consumer<UserModel>(builder: (context,userModel,child){
+                            return Consumer<UserModel>(
+                                builder: (context, userModel, child) {
                               return AirBattleGridView(
                                   imagePath: _iconPaths[index],
                                   title: _titles[index],
                                   detail: [
                                     '00:45 sec',
-                                    widget.model.startDate + '-' + widget.model.endDate,
-                                    userModel.group,
-                                    '${widget.model.rewardMoney}\$'
+                                    'Ultimater Dangler 2.0',
+                                    // '${widget.model.rewardMoney}\$',
+                                    // userModel.group,
+                                    'solo',
+                                    widget.model.startDate
                                   ][index]);
                             });
                           }),
@@ -148,19 +163,23 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                 margin: EdgeInsets.only(
                                     left: 16, right: 16, bottom: 16),
                                 child: AirBattleDataView(
-                                     createTime: detailModel.champion.createTime,
+                                    createTime: detailModel.champion.createTime,
                                     grade: Grade.gold,
                                     sceneId: detailModel.sceneId,
                                     modeId: detailModel.modeId,
-                                    trainVideo: detailModel.champion.championTrainVideo,
-                                    hasVideo: (!detailModel.champion.championTrainVideo.isEmpty && detailModel.champion.championTrainVideo.contains('http')),
+                                    trainVideo:
+                                        detailModel.champion.championTrainVideo,
+                                    hasVideo: (!detailModel.champion
+                                            .championTrainVideo.isEmpty &&
+                                        detailModel.champion.championTrainVideo
+                                            .contains('http')),
                                     userName:
                                         detailModel.champion.championNickName,
                                     area: detailModel.champion.championCountry,
                                     birthday: detailModel.champion.createTime,
                                     rank: '1',
-                                    score: detailModel
-                                        .champion.championTrainScore,
+                                    score:
+                                        detailModel.champion.championTrainScore,
                                     avgPace:
                                         detailModel.champion.championAvgPace),
                               ),
@@ -168,7 +187,8 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                           )
                         : Container(), // 冠军
                     (detailModel.activityStatus != 0 &&
-                            detailModel.self.nickName != null && detailModel.self.trainScore != '-')
+                            detailModel.self.nickName != null &&
+                            detailModel.self.trainScore != '-')
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -183,8 +203,14 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                 child: AirBattleDataView(
                                     sceneId: detailModel.sceneId,
                                     modeId: detailModel.modeId,
-                                    trainVideo: detailModel.self.trainVideo.toString(),
-                                    hasVideo: (!detailModel.self.trainVideo.toString().isEmpty && detailModel.self.trainVideo.toString().contains('http')),
+                                    trainVideo:
+                                        detailModel.self.trainVideo.toString(),
+                                    hasVideo: (!detailModel.self.trainVideo
+                                            .toString()
+                                            .isEmpty &&
+                                        detailModel.self.trainVideo
+                                            .toString()
+                                            .contains('http')),
                                     grade: Grade.silver,
                                     userName:
                                         detailModel.self.nickName ?? 'Guest',
@@ -215,8 +241,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                       color: hexStringToColor('#65657D')),
                   child: Center(
                     child: Image(
-                      image: AssetImage(
-                          'images/participants/back_grey.png'),
+                      image: AssetImage('images/participants/back_grey.png'),
                       width: 16,
                       height: 12,
                     ),
@@ -224,86 +249,124 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                 ),
               )),
           Positioned(
-            left: 16,
-            right: 16,
-            bottom: 24,
-              child:  detailModel.activityStatus == 2
-              ? _endButtonView(detailModel)
-              : GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () async {
-              if( detailModel.isJoin == 0){
-                // 未加入则先加入游戏
-                // TTDialog.joinAirBattle(context, () async{
-                //
-                //
-                // }, () {
-                //   NavigatorUtil.push(Routes.setting);
-                // });
-                final _response = await  AirBattle.joinActivity(widget.model.activityId);
-                if(_response.success){
-                  detailModel.isJoin = 1;
-                  setState(() {
-
-                  });
-                  // 如果未连接设备 则先提示连接设备
-                  if (BluetoothManager().conectedDeviceCount.value == 0) {
-                    if(await SystemUtil.isIPad()){
-                      TTDialog.ipadbleListDialog(context);
-                    }else{
-                      TTDialog.bleListDialog(context);
-                    }
-                    BleUtil.begainScan(context);
-                    return;
-                  }
-                  GameUtil gameUtil = GetIt.instance<GameUtil>();
-                  gameUtil.isFromAirBattle = true;
-                  gameUtil.activityModel = widget.model;
-                  gameUtil.modelId = int.parse(detailModel.modeId);
-                  gameUtil.gameScene = [GameScene.five,GameScene.erqiling,GameScene.threee][int.parse(detailModel.sceneId) - 1];
-                  NavigatorUtil.push(Routes.recordselect);
-                }
-              }else{
-                // 已经报名过 直接跳转到确认页面
-                // 如果未连接设备 则先提示连接设备
-                if (BluetoothManager().conectedDeviceCount.value == 0) {
-                  if(await SystemUtil.isIPad()){
-                    TTDialog.ipadbleListDialog(context);
-                  }else{
-                    TTDialog.bleListDialog(context);
-                  }
-                  BleUtil.begainScan(context);
-                  return;
-                }
-                GameUtil gameUtil = GetIt.instance<GameUtil>();
-                gameUtil.isFromAirBattle = true;
-                gameUtil.activityModel = widget.model;
-                gameUtil.modelId = int.parse(detailModel.modeId);
-                gameUtil.gameScene = [GameScene.five,GameScene.erqiling,GameScene.threee][int.parse(detailModel.sceneId) - 1];
-                NavigatorUtil.popAndThenPush(Routes.recordselect);
-              }
-
-            },
-            child: Container(
-              height: 56,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    hexStringToColor('#EF8914'),
-                    hexStringToColor('#E53F1D'),
-                  ],
+              left: 16,
+              right: 16,
+              bottom: 24,
+              child: detailModel.activityStatus == 2
+                  ? _endButtonView(detailModel)
+                  : GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () async {
+                        if (detailModel.isJoin == 0) {
+                          // 未加入则先加入游戏
+                          // TTDialog.joinAirBattle(context, () async{
+                          //
+                          //
+                          // }, () {
+                          //   NavigatorUtil.push(Routes.setting);
+                          // });
+                          final _response = await AirBattle.joinActivity(
+                              widget.model.activityId);
+                          if (_response.success) {
+                            detailModel.isJoin = 1;
+                            setState(() {});
+                            // 如果未连接设备 则先提示连接设备
+                            if (BluetoothManager().conectedDeviceCount.value ==
+                                0) {
+                              if (await SystemUtil.isIPad()) {
+                                TTDialog.ipadbleListDialog(context);
+                              } else {
+                                TTDialog.bleListDialog(context);
+                              }
+                              BleUtil.begainScan(context);
+                              return;
+                            }
+                            GameUtil gameUtil = GetIt.instance<GameUtil>();
+                            gameUtil.isFromAirBattle = true;
+                            gameUtil.activityModel = widget.model;
+                            gameUtil.modelId = int.parse(detailModel.modeId);
+                            gameUtil.gameScene = [
+                              GameScene.five,
+                              GameScene.erqiling,
+                              GameScene.threee
+                            ][int.parse(detailModel.sceneId) - 1];
+                            NavigatorUtil.push(Routes.recordselect);
+                          }
+                        } else {
+                          // 已经报名过 直接跳转到确认页面
+                          // 如果未连接设备 则先提示连接设备
+                          if (BluetoothManager().conectedDeviceCount.value ==
+                              0) {
+                            if (await SystemUtil.isIPad()) {
+                              TTDialog.ipadbleListDialog(context);
+                            } else {
+                              TTDialog.bleListDialog(context);
+                            }
+                            BleUtil.begainScan(context);
+                            return;
+                          }
+                          GameUtil gameUtil = GetIt.instance<GameUtil>();
+                          gameUtil.isFromAirBattle = true;
+                          gameUtil.activityModel = widget.model;
+                          gameUtil.modelId = int.parse(detailModel.modeId);
+                          gameUtil.gameScene = [
+                            GameScene.five,
+                            GameScene.erqiling,
+                            GameScene.threee
+                          ][int.parse(detailModel.sceneId) - 1];
+                          NavigatorUtil.popAndThenPush(Routes.recordselect);
+                        }
+                      },
+                      child: Container(
+                        height: 56,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              hexStringToColor('#EF8914'),
+                              hexStringToColor('#E53F1D'),
+                            ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Constants.boldWhiteTextWidget(
+                              detailModel.isJoin == 0
+                                  ? 'JOIN'
+                                  : 'End in ${detailModel.timeDifferentString}',
+                              16),
+                        ),
+                      ),
+                    )),
+          Positioned(
+              right: 16,
+              top: 60,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+                  NavigatorUtil.present(AirBattleRulerController(
+                    startDate: widget.model.startDate,
+                    endDate: widget.model.endDate,
+                  ));
+                },
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                      color: hexStringToColor(
+                        '#878797',
+                      ),
+                      borderRadius: BorderRadius.circular(18)),
+                  child: Center(
+                    child: Image(
+                      image: AssetImage('images/airbattle/question.png'),
+                      height: 16,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Constants.boldWhiteTextWidget(
-                    detailModel.isJoin == 0 ? 'JOIN' :  'End in ${detailModel.timeDifferentString}',
-                    16),
-              ),
-            ),
-          ))
+              ))
         ],
       ),
     );
@@ -315,6 +378,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
     super.dispose();
   }
 }
+
 /*活动已结束End*/
 Widget _endButtonView(ActivityDetailModel model) {
   if (model.activityStatus == 0) {
