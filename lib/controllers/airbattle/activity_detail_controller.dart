@@ -234,34 +234,35 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
             onTap: () async {
               if( detailModel.isJoin == 0){
                 // 未加入则先加入游戏
-                TTDialog.joinAirBattle(context, () async{
-                  final _response = await  AirBattle.joinActivity(widget.model.activityId);
-                  if(_response.success){
-                    detailModel.isJoin = 1;
-                    setState(() {
+                // TTDialog.joinAirBattle(context, () async{
+                //
+                //
+                // }, () {
+                //   NavigatorUtil.push(Routes.setting);
+                // });
+                final _response = await  AirBattle.joinActivity(widget.model.activityId);
+                if(_response.success){
+                  detailModel.isJoin = 1;
+                  setState(() {
 
-                    });
-                    // 如果未连接设备 则先提示连接设备
-                    if (BluetoothManager().conectedDeviceCount.value == 0) {
-                      if(await SystemUtil.isIPad()){
-                        TTDialog.ipadbleListDialog(context);
-                      }else{
-                        TTDialog.bleListDialog(context);
-                      }
-                      BleUtil.begainScan(context);
-                      return;
+                  });
+                  // 如果未连接设备 则先提示连接设备
+                  if (BluetoothManager().conectedDeviceCount.value == 0) {
+                    if(await SystemUtil.isIPad()){
+                      TTDialog.ipadbleListDialog(context);
+                    }else{
+                      TTDialog.bleListDialog(context);
                     }
-                    GameUtil gameUtil = GetIt.instance<GameUtil>();
-                    gameUtil.isFromAirBattle = true;
-                    gameUtil.activityModel = widget.model;
-                    gameUtil.modelId = int.parse(detailModel.modeId);
-                    gameUtil.gameScene = [GameScene.five,GameScene.erqiling,GameScene.threee][int.parse(detailModel.sceneId) - 1];
-                    NavigatorUtil.push(Routes.recordselect);
+                    BleUtil.begainScan(context);
+                    return;
                   }
-
-                }, () {
-                  NavigatorUtil.push(Routes.setting);
-                });
+                  GameUtil gameUtil = GetIt.instance<GameUtil>();
+                  gameUtil.isFromAirBattle = true;
+                  gameUtil.activityModel = widget.model;
+                  gameUtil.modelId = int.parse(detailModel.modeId);
+                  gameUtil.gameScene = [GameScene.five,GameScene.erqiling,GameScene.threee][int.parse(detailModel.sceneId) - 1];
+                  NavigatorUtil.push(Routes.recordselect);
+                }
               }else{
                 // 已经报名过 直接跳转到确认页面
                 // 如果未连接设备 则先提示连接设备
