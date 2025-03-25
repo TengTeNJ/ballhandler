@@ -256,7 +256,7 @@ class Profile {
       "page": '1',
     };
     final response = await HttpUtil.get('/api/train/video/list', _data,
-        showLoading: false);
+        showLoading: true);
     VideoDataModel _model = VideoDataModel();
     if (response.success && response.data['data'] != null) {
       final _count = response.data['count'];

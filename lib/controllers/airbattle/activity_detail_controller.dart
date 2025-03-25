@@ -144,7 +144,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                                     'Ultimater Dangler 2.0',
                                     // '${widget.model.rewardMoney}\$',
                                     // userModel.group,
-                                    'solo',
+                                    'Solo',
                                     widget.model.startDate
                                   ][index]);
                             });
