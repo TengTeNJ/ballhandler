@@ -7,9 +7,10 @@ import '../../utils/color.dart';
 
 class AirbattleMyPucksListView extends StatefulWidget {
   List<MyPucksModel>? datas;
+  String raiseRange = '-';
   MyAirBattlePucksModel? pucksModel;
 
-  AirbattleMyPucksListView({super.key, this.datas,this.pucksModel});
+  AirbattleMyPucksListView({super.key, required this.raiseRange, this.datas,this.pucksModel});
 
   @override
   State<AirbattleMyPucksListView> createState() =>
@@ -20,6 +21,7 @@ class _AirbattleMyPucksListViewState extends State<AirbattleMyPucksListView> {
   List<MyPucksModel> _datas = [];
 
   initDatas() {
+    _datas.clear();
     List<String> _titles = [
       'Best React Time',
       'Battles Played',
@@ -47,7 +49,7 @@ class _AirbattleMyPucksListViewState extends State<AirbattleMyPucksListView> {
       model.imageName =   'images/airbattle/${_imageNames[i]}.png';
       model.specialShow = _specialShows[i];
       if(i == 0){
-        model.upValue = '10%';
+        model.upValue = widget.raiseRange ?? '-';
       }
       _datas.add(model);
     }
@@ -61,11 +63,12 @@ class _AirbattleMyPucksListViewState extends State<AirbattleMyPucksListView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    initDatas();
+    //initDatas();
   }
 
   @override
   Widget build(BuildContext context) {
+    initDatas();
     return ListView.separated(
         physics: NeverScrollableScrollPhysics(),
         // 禁止滑动

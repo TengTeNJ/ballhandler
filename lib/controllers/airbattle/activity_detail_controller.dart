@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:code/constants/constants.dart';
 import 'package:code/models/global/user_info.dart';
@@ -16,7 +15,6 @@ import '../../utils/ble_util.dart';
 import '../../utils/blue_tooth_manager.dart';
 import '../../utils/global.dart';
 import '../../utils/navigator_util.dart';
-import '../../utils/notification_bloc.dart';
 import '../../widgets/base/base_image.dart';
 import 'airbattle_ruler_controller.dart';
 
@@ -334,7 +332,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                           child: Constants.boldWhiteTextWidget(
                               detailModel.isJoin == 0
                                   ? 'JOIN'
-                                  : 'End in ${detailModel.timeDifferentString}',
+                                  : 'Start Now',
                               16),
                         ),
                       ),

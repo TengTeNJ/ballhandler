@@ -28,6 +28,8 @@ class _AirbattleControllerState extends State<AirbattleController> {
   List<String> _tabDess = ['Top scores, top players. Can you beat them?','Most improved. Progress is the real win!','Stay active, stay in the game. Keep battling!'];
   int _tabIndex = 0;
   DateTime _startDate = DateTime.now();
+  String _startime  = '';
+  String _endTime = '';
   late StreamSubscription subscription;
   // 查询参与的活动列表数据 比如消息未读的数量
   queryAirBattleData() async {
@@ -128,9 +130,11 @@ class _AirbattleControllerState extends State<AirbattleController> {
               width: Constants.screenWidth(context) - 16,
               height: (Constants.screenWidth(context) - 32) * (246 / 340),
               child: AirbattlePageView(
-                scrollToPage: (int activityId,String startDate) {
+                scrollToPage: (int activityId,String startDate,String endDate) {
                   // 活动切换 包含首次
                   setState(() {
+                    _startime = startDate;
+                    _endTime = endDate;
                     _startDate = StringUtil.stringToDate(startDate);
                     _tabIndex = 0;
                     _activityId = activityId;
@@ -155,6 +159,9 @@ class _AirbattleControllerState extends State<AirbattleController> {
                       imageName: 'info2',
                       des: ' More'),
                   AirbattleInfoCardView(
+                    activityId: _activityId.toString(),
+                    startTime: _startime,
+                    endTime: _endTime,
                     startDayIndex: _startDate.day,
                     monthDay: _startDate.month,
                     title: 'My Journey',

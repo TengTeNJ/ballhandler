@@ -1,3 +1,4 @@
+
 import 'package:code/models/airbattle/award_model.dart';
 import 'package:code/models/airbattle/my_airbattle_pucks_model.dart';
 import 'package:code/services/http/rank.dart';
@@ -5,8 +6,13 @@ import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/string_util.dart';
 import '../../constants/constants.dart';
+import '../../models/airbattle/heatmap_model.dart';
 import '../../models/game/game_over_model.dart';
-
+/*热力图数据和最好成绩提升幅度*/
+class HeatMapModel{
+  String raiseRange = '-';
+  List<HeatMapDataModel>datas = [];
+}
 class MyActivityModel {
   String activityIcon = ''; // icon
   String activityId = ''; //  活动id
@@ -41,6 +47,8 @@ class ActivityModel {
   String rewardMoney = ''; // 活动奖励
   String rewardPoint = ''; // 活动积分
   String activityRule = ''; // 活动规则
+  String activityH5 = ''; // 活动H5页面
+  bool activityShow = true; // 活动是否显示：false否，true是
   String get timeDifferentString {
     String targetTime = this.endDate + ' 23:59';
     DateTime time = StringUtil.showTimeStringToDate(targetTime);
@@ -256,45 +264,52 @@ class AirBattle {
       _array.forEach((element) {
         ActivityModel model = ActivityModel();
         final _map = element;
-        model.activityBackground = !ISEmpty(_map['activityBackground'])
-            ? _map['activityBackground'].toString()
+        model.activityShow =  !ISEmpty(_map['activityShow']) ? _map['activityShow'] == 1 : true;
+        model.activityH5 = !ISEmpty(_map['activityH5'])
+            ? _map['activityH5'].toString()
             : '';
-        model.activityIcon = !ISEmpty(_map['activityIcon'])
-            ? _map['activityIcon'].toString()
-            : '--';
-        model.activityId =
-            !ISEmpty(_map['activityId']) ? _map['activityId'] : 1;
-        model.activityStatus =
-            !ISEmpty(_map['activityStatus']) ? _map['activityStatus'] : 0;
-        model.activityRemark = !ISEmpty(_map['activityRemark'])
-            ? _map['activityRemark'].toString()
-            : '--';
-        model.endDate = !ISEmpty(_map['endDate'])
-            ? StringUtil.serviceStringToShowDateString(
-                _map['endDate'].toString())
-            : '--';
-        model.startDate = !ISEmpty(_map['startDate'])
-            ? StringUtil.serviceStringToShowDateString(
-                _map['startDate'].toString())
-            : '--';
-        model.orignStartDate =  !ISEmpty(_map['startDate']) ? _map['startDate']  :'--';
-        model.orignEndDate =  !ISEmpty(_map['endDate']) ? _map['endDate']  :'--';
-        model.activityName = !ISEmpty(_map['activityName'])
-            ? _map['activityName'].toString()
-            : '--';
-        model.rewardMoney = !ISEmpty(_map['rewardMoney'])
-            ? _map['rewardMoney'].toString()
-            : '0';
-        model.rewardPoint = !ISEmpty(_map['rewardPoint'])
-            ? _map['rewardPoint'].toString()
-            : '0';
-        model.activityRemark = !ISEmpty(_map['activityRemark'])
-            ? _map['activityRemark'].toString()
-            : '--';
-        model.activityRule = !ISEmpty(_map['activityRule'])
-            ? _map['activityRule'].toString()
-            : '--';
-        _list.add(model);
+        if(model.activityShow){
+          model.activityBackground = !ISEmpty(_map['activityBackground'])
+              ? _map['activityBackground'].toString()
+              : '';
+          model.activityIcon = !ISEmpty(_map['activityIcon'])
+              ? _map['activityIcon'].toString()
+              : '--';
+          model.activityId =
+          !ISEmpty(_map['activityId']) ? _map['activityId'] : 1;
+          model.activityStatus =
+          !ISEmpty(_map['activityStatus']) ? _map['activityStatus'] : 0;
+          model.activityRemark = !ISEmpty(_map['activityRemark'])
+              ? _map['activityRemark'].toString()
+              : '--';
+          model.endDate = !ISEmpty(_map['endDate'])
+              ? StringUtil.serviceStringToShowDateString(
+              _map['endDate'].toString())
+              : '--';
+          model.startDate = !ISEmpty(_map['startDate'])
+              ? StringUtil.serviceStringToShowDateString(
+              _map['startDate'].toString())
+              : '--';
+          model.orignStartDate =  !ISEmpty(_map['startDate']) ? _map['startDate']  :'--';
+          model.orignEndDate =  !ISEmpty(_map['endDate']) ? _map['endDate']  :'--';
+          model.activityName = !ISEmpty(_map['activityName'])
+              ? _map['activityName'].toString()
+              : '--';
+          model.rewardMoney = !ISEmpty(_map['rewardMoney'])
+              ? _map['rewardMoney'].toString()
+              : '0';
+          model.rewardPoint = !ISEmpty(_map['rewardPoint'])
+              ? _map['rewardPoint'].toString()
+              : '0';
+          model.activityRemark = !ISEmpty(_map['activityRemark'])
+              ? _map['activityRemark'].toString()
+              : '--';
+          model.activityRule = !ISEmpty(_map['activityRule'])
+              ? _map['activityRule'].toString()
+              : '--';
+          _list.add(model);
+        }
+
       });
       model.data = _list;
       return ApiResponse(success: response.success, data: model);
@@ -685,6 +700,34 @@ class AirBattle {
     } else {
       return ApiResponse(success: false);
     }
+  }
+
+/*
+* 查询热力图数据和用户的最好成绩的提升幅度的数据
+* */
+  static Future<ApiResponse<HeatMapModel>> queryAirBattleHetMapData(String activityId,String startTime, String endTime) async{
+    final _data = {
+      'activityId':activityId.toString(),
+      'startTime':startTime,
+      'endTime':endTime
+    };
+
+    final response =
+        await HttpUtil.get('/api/statistic/activity/getActivityTrainMemberByDate', _data, showLoading: true);
+    HeatMapModel model = HeatMapModel();
+    if (response.success && response.data['data'] != null) {
+      final raiseRange = response.data['data']['raiseRange'];
+      final _list = response.data['data']['trainCountList'] as List<dynamic>;
+      String percentageString = (raiseRange * 100).toStringAsFixed(2) + "%";
+      model.raiseRange = percentageString;
+      model.datas.clear();
+      _list.forEach((element) {
+        HeatMapDataModel _model = HeatMapDataModel(count: element);
+        model.datas.add(_model);
+      });
+      return ApiResponse(success: response.success, data: model);
+    }
+    return ApiResponse(success: false);
   }
 
 }

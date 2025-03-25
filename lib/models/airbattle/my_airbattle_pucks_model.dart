@@ -8,4 +8,5 @@ class MyAirBattlePucksModel{
   String trainCountRank = '-'; // 训练次数的排名
   String trainIntegral = '0'; // 积分总数
   String recordBreakCountRank = '-'; // 打破纪录的排名
+  String raiseRange = '-'; // 成绩打破纪录时的幅度
 }

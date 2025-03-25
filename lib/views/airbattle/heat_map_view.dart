@@ -5,7 +5,7 @@ import '../../models/airbattle/heatmap_model.dart';
 class HeatMapView extends StatefulWidget {
   int monthDay; // 月份
   int startDayIndex; // 起始日期的索引 也是每个月的哪一日
-  List<HeatMapModel> heatMapDats;
+  List<HeatMapDataModel> heatMapDats;
   HeatMapView({super.key, required this.heatMapDats, required this.monthDay, this.startDayIndex = 1});
 
   @override

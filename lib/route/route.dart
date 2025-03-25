@@ -204,7 +204,7 @@ class Routes {
       case mypucks:
         final  Map _map = settings.arguments as Map;
         MyAirBattlePucksModel _model = _map['model'];
-        return MaterialPageRoute(builder: (_) => AirbattleMyPucksController(startDayIndex: _map['day'] ?? 1,monthDay: _map['month'],pucksModel: _model,));
+        return MaterialPageRoute(builder: (_) => AirbattleMyPucksController(startDayIndex: _map['day'] ?? 1,monthDay: _map['month'],pucksModel: _model,activityId: _map['id'],startTime: _map['start'],endTime: _map['end'],));
       case airbattleawards:
         return MaterialPageRoute(builder: (_) => AirBattleAwardsController());
     // EmailPageController

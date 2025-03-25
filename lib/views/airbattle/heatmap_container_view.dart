@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 class HeatMapContainerView extends StatefulWidget {
   int monthDay; // 月份
   int startDayIndex;
-  HeatMapContainerView({super.key,required this.monthDay, this.startDayIndex = 1});
+  List<HeatMapDataModel> heatMapDats;
+  HeatMapContainerView({super.key,required this.monthDay, required this.heatMapDats, this.startDayIndex = 1,});
 
   @override
   State<HeatMapContainerView> createState() => _HeatMapContainerViewState();
@@ -38,15 +39,7 @@ class _HeatMapContainerViewState extends State<HeatMapContainerView> {
             children: [
               Constants.mediumWhiteTextWidget(StringUtil.monthToAbbreviation(widget.monthDay), 10,height: 2.5),
               HeatMapView(
-                heatMapDats: [
-                  HeatMapModel(),
-                  HeatMapModel(statu: HeatMapStatu.Middle),
-                  HeatMapModel(statu: HeatMapStatu.Active),
-                  HeatMapModel(statu: HeatMapStatu.Active),
-                  HeatMapModel(statu: HeatMapStatu.Zero),
-                  HeatMapModel(statu: HeatMapStatu.Primary),
-                  HeatMapModel(statu: HeatMapStatu.Primary)
-                ],
+                heatMapDats: widget.heatMapDats,
                 monthDay: widget.monthDay,
                 startDayIndex: widget.startDayIndex,
               ),

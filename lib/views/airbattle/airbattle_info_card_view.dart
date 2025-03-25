@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/route/route.dart';
+import 'package:code/services/http/airbattle.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,9 @@ class AirbattleInfoCardView extends StatefulWidget {
   int monthDay; // 月份
   int startDayIndex;
   MyAirBattlePucksModel? pucksModel;
+  String? startTime;
+  String? endTime;
+  String? activityId;
   AirbattleInfoCardView(
       {super.key,
       required this.monthDay,
@@ -30,7 +34,11 @@ class AirbattleInfoCardView extends StatefulWidget {
       required this.value,
       required this.imageName,
       required this.des,
-      this.pucksModel});
+      this.pucksModel,
+      this.startTime,
+      this.endTime,
+        this.activityId
+      });
 
   @override
   State<AirbattleInfoCardView> createState() => _AirbattleInfoCardViewState();
@@ -45,7 +53,14 @@ class _AirbattleInfoCardViewState extends State<AirbattleInfoCardView> {
         if (widget.title == 'Awards') {
           NavigatorUtil.push(Routes.airbattleawards);
         } else {
-          NavigatorUtil.push(Routes.mypucks,arguments: {"day":widget.startDayIndex,"month":widget.monthDay,'model':widget.pucksModel});
+          NavigatorUtil.push(Routes.mypucks, arguments: {
+            "day": widget.startDayIndex,
+            "month": widget.monthDay,
+            'model': widget.pucksModel,
+            'id':widget.activityId,
+            'start':widget.startTime,
+            'end':widget.endTime
+          });
         }
       },
       child: Container(

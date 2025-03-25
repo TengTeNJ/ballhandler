@@ -59,7 +59,9 @@ class _AirbattleListViewState extends State<AirbattleListView> {
     if (_apiResponse.success) {
       _currentDatas.clear();
       _currentDatas.addAll(_apiResponse.data!.data);
-      setState(() {});
+      if(mounted){
+        setState(() {});
+      }
     }
   }
 

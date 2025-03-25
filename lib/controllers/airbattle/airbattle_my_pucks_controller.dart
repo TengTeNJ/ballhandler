@@ -1,3 +1,4 @@
+import 'package:code/models/airbattle/heatmap_model.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/views/airbattle/airbattle_my_pucks_list_view.dart';
@@ -7,18 +8,25 @@ import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../../models/airbattle/my_airbattle_pucks_model.dart';
+import '../../services/http/airbattle.dart';
 import '../../widgets/navigation/CustomAppBar.dart';
 
 class AirbattleMyPucksController extends StatefulWidget {
   int monthDay; // 月份
   int startDayIndex;
   MyAirBattlePucksModel? pucksModel;
-
+  String? startTime;
+  String? endTime;
+  String? activityId;
   AirbattleMyPucksController(
       {super.key,
       required this.monthDay,
       this.startDayIndex = 1,
-      this.pucksModel});
+      this.pucksModel,
+        this.activityId,
+        this.startTime,
+        this.endTime
+      });
 
   @override
   State<AirbattleMyPucksController> createState() =>
@@ -27,6 +35,30 @@ class AirbattleMyPucksController extends StatefulWidget {
 
 class _AirbattleMyPucksControllerState
     extends State<AirbattleMyPucksController> {
+  List<HeatMapDataModel> _heatMapDats = [];
+  String _raiseRange = '-';
+  queryHeatMapDate() async{
+   final _response =  await AirBattle.queryAirBattleHetMapData(widget.activityId.toString(), widget.startTime.toString(), widget.endTime.toString());
+   if(_response.success && _response.data != null){
+     _raiseRange = _response.data!.raiseRange;
+     if(_response.data!.datas != null){
+       _heatMapDats.addAll(_response.data!.datas);
+       if(mounted){
+         setState(() {
+
+         });
+       }
+     }
+   }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    queryHeatMapDate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +111,7 @@ class _AirbattleMyPucksControllerState
                 height: 24,
               ),
               HeatMapContainerView(
+                heatMapDats: _heatMapDats,
                 monthDay: widget.monthDay,
                 startDayIndex: widget.startDayIndex,
               ),
@@ -97,7 +130,8 @@ class _AirbattleMyPucksControllerState
               ),
               Constants.regularWhiteTextWidget('Activity Record', 16),
               AirbattleMyPucksListView(
-                pucksModel: widget.pucksModel,
+                raiseRange: _raiseRange,
+                pucksModel:widget.pucksModel
               ),
               Container(
                 height: 1,

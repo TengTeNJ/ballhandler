@@ -149,9 +149,9 @@ class _GameOverDataViewState extends State<GameOverDataView> {
                       ),
                       (gameUtil.selectRecord || gameUtil.isFromAirBattle)
                           ? Constants.regularWhiteTextWidget(
-                              'Training video', 14)
+                              'Replay Video', 14)
                           : Constants.regularGreyTextWidget(
-                              'Training video', 14),
+                              'Replay Video', 14),
                     ],
                   ),
                   height: 35,
