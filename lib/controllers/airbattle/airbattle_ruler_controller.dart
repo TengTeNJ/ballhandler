@@ -33,7 +33,7 @@ class AirBattleRulerController extends StatelessWidget {
             ],),
             SizedBox(height: 8,),
             AirBattleRuleView(title: 'Challenge: Digital Stickhandling Trainer “Zigzag” shape.'),
-            AirBattleRuleView(title: 'ubmissions: Submit up to 5 battles per day. Aim to beat your best score each time!'),
+            AirBattleRuleView(title: 'Submissions: Submit up to 5 battles per day. Aim to beat your best score each time!'),
             AirBattleRuleView(title: 'Duration: 10 days to compete, starting [${startDate}], ending [${endDate}].'),
             SizedBox(height: 16,),
             Row(children: [
@@ -41,11 +41,10 @@ class AirBattleRulerController extends StatelessWidget {
             ],),
             SizedBox(height: 8,),
             Constants.regularGreyTextWidget('Compete for Top Spots!\nTrack your rank against players worldwide and see how you compare.', 16,height: 1.5,textAlign: TextAlign.start),
-            AirBattleRuleView(title: 'Categories:\nBattle Champions: Track the highest scores/best reaction time\n Rising Stars: Celebrate the most improved players.'),
-            AirBattleRuleView(title: 'Consistent Contenders: Recognize active players with the most submissions.'),
+            AirBattleRuleView(title: 'Categories:\nBattle Champions: Track the highest scores/best reaction time\n Rising Stars: Celebrate the most improved players.\nConsistent Contenders: Recognize active players with the most submissions.'),
             SizedBox(height: 16,),
             Row(children: [
-              Constants.boldWhiteTextWidget('Leaderboard:', 20)
+              Constants.boldWhiteTextWidget('Win Prizes!:', 20)
             ],),
             SizedBox(height: 8,),
             AirBattleRuleView(title: 'Top Performer: Free Ultimater Dangler 2.0'),
@@ -56,9 +55,9 @@ class AirBattleRulerController extends StatelessWidget {
               Constants.boldWhiteTextWidget('Why Compete?:', 20)
             ],),
             SizedBox(height: 8,),
-            AirBattleRuleView(title: 'Top Performer: Free Ultimater Dangler 2.0'),
-            AirBattleRuleView(title: 'Rising Star (Most Improved): \$100 Store Cash'),
-            AirBattleRuleView(title: 'Consistent Contender: \$50 Store Cash'),
+            AirBattleRuleView(title: 'Open to All: Anyone can join, even without a subscription!'),
+            AirBattleRuleView(title: 'Exclusive Rewards for subscribers: Win pucks, badges, and more!'),
+            AirBattleRuleView(title: 'Improve Your Skills: Track your progress and rise to the top.'),
           ],
         ),),
       ),
