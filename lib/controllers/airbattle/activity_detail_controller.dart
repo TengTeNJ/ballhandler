@@ -50,7 +50,9 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
         await AirBattle.queryIActivityDetailData(widget.model.activityId);
     if (_response.success && _response.data != null) {
       detailModel = _response.data!;
-      setState(() {});
+      if(mounted){
+        setState(() {});
+      }
     }
   }
 
