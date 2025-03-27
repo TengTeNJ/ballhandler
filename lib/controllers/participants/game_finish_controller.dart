@@ -8,6 +8,7 @@ import 'package:code/services/http/profile.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/video_compress.dart';
 import 'package:code/utils/video_util.dart';
 import 'package:code/views/participants/fireworks_animation-view.dart';
 import 'package:code/views/participants/game_over_data_view.dart';
@@ -77,13 +78,17 @@ class _GameFinishControllerState extends State<GameFinishController> {
         .of(context)
         .hasLogin) {
       final _filePath = widget.dataModel.videoPath;
+      String _path = _filePath;
       if (widget.dataModel.videoPath.length > 0) {
         // 登录的订阅用户视频才上传 --Airbattle的进来的默认上传
+        // 视频压缩
+      // _path =  await  VideoCompressUtil.comPress(widget.dataModel.videoPath);
+        widget.dataModel.videoPath = _path;
         final _urlResponse = await Participants.uploadAsset(
             widget.dataModel.videoPath);
         widget.dataModel.videoPath = _urlResponse.data ?? '';
       }
-      double size =  await  VideoUtil.getVideoFileSize(_filePath);
+      double size =  await  VideoUtil.getVideoFileSize(_path);
       // 保存游戏数据到云端
       final _response = await Participants.saveGameData(
           widget.dataModel,size: size);

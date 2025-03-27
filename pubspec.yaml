@@ -93,6 +93,7 @@ dependencies:
   firebase_crashlytics: ^3.5.7
   native_device_orientation: ^2.0.3
   widget_tooltip: ^1.0.5
+  video_compress: ^3.1.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

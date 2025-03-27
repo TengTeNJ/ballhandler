@@ -189,7 +189,7 @@ class _AirbattleControllerState extends State<AirbattleController> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 16),
-                  child: Constants.mediumWhiteTextWidget('Leaderbroad', 16),
+                  child: Constants.mediumWhiteTextWidget('Leaderboard', 16),
                 )
               ],
             ),
