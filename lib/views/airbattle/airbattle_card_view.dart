@@ -88,33 +88,33 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                             color: hexStringToOpacityColor('#1C1E21', 0.6),
                             borderRadius: BorderRadius.circular(5)),
                       )),
-            Positioned(
-                right: 12,
-                top: 8,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    print('点击活动规则入口');
-                    NavigatorUtil.present(AirBattleRulerController(
-                      startDate: widget.activityModel.startDate,
-                      endDate: widget.activityModel.endDate,
-                    ));
-                  },
-                  child: Container(
-                    width: 26,
-                    height: 26,
-                    decoration: BoxDecoration(
-                        color: hexStringToOpacityColor('#1C1E21', 0.6),
-                        borderRadius: BorderRadius.circular(13)),
-                    child: Center(
-                      child: Image(
-                        image: AssetImage('images/airbattle/question.png'),
-                        height: 13,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
-                  ),
-                )),
+            // Positioned(
+            //     right: 12,
+            //     top: 8,
+            //     child: GestureDetector(
+            //       behavior: HitTestBehavior.opaque,
+            //       onTap: () {
+            //         print('点击活动规则入口');
+            //         NavigatorUtil.present(AirBattleRulerController(
+            //           startDate: widget.activityModel.startDate,
+            //           endDate: widget.activityModel.endDate,
+            //         ));
+            //       },
+            //       child: Container(
+            //         width: 26,
+            //         height: 26,
+            //         decoration: BoxDecoration(
+            //             color: hexStringToOpacityColor('#1C1E21', 0.6),
+            //             borderRadius: BorderRadius.circular(13)),
+            //         child: Center(
+            //           child: Image(
+            //             image: AssetImage('images/airbattle/question.png'),
+            //             height: 13,
+            //             fit: BoxFit.fitHeight,
+            //           ),
+            //         ),
+            //       ),
+            //     )),
             Positioned(
               top: 30,
               left: 0,
@@ -125,7 +125,7 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                   TTNetImage(
                     url: widget.activityModel.activityIcon,
                     placeHolderPath: 'images/airbattle/icon.png',
-                    height: 38,
+                    height: 32,
                     fit: BoxFit.fitHeight,
                   ),
                   SizedBox(
@@ -139,14 +139,37 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                   Container(
                     width: Constants.screenWidth(context) - 112,
                     child: Constants.regularWhiteTextWidget(
-                       'Test your limits, improve your game,and claim your spot on the leaderboard for a chance to win amazing prizes!', 14,
+                        'Test your limits, improve your game,and claim your spot on the leaderboard for a chance to win amazing prizes!',
+                        14,
                         height: 1.5),
                   ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: (){
+                      print('点击活动规则入口');
+                      NavigatorUtil.present(AirBattleRulerController(
+                        startDate: widget.activityModel.startDate,
+                        endDate: widget.activityModel.endDate,
+                      ));
+                    },
+
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Constants.customTextWidget('Learn More', 12, '#B6F61D'),
+                        SizedBox(width: 4,),
+                        Image(image: AssetImage('images/airbattle/green.png'),height: 8,fit: BoxFit.fitHeight,)
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
             Positioned(
-              bottom: 24,
+              bottom: 20,
               left: 36,
               right: 36,
               child: GestureDetector(
@@ -166,21 +189,20 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                   ),
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Stack(
                       children: [
-                        Constants.boldBlackTextWidget(
-                            widget.activityModel.activityButtonTitle, 16,
-                            height: 1.2),
-                        SizedBox(
-                          width: 6,
+                        Align(
+                          alignment: Alignment.center,
+                          child: Constants.boldBlackTextWidget('Join Now', 16),
                         ),
-                        Image(
-                          image: AssetImage('images/airbattle/black_next.png'),
-                          width: 10,
-                          height: 10,
-                        )
+                        Positioned(
+                            top: 6,
+                            right: 6,
+                            child: Image(
+                              image: AssetImage('images/participants/next.png'),
+                              width: 31,
+                              height: 31,
+                            ))
                       ],
                     ),
                     onTap: () {

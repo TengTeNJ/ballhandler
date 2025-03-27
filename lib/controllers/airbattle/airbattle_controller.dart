@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:code/route/route.dart';
 import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/string_util.dart';
 import 'package:code/views/airbattle/airbattle_info_card_view.dart';
@@ -59,7 +60,6 @@ class _AirbattleControllerState extends State<AirbattleController> {
     super.initState();
     subscription = EventBus().stream.listen((event) {
     if(event is String && event == kBackFromFinish){
-      print('----++++');
         // 游戏完成返回后重新刷新积分等数据
       queryAirBattleMyPucksData();
       }
@@ -91,20 +91,26 @@ class _AirbattleControllerState extends State<AirbattleController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Constants.boldWhiteTextWidget('Air Battle', 30),
-                  GestureDetector(
-                    onTap: () {
-                      NavigatorUtil.push('message');
-                    },
-                    child: Container(
-                      width: 20,
-                      height: 24,
-                      child: Stack(
-                        children: [
-                          Image(
-                              image:
-                                  AssetImage('images/airbattle/message.png')),
-                          (_model.unreadCount != null && _model.unreadCount > 0)
-                              ? Positioned(
+                  Row(
+                    children: [
+                      GestureDetector(
+                        child: Image(image: AssetImage('images/airbattle/award_white.png'),height: 22,fit: BoxFit.fitHeight,),
+                      ),
+                      SizedBox(width: 16,),
+                      GestureDetector(
+                        onTap: () {
+                          NavigatorUtil.push(Routes.awardlist);
+                        },
+                        child: Container(
+                          width: 20,
+                          height: 24,
+                          child: Stack(
+                            children: [
+                              Image(
+                                  image:
+                                  AssetImage('images/airbattle/gift.png')),
+                              (_model.unreadCount != null && _model.unreadCount > 0)
+                                  ? Positioned(
                                   right: 0,
                                   top: 0,
                                   child: Container(
@@ -114,11 +120,41 @@ class _AirbattleControllerState extends State<AirbattleController> {
                                         color: Colors.red,
                                         borderRadius: BorderRadius.circular(4)),
                                   ))
-                              : Container()
-                        ],
+                                  : Container()
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     NavigatorUtil.push('message');
+                  //   },
+                  //   child: Container(
+                  //     width: 20,
+                  //     height: 24,
+                  //     child: Stack(
+                  //       children: [
+                  //         Image(
+                  //             image:
+                  //                 AssetImage('images/airbattle/message.png')),
+                  //         (_model.unreadCount != null && _model.unreadCount > 0)
+                  //             ? Positioned(
+                  //                 right: 0,
+                  //                 top: 0,
+                  //                 child: Container(
+                  //                   width: 8,
+                  //                   height: 8,
+                  //                   decoration: BoxDecoration(
+                  //                       color: Colors.red,
+                  //                       borderRadius: BorderRadius.circular(4)),
+                  //                 ))
+                  //             : Container()
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

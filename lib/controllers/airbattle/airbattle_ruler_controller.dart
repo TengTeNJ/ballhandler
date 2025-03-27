@@ -22,7 +22,7 @@ class AirBattleRulerController extends StatelessWidget {
                 CancelButton()
               ],
             ),
-            Image(image: AssetImage('images/airbattle/airbattle.png',),width: 78,),
+            Image(image: AssetImage('images/airbattle/top_icon.png',),width: 72,),
             SizedBox(height: 16,),
             Constants.mediumWhiteTextWidget('Join Spring AirBattle!', 20),
             SizedBox(height: 16,),
