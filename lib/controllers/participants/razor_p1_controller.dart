@@ -135,9 +135,8 @@ class RazorP1Controller extends StatelessWidget {
                         GameUtil gameUtil = GetIt.instance<GameUtil>();
                         // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, lightsControlData([0,0,1]));
                         // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, ledControlData(13, 14));
-                        // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, motorControlData(motorStatus: [BleRazorMotorStatu.forward,BleRazorMotorStatu.forward],timers: [100,100]));
-                        BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, powerOffControlData());
-
+                        BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.reversal],timers: [255,255]));
+                      //  BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, powerOffControlData());
                         // NavigatorUtil.push(Routes.razorgameprocesspage);
                       },
                       child: Container(

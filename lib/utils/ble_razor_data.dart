@@ -91,7 +91,8 @@ List<int> motorControlData({List<BleRazorMotorStatu> motorStatus = const [BleRaz
     binaryString = binaryString.substring(binaryString.length - 8, binaryString.length);
   }
   cs = StringUtil.binaryStringToDecimal(binaryString);
-  List<int> values = [start,0x0a,motorControl,motorStatus[0].index,timers[0],motorStatus[1].index,timers[1],cs,end];
+  List<int> values = [start,0x09,motorControl,motorStatus[0].index,timers[0],motorStatus[1].index,timers[1],cs,end];
+  print('values == ${values}');
   return values;
 }
 

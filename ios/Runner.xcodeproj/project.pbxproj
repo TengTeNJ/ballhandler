@@ -10,6 +10,7 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C80F4294D02FB00263BE5 /* RunnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 331C80F3294D02FB00263BE5 /* RunnerTests.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		55581F4C2D951B7A00659999 /* best.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 55581F4B2D951B7A00659999 /* best.mlmodel */; };
 		556130DA2C2AC902007D91F3 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556130D92C2AC902007D91F3 /* StoreKit.framework */; };
 		557A49492BC77365007334DB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 557A49482BC77365007334DB /* GoogleService-Info.plist */; };
 		55B5B0A82BC943CD00B6EA73 /* AuthKey_MZMC6DG9X5.p8 in Resources */ = {isa = PBXBuildFile; fileRef = 55B5B0A72BC943CD00B6EA73 /* AuthKey_MZMC6DG9X5.p8 */; };
@@ -59,6 +60,7 @@
 		4F801936C2B04A1A74DA292B /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5349877573EE1A1BABEE9461 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		554712D92BB9472C00756D79 /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
+		55581F4B2D951B7A00659999 /* best.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = best.mlmodel; sourceTree = "<group>"; };
 		556130D92C2AC902007D91F3 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		557A49472BC7720F007334DB /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		557A49482BC77365007334DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				55581F4B2D951B7A00659999 /* best.mlmodel */,
 				55B5B0A72BC943CD00B6EA73 /* AuthKey_MZMC6DG9X5.p8 */,
 				557A49482BC77365007334DB /* GoogleService-Info.plist */,
 				557A49472BC7720F007334DB /* Runner.entitlements */,
@@ -472,6 +475,7 @@
 			files = (
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,
+				55581F4C2D951B7A00659999 /* best.mlmodel in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
