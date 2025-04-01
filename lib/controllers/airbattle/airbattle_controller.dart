@@ -10,6 +10,7 @@ import 'package:code/views/airbattle/airbattle_tab_buttons.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
+import '../../models/airbattle/award_model.dart';
 import '../../models/airbattle/my_airbattle_pucks_model.dart';
 import '../../services/http/airbattle.dart';
 import '../../utils/navigator_util.dart';
@@ -26,12 +27,17 @@ class _AirbattleControllerState extends State<AirbattleController> {
   AirBattleHomeModel _model = AirBattleHomeModel();
   MyAirBattlePucksModel _pucksModel = MyAirBattlePucksModel();
   int _activityId = 0;
-  List<String> _tabDess = ['Top scores, top players. Can you beat them?','Most improved. Progress is the real win!','Stay active, stay in the game. Keep battling!'];
+  List<String> _tabDess = [
+    'Top scores, top players. Can you beat them?',
+    'Most improved. Progress is the real win!',
+    'Stay active, stay in the game. Keep battling!'
+  ];
   int _tabIndex = 0;
   DateTime _startDate = DateTime.now();
-  String _startime  = '';
+  String _startime = '';
   String _endTime = '';
   late StreamSubscription subscription;
+  bool _hasUnreadAward = false; // 是否有未读的奖品
   // 查询参与的活动列表数据 比如消息未读的数量
   queryAirBattleData() async {
     final _response = await AirBattle.queryAirBattleData();
@@ -54,14 +60,31 @@ class _AirbattleControllerState extends State<AirbattleController> {
     }
   }
 
+  /*查询是否有未读的奖励*/
+  queryIfHasUnreadAward() async {
+    final _response = await AirBattle.queryMyAwardData(1);
+    if (_response.success && _response.data != null) {
+      List<AwardModel> data = _response.data!.data;
+      if (data.isNotEmpty) {
+        setState(() {
+          _hasUnreadAward = data.any((element) => element.rewardStatus == 0);
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    queryIfHasUnreadAward();
     subscription = EventBus().stream.listen((event) {
-    if(event is String && event == kBackFromFinish){
+      if (event is String && event == kBackFromFinish) {
         // 游戏完成返回后重新刷新积分等数据
-      queryAirBattleMyPucksData();
+        queryAirBattleMyPucksData();
+      } else if (event == kReadAwardMessage) {
+        // 刷新是否有未阅读的奖励信息
+        queryIfHasUnreadAward();
       }
     });
   }
@@ -93,10 +116,16 @@ class _AirbattleControllerState extends State<AirbattleController> {
                   Constants.boldWhiteTextWidget('Air Battle', 30),
                   Row(
                     children: [
-                      GestureDetector(
-                        child: Image(image: AssetImage('images/airbattle/award_white.png'),height: 22,fit: BoxFit.fitHeight,),
+                      // GestureDetector(
+                      //   child: Image(
+                      //     image: AssetImage('images/airbattle/award_white.png'),
+                      //     height: 22,
+                      //     fit: BoxFit.fitHeight,
+                      //   ),
+                      // ),
+                      SizedBox(
+                        width: 16,
                       ),
-                      SizedBox(width: 16,),
                       GestureDetector(
                         onTap: () {
                           NavigatorUtil.push(Routes.awardlist);
@@ -108,18 +137,19 @@ class _AirbattleControllerState extends State<AirbattleController> {
                             children: [
                               Image(
                                   image:
-                                  AssetImage('images/airbattle/gift.png')),
-                              (_model.unreadCount != null && _model.unreadCount > 0)
+                                      AssetImage('images/airbattle/gift.png')),
+                              _hasUnreadAward
                                   ? Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: Container(
-                                    width: 8,
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(4)),
-                                  ))
+                                      right: 0,
+                                      top: 0,
+                                      child: Container(
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(4)),
+                                      ))
                                   : Container()
                             ],
                           ),
@@ -166,7 +196,8 @@ class _AirbattleControllerState extends State<AirbattleController> {
               width: Constants.screenWidth(context) - 16,
               height: (Constants.screenWidth(context) - 32) * (246 / 340),
               child: AirbattlePageView(
-                scrollToPage: (int activityId,String startDate,String endDate) {
+                scrollToPage:
+                    (int activityId, String startDate, String endDate) {
                   // 活动切换 包含首次
                   setState(() {
                     _startime = startDate;
@@ -188,10 +219,10 @@ class _AirbattleControllerState extends State<AirbattleController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AirbattleInfoCardView(
-                    startDayIndex: _startDate.day,
+                      startDayIndex: _startDate.day,
                       monthDay: _startDate.month,
                       title: 'Awards',
-                      value:  _model.activityAward,
+                      value: _model.activityAward,
                       imageName: 'info2',
                       des: ' More'),
                   AirbattleInfoCardView(
@@ -260,8 +291,7 @@ class _AirbattleControllerState extends State<AirbattleController> {
             SizedBox(
               height: 24,
             ),
-            Constants.regularGreyTextWidget(
-                _tabDess[_tabIndex], 14),
+            Constants.regularGreyTextWidget(_tabDess[_tabIndex], 14),
             SizedBox(
               height: 16,
             ),
@@ -279,6 +309,12 @@ class _AirbattleControllerState extends State<AirbattleController> {
         ),
       ),
     );
+  }
+
+  @override
+  void activate() {
+    // TODO: implement activate
+    super.activate();
   }
 
   @override

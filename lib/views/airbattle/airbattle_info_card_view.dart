@@ -64,7 +64,7 @@ class _AirbattleInfoCardViewState extends State<AirbattleInfoCardView> {
         }
       },
       child: Container(
-        width: 165,
+        width: (Constants.screenWidth(context) - 32 - 12) / 2.0,
         height: 140,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10), gradient: widget.gradient),

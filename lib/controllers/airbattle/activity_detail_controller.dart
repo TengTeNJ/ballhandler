@@ -150,42 +150,42 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                             });
                           }),
                     ),
-                    detailModel.activityStatus == 2
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.all(16),
-                                child: Constants.mediumWhiteTextWidget(
-                                    'Champion', 16),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: 16, right: 16, bottom: 16),
-                                child: AirBattleDataView(
-                                    createTime: detailModel.champion.createTime,
-                                    grade: Grade.gold,
-                                    sceneId: detailModel.sceneId,
-                                    modeId: detailModel.modeId,
-                                    trainVideo:
-                                        detailModel.champion.championTrainVideo,
-                                    hasVideo: (!detailModel.champion
-                                            .championTrainVideo.isEmpty &&
-                                        detailModel.champion.championTrainVideo
-                                            .contains('http')),
-                                    userName:
-                                        detailModel.champion.championNickName,
-                                    area: detailModel.champion.championCountry,
-                                    birthday: detailModel.champion.createTime,
-                                    rank: '1',
-                                    score:
-                                        detailModel.champion.championTrainScore,
-                                    avgPace:
-                                        detailModel.champion.championAvgPace),
-                              ),
-                            ],
-                          )
-                        : Container(), // 冠军
+                    // detailModel.activityStatus == 2
+                    //     ? Column(
+                    //         crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Container(
+                    //             margin: EdgeInsets.all(16),
+                    //             child: Constants.mediumWhiteTextWidget(
+                    //                 'Champion', 16),
+                    //           ),
+                    //           Container(
+                    //             margin: EdgeInsets.only(
+                    //                 left: 16, right: 16, bottom: 16),
+                    //             child: AirBattleDataView(
+                    //                 createTime: detailModel.champion.createTime,
+                    //                 grade: Grade.gold,
+                    //                 sceneId: detailModel.sceneId,
+                    //                 modeId: detailModel.modeId,
+                    //                 trainVideo:
+                    //                     detailModel.champion.championTrainVideo,
+                    //                 hasVideo: (!detailModel.champion
+                    //                         .championTrainVideo.isEmpty &&
+                    //                     detailModel.champion.championTrainVideo
+                    //                         .contains('http')),
+                    //                 userName:
+                    //                     detailModel.champion.championNickName,
+                    //                 area: detailModel.champion.championCountry,
+                    //                 birthday: detailModel.champion.createTime,
+                    //                 rank: '1',
+                    //                 score:
+                    //                     detailModel.champion.championTrainScore,
+                    //                 avgPace:
+                    //                     detailModel.champion.championAvgPace),
+                    //           ),
+                    //         ],
+                    //       )
+                    //     : Container(), // 冠军
                     (detailModel.activityStatus != 0 &&
                             detailModel.self.nickName != null &&
                             detailModel.self.trainScore != '-')

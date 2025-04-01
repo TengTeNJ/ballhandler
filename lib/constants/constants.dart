@@ -426,6 +426,7 @@ const kSystemStatuRefreshError = 'system_configure_statu_refresh_error'; //  系
 const kAirBattleTabSelect = 'airbattle_tab_select_'; // AirBattle的排名数据的tab切换 /*前缀*/
 const kAirBattleChangeActivity = 'airbattle_change_activity'; // AirBattle首页切换上面的pageview 翻页*/
 const kBrithInfoChange= 'change_brith_day_info'; // 修改生日信息
+const kReadAwardMessage= 'read_message_award'; // 阅读奖励信息
 
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
