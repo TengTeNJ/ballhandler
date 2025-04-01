@@ -8,6 +8,10 @@ plugins {
 }
 allprojects {
     repositories {
+      //  maven { url 'https://maven.aliyun.com/repository/public/' }
+       // maven { url 'https://maven.aliyun.com/repository/central' }
+       // maven { url 'https://repo.huaweicloud.com/repository/maven/' }
+       // maven { url 'https://mirrors.tuna.tsinghua.edu.cn/git/flutter/download.flutter.io' }
         google()
         mavenCentral()
     }
