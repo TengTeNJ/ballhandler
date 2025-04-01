@@ -59,7 +59,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constants.darkThemeColor,
+      backgroundColor: Constants.baseControllerColor,
       body: Stack(
         children: [
           Positioned(
