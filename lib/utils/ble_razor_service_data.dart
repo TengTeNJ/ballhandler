@@ -140,12 +140,12 @@ class BleRazorServiceData {
       case appOnline:
       // 数码管APP控制回复
       // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
-        print('上下线APP控制回复');
+     //   print('上下线APP控制回复');
         break;
       case batteryLevelResponse:
       // 电量
         int value = element[2];
-        print('电量=${value}');
+       // print('电量=${value}');
         BluetoothManager().gameData.powerValue = value;
         BleUtil.listenPowerValue(NavigatorUtil.utilContext, value);
         EventBus().sendEvent(kCurrentDeviceInfoChange);
@@ -153,7 +153,7 @@ class BleRazorServiceData {
       case heartBeatResponse:
       // 心跳上报
         int value = element[2];
-        print('心跳上报=${value}');
+        //print('心跳上报=${value}');
         break;
       case hitResponse:
       // 击打上报 0b0000 0001（如bit1:1号，0无 1击打）
@@ -172,6 +172,7 @@ class BleRazorServiceData {
       // 电机控制完成上报
         int value = element[2];
         print('电机控制完成上报=${value}');
+        EventBus().sendEvent(kReceiveControlResponse);
         break;
     }
 

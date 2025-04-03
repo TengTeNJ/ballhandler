@@ -423,6 +423,7 @@ const kBoardOnLineStatu = 'board_online_statu_change'; // 板子的在线状态�
 const kSystemStatu = 'system_configure_statu'; //  系统配网的状态
 const kSystemStatuRefreshSuccess = 'system_configure_statu_refresh_success'; //  系统配网的状态刷新成功UI
 const kSystemStatuRefreshError = 'system_configure_statu_refresh_error'; //  系统配网的状态刷新错误UI
+const kReceiveControlResponse = 'receive_razor_control_response'; //  收到Razor控制的回复
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
     "7": "ZIGZAG Challenge",

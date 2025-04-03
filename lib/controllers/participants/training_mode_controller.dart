@@ -8,6 +8,7 @@ import 'package:code/controllers/participants/p3_controller.dart';
 import 'package:code/controllers/participants/razor_p1_controller.dart';
 import 'package:code/controllers/participants/razor_p2_select_controller.dart';
 import 'package:code/controllers/participants/test_game_controller.dart';
+import 'package:code/controllers/participants/test_razor_controller.dart';
 import 'package:code/models/ble/ble_model.dart';
 import 'package:code/route/route.dart';
 import 'package:code/services/http/participants.dart';
@@ -162,7 +163,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             }else{
               // 三节
               const List<Widget> _controllers = [
-                RazorP1Controller(),
+                TestRazorController(),
+                // RazorP1Controller(),
                 RazorP2SelectController(),
               ];
               // 清空上次选择的组合

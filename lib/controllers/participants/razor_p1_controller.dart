@@ -1,5 +1,6 @@
 import 'package:code/utils/ble_razor_data.dart';
 import 'package:code/utils/blue_tooth_manager.dart';
+import 'package:code/utils/shape_transformer.dart';
 import 'package:code/views/participants/razor_grid_view.dart';
 import 'package:code/views/participants/razor_mode_scroll_view.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +136,8 @@ class RazorP1Controller extends StatelessWidget {
                         GameUtil gameUtil = GetIt.instance<GameUtil>();
                         // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, lightsControlData([0,0,1]));
                         // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, ledControlData(13, 14));
-                        BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.reversal],timers: [255,255]));
+                        CommandManager.sendCommandsSequentially([motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.reversal],timers: [150,255]),motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.reversal],timers: [50,60])]);
+                        //BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.forward],timers: [100,200]));
                       //  BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, powerOffControlData());
                         // NavigatorUtil.push(Routes.razorgameprocesspage);
                       },

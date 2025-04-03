@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:code/constants/constants.dart';
 import 'package:get_it/get_it.dart';
 import 'blue_tooth_manager.dart';
 import 'global.dart';
@@ -11,14 +12,19 @@ class CommandManager {
   // 按顺序发送数组中的命令
   static Future<void> sendCommandsSequentially(List<List<int>> commands) async {
     for (List<int> command in commands) {
+      print('112233');
       // 创建一个 Completer 来等待回复
       Completer<String> completer = Completer<String>();
       // 监听回复流
       late StreamSubscription<dynamic> subscription; // 声明 subscription
 
       subscription = EventBus().stream.listen((reply) {
-        completer.complete(reply);
-        subscription.cancel();
+        if( reply == kReceiveControlResponse){
+          // 收到控制回复
+          print('收到控制回复');
+          subscription.cancel();
+          completer.complete(reply);
+        }
       });
       // 发送指令
       GameUtil gameUtil = GetIt.instance<GameUtil>();
