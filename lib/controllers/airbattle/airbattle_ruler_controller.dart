@@ -7,9 +7,9 @@ import '../../constants/constants.dart';
 class AirBattleRulerController extends StatelessWidget {
   String startDate;
   String endDate;
-
+ String monthString;
   AirBattleRulerController(
-      {super.key, required this.startDate, required this.endDate});
+      {super.key, required this.startDate, required this.endDate,required this.monthString});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +61,7 @@ class AirBattleRulerController extends StatelessWidget {
               SizedBox(
                 height: 16,
               ),
-              Constants.mediumWhiteTextWidget('Join Spring AirBattle!', 20),
+              Constants.mediumWhiteTextWidget('Join ${monthString} Spring AirBattle!', 20),
               SizedBox(
                 height: 16,
               ),

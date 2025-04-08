@@ -166,6 +166,15 @@ class StringUtil {
       return '-';
     }
   }
+  static String serviceStringToShowMyActivityMonthString(String timeString) {
+    try {
+      DateTime dateTime = stringToDate(timeString);
+      String formattedDate = DateFormat('MMMM').format(dateTime);
+      return formattedDate;
+    } catch (error) {
+      return '';
+    }
+  }
 
   /*数据分析页面自定义时间展示*/
   static String serviceStringMyStatuDateString(String timeString) {

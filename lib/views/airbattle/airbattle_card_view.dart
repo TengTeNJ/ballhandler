@@ -153,6 +153,7 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                       NavigatorUtil.present(AirBattleRulerController(
                         startDate: widget.activityModel.startDate,
                         endDate: widget.activityModel.endDate,
+                        monthString: widget.activityModel.monthString,
                       ));
                     },
 

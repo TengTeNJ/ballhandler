@@ -348,6 +348,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                   NavigatorUtil.present(AirBattleRulerController(
                     startDate: widget.model.startDate,
                     endDate: widget.model.endDate,
+                    monthString: widget.model.monthString,
                   ));
                 },
                 child: Container(
