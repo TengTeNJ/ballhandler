@@ -105,7 +105,7 @@ class AirBattleRulerController extends StatelessWidget {
                   textAlign: TextAlign.start),
               AirBattleRuleView(
                   title:
-                  'Categories:\nBattle Champions: Track the highest scores/best reaction time\n Rising Stars: Celebrate the most improved players.\nConsistent Contenders: Recognize active players with the most submissions.'),
+                  'Categories:\nBattle Champions: Track the highest scores/best reaction time\n Rising Stars: Celebrate the most improved players.\nConsistent Contenders: Recognize those who stayed active and participated the most.'),
               SizedBox(
                 height: 16,
               ),
@@ -118,8 +118,8 @@ class AirBattleRulerController extends StatelessWidget {
               AirBattleRuleView(
                   title: 'Top Performer: Free Ultimater Dangler 2.0'),
               AirBattleRuleView(
-                  title: 'Rising Star (Most Improved): \$100 Store Cash'),
-              AirBattleRuleView(title: 'Consistent Contender: \$50 Store Cash'),
+                  title: 'Rising Star (Most Improved): \$25 Store Cash'),
+              AirBattleRuleView(title: 'Consistent Contender: \$25 Store Cash'),
               SizedBox(
                 height: 16,
               ),
@@ -138,6 +138,34 @@ class AirBattleRulerController extends StatelessWidget {
               AirBattleRuleView(
                   title:
                   'Improve Your Skills: Track your progress and rise to the top.'),
+              SizedBox(height: 16,),
+              Row(
+                children: [Constants.boldWhiteTextWidget('Tie-Breaking Procedure', 20)],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Constants.regularGreyTextWidget(
+                  'Tie Breakers: In the event of a tie in any category, we will use the following procedure:',
+                  16,
+                  height: 1.5,
+                  textAlign: TextAlign.start),
+              SizedBox(
+                height: 8,
+              ),
+              AirBattleRuleView(
+                  title:
+                  'Raffle Draw: A random raffle may be used to determine the winner.'),
+              AirBattleRuleView(
+                  title:
+                  'Top Performer: Participant consistency or/and personal top 10 average may be used to determine the winner.'),
+              AirBattleRuleView(
+                  title:
+                  'Rising Star: The player with the greatest improvement from their starting score will win.'),
+              AirBattleRuleView(
+                  title:
+                  'Consistent Contender: The player with the most valid submissions throughout the event will be awarded the win.'),
+              SizedBox(height: 32,),
             ],
           ),
         ),
