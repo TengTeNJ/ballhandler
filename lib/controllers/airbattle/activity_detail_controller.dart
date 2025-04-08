@@ -349,6 +349,7 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                     startDate: widget.model.startDate,
                     endDate: widget.model.endDate,
                     monthString: widget.model.monthString,
+                    totalDays: widget.model.totalDays,
                   ));
                 },
                 child: Container(

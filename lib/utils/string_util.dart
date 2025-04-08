@@ -166,6 +166,7 @@ class StringUtil {
       return '-';
     }
   }
+
   static String serviceStringToShowMyActivityMonthString(String timeString) {
     try {
       DateTime dateTime = stringToDate(timeString);
@@ -265,7 +266,7 @@ class StringUtil {
   }
 
   /*数字月份转换为英文简写*/
-  static String monthToAbbreviation(int index){
+  static String monthToAbbreviation(int index) {
     List<String> monthStrings = [
       'Jan',
       'Feb',
@@ -281,5 +282,18 @@ class StringUtil {
       'Dec'
     ];
     return monthStrings[index - 1];
+  }
+
+  /*计算两个时间之间的相差天数*/
+  static int calculateTotalDays(String startDateString, String endDateString) {
+    DateTime startDate = DateTime.parse(startDateString);
+    DateTime endDate = DateTime.parse(endDateString);
+    // 确保开始日期早于结束日期
+    if (startDate.isAfter(endDate) || startDateString.isEmpty || endDateString.isEmpty) {
+      return 10; // 默认为10
+    }
+    // 计算两个日期之间的天数差
+    int difference = endDate.difference(startDate).inDays;
+    return difference + 1; // 包括开始和结束日期
   }
 }

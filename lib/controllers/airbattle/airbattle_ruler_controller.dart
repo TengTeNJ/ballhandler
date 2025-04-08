@@ -7,9 +7,10 @@ import '../../constants/constants.dart';
 class AirBattleRulerController extends StatelessWidget {
   String startDate;
   String endDate;
- String monthString;
+  String monthString;
+  String totalDays;
   AirBattleRulerController(
-      {super.key, required this.startDate, required this.endDate,required this.monthString});
+      {super.key, required this.startDate, required this.endDate,required this.monthString,required this.totalDays});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +88,7 @@ class AirBattleRulerController extends StatelessWidget {
                   'Submissions: Submit up to 5 battles per day. Aim to beat your best score each time!'),
               AirBattleRuleView(
                   title:
-                  'Duration: 10 days to compete, starting [${startDate}], ending [${endDate}].'),
+                  'Duration: ${totalDays} days to compete, starting [${startDate}], ending [${endDate}].'),
               SizedBox(
                 height: 16,
               ),

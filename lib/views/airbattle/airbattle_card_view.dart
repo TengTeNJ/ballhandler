@@ -154,6 +154,7 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                         startDate: widget.activityModel.startDate,
                         endDate: widget.activityModel.endDate,
                         monthString: widget.activityModel.monthString,
+                        totalDays: widget.activityModel.totalDays,
                       ));
                     },
 

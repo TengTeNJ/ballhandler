@@ -49,6 +49,7 @@ class ActivityModel {
   String activityRule = ''; // 活动规则
   String activityH5 = ''; // 活动H5页面
   String monthString = '';
+  String totalDays = '10';
   bool activityShow = true; // 活动是否显示：false否，true是
   String get timeDifferentString {
     String targetTime = this.endDate + ' 23:59';
@@ -291,6 +292,8 @@ class AirBattle {
               ? StringUtil.serviceStringToShowDateString(
               _map['startDate'].toString())
               : '--';
+          model.totalDays = StringUtil.calculateTotalDays(!ISEmpty(_map['startDate'])
+              ?_map['startDate'] : '', !ISEmpty(_map['endDate']) ? _map['endDate'] : '').toString();
           model.monthString = !ISEmpty(_map['startDate'])
               ? StringUtil.serviceStringToShowMyActivityMonthString(
               _map['startDate'].toString())
