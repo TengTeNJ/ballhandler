@@ -1,9 +1,11 @@
 
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/airbattle/airbattle_guide_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/system_device.dart';
 import 'package:code/views/airbattle/airbattle_data_view.dart';
 import 'package:code/views/airbattle/airbattle_detail_grid_view.dart';
@@ -303,6 +305,11 @@ class _ActivityDetailControllerState extends State<ActivityDetailController> {
                               TTDialog.bleListDialog(context);
                             }
                             BleUtil.begainScan(context);
+                            return;
+                          }
+                         String? _value = await NSUserDefault.getValue<String>(detailModel.activityId.toString());
+                          if(_value == null){
+                            NavigatorUtil.present(AirBattleGuideController(model:widget.model,detailModel: detailModel));
                             return;
                           }
                           GameUtil gameUtil = GetIt.instance<GameUtil>();
