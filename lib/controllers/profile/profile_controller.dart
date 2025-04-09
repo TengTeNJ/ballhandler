@@ -23,6 +23,7 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
+import '../../services/http/airbattle.dart';
 import '../../utils/notification_bloc.dart';
 import '../account/login_page_controller.dart';
 
@@ -35,6 +36,7 @@ class ProfileController extends StatefulWidget {
 
 class _ProfileControllerState extends State<ProfileController> {
   late MyAccountDataModel _model = MyAccountDataModel();
+  AirBattleHomeModel _airbattleModel = AirBattleHomeModel();
   late StreamSubscription subscription;
   late List<String> scoreMilestoneData;
 int scoreLevel = -1;
@@ -47,6 +49,7 @@ int scoreLevel = -1;
     scoreMilestoneData = getScoreMileStoneData(0)['data'];
     avgMilestoneData = getAvgPaceMileStoneData(0)['data'];
     queryMyAccountInfoData();
+    queryAirBattleData();
     // 监听
     subscription = EventBus().stream.listen((event) {
       if (event == kSignOut) {
@@ -95,6 +98,17 @@ int scoreLevel = -1;
     }
   }
 
+  // 查询参与的活动列表数据 比如消息未读的数量
+  queryAirBattleData() async {
+    final _response = await AirBattle.queryAirBattleData();
+    if (_response.success && _response.data != null) {
+      _airbattleModel = _response.data!;
+      if (mounted) {
+        setState(() {});
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,6 +125,35 @@ int scoreLevel = -1;
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      GestureDetector(
+                        onTap: () {
+                          NavigatorUtil.push('message');
+                        },
+                        child: Container(
+                          width: 20,
+                          height: 24,
+                          child: Stack(
+                            children: [
+                              Image(
+                                  image:
+                                      AssetImage('images/airbattle/message.png')),
+                              (_airbattleModel.unreadCount != null && _airbattleModel.unreadCount > 0)
+                                  ? Positioned(
+                                      right: 0,
+                                      top: 0,
+                                      child: Container(
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.circular(4)),
+                                      ))
+                                  : Container()
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16,),
                       GestureDetector(
                         onTap: () {
                           final _hasLogin = UserProvider.of(context).hasLogin;

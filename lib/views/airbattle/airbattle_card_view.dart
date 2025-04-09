@@ -88,33 +88,6 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                             color: hexStringToOpacityColor('#1C1E21', 0.6),
                             borderRadius: BorderRadius.circular(5)),
                       )),
-            // Positioned(
-            //     right: 12,
-            //     top: 8,
-            //     child: GestureDetector(
-            //       behavior: HitTestBehavior.opaque,
-            //       onTap: () {
-            //         print('点击活动规则入口');
-            //         NavigatorUtil.present(AirBattleRulerController(
-            //           startDate: widget.activityModel.startDate,
-            //           endDate: widget.activityModel.endDate,
-            //         ));
-            //       },
-            //       child: Container(
-            //         width: 26,
-            //         height: 26,
-            //         decoration: BoxDecoration(
-            //             color: hexStringToOpacityColor('#1C1E21', 0.6),
-            //             borderRadius: BorderRadius.circular(13)),
-            //         child: Center(
-            //           child: Image(
-            //             image: AssetImage('images/airbattle/question.png'),
-            //             height: 13,
-            //             fit: BoxFit.fitHeight,
-            //           ),
-            //         ),
-            //       ),
-            //     )),
             Positioned(
               top: 30,
               left: 0,
@@ -161,7 +134,7 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Constants.customTextWidget('Learn More', 12, '#B6F61D'),
+                        Constants.customTextWidget('Learn More', 12, '#F8850B'),
                         SizedBox(width: 4,),
                         Image(image: AssetImage('images/airbattle/green.png'),height: 8,fit: BoxFit.fitHeight,)
                       ],
@@ -172,8 +145,8 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
             ),
             Positioned(
               bottom: 20,
-              left: 36,
-              right: 36,
+              left: 56,
+              right: 56,
               child: GestureDetector(
                 onTap: () async {},
                 child: Container(
@@ -181,11 +154,11 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                       colors: [
-                        Color.fromRGBO(182, 246, 29, 1.0),
-                        Color.fromRGBO(219, 219, 20, 1.0)
+                        Color.fromRGBO(239, 137, 20, 1.0),
+                        Color.fromRGBO(207, 57, 26, 1.0)
                       ],
                     ),
                   ),
@@ -195,7 +168,7 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                       children: [
                         Align(
                           alignment: Alignment.center,
-                          child: Constants.boldBlackTextWidget('Join Now', 16),
+                          child: Constants.boldWhiteTextWidget('Join Now', 16),
                         ),
                         Positioned(
                             top: 6,

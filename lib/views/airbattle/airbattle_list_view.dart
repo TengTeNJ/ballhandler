@@ -97,7 +97,7 @@ class _AirbattleListViewState extends State<AirbattleListView> {
                     ),
                 itemCount: _currentDatas.length),
           )
-        : NoDataView();
+        : Container();
   }
 
   @override
