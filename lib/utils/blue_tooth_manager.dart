@@ -20,7 +20,6 @@ import '../models/ble/ble_model.dart';
 import 'global.dart';
 import 'notification_bloc.dart';
 import 'package:audioplayers/audioplayers.dart';
-
 class BluetoothManager {
   static final BluetoothManager _instance = BluetoothManager._internal();
   final _ble = FlutterReactiveBle();

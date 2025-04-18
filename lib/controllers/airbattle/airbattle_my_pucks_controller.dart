@@ -1,6 +1,7 @@
 import 'package:code/models/airbattle/heatmap_model.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/utils/color.dart';
+import 'package:code/utils/string_util.dart';
 import 'package:code/views/airbattle/airbattle_my_pucks_list_view.dart';
 import 'package:code/views/airbattle/heatmap_container_view.dart';
 import 'package:code/views/participants/today_data_view.dart';
@@ -35,10 +36,18 @@ class AirbattleMyPucksController extends StatefulWidget {
 
 class _AirbattleMyPucksControllerState
     extends State<AirbattleMyPucksController> {
+  bool _crossMonth = false;
   List<HeatMapDataModel> _heatMapDats = [];
   String _raiseRange = '-';
   queryHeatMapDate() async{
-   final _response =  await AirBattle.queryAirBattleHetMapData(widget.activityId.toString(), widget.startTime.toString(), widget.endTime.toString());
+    // if(widget.startTime.length)
+    DateTime _startDate = StringUtil.stringToDate(widget.startTime.toString());
+    DateTime _endDate = StringUtil.stringToDate(widget.endTime.toString());
+    if(_startDate.month != _endDate.month){
+      _crossMonth = true;
+    }
+
+    final _response =  await AirBattle.queryAirBattleHetMapData(widget.activityId.toString(), widget.startTime.toString(), widget.endTime.toString());
    if(_response.success && _response.data != null){
      _raiseRange = _response.data!.raiseRange;
      if(_response.data!.datas != null){
@@ -111,6 +120,7 @@ class _AirbattleMyPucksControllerState
                 height: 24,
               ),
               HeatMapContainerView(
+                crossMonth: _crossMonth,
                 heatMapDats: _heatMapDats,
                 monthDay: widget.monthDay,
                 startDayIndex: widget.startDayIndex,

@@ -67,7 +67,7 @@ class AirBattleRulerController extends StatelessWidget {
                 SizedBox(
                   height: 16,
                 ),
-                Constants.mediumWhiteTextWidget('Join ${monthString} Spring AirBattle!', 20),
+                Constants.mediumWhiteTextWidget('Join Spring AirBattle!', 20),
                 SizedBox(
                   height: 16,
                 ),

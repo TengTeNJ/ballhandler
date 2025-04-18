@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:code/controllers/airbattle/airbattle_ruler_controller.dart';
+import 'package:code/controllers/base/tt_webview_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
@@ -123,12 +124,17 @@ class _AirbattleCardViewState extends State<AirbattleCardView> {
                     behavior: HitTestBehavior.opaque,
                     onTap: (){
                       print('点击活动规则入口');
-                      NavigatorUtil.present(AirBattleRulerController(
-                        startDate: widget.activityModel.startDate,
-                        endDate: widget.activityModel.endDate,
-                        monthString: widget.activityModel.monthString,
-                        totalDays: widget.activityModel.totalDays,
-                      ));
+                      // 配置活动规则的H5页面的话直接跳转webview 没有的话 直接跳转到本地的页面
+                      if(!ISEmpty(widget.activityModel.activityH5)){
+                        NavigatorUtil.present(TTWebViewController(webUrl: widget.activityModel.activityH5,));
+                      }else{
+                        NavigatorUtil.present(AirBattleRulerController(
+                          startDate: widget.activityModel.startDate,
+                          endDate: widget.activityModel.endDate,
+                          monthString: widget.activityModel.monthString,
+                          totalDays: widget.activityModel.totalDays,
+                        ));
+                      }
                     },
 
                     child: Row(
