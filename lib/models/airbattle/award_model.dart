@@ -24,7 +24,7 @@ class AwardModel {
   }
 
   String get des {
-    return 'POTENT HOCKSY Amazon ' + this.rewardMoney.toString() + '\$ Coupons';
+    return 'POTENT HOCKEY Amazon ' + this.rewardMoney.toString() + '\$ Coupons';
   }
 
   String get showTime{

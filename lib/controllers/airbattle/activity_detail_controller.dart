@@ -409,7 +409,7 @@ Widget _endButtonView(ActivityDetailModel model) {
       ),
     ),
     child: Center(
-      child: Constants.boldWhiteTextWidget('End', 16),
+      child: Constants.boldWhiteTextWidget('Ended', 16),
     ),
   );
 }

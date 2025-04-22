@@ -104,7 +104,7 @@ class ActivityModel {
     if (this.activityStatus == 1) {
       tempString = 'Under Way';
     } else if (this.activityStatus == 2) {
-      tempString = 'End';
+      tempString = 'Ended';
     }
     return tempString;
   }

@@ -57,9 +57,9 @@ class _AirBattleAwardsControllerState extends State<AirBattleAwardsController> {
             SizedBox(height: 60,),
             AirBattleAwardView(model: AwardViewModel(title: 'Top Performer', imageName: 'images/airbattle/top.png', detail: ' Free Ultimater Dangler 2.0')),
             SizedBox(height: 16,),
-            AirBattleAwardView(model: AwardViewModel(title: 'Rising Star', imageName: 'images/airbattle/rising.png', des: ' (Most Improved)', detail: ' \$100 Store Cash')),
+            AirBattleAwardView(model: AwardViewModel(title: 'Rising Star', imageName: 'images/airbattle/rising.png', des: ' (Most Improved)', detail: ' \$25 Store Cash')),
             SizedBox(height: 16,),
-            AirBattleAwardView(model: AwardViewModel(title: 'Consistent Contender', imageName: 'images/airbattle/consistent.png', detail: ' \$50 Store Cash')),
+            AirBattleAwardView(model: AwardViewModel(title: 'Consistent Contender', imageName: 'images/airbattle/consistent.png', detail: ' \$25 Store Cash')),
 
           ],
         ),
