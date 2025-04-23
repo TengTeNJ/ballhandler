@@ -12,6 +12,7 @@ class AwardModel {
   String createTime = '--';
   String activityName = ''; // 活动名称
   String rewardId = '1';
+  String rewardRemark = 'POTENT HOCKEY'; // 奖品描述
   String get statuString {
     if (this.rewardStatus == 0) {
       return 'No Viewed';

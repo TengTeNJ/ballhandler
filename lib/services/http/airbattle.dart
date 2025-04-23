@@ -429,7 +429,8 @@ class AirBattle {
             !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
         model.rewardId =
             !ISEmpty(_map['rewardId']) ? _map['rewardId'].toString() : '1';
-
+        model.rewardRemark =
+        !ISEmpty(_map['rewardRemark']) ? _map['rewardRemark'].toString() : 'POTENT HOCKEY';
         _list.add(model);
       });
       awardDataModelodel.data = _list;
