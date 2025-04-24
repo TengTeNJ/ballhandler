@@ -1,3 +1,4 @@
+import 'package:code/constants/constants.dart';
 import 'package:code/utils/string_util.dart';
 
 enum AwardStatu { noViewed, viewed, sent }
@@ -25,7 +26,12 @@ class AwardModel {
   }
 
   String get des {
-    return 'POTENT HOCKEY Amazon ' + this.rewardMoney.toString() + '\$ Coupons';
+    if(ISEmpty(this.rewardRemark)){
+      return 'POTENT HOCKEY Amazon ' + this.rewardMoney.toString() + '\$ Coupons';
+    }else{
+      // 返回后台管理配置的描述 使用rewardRemark字段
+      return this.rewardRemark;
+    }
   }
 
   String get showTime{
