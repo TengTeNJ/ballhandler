@@ -427,7 +427,7 @@ const kAirBattleTabSelect = 'airbattle_tab_select_'; // AirBattle的排名数据
 const kAirBattleChangeActivity = 'airbattle_change_activity'; // AirBattle首页切换上面的pageview 翻页*/
 const kBrithInfoChange= 'change_brith_day_info'; // 修改生日信息
 const kReadAwardMessage= 'read_message_award'; // 阅读奖励信息
-
+const kExchangePage = 'exchange_page'; // 交换页面的顺序
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
     "7": "ZIGZAG Challenge",

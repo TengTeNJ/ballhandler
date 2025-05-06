@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
+import 'package:code/utils/array_util.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../utils/notification_bloc.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   Function(int index)? onTap;
@@ -15,6 +20,7 @@ class CustomBottomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
+  late StreamSubscription subscription;
   final List<BottomNavigationBarItem> _items = [
     BottomNavigationBarItem(
         icon: Image(
@@ -73,20 +79,32 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   final double unselectedFontSize = 10;
   final double spacing = 6; // 图标和文字之间的间距
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    subscription = EventBus().stream.listen((event) async{
+      if(event == kExchangePage){
+        swapElements(_items, 0, 1);
+        setState(() {
+
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return  BottomNavigationBar(
       backgroundColor: Constants.darkThemeColor,
       currentIndex: currentIndex,
       onTap: (index) async{
         setState(() {
-          print(controBlueLightBoard(3, [1,1,0,1]));
           // AirBattle页面登录拦截
          if(index != 0){
            // 判断登录的拦截
            final _hasLogin =  UserProvider.of(context).hasLogin ;
            if(_hasLogin == false){
              //Navigator.pushNamed(NavigatorUtil.utilContext, Routes.login);
-             print('Routes.login=${Routes.login}');
             NavigatorUtil.present(LoginPageController(),routesName: Routes.login);
            }else{
              this.currentIndex = index;
@@ -135,6 +153,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         SizedBox(height: spacing),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
   }
 }
 

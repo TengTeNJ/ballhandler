@@ -14,6 +14,7 @@ import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/app_purse.dart';
+import 'package:code/utils/game_util.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/message_ytil.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -39,7 +40,7 @@ class _RootPageControllerState extends State<RootPageController> {
   int _currentIndex = 0;
   late PageController _pageController;
   late StreamSubscription subscription;
-  final List<StatefulWidget> _pageViews = [
+   List<StatefulWidget> _pageViews = [
     HomePageController(),
     //AirBattleHomeController(),
     AirbattleController(),
@@ -70,8 +71,10 @@ class _RootPageControllerState extends State<RootPageController> {
       if (event == kLoginSucess) {
         await querySubScribeInfo();
         loadLaunchPage();
+        queryActivityStatu();
       }
     });
+    queryActivityStatu();
   }
 
   /*查询订阅信息 */
@@ -82,6 +85,35 @@ class _RootPageControllerState extends State<RootPageController> {
       if(model != null){
         UserProvider.of(context).subscribeModel = model;
       }
+    }
+  }
+
+  /*查询是否有正在进行中的活动 来调整AirBattle额位置*/
+  queryActivityStatu() async{
+    final _token = await NSUserDefault.getValue(kAccessToken);
+    if (_token != null && _token.length > 0) {
+      final _value = await ifContainOngoingActivity();
+      if(_value){
+        EventBus().sendEvent(kExchangePage);
+        _pageViews.clear();
+        _pageViews = [
+          AirbattleController(),
+          HomePageController(),
+          RankingController(),
+          ProfileController(),
+        ];
+      }else{
+        _pageViews = [
+          HomePageController(),
+          //AirBattleHomeController(),
+          AirbattleController(),
+          RankingController(),
+          ProfileController(),
+        ];
+      }
+      setState(() {
+
+      });
     }
   }
 

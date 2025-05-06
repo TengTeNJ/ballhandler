@@ -94,7 +94,7 @@ class LoginUtil {
       }
     } else {
       // facebook登录
-      FaceBookLoginUtil.facebookLogin();
+     // FaceBookLoginUtil.facebookLogin();
     }
     return ApiResponse(success: false);
   }

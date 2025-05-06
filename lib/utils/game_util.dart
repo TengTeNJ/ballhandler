@@ -7,6 +7,7 @@ import '../models/game/light_ball_model.dart';
 import 'package:code/utils/string_util.dart';
 import 'dart:math';
 import '../models/game/light_ball_model.dart';
+import '../services/http/airbattle.dart';
 import 'ble_ultimate_data.dart';
 import 'ble_ultimate_service_data.dart';
 import 'blue_tooth_manager.dart';
@@ -502,4 +503,25 @@ bool saveBoardHitMessgeId(HitTargetModel model) {
       }
   }
   return false;
+}
+
+/*是否存在正在进行中的活动*/
+Future<bool> ifContainOngoingActivity() async{
+  List<ActivityModel> _datas = [];
+  final _response = await AirBattle.queryAllActivityListData(1);
+  if (_response.success && _response.data != null) {
+    _datas.addAll(_response.data!.data);
+    try {
+      ActivityModel _dataModel = _datas.firstWhere((element) => element.activityStatus == 1);
+      if(_dataModel != null){
+        print('存在正在进行中的活动');
+        return true;
+      }
+    } catch (e) {
+      print('不存在正在进行中的活动');
+      return false;
+    }
+  }
+  return false;
+
 }
