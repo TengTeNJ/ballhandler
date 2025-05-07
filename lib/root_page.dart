@@ -72,6 +72,18 @@ class _RootPageControllerState extends State<RootPageController> {
         await querySubScribeInfo();
         loadLaunchPage();
         queryActivityStatu();
+      }else if(event == kSignOut){
+        // 退出登录
+        _pageViews = [
+          HomePageController(),
+          //AirBattleHomeController(),
+          AirbattleController(),
+          RankingController(),
+          ProfileController(),
+        ];
+        setState(() {
+
+        });
       }
     });
     queryActivityStatu();

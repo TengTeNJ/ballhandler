@@ -21,7 +21,7 @@ class CustomBottomNavigationBar extends StatefulWidget {
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   late StreamSubscription subscription;
-  final List<BottomNavigationBarItem> _items = [
+  List<BottomNavigationBarItem> _items = [
     BottomNavigationBarItem(
         icon: Image(
           image: AssetImage('images/bottom/participants.png'),
@@ -52,7 +52,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         ),
         label: 'Profile'),
   ]; // default Items
-  final List<Image> _selectedImages = [
+  List<Image> _selectedImages = [
    Image(
       image: AssetImage('images/bottom/participants_selected.png'),
       width: 32,
@@ -85,6 +85,64 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     subscription = EventBus().stream.listen((event) async{
       if(event == kExchangePage){
         swapElements(_items, 0, 1);
+        swapElements(_selectedImages, 0, 1);
+        setState(() {
+
+        });
+      }else if(event == kSignOut){
+        // 退出登录 恢复
+        _items = [
+          BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage('images/bottom/participants.png'),
+                width: 32,
+                height: 16,
+              ),
+              label: 'Participants'),
+          BottomNavigationBarItem(
+              icon: Image(
+                  image: AssetImage('images/bottom/airbattle.png'),
+                  width: 40,
+                  height: 17
+              ),
+              label: 'Air Battle'),
+          BottomNavigationBarItem(
+              icon: Image(
+                  image: AssetImage('images/bottom/ranking.png'),
+                  width: 20,
+                  height: 20
+              ),
+              label: 'Leaderboards'),
+          BottomNavigationBarItem(
+              icon: Image(
+                fit: BoxFit.cover,
+                image: AssetImage('images/bottom/profile.png'),
+                width: 20,
+                height: 20,
+              ),
+              label: 'Profile'),
+        ];
+        _selectedImages = [
+          Image(
+            image: AssetImage('images/bottom/participants_selected.png'),
+            width: 32,
+            height: 16,
+          ),
+          Image(
+              image: AssetImage('images/bottom/airbattle_selected.png'),
+              width: 40,
+              height: 17
+          ),
+          Image(
+              image: AssetImage('images/bottom/ranking_selected.png'),
+              width: 20,
+              height: 20
+          ),Image(
+            image: AssetImage('images/bottom/profile_selected.png'),
+            width: 20,
+            height: 20,
+          )
+        ];
         setState(() {
 
         });

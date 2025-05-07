@@ -37,8 +37,8 @@ class SubscribeMode{
     '(Premium)'
   ];
   List<bool> _basicAccesss = [
-    false,
-    false,
+    true,
+    true,
     false,
     false,
     false,
