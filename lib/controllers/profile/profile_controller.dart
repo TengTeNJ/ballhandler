@@ -193,28 +193,22 @@ int scoreLevel = -1;
                           if (pickedFile == null) {
                             return;
                           }
+
                           final croppedFile = await ImageCropper().cropImage(
-                            cropStyle: CropStyle.circle,
-                            // maxHeight: 64,
-                            // maxWidth: 64,
-                            sourcePath:
-                                pickedFile != null ? pickedFile!.path : '',
-                            aspectRatioPresets: [
-                              CropAspectRatioPreset.ratio3x2,
-                              CropAspectRatioPreset.ratio4x3,
-                              CropAspectRatioPreset.ratio16x9,
-                              CropAspectRatioPreset.square,
-                            ],
-                            androidUiSettings: AndroidUiSettings(
+                            sourcePath: pickedFile!.path,
+                            uiSettings: [
+                              AndroidUiSettings(
                                 toolbarTitle: 'Cropper',
                                 toolbarColor: Colors.deepOrange,
                                 toolbarWidgetColor: Colors.white,
-                                initAspectRatio: CropAspectRatioPreset.original,
-                                lockAspectRatio: false),
-                            iosUiSettings: IOSUiSettings(
-                              title: 'Cropper',
-                            ),
+                                lockAspectRatio: false,
+                              ),
+                              IOSUiSettings(
+                                title: 'Cropper',
+                              ),
+                            ],
                           );
+
                           if (croppedFile != null) {
                             // 上传头像
                             final _response = await Participants.uploadAsset(

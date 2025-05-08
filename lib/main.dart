@@ -8,7 +8,6 @@ import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_it/get_it.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

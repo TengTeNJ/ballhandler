@@ -19,6 +19,13 @@ import '../../utils/dialog.dart';
 import '../../utils/global.dart';
 import 'package:drop_down_list/drop_down_list.dart';
 
+class TTSelectModel {
+  String data = '';
+  String value = '';
+
+  TTSelectModel({this.data = '', this.value = ''});
+}
+
 class DeviceDebugController extends StatefulWidget {
   const DeviceDebugController({super.key});
 
@@ -29,9 +36,10 @@ class DeviceDebugController extends StatefulWidget {
 class _DeviceDebugControllerState extends State<DeviceDebugController> {
   late StreamSubscription subscription;
   late Timer timer;
-  List<SelectedListItem> channelDatas = [];
-  List<SelectedListItem> levelDatas = [];
-  List<SelectedListItem> longProgressDatas = [];
+  List<SelectedListItem<TTSelectModel>> channelDatas = [];
+  List<SelectedListItem<TTSelectModel>> levelDatas = [];
+  List<SelectedListItem<TTSelectModel>> longProgressDatas = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,25 +61,49 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
 
   initData() {
     for (int i = 0; i < kChannelArray.length; i++) {
-      SelectedListItem item = SelectedListItem(name: '通道${kChannelArray[i]}');
-      item.value = kChannelArray[i].toString();
+      final item = SelectedListItem<TTSelectModel>(
+          data: TTSelectModel(
+        data: '通道${kChannelArray[i]}',
+        value: kChannelArray[i].toString(),
+      ));
+      //   {
+      //     'data': '通道${kChannelArray[i]}',
+      // 'value': kChannelArray[i].toString()
+      // }
+      // item.value = kChannelArray[i].toString();
       if (i == 2) {
         item.isSelected = true;
       }
       channelDatas.add(item);
     }
 
-    List<String> levelArray = ['最高', '高', '中', '低','最低(测试)','极限(测试)'];
+    List<String> levelArray = ['最高', '高', '中', '低', '最低(测试)', '极限(测试)'];
     for (int i = 0; i < levelArray.length; i++) {
-      SelectedListItem item = SelectedListItem(name:levelArray [i]);
-      item.value = i.toString();
+      // SelectedListItem item = SelectedListItem(name: levelArray[i]);
+      // item.value = i.toString();
+      // SelectedListItem item = SelectedListItem<Map<String, String>>(
+      //     data: {'data': '${levelArray[i]}', 'value': i.toString()});
+      final item = SelectedListItem<TTSelectModel>(
+          data: TTSelectModel(
+            data: '${levelArray[i]}',
+            value: i.toString(),
+          ));
       levelDatas.add(item);
     }
 
     List<String> longProgressArray = ['关闭', '打开工厂模式', '打开用户模式'];
     for (int i = 0; i < longProgressArray.length; i++) {
-      SelectedListItem item = SelectedListItem(name:longProgressArray [i]);
-      item.value = i.toString();
+      // SelectedListItem item = SelectedListItem(name: longProgressArray[i]);
+      // item.value = i.toString();
+      // SelectedListItem item = SelectedListItem<Map<String, String>>(
+      //     data: {'data': '${longProgressArray[i]}', 'value': i.toString()});
+      //
+      final item = SelectedListItem<TTSelectModel>(
+          data: TTSelectModel(
+            data: '${longProgressArray[i]}',
+            value: i.toString(),
+          ));
+
       longProgressDatas.add(item);
     }
   }
@@ -99,12 +131,12 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
     // 查询长按监测
     BluetoothManager()
         .writerDataToDevice(gameUtil.selectedDeviceModel, queryLongProgress());
-    Future.delayed(Duration(milliseconds: 1000),(){
+    Future.delayed(Duration(milliseconds: 1000), () {
       // 查询蓝牙名称
       BluetoothManager()
           .writerDataToDevice(gameUtil.selectedDeviceModel, queryBLTName());
     });
-    Future.delayed(Duration(milliseconds: 1500),(){
+    Future.delayed(Duration(milliseconds: 1500), () {
       // 查询蓝牙mac地址
       BluetoothManager()
           .writerDataToDevice(gameUtil.selectedDeviceModel, queryBLTMac());
@@ -133,14 +165,38 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
               ),
               Consumer<UserModel>(builder: (context, userModel, child) {
                 return SettingView(
-                  showArrows: [true, true, true, false,false,false,true],
-                  showSwitchs: [false, false, false, true,true,true,false],
-                  showDropDown: [true, false, false, false,false,false,true,true],
+                  showArrows: [true, true, true, false, false, false, true],
+                  showSwitchs: [false, false, false, true, true, true, false],
+                  showDropDown: [
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true,
+                    true
+                  ],
                   title: '状态',
-                  datas: ['通信信道', '干扰容错级别', '自动关机时间', 'DEBUG','BT自动断连','321预备','长按检测功能'],
+                  datas: [
+                    '通信信道',
+                    '干扰容错级别',
+                    '自动关机时间',
+                    'DEBUG',
+                    'BT自动断连',
+                    '321预备',
+                    '长按检测功能'
+                  ],
                   detailTitles: [
                     '通道' + BluetoothManager().debugModel.channel.toString(),
-                    ['最高', '高', '中', '低','最低(测试)','极限(测试)'][BluetoothManager().debugModel.interferenceLevel],
+                    [
+                      '最高',
+                      '高',
+                      '中',
+                      '低',
+                      '最低(测试)',
+                      '极限(测试)'
+                    ][BluetoothManager().debugModel.interferenceLevel],
                     BluetoothManager().debugModel.autoOffRemainString,
                     '',
                     '',
@@ -151,37 +207,37 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
                     if (index == 0) {
                       // 修改信道
                       DropDownState(
-                        heightOfBottomSheet: 500,
-                        DropDown(
+                        dropDown: DropDown<TTSelectModel>(
                           // isSearchVisible: false,
                           bottomSheetTitle:
                               Constants.boldBlackTextWidget('通信通道', 20),
                           searchHintText: '搜索',
                           data: channelDatas,
-                          onSelected: (List<dynamic> selectedList) {
-                            SelectedListItem item = selectedList.first;
+                          onSelected: (selectedList) {
+                            final item = selectedList.first;
                             print('selectedList = ${selectedList}');
                             GameUtil gameUtil = GetIt.instance<GameUtil>();
                             int index = kChannelArray
-                                .indexOf(int.parse(item.value ?? '0'));
+                                .indexOf(int.parse(item.data.value ?? '0'));
                             BluetoothManager().writerDataToDevice(
                                 gameUtil.selectedDeviceModel,
                                 setChannel(index));
                           },
                           enableMultipleSelection: false,
                         ),
+                        // heightOfBottomSheet: 500,
                       ).showModal(context);
                     } else if (index == 1) {
                       DropDownState(
-                        heightOfBottomSheet: 500,
-                        DropDown(
+                        // heightOfBottomSheet: 500,
+                        dropDown: DropDown<TTSelectModel>(
                           // isSearchVisible: false,
                           bottomSheetTitle:
                           Constants.boldBlackTextWidget('干扰容错级别', 20),
                           searchHintText: '搜索',
                           data: levelDatas,
                           onSelected: (List<dynamic> selectedList) {
-                            SelectedListItem item = selectedList.first;
+                            final item = selectedList.first;
                             print('selectedList = ${selectedList}');
                             GameUtil gameUtil = GetIt.instance<GameUtil>();
                             int index = int.parse(item.value!);
@@ -189,7 +245,7 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
                                 gameUtil.selectedDeviceModel,
                                 setReferenceLevell(index));
                           },
-                          enableMultipleSelection: false,
+                          // enableMultipleSelection: false,
                         ),
                       ).showModal(context);
                     } else if (index == 2) {
@@ -203,25 +259,25 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
                             gameUtil.selectedDeviceModel,
                             setAutoOffTime(int.parse(value)));
                       });
-                    }else if(index == 6){
+                    } else if (index == 6) {
                       DropDownState(
-                        heightOfBottomSheet: 500,
-                        DropDown(
+                       // heightOfBottomSheet: 500,
+                        dropDown: DropDown<TTSelectModel>(
                           // isSearchVisible: false,
                           bottomSheetTitle:
                           Constants.boldBlackTextWidget('长按检测功能', 20),
                           searchHintText: '搜索',
                           data: longProgressDatas,
-                          onSelected: (List<dynamic> selectedList) {
-                            SelectedListItem item = selectedList.first;
+                          onSelected: (selectedList) {
+                            final item = selectedList.first;
                             print('selectedList = ${selectedList}');
                             GameUtil gameUtil = GetIt.instance<GameUtil>();
                             BluetoothManager().writerDataToDevice(
                                 gameUtil.selectedDeviceModel,
-                                setLongProgress(int.parse(item.value!)));
+                                setLongProgress(int.parse(item.data.value!)));
                           },
                           enableMultipleSelection: false,
-                        ),
+                        )
                       ).showModal(context);
                     }
                   },
@@ -232,7 +288,7 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
               ),
               SettingView(
                   title: '重置',
-                  datas: ['REBOOT', '重置自动关机定时器','恢复出厂设置'],
+                  datas: ['REBOOT', '重置自动关机定时器', '恢复出厂设置'],
                   detailTitles: ['', '', ''],
                   showArrows: [true, true, true],
                   selectItem: (index) {
@@ -246,7 +302,7 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
                       GameUtil gameUtil = GetIt.instance<GameUtil>();
                       BluetoothManager().writerDataToDevice(
                           gameUtil.selectedDeviceModel, resetTimer());
-                    }else if (index == 2) {
+                    } else if (index == 2) {
                       // 恢复出厂设置
                       GameUtil gameUtil = GetIt.instance<GameUtil>();
                       BluetoothManager().writerDataToDevice(
@@ -258,8 +314,12 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
               ),
               SettingView(
                   title: '蓝牙',
-                  datas: ['重置蓝牙模块', '蓝牙名称','蓝牙MAC地址'],
-                  detailTitles: ['', BluetoothManager().debugModel.bltName, BluetoothManager().debugModel.bltMac],
+                  datas: ['重置蓝牙模块', '蓝牙名称', '蓝牙MAC地址'],
+                  detailTitles: [
+                    '',
+                    BluetoothManager().debugModel.bltName,
+                    BluetoothManager().debugModel.bltMac
+                  ],
                   showArrows: [true, true, true],
                   selectItem: (index) {
                     if (index == 0) {
@@ -274,30 +334,28 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
                           return;
                         }
                         bool valid = StringUtil.isValidNickname(value);
-                        if(!valid){
+                        if (!valid) {
                           TTToast.showErrorInfo('请输入合法的蓝牙名称');
                           return;
                         }
                         GameUtil gameUtil = GetIt.instance<GameUtil>();
                         BluetoothManager().writerDataToDevice(
-                            gameUtil.selectedDeviceModel,
-                            setBLTName(value));
+                            gameUtil.selectedDeviceModel, setBLTName(value));
                       });
-                    }else if (index == 2) {
+                    } else if (index == 2) {
                       // 蓝牙MAC地址
                       TTDialog.setBLTMacDialog(context, (value) async {
                         if (ISEmpty(value)) {
                           return;
                         }
                         bool valid = StringUtil.isValidBltMac(value);
-                        if(!valid){
+                        if (!valid) {
                           TTToast.showErrorInfo('请输入合法的蓝牙Mac地址');
                           return;
                         }
                         GameUtil gameUtil = GetIt.instance<GameUtil>();
                         BluetoothManager().writerDataToDevice(
-                            gameUtil.selectedDeviceModel,
-                             setBLTMac(value));
+                            gameUtil.selectedDeviceModel, setBLTMac(value));
                       });
                     }
                   }),
