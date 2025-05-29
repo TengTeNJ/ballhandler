@@ -1,5 +1,4 @@
-import 'package:flutter_app_badger/flutter_app_badger.dart';
-
+import 'package:flutter_app_badge/flutter_app_badge.dart';
 import '../constants/constants.dart';
 import 'nsuserdefault_util.dart';
 
@@ -10,14 +9,14 @@ class MessageUtil {
     // 更新角标
     if(unreadCount>=0){
       print('更新角标unreadCount=${unreadCount}');
-      FlutterAppBadger.updateBadgeCount(unreadCount);
+      FlutterAppBadge.count(unreadCount);
     }
   }
 
   /*根本本地数据初始化应用后角标*/
   static initMessageNadge() async{
     final _count = await NSUserDefault.getValue(kUnreadMessageCount) ?? 0;
-    FlutterAppBadger.updateBadgeCount(_count);
+    FlutterAppBadge.count(_count);
   }
 
 /*
@@ -29,7 +28,7 @@ class MessageUtil {
       tempCount = 0;
     }
     NSUserDefault.setKeyValue(kUnreadMessageCount, tempCount);
-    FlutterAppBadger.updateBadgeCount(tempCount);
+    FlutterAppBadge.count(tempCount);
   }
 
 /*收到新的消息后更新角标*/
@@ -37,6 +36,6 @@ class MessageUtil {
     final _count = await NSUserDefault.getValue(kUnreadMessageCount) ?? 0;
     int tempCount = _count + 1;
     NSUserDefault.setKeyValue(kUnreadMessageCount, tempCount);
-    FlutterAppBadger.updateBadgeCount(tempCount);
+    FlutterAppBadge.count(tempCount);
   }
 }

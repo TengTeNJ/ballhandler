@@ -19,7 +19,7 @@ import '../../utils/global.dart';
 import '../../utils/notification_bloc.dart';
 import '../../utils/system_device.dart';
 import '../../widgets/base/base_image.dart';
-import 'package:status_bar_control/status_bar_control.dart';
+//import 'package:status_bar_control/status_bar_control.dart';
 
 class GameProcessController extends StatefulWidget {
   CameraDescription camera;
@@ -44,7 +44,7 @@ class _GameProcessControllerState extends State<GameProcessController>
     // TODO: implement initState
     super.initState();
     // 隐藏状态栏
-    StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
+    //StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
     SystemUtil.resetScreenDirection(); // 锁定屏幕方向
     SystemUtil.wakeUpDevice(); // 保持屏幕活跃
     GameUtil gameUtil = GetIt.instance<GameUtil>();
@@ -135,7 +135,7 @@ class _GameProcessControllerState extends State<GameProcessController>
       if (event == kBackFromFinish || event == kFinishGame) {
         SystemUtil.resetScreenDirection(); // 锁定屏幕方向
         // 隐藏状态栏
-        StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
+       // StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
         // 从游戏完成页面返回
         print('从游戏完成页面返回');
         gameUtil.nowISGamePage = true;
@@ -192,7 +192,7 @@ class _GameProcessControllerState extends State<GameProcessController>
     // TODO: implement dispose
     _controller.dispose();
     // 解除隐藏状态栏
-    StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
+   // StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     SystemUtil.disableWakeUpDevice();
     BluetoothManager().dataChange = null;

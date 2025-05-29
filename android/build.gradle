@@ -14,6 +14,17 @@ allprojects {
        // maven { url 'https://mirrors.tuna.tsinghua.edu.cn/git/flutter/download.flutter.io' }
         google()
         mavenCentral()
+        subprojects {
+            afterEvaluate { project ->
+                if (project.hasProperty('android')) {
+                    project.android {
+                        if (namespace == null) {
+                            namespace project.group
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

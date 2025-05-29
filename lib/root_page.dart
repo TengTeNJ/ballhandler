@@ -175,6 +175,8 @@ class _RootPageControllerState extends State<RootPageController> {
         // 更新推送token
         Account.updateAccountInfo({"firebaseToken": gameUtil.firebaseToken});
       }
+    }else{
+      print('fcmToken = ${fcmToken}');
     }
     // 删除本地存储的视频
     final _datas =
