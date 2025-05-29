@@ -20,7 +20,7 @@ import 'package:code/views/base/game_process_statu_view.dart';
 import 'package:code/views/participants/ultimate_lights_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:status_bar_control/status_bar_control.dart';
+//import 'package:status_bar_control/status_bar_control.dart';
 import '../../models/game/game_over_model.dart';
 import '../../models/game/light_ball_model.dart';
 import '../../services/sqlite/data_base.dart';
@@ -266,7 +266,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
       if (event == kBackFromFinish || event == kFinishGame) {
         SystemUtil.lockScreenHorizontalDirection(); // 锁定屏幕方向
         // 隐藏状态栏
-        StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
+        //StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
         // 从游戏完成页面返回
         print('从游戏完成页面返回');
         //gameUtil.nowISGamePage = true;
@@ -613,7 +613,7 @@ class _P3GameProcesControllerState extends State<P3GameProcesController> {
     super.dispose();
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     // 解除隐藏状态栏
-    StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
+   // StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     SystemUtil.disableWakeUpDevice();
     BluetoothManager().dataChange = null;

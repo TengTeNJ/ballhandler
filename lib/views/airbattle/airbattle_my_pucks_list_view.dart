@@ -1,0 +1,89 @@
+import 'package:code/models/airbattle/my_pucks_model.dart';
+import 'package:code/views/airbattle/airbattle_my_pucks_view.dart';
+import 'package:flutter/material.dart';
+
+import '../../models/airbattle/my_airbattle_pucks_model.dart';
+import '../../utils/color.dart';
+
+class AirbattleMyPucksListView extends StatefulWidget {
+  List<MyPucksModel>? datas;
+  String raiseRange = '-';
+  MyAirBattlePucksModel? pucksModel;
+
+  AirbattleMyPucksListView({super.key, required this.raiseRange, this.datas,this.pucksModel});
+
+  @override
+  State<AirbattleMyPucksListView> createState() =>
+      _AirbattleMyPucksListViewState();
+}
+
+class _AirbattleMyPucksListViewState extends State<AirbattleMyPucksListView> {
+  List<MyPucksModel> _datas = [];
+
+  initDatas() {
+    _datas.clear();
+    List<String> _titles = [
+      'Best React Time',
+      'Battles Played',
+      'Personal Best Beaten'
+    ];
+    List<String> _imageNames = ['highest', 'playtimes', 'break'];
+    List<String> _dess = [
+      'Rank ${ widget.pucksModel?.avgPaceRank ?? '-'}',
+      'Rank ${ widget.pucksModel?.trainCountRank ?? '-'}',
+      'Rank ${ widget.pucksModel?.recordBreakCountRank ?? '-'}'
+    ];
+    List<String> _units = ['Sec/pt', 'Times', ''];
+    List<bool> _specialShows = [true, true, true];
+    List<String> values = [
+      widget.pucksModel?.avgPace ?? '-',
+      widget.pucksModel?.trainCount?? '0',
+      widget.pucksModel?.recordBreakCount?? '0',
+    ];
+    for(int i = 0; i < _imageNames.length; i ++){
+      MyPucksModel model = MyPucksModel();
+      model.value = values[i];
+      model.title = _titles[i];
+      model.des = _dess[i];
+      model.unit = _units[i];
+      model.imageName =   'images/airbattle/${_imageNames[i]}.png';
+      model.specialShow = _specialShows[i];
+      if(i == 0){
+        model.upValue = widget.raiseRange ?? '-';
+      }
+      _datas.add(model);
+    }
+    setState(() {
+
+    });
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //initDatas();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    initDatas();
+    return ListView.separated(
+        physics: NeverScrollableScrollPhysics(),
+        // 禁止滑动
+        shrinkWrap: true,
+        // ListView 的 shrinkWrap 属性设置为 true，可以让 ListView 根据其内容的实际高度来调整自身大小，而不是无限扩展
+        itemBuilder: (context, index) {
+          return AirbattleMyPucksView(model: _datas[index]);
+        },
+        separatorBuilder: (context, index) {
+          return Container(
+              height: 1,
+              decoration: BoxDecoration(
+                  color: hexStringToColor('#565674'),
+                  borderRadius: BorderRadius.circular(1)));
+        },
+        itemCount: _datas.length);
+  }
+}

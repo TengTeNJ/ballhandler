@@ -63,5 +63,9 @@ class SystemUtil {
     WakelockPlus.disable();
   }
 
+  /*隐藏状态栏*/
+  static hiderStatuBar(bool hidden){
+
+  }
 
 }

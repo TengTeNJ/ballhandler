@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/route/route.dart';
+import 'package:code/utils/array_util.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../utils/notification_bloc.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   Function(int index)? onTap;
@@ -15,7 +20,8 @@ class CustomBottomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  final List<BottomNavigationBarItem> _items = [
+  late StreamSubscription subscription;
+  List<BottomNavigationBarItem> _items = [
     BottomNavigationBarItem(
         icon: Image(
           image: AssetImage('images/bottom/participants.png'),
@@ -46,7 +52,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         ),
         label: 'Profile'),
   ]; // default Items
-  final List<Image> _selectedImages = [
+  List<Image> _selectedImages = [
    Image(
       image: AssetImage('images/bottom/participants_selected.png'),
       width: 32,
@@ -73,20 +79,90 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   final double unselectedFontSize = 10;
   final double spacing = 6; // 图标和文字之间的间距
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    subscription = EventBus().stream.listen((event) async{
+      if(event == kExchangePage){
+        swapElements(_items, 0, 1);
+        swapElements(_selectedImages, 0, 1);
+        setState(() {
+
+        });
+      }else if(event == kSignOut){
+        // 退出登录 恢复
+        _items = [
+          BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage('images/bottom/participants.png'),
+                width: 32,
+                height: 16,
+              ),
+              label: 'Participants'),
+          BottomNavigationBarItem(
+              icon: Image(
+                  image: AssetImage('images/bottom/airbattle.png'),
+                  width: 40,
+                  height: 17
+              ),
+              label: 'Air Battle'),
+          BottomNavigationBarItem(
+              icon: Image(
+                  image: AssetImage('images/bottom/ranking.png'),
+                  width: 20,
+                  height: 20
+              ),
+              label: 'Leaderboards'),
+          BottomNavigationBarItem(
+              icon: Image(
+                fit: BoxFit.cover,
+                image: AssetImage('images/bottom/profile.png'),
+                width: 20,
+                height: 20,
+              ),
+              label: 'Profile'),
+        ];
+        _selectedImages = [
+          Image(
+            image: AssetImage('images/bottom/participants_selected.png'),
+            width: 32,
+            height: 16,
+          ),
+          Image(
+              image: AssetImage('images/bottom/airbattle_selected.png'),
+              width: 40,
+              height: 17
+          ),
+          Image(
+              image: AssetImage('images/bottom/ranking_selected.png'),
+              width: 20,
+              height: 20
+          ),Image(
+            image: AssetImage('images/bottom/profile_selected.png'),
+            width: 20,
+            height: 20,
+          )
+        ];
+        setState(() {
+
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return  BottomNavigationBar(
       backgroundColor: Constants.darkThemeColor,
       currentIndex: currentIndex,
       onTap: (index) async{
         setState(() {
-          print(controBlueLightBoard(3, [1,1,0,1]));
           // AirBattle页面登录拦截
          if(index != 0){
            // 判断登录的拦截
            final _hasLogin =  UserProvider.of(context).hasLogin ;
            if(_hasLogin == false){
              //Navigator.pushNamed(NavigatorUtil.utilContext, Routes.login);
-             print('Routes.login=${Routes.login}');
             NavigatorUtil.present(LoginPageController(),routesName: Routes.login);
            }else{
              this.currentIndex = index;
@@ -135,6 +211,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         SizedBox(height: spacing),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
   }
 }
 

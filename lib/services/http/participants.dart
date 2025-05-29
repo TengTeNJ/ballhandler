@@ -148,7 +148,7 @@ class Participants {
       "sceneId": sceneId.toString(),
     };
     final response = await HttpUtil.get('/api/statistic/rankData', _data,
-        showLoading: false);
+        showLoading: true);
     HomeUsermodel model = HomeUsermodel();
     if (response.success && response.data['data'] != null) {
       final _map = response.data['data'];

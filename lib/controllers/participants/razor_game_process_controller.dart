@@ -5,7 +5,7 @@ import 'package:code/views/participants/razor/razor_product_image_view.dart';
 import 'package:code/views/participants/razor/razor_progress_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:status_bar_control/status_bar_control.dart';
+// import 'package:status_bar_control/status_bar_control.dart';
 
 import '../../constants/constants.dart';
 import '../../utils/blue_tooth_manager.dart';
@@ -38,7 +38,7 @@ class _RazorGameProcessControllerState
     // TODO: implement initState
     super.initState();
     // 隐藏状态栏
-    StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
+    //StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
     SystemUtil.resetScreenDirection(); // 锁定屏幕方向
     SystemUtil.wakeUpDevice(); // 保持屏幕活跃
     test();

@@ -9,7 +9,7 @@ import 'package:code/widgets/base/base_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:status_bar_control/status_bar_control.dart';
+//import 'package:status_bar_control/status_bar_control.dart';
 
 import '../../models/global/user_info.dart';
 import '../../route/route.dart';
@@ -304,7 +304,7 @@ class _SubscribeControllerState extends State<SubscribeController> {
   @override
   void dispose() {
     // TODO: implement dispose
-    StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
+    //StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
     subscription.cancel();
     GameUtil gameUtil = GetIt.instance<GameUtil>();
     gameUtil.notClickSubscribeDialog = true;

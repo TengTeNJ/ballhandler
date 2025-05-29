@@ -1,4 +1,5 @@
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/airbattle/airbattle_guide_controller.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,21 +79,35 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                       ),
                     )
                   ),
+                  gameUtil.isFromAirBattle ? Positioned(
+                      right: 16,
+                      top: 60,
+                      child:GestureDetector(
+                        onTap: (){
+                          NavigatorUtil.present(AirBattleGuideController());
+                        },
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18),
+                              color: hexStringToColor('#65657D')),
+                          child: Center(
+                            child: Image(
+                              image: AssetImage('images/airbattle/info.png'),
+                              width: 16,
+                              height: 12,
+                            ),
+                          ),
+                        ),
+                      )
+                  ) : Container(),
                   Positioned(
                     top: Constants.screenHeight(context) * 0.2,
                     left: Constants.screenWidth(context) * 0.12,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(61),
                       child: Container(
-                        // decoration: BoxDecoration(
-                        //     border: DashedBorder.fromBorderSide(
-                        //         dashLength: 5,
-                        //         side: BorderSide(
-                        //             color:
-                        //             Color.fromRGBO(39, 182, 245, 1.0),
-                        //             width: 1)),
-                        //     borderRadius:
-                        //     BorderRadius.all(Radius.circular(10))),
                         width: Constants.screenWidth(context) * 0.76,
                         height: Constants.screenHeight(context) * 0.6,
                         child: SizedBox(
@@ -103,6 +118,12 @@ class _VideoCheckControllerState extends State<VideoCheckController> {
                       ),
                     ),
                   ),
+                  Positioned(
+                    top:  Constants.screenHeight(context) * 0.2 + Constants.screenHeight(context) * 0.6 ,
+                      bottom: 110,
+                      left: 16,
+                      right: 16,
+                      child: Container(child: Center(child: Constants.customTextWidget('Adjust  camera for a clear view of your stickhandling', 14, '#B6F61D'),))),
                   Positioned(
                     left: 24,
                     right: 24,

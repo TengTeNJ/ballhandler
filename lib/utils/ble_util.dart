@@ -12,8 +12,7 @@ import '../constants/constants.dart';
 import 'blue_tooth_manager.dart';
 import 'color.dart';
 import 'global.dart';
-import 'package:open_settings/open_settings.dart';
-
+import 'package:open_settings_plus/open_settings_plus.dart';
 class BleUtil {
   /*处理蓝牙状态*/
   static bool handleBleStatu(BuildContext context) {
@@ -51,7 +50,11 @@ class BleUtil {
                   onPressed: () {
                     // 跳转到系统设置页面，让用户开启位置权限
                     // 这里需要你根据平台实现跳转逻辑
-                    OpenSettings.openBluetoothSetting();
+                    if(Platform.isAndroid){
+                      OpenSettingsPlusAndroid().bluetooth();
+                    }else{
+                      OpenSettingsPlusIOS().bluetooth();
+                    }
                     Navigator.of(context).pop();
                   },
                 ),
@@ -86,7 +89,11 @@ class BleUtil {
                   child: Constants.mediumBaseTextWidget('Go to authorize', 16,
                       textAlign: TextAlign.left),
                   onPressed: () {
-                    OpenSettings.openAppSetting();
+                    if(Platform.isAndroid){
+                      OpenSettingsPlusAndroid().bluetooth();
+                    }else{
+                      OpenSettingsPlusIOS().bluetooth();
+                    }
                     Navigator.of(context).pop();
                   },
                 ),
@@ -126,7 +133,12 @@ class BleUtil {
                   onPressed: () {
                     // 跳转到系统设置页面，让用户开启位置权限
                     // 这里需要你根据平台实现跳转逻辑
-                    OpenSettings.openManageApplicationSetting();
+                    if(Platform.isAndroid){
+                      OpenSettingsPlusAndroid().locationSource();
+                    }else{
+                      OpenSettingsPlusIOS().locationServices();
+                    }
+
                     Navigator.of(context).pop();
                   },
                 ),

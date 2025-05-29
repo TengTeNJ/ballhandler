@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "940248126378",
     "project_id": "potent-hockey",
-    "storage_bucket": "potent-hockey.appspot.com"
+    "storage_bucket": "potent-hockey.firebasestorage.app"
   },
   "client": [
     {

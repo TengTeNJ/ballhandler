@@ -14,7 +14,8 @@ import '../../utils/navigator_util.dart';
 
 class TodayDataView extends StatefulWidget {
   GameOverModel gameOverModel;
-  TodayDataView({required this.gameOverModel});
+  bool? isAirbattle;
+  TodayDataView({required this.gameOverModel,this.isAirbattle});
 
   @override
   State<TodayDataView> createState() => _TodayDataViewState();
@@ -85,7 +86,7 @@ class _TodayDataViewState extends State<TodayDataView> {
                   children: [
                     Image(
                         image:
-                            AssetImage('images/participants/icon_orange.png'),
+                            AssetImage(widget.isAirbattle == true ? 'images/airbattle/airbattle.png' : 'images/participants/icon_orange.png'),
                         width: 48,
                         height: 48,
                         fit: BoxFit.fill),

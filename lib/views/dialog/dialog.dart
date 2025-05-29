@@ -25,6 +25,7 @@ import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io' show Platform;
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:tt_indicator/tt_indicator.dart';
 import '../../models/ble/ble_model.dart';
 import '../../utils/board_online_util.dart';
@@ -1572,12 +1573,115 @@ class _IpadTimeSelectDialogState extends State<IpadTimeSelectDialog> {
 }
 
 /*加入Airbattle对战*/
-class JoinAirBattleDialog extends StatelessWidget {
+// class JoinAirBattleDialog extends StatelessWidget {
+//   Function continueClick;
+//   Function goToSetting;
+//
+//   JoinAirBattleDialog({required this.continueClick, required this.goToSetting});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     String group = UserProvider.of(context).group;
+//     return Container(
+//       child: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.end,
+//             children: [CancelButton()],
+//           ),
+//           SizedBox(
+//             height: 42,
+//           ),
+//           Constants.mediumWhiteTextWidget('Join Battle', 20),
+//           SizedBox(
+//             height: 20,
+//           ),
+//           GestureDetector(
+//             behavior: HitTestBehavior.opaque,
+//             onTap: () {
+//               if (goToSetting != null) {
+//                 goToSetting();
+//               }
+//               ;
+//             },
+//             child: RichText(
+//               text: TextSpan(
+//                 text: 'You will compete in the ',
+//                 style: TextStyle(
+//                     color: Constants.baseGreyStyleColor,
+//                     fontFamily: 'SanFranciscoDisplay',
+//                     fontSize: 16,
+//                     height: 1.0,
+//                     fontWeight: FontWeight.w400),
+//                 children: <TextSpan>[
+//                   TextSpan(
+//                     text: group,
+//                     style: TextStyle(
+//                       fontFamily: 'SanFranciscoDisplay',
+//                       fontSize: 16,
+//                       color: Constants.baseStyleColor,
+//                       height: 1.0,
+//                       fontWeight: FontWeight.w400,
+//                       decoration: TextDecoration.underline,
+//                     ),
+//                   ),
+//                   TextSpan(
+//                     text: ' category',
+//                     style: TextStyle(
+//                       fontFamily: 'SanFranciscoDisplay',
+//                       fontSize: 16,
+//                       height: 1.0,
+//                       fontWeight: FontWeight.w400,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//           SizedBox(
+//             height: 106,
+//           ),
+//           Container(
+//             width: 210,
+//             child: BaseButton(
+//                 linearGradient: LinearGradient(
+//                   begin: Alignment.topCenter,
+//                   end: Alignment.bottomCenter,
+//                   colors: [
+//                     hexStringToColor('#EF8914'),
+//                     hexStringToColor('#CF391A')
+//                   ],
+//                 ),
+//                 title: 'Continue',
+//                 height: 40,
+//                 onTap: () {
+//                   NavigatorUtil.pop();
+//                   this.continueClick();
+//                 }),
+//           ),
+//           SizedBox(
+//             height: 42,
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+class JoinAirBattleDialog extends StatefulWidget {
   Function continueClick;
   Function goToSetting;
 
   JoinAirBattleDialog({required this.continueClick, required this.goToSetting});
 
+  @override
+  State<JoinAirBattleDialog> createState() => _JoinAirBattleDialogState();
+}
+
+class _JoinAirBattleDialogState extends State<JoinAirBattleDialog> {
+@override
   @override
   Widget build(BuildContext context) {
     String group = UserProvider.of(context).group;
@@ -1597,48 +1701,50 @@ class JoinAirBattleDialog extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              if (goToSetting != null) {
-                goToSetting();
-              }
-              ;
-            },
-            child: RichText(
-              text: TextSpan(
-                text: 'You will compete in the ',
-                style: TextStyle(
-                    color: Constants.baseGreyStyleColor,
-                    fontFamily: 'SanFranciscoDisplay',
-                    fontSize: 16,
-                    height: 1.0,
-                    fontWeight: FontWeight.w400),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: group,
-                    style: TextStyle(
-                      fontFamily: 'SanFranciscoDisplay',
-                      fontSize: 16,
-                      color: Constants.baseStyleColor,
-                      height: 1.0,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' category',
-                    style: TextStyle(
+          Consumer<UserModel>(builder: (context, userModel,child){
+            return   GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                if (widget.goToSetting != null) {
+                  widget.goToSetting();
+                }
+                ;
+              },
+              child: RichText(
+                text: TextSpan(
+                  text: 'You will compete in the ',
+                  style: TextStyle(
+                      color: Constants.baseGreyStyleColor,
                       fontFamily: 'SanFranciscoDisplay',
                       fontSize: 16,
                       height: 1.0,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w400),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: userModel.group,
+                      style: TextStyle(
+                        fontFamily: 'SanFranciscoDisplay',
+                        fontSize: 16,
+                        color: Constants.baseStyleColor,
+                        height: 1.0,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                    TextSpan(
+                      text: ' category',
+                      style: TextStyle(
+                        fontFamily: 'SanFranciscoDisplay',
+                        fontSize: 16,
+                        height: 1.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            );
+          }),
           SizedBox(
             height: 106,
           ),
@@ -1657,7 +1763,7 @@ class JoinAirBattleDialog extends StatelessWidget {
                 height: 40,
                 onTap: () {
                   NavigatorUtil.pop();
-                  this.continueClick();
+                  widget.continueClick();
                 }),
           ),
           SizedBox(

@@ -55,6 +55,7 @@ class NSUserDefault {
     final _email = await NSUserDefault.getValue<String>(kUserEmail);
     final _brith = await NSUserDefault.getValue<String>(kBrithDay);
     final _country = await NSUserDefault.getValue<String>(kCountry);
+    final _userID = await NSUserDefault.getValue<String>(kUserID);
 
     if(_nickName != null){
       UserProvider.of(context).userName = _nickName;
@@ -73,6 +74,9 @@ class NSUserDefault {
     }
     if(_country!=null){
       UserProvider.of(context).country = _country;
+    }
+    if(_userID!=null){
+      UserProvider.of(context).userId = _userID;
     }
   }
   /*清空用户信息*/

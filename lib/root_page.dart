@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:code/constants/constants.dart';
+import 'package:code/controllers/airbattle/airbattle_controller.dart';
 import 'package:code/controllers/airbattle/airbattle_home_controller.dart';
 import 'package:code/controllers/participants/home_page_view.dart';
 import 'package:code/controllers/profile/profile_controller.dart';
@@ -13,6 +14,7 @@ import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/participants.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/app_purse.dart';
+import 'package:code/utils/game_util.dart';
 import 'package:code/utils/global.dart';
 import 'package:code/utils/message_ytil.dart';
 import 'package:code/utils/navigator_util.dart';
@@ -38,9 +40,10 @@ class _RootPageControllerState extends State<RootPageController> {
   int _currentIndex = 0;
   late PageController _pageController;
   late StreamSubscription subscription;
-  final List<StatefulWidget> _pageViews = [
+   List<StatefulWidget> _pageViews = [
     HomePageController(),
-    AirBattleHomeController(),
+    //AirBattleHomeController(),
+    AirbattleController(),
     RankingController(),
     ProfileController(),
   ];
@@ -68,8 +71,22 @@ class _RootPageControllerState extends State<RootPageController> {
       if (event == kLoginSucess) {
         await querySubScribeInfo();
         loadLaunchPage();
+        queryActivityStatu();
+      }else if(event == kSignOut){
+        // 退出登录
+        _pageViews = [
+          HomePageController(),
+          //AirBattleHomeController(),
+          AirbattleController(),
+          RankingController(),
+          ProfileController(),
+        ];
+        setState(() {
+
+        });
       }
     });
+    queryActivityStatu();
   }
 
   /*查询订阅信息 */
@@ -80,6 +97,35 @@ class _RootPageControllerState extends State<RootPageController> {
       if(model != null){
         UserProvider.of(context).subscribeModel = model;
       }
+    }
+  }
+
+  /*查询是否有正在进行中的活动 来调整AirBattle额位置*/
+  queryActivityStatu() async{
+    final _token = await NSUserDefault.getValue(kAccessToken);
+    if (_token != null && _token.length > 0) {
+      final _value = await ifContainOngoingActivity();
+      if(_value){
+        EventBus().sendEvent(kExchangePage);
+        _pageViews.clear();
+        _pageViews = [
+          AirbattleController(),
+          HomePageController(),
+          RankingController(),
+          ProfileController(),
+        ];
+      }else{
+        _pageViews = [
+          HomePageController(),
+          //AirBattleHomeController(),
+          AirbattleController(),
+          RankingController(),
+          ProfileController(),
+        ];
+      }
+      setState(() {
+
+      });
     }
   }
 
@@ -129,6 +175,8 @@ class _RootPageControllerState extends State<RootPageController> {
         // 更新推送token
         Account.updateAccountInfo({"firebaseToken": gameUtil.firebaseToken});
       }
+    }else{
+      print('fcmToken = ${fcmToken}');
     }
     // 删除本地存储的视频
     final _datas =

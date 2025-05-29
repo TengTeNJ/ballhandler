@@ -4,6 +4,7 @@ import 'package:code/controllers/account/login_page_controller.dart';
 import 'package:code/controllers/account/privacy_page_controller.dart';
 import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/controllers/airbattle/activity_detail_controller.dart';
+import 'package:code/controllers/airbattle/airbattle_awards_controller.dart';
 import 'package:code/controllers/airbattle/award_list_controller.dart';
 import 'package:code/controllers/airbattle/message_controller.dart';
 import 'package:code/controllers/airbattle/my_activity_controller.dart';
@@ -39,11 +40,14 @@ import 'package:code/controllers/profile/sub_setting_controller.dart';
 import 'package:code/controllers/ranking/my_stats_controller.dart';
 import 'package:code/controllers/subscribe/subscribe_controller.dart';
 import 'package:code/controllers/subscribe/ult_subscribe_home_controller.dart';
+import 'package:code/models/airbattle/my_airbattle_pucks_model.dart';
 import 'package:code/models/game/game_over_model.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+
+import '../controllers/airbattle/airbattle_my_pucks_controller.dart';
 
 
 class Routes {
@@ -87,6 +91,8 @@ class Routes {
   static const String subscribe= 'subscribe'; // 新订阅页面
   static const String subscribeintroduce= 'subscribeIntroduce'; // 订阅介绍页面
   static const String razorgameprocesspage= 'razor_game_process_page'; // 三节游戏页面
+  static const String mypucks= 'airbattleMyPucks'; // AirBattle的My Pucks的页面
+  static const String airbattleawards= 'airbattleAwards'; // AirBattle的奖品页面
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
     switch (settings.name) {
@@ -198,6 +204,12 @@ class Routes {
         return MaterialPageRoute(builder: (_) => UltSubscribeHomeController());
       case razorgameprocesspage:
         return MaterialPageRoute(builder: (_) => RazorGameProcessController());
+      case mypucks:
+        final  Map _map = settings.arguments as Map;
+        MyAirBattlePucksModel _model = _map['model'];
+        return MaterialPageRoute(builder: (_) => AirbattleMyPucksController(startDayIndex: _map['day'] ?? 1,monthDay: _map['month'],pucksModel: _model,activityId: _map['id'],startTime: _map['start'],endTime: _map['end'],));
+      case airbattleawards:
+        return MaterialPageRoute(builder: (_) => AirBattleAwardsController());
     // EmailPageController
      // IntegralController MyAccountDataModel
       default:

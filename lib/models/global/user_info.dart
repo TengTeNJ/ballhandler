@@ -21,6 +21,8 @@ class UserModel extends ChangeNotifier {
   String _inputEmail = ''; // 用户输入的邮箱
   String _brith = '-'; // 用户生日
   String _country = '-'; // 用户区域
+  String _memberId = ''; // 用户ID
+  String _group = 'Under 12';
   SubscribeModel _subscribeModel = SubscribeModel(); // 用户订阅数据
 
   // get方法
@@ -50,22 +52,16 @@ class UserModel extends ChangeNotifier {
 
   String get country => _country;
 
-  SubscribeModel get subscribeModel => _subscribeModel;
+  String get userId => _memberId;
 
-  // 用户的年龄组  Above 12/Under 12
-  String get group {
-    if (this.age >= 12) {
-      return 'Above 12';
-    } else {
-      return 'Under 12';
-    }
-  }
+  String get group => _group;
+
+  SubscribeModel get subscribeModel => _subscribeModel;
 
 /*获取用户的年龄*/
   int get age {
-    this.brith;
     try {
-      DateTime dateTime = DateFormat("MMMM dd,yyyy").parse(this.brith);
+      DateTime dateTime = DateFormat("yyyy-mmmm-dd").parse(this.brith);
       int age = calculateAge(dateTime);
       return age;
     } catch (error) {
@@ -139,7 +135,9 @@ class UserModel extends ChangeNotifier {
 
   set brith(String brith) {
     _brith = brith;
-    notifyListeners();
+    //  同时关联group改变 同步刷新页面 主动改变group 才会在用到group中的Consumer处刷新页面
+    this.group = this.age.toString();
+    notifyListeners(); // 在 set group里面也主动调用了notifyListeners ，防止单独使用set group时未刷新页面
   }
 
   set country(String country) {
@@ -149,6 +147,20 @@ class UserModel extends ChangeNotifier {
 
   set subscribeModel(SubscribeModel subModel){
     _subscribeModel = subModel;
+    notifyListeners();
+  }
+
+  set userId(String userId) {
+    _memberId = userId;
+    notifyListeners();
+  }
+
+  set group(String? age) {
+    if (this.age >= 12) {
+      _group = 'Above 12';
+    } else {
+      _group = 'Under 12';
+    }
     notifyListeners();
   }
 

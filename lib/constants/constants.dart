@@ -42,11 +42,11 @@ class Constants {
   static Color baseLightRedColor = Color.fromRGBO(255, 45, 55, 1);
 
   static Text regularBaseTextWidget(String text, double fontSize,
-      {int maxLines = 1,
+      {int? maxLines,
       TextAlign textAlign = TextAlign.center,
       double height = 1.0}) {
     return Text(
-      maxLines: maxLines,
+      maxLines: maxLines ?? null,
       textAlign: textAlign,
       textScaler: TextScaler.noScaling,
       text,
@@ -307,6 +307,7 @@ const kInputEmail = 'inputEmail';
 const kUserEmail = 'userEmail';
 const kBrithDay = 'brithDay';
 const kCountry = 'countryArea';
+const kUserID = 'userID';
 const kUnreadMessageCount = 'unreadMessageCount'; // 未读消息的数量
 const kShowLaunch = 'showLaunchPage'; // 是否展示启动介绍页的标识
 const kSceneSelectCache = 'scene_select_cache'; // 场景选择缓存 0 1 2
@@ -331,6 +332,7 @@ const kBLE_270_CHARACTERISTIC_NOTIFY_UUID = "fff1";
 const kBLE_270_CHARACTERISTIC_WRITER_UUID = "fff2";
 
 const kPageLimit = 10; // 数据分页每页显示的数据量
+const kPageMaxLimit = 50; // 数据分页每页显示的数据量(最大)
 
 const kBLEDevice_Names = [
   kBLEDevice_Name,
@@ -340,6 +342,7 @@ const kBLEDevice_Names = [
   k270_Name
 ];
 
+const kBLEDataFrameRazorHeader = 0x5A;
 // 隐私政策网址
 const kPrivacyPolicyUrl = 'https://potent-hockey.s3.eu-north-1.amazonaws.com/h5/privacy.html';
 // Terms of service网址
@@ -357,9 +360,9 @@ const kTrainingMode_ReleaseNames = [
 ];
 
 const kBLEDataFrameHeader = 0xA5; // 蓝牙数据帧头
-const kBLEDataFramerFoot = 0xAA; // 蓝牙数据尾
-const kBLEDataFrameRazorHeader = 0x5A; // 蓝牙数据帧头,Razor三节 用来和五节以及270产品区分
-const String kBaseUrl_Dev = 'http://13.49.0.47:91'; // 测试环境地址
+const kBLEDataFramerFoot = 0xAA; // 蓝牙数据
+// const String kBaseUrl_Dev = 'http://13.49.0.47:91'; // 测试环境地址(ip)
+const String kBaseUrl_Dev = 'https://testhockey.fjcctv.com'; // 测试环境地址(域名)
 // 13.49.0.47:91  http://13.49.0.47:91
 const String kBaseUrl_Pro = 'http://hockey.fjcctv.com:91'; // 生产环境地址
 const kTokenTimeOutCode = 401; // 登录失效错误码
@@ -424,6 +427,11 @@ const kSystemStatu = 'system_configure_statu'; //  系统配网的状态
 const kSystemStatuRefreshSuccess = 'system_configure_statu_refresh_success'; //  系统配网的状态刷新成功UI
 const kSystemStatuRefreshError = 'system_configure_statu_refresh_error'; //  系统配网的状态刷新错误UI
 const kReceiveControlResponse = 'receive_razor_control_response'; //  收到Razor控制的回复
+const kAirBattleTabSelect = 'airbattle_tab_select_'; // AirBattle的排名数据的tab切换 /*前缀*/
+const kAirBattleChangeActivity = 'airbattle_change_activity'; // AirBattle首页切换上面的pageview 翻页*/
+const kBrithInfoChange= 'change_brith_day_info'; // 修改生日信息
+const kReadAwardMessage= 'read_message_award'; // 阅读奖励信息
+const kExchangePage = 'exchange_page'; // 交换页面的顺序
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
     "7": "ZIGZAG Challenge",

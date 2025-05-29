@@ -3,12 +3,28 @@ plugins {
 
     // Add the dependency for the Google services Gradle plugin
     id 'com.google.gms.google-services' version '4.3.15' apply false
+    id 'org.jetbrains.kotlin.android' version '2.1.20' apply false
 
 }
 allprojects {
     repositories {
+      //  maven { url 'https://maven.aliyun.com/repository/public/' }
+       // maven { url 'https://maven.aliyun.com/repository/central' }
+       // maven { url 'https://repo.huaweicloud.com/repository/maven/' }
+       // maven { url 'https://mirrors.tuna.tsinghua.edu.cn/git/flutter/download.flutter.io' }
         google()
         mavenCentral()
+        subprojects {
+            afterEvaluate { project ->
+                if (project.hasProperty('android')) {
+                    project.android {
+                        if (namespace == null) {
+                            namespace project.group
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

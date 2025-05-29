@@ -167,6 +167,16 @@ class StringUtil {
     }
   }
 
+  static String serviceStringToShowMyActivityMonthString(String timeString) {
+    try {
+      DateTime dateTime = stringToDate(timeString);
+      String formattedDate = DateFormat('MMMM').format(dateTime);
+      return formattedDate;
+    } catch (error) {
+      return '';
+    }
+  }
+
   /*数据分析页面自定义时间展示*/
   static String serviceStringMyStatuDateString(String timeString) {
     try {
@@ -253,5 +263,37 @@ class StringUtil {
     String minuteString = minute.toString().padLeft(2, '0');
     String secondString = second.toString().padLeft(2, '0');
     return minuteString + ':' + secondString;
+  }
+
+  /*数字月份转换为英文简写*/
+  static String monthToAbbreviation(int index) {
+    List<String> monthStrings = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    return monthStrings[index - 1];
+  }
+
+  /*计算两个时间之间的相差天数*/
+  static int calculateTotalDays(String startDateString, String endDateString) {
+    DateTime startDate = DateTime.parse(startDateString);
+    DateTime endDate = DateTime.parse(endDateString);
+    // 确保开始日期早于结束日期
+    if (startDate.isAfter(endDate) || startDateString.isEmpty || endDateString.isEmpty) {
+      return 10; // 默认为10
+    }
+    // 计算两个日期之间的天数差
+    int difference = endDate.difference(startDate).inDays;
+    return difference + 1; // 包括开始和结束日期
   }
 }

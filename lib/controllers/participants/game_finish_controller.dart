@@ -8,13 +8,14 @@ import 'package:code/services/http/profile.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
+import 'package:code/utils/video_compress.dart';
 import 'package:code/utils/video_util.dart';
 import 'package:code/views/participants/fireworks_animation-view.dart';
 import 'package:code/views/participants/game_over_data_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:status_bar_control/status_bar_control.dart';
+//import 'package:status_bar_control/status_bar_control.dart';
 import '../../utils/global.dart';
 import '../../utils/notification_bloc.dart';
 import '../../utils/system_device.dart';
@@ -36,7 +37,7 @@ class _GameFinishControllerState extends State<GameFinishController> {
     // TODO: implement initState
     super.initState();
     // 解除隐藏状态栏
-    StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
+    //StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
     SystemUtil.lockScreenDirection(); // 锁定屏幕方向
     dataRequest();
   }
@@ -77,13 +78,17 @@ class _GameFinishControllerState extends State<GameFinishController> {
         .of(context)
         .hasLogin) {
       final _filePath = widget.dataModel.videoPath;
-      if (widget.dataModel.videoPath.length > 0  && UserProvider.of(context).subscribeModel.subscribeStatus ==1) {
-        // 登录的订阅用户视频才上传
+      String _path = _filePath;
+      if (widget.dataModel.videoPath.length > 0) {
+        // 登录的订阅用户视频才上传 --Airbattle的进来的默认上传
+        // 视频压缩
+      // _path =  await  VideoCompressUtil.comPress(widget.dataModel.videoPath);
+        widget.dataModel.videoPath = _path;
         final _urlResponse = await Participants.uploadAsset(
             widget.dataModel.videoPath);
         widget.dataModel.videoPath = _urlResponse.data ?? '';
       }
-      double size =  await  VideoUtil.getVideoFileSize(_filePath);
+      double size =  await  VideoUtil.getVideoFileSize(_path);
       // 保存游戏数据到云端
       final _response = await Participants.saveGameData(
           widget.dataModel,size: size);

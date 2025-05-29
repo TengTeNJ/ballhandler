@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:940248126378:android:b35d853f703f61b10291d3',
     messagingSenderId: '940248126378',
     projectId: 'potent-hockey',
-    storageBucket: 'potent-hockey.appspot.com',
+    storageBucket: 'potent-hockey.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -62,7 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:940248126378:ios:69bd04177de840060291d3',
     messagingSenderId: '940248126378',
     projectId: 'potent-hockey',
-    storageBucket: 'potent-hockey.appspot.com',
+    storageBucket: 'potent-hockey.firebasestorage.app',
     androidClientId: '940248126378-0qgcr7uodv3k55hg39o2br2tn3afn2hk.apps.googleusercontent.com',
     iosClientId: '940248126378-21i2rjscftt3ph9qne0p2dvbhpt72ov6.apps.googleusercontent.com',
     iosBundleId: 'com.potent.dangleios',

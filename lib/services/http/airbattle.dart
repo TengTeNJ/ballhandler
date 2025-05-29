@@ -1,9 +1,18 @@
+
 import 'package:code/models/airbattle/award_model.dart';
+import 'package:code/models/airbattle/my_airbattle_pucks_model.dart';
+import 'package:code/services/http/rank.dart';
 import 'package:code/utils/http_util.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
 import 'package:code/utils/string_util.dart';
 import '../../constants/constants.dart';
-
+import '../../models/airbattle/heatmap_model.dart';
+import '../../models/game/game_over_model.dart';
+/*热力图数据和最好成绩提升幅度*/
+class HeatMapModel{
+  String raiseRange = '-';
+  List<HeatMapDataModel>datas = [];
+}
 class MyActivityModel {
   String activityIcon = ''; // icon
   String activityId = ''; //  活动id
@@ -33,9 +42,15 @@ class ActivityModel {
   int activityStatus = 0; // 活动状态：0未开始 1正在进行 2已结束
   String endDate = ''; // 活动结束时间
   String startDate = ''; // 活动开始时间
+  String orignEndDate = ''; // 服务端活动结束时间
+  String orignStartDate = ''; // 服务端活动开始时间
   String rewardMoney = ''; // 活动奖励
   String rewardPoint = ''; // 活动积分
   String activityRule = ''; // 活动规则
+  String activityH5 = ''; // 活动H5页面
+  String monthString = '';
+  String totalDays = '10';
+  bool activityShow = true; // 活动是否显示：false否，true是
   String get timeDifferentString {
     String targetTime = this.endDate + ' 23:59';
     DateTime time = StringUtil.showTimeStringToDate(targetTime);
@@ -45,13 +60,51 @@ class ActivityModel {
     int minutes = remainingTime.inMinutes % 60;
     return '${days} days ${hours} hours ${minutes} minutess';
   }
+  
+  String get timeAirBattleHomeDifferentString {
+    String targetTime = this.endDate + ' 23:59:00';
+    DateTime time = StringUtil.showTimeStringToDate(targetTime);
+    Duration remainingTime = time.difference(DateTime.now());
+    int days = remainingTime.inDays;
+    int hours = remainingTime.inHours % 24;
+    int minutes = remainingTime.inMinutes % 60;
+    int seconds = remainingTime.inSeconds % 60;
+    return '${days}day ${hours.toString().padLeft(2,'0')}:${minutes.toString().padLeft(2,'0')}:${seconds.toString().padLeft(2,'0')}';
+  }
+
+  /*目前活动的标题说是硬编码，但是按钮随着不同的产品会变化，防止后续仍然会有变动，所以在后台配置activityName时中间加了个+区分，+前面的
+  * 是title,中间的是按钮名称 最后面的才是真正的之前的活动标题(活动详情页使用)
+  * */
+  String get activityTitle{
+    List<String> result = this.activityName.split("+").where((element) => element.isNotEmpty).toList();
+    if(result.isNotEmpty){
+      return result.first;
+    }
+    return 'Compete, Improve and Win!';
+  }
+
+  String get activityButtonTitle{
+    List<String> result = this.activityName.split("+").where((element) => element.isNotEmpty).toList();
+    if(result.isNotEmpty && result.length >= 3){
+      return result[1];
+    }
+    return 'Digital stickhandling trainer';
+  }
+
+  String get activityDetailTitle{
+    List<String> result = this.activityName.split("+").where((element) => element.isNotEmpty).toList();
+    if(result.isNotEmpty && result.length >= 3){
+      return result.last;
+    }
+    return 'HOW MANY IN 45S?';
+  }
 
   String get statuString {
     String tempString = 'Not started yet';
     if (this.activityStatus == 1) {
       tempString = 'Under Way';
     } else if (this.activityStatus == 2) {
-      tempString = 'End';
+      tempString = 'Ended';
     }
     return tempString;
   }
@@ -77,6 +130,11 @@ class MessageDataModel {
 
 class AwardDataModel {
   List<AwardModel> data = [];
+  int count = 0;
+}
+
+class RankDataModel {
+  List<RankModel> data = [];
   int count = 0;
 }
 
@@ -107,6 +165,14 @@ class ActivityDetailModel {
     int minutes = remainingTime.inMinutes % 60;
     print('${days}days${hours}hours${minutes}mins');
     return '${days} days ${hours} hours ${minutes} minutess';
+  }
+
+  String get activityDetailTitle{
+    List<String> result = this.activityName.split("+").where((element) => element.isNotEmpty).toList();
+    if(result.isNotEmpty && result.length >= 3){
+      return result.last;
+    }
+    return 'HOW MANY IN 45S?';
   }
 }
 
@@ -200,43 +266,58 @@ class AirBattle {
       _array.forEach((element) {
         ActivityModel model = ActivityModel();
         final _map = element;
-        model.activityBackground = !ISEmpty(_map['activityBackground'])
-            ? _map['activityBackground'].toString()
+        model.activityShow =  !ISEmpty(_map['activityShow']) ? _map['activityShow'] == 1 : true;
+        model.activityH5 = !ISEmpty(_map['activityH5'])
+            ? _map['activityH5'].toString()
             : '';
-        model.activityIcon = !ISEmpty(_map['activityIcon'])
-            ? _map['activityIcon'].toString()
-            : '--';
-        model.activityId =
-            !ISEmpty(_map['activityId']) ? _map['activityId'] : 1;
-        model.activityStatus =
-            !ISEmpty(_map['activityStatus']) ? _map['activityStatus'] : 0;
-        model.activityRemark = !ISEmpty(_map['activityRemark'])
-            ? _map['activityRemark'].toString()
-            : '--';
-        model.endDate = !ISEmpty(_map['endDate'])
-            ? StringUtil.serviceStringToShowDateString(
-                _map['endDate'].toString())
-            : '--';
-        model.startDate = !ISEmpty(_map['startDate'])
-            ? StringUtil.serviceStringToShowDateString(
-                _map['startDate'].toString())
-            : '--';
-        model.activityName = !ISEmpty(_map['activityName'])
-            ? _map['activityName'].toString()
-            : '--';
-        model.rewardMoney = !ISEmpty(_map['rewardMoney'])
-            ? _map['rewardMoney'].toString()
-            : '0';
-        model.rewardPoint = !ISEmpty(_map['rewardPoint'])
-            ? _map['rewardPoint'].toString()
-            : '0';
-        model.activityRemark = !ISEmpty(_map['activityRemark'])
-            ? _map['activityRemark'].toString()
-            : '--';
-        model.activityRule = !ISEmpty(_map['activityRule'])
-            ? _map['activityRule'].toString()
-            : '--';
-        _list.add(model);
+        if(model.activityShow){
+          model.activityBackground = !ISEmpty(_map['activityBackground'])
+              ? _map['activityBackground'].toString()
+              : '';
+          model.activityIcon = !ISEmpty(_map['activityIcon'])
+              ? _map['activityIcon'].toString()
+              : '--';
+          model.activityId =
+          !ISEmpty(_map['activityId']) ? _map['activityId'] : 1;
+          model.activityStatus =
+          !ISEmpty(_map['activityStatus']) ? _map['activityStatus'] : 0;
+          model.activityRemark = !ISEmpty(_map['activityRemark'])
+              ? _map['activityRemark'].toString()
+              : '--';
+          model.endDate = !ISEmpty(_map['endDate'])
+              ? StringUtil.serviceStringToShowDateString(
+              _map['endDate'].toString())
+              : '--';
+          model.startDate = !ISEmpty(_map['startDate'])
+              ? StringUtil.serviceStringToShowDateString(
+              _map['startDate'].toString())
+              : '--';
+          model.totalDays = StringUtil.calculateTotalDays(!ISEmpty(_map['startDate'])
+              ?_map['startDate'] : '', !ISEmpty(_map['endDate']) ? _map['endDate'] : '').toString();
+          model.monthString = !ISEmpty(_map['startDate'])
+              ? StringUtil.serviceStringToShowMyActivityMonthString(
+              _map['startDate'].toString())
+              : '';
+          model.orignStartDate =  !ISEmpty(_map['startDate']) ? _map['startDate']  :'--';
+          model.orignEndDate =  !ISEmpty(_map['endDate']) ? _map['endDate']  :'--';
+          model.activityName = !ISEmpty(_map['activityName'])
+              ? _map['activityName'].toString()
+              : '--';
+          model.rewardMoney = !ISEmpty(_map['rewardMoney'])
+              ? _map['rewardMoney'].toString()
+              : '0';
+          model.rewardPoint = !ISEmpty(_map['rewardPoint'])
+              ? _map['rewardPoint'].toString()
+              : '0';
+          model.activityRemark = !ISEmpty(_map['activityRemark'])
+              ? _map['activityRemark'].toString()
+              : '--';
+          model.activityRule = !ISEmpty(_map['activityRule'])
+              ? _map['activityRule'].toString()
+              : '--';
+          _list.add(model);
+        }
+
       });
       model.data = _list;
       return ApiResponse(success: response.success, data: model);
@@ -246,7 +327,7 @@ class AirBattle {
   }
 
 /*查询参与AirBattle的数据*/
-  static Future<ApiResponse<AirBattleHomeModel>> queryIAirBattleData() async {
+  static Future<ApiResponse<AirBattleHomeModel>> queryAirBattleData() async {
     final response =
         await HttpUtil.get('/api/activity/index', null, showLoading: false);
     AirBattleHomeModel model = AirBattleHomeModel();
@@ -348,7 +429,8 @@ class AirBattle {
             !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
         model.rewardId =
             !ISEmpty(_map['rewardId']) ? _map['rewardId'].toString() : '1';
-
+        model.rewardRemark =
+        !ISEmpty(_map['rewardRemark']) ? _map['rewardRemark'].toString() : 'POTENT HOCKEY';
         _list.add(model);
       });
       awardDataModelodel.data = _list;
@@ -477,4 +559,184 @@ class AirBattle {
         showLoading: true);
     return ApiResponse(success: response.success);
   }
+
+/*查询AirBattle排名数据 总接口 一个接口返回所有的数据
+* activityId 活动id
+* */
+  static Future<ApiResponse<List<List<RankModel>>>> queryIAirBattleRankData(int activityId) async {
+    final response =
+    await HttpUtil.get('/api/statistic/other/getActivityRank?activityId=${activityId}', null, showLoading: false);
+    if (response.success && response.data['data'] != null) {
+      final element = response.data['data'];
+      final _map = element;
+      List<List<RankModel>> _datas= [];
+      // 训练次数排名数据
+      final _countArray  = _map['trainActivityVoListForTrainCount'] as List;
+      List<RankModel> _countList = [];
+      _countArray.forEach((element){
+        RankModel model = RankModel();
+        model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
+        model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
+       // model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'] : '-';
+        model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
+        // 统一用avgPace表示数据 虽然有训练次数的字段 这样在渲染页面时可以数据更统一
+        model.avgPace =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+        _countList.add(model);
+      });
+      // 速度最快的排名数据
+      final _speedArray  = _map['trainActivityVoListForAvgPace'] as List;
+      List<RankModel> _speedList = [];
+      _speedArray.forEach((element){
+        RankModel model = RankModel();
+        model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
+        model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
+        model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'].toString() : '-';
+        model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
+        model.trainCount =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+        _speedList.add(model);
+      });
+      // 进步最快的排名数据
+      final _progressArray  = _map['trainActivityVoListForProgress'] as List;
+      List<RankModel> _progressList = [];
+      _progressArray.forEach((element){
+        RankModel model = RankModel();
+        model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
+        model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
+        model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'] : '-';
+        model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
+        model.trainCount =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+        _progressList.add(model);
+      });
+      _datas.add(_speedList);
+      _datas.add(_countList);
+      _datas.add(_progressList);
+      return ApiResponse(success: response.success, data: _datas);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+  /*
+  * 查询AirBattle排名数据 根据type区分
+  * activityId 活动id
+  * rankType：排名类型：1-速度排名，2-训练次数排名，3-进步排名
+  * */
+  static Future<ApiResponse<RankDataModel>> queryIAirBattleRankDataBaseType(
+      int activityId,{int page = 1,int rankType = 1}) async {
+    final _data = {
+      'activityId':activityId.toString(),
+      "limit": kPageMaxLimit.toString(),
+      "page": page.toString(),
+      'rankType':rankType.toString()
+    };
+    final response =
+    await HttpUtil.get('/api/statistic/other/getActivityRankNew', _data, showLoading: true);
+    RankDataModel _model = RankDataModel();
+
+    List<RankModel> _list = [];
+    if (response.success && response.data['data'] != null) {
+      final _array = response.data['data'] as List;
+      _array.forEach((element) {
+        RankModel model = RankModel();
+        model.rankNumber =  !ISEmpty(element['rankNumber']) ? element['rankNumber'].toString() : '';
+        model.nickName =  !ISEmpty(element['nickName']) ? element['nickName'] : '';
+        model.avatar =  !ISEmpty(element['avatar']) ? element['avatar'] : '';
+        model.country =  !ISEmpty(element['country']) ? element['country'] : '-';
+        model.memberId = !ISEmpty(element['memberId']) ? element['memberId'].toString() : '';
+        if(rankType ==2){
+          // 统一用avgPace表示数据 虽然有训练次数的字段 这样在渲染页面时可以数据更统一
+          model.avgPace =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+        }else{
+          model.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'].toString() : '-';
+        }
+        _list.add(model);
+      });
+      _model.count =
+      ISEmpty(response.data['count']) ? 0 : response.data['count'];
+
+      _model.data = _list;
+      return ApiResponse(success: response.success, data: _model);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+  /*
+  * 查询活动中我的积分页面的数据
+  * */
+  static Future<ApiResponse<MyAirBattlePucksModel>> queryAirBattleMyPucksData(
+      int activityId) async {
+    final _data = {
+      'activityId':activityId.toString(),
+    };
+    final response =
+    await HttpUtil.get('/api/statistic/activity/getActivityTrainMember', _data, showLoading: true);
+    MyAirBattlePucksModel _pucksModel = MyAirBattlePucksModel();
+    List<GameOverModel> _list = [];
+    if (response.success && response.data['data'] != null) {
+      final element = response.data['data'];
+      final  _datas = element['avgPaceBastList'];
+      _pucksModel.trainIntegral =  !ISEmpty(element['trainIntegral']) ? element['trainIntegral'].toString() : '0';
+      _pucksModel.avgPace =  !ISEmpty(element['avgPace']) ? element['avgPace'].toString() : '';
+      _pucksModel.avgPaceRank =  !ISEmpty(element['avgPaceRank']) ? element['avgPaceRank'].toString() : '';
+      _pucksModel.trainCount =  !ISEmpty(element['trainCount']) ? element['trainCount'].toString() : '-';
+      _pucksModel.trainCountRank = !ISEmpty(element['trainCountRank']) ? element['trainCountRank'].toString() : '';
+      _pucksModel.recordBreakCount =  !ISEmpty(element['recordBreakCount']) ? element['recordBreakCount'].toString() : '';
+      _pucksModel.recordBreakCountRank = !ISEmpty(element['recordBreakRank']) ? element['recordBreakRank'].toString() : '';
+      if(_datas is List && _datas.length > 0){
+        _datas.forEach((element){
+          GameOverModel model = GameOverModel();
+          final _map = element;
+          model.avgPace =
+          !ISEmpty(_map['avgPace']) ? _map['avgPace'].toString() : '--';
+          model.score =
+          !ISEmpty(_map['trainScore']) ? _map['trainScore'].toString() : '--';
+          model.endTime =
+          !ISEmpty(_map['createTime']) ? _map['createTime'].toString() : '--';
+          model.videoPath =
+          !ISEmpty(_map['trainVideo']) ? _map['trainVideo'].toString() : '--';
+          model.sceneId =
+          !ISEmpty(_map['sceneId']) ? _map['sceneId'].toString() : '1';
+          model.modeId =
+          !ISEmpty(_map['modeId']) ? _map['modeId'].toString() : '1';
+          model.trainTime =
+          !ISEmpty(_map['trainTime']) ? _map['trainTime'].toString() : '45';
+          model.rank =  !ISEmpty(_map['rankNumber']) ? _map['rankNumber'].toString() : '-';
+          _list.add(model);
+        });
+      }
+      _pucksModel.datas = _list;
+      return ApiResponse(success: response.success, data: _pucksModel);
+    } else {
+      return ApiResponse(success: false);
+    }
+  }
+
+/*
+* 查询热力图数据和用户的最好成绩的提升幅度的数据
+* */
+  static Future<ApiResponse<HeatMapModel>> queryAirBattleHetMapData(String activityId,String startTime, String endTime) async{
+    final _data = {
+      'activityId':activityId.toString(),
+      'startTime':startTime,
+      'endTime':endTime
+    };
+
+    final response =
+        await HttpUtil.get('/api/statistic/activity/getActivityTrainMemberByDate', _data, showLoading: true);
+    HeatMapModel model = HeatMapModel();
+    if (response.success && response.data['data'] != null) {
+      final raiseRange = response.data['data']['raiseRange'];
+      final _list = response.data['data']['trainCountList'] as List<dynamic>;
+      String percentageString = (raiseRange * 100).toStringAsFixed(2) + "%";
+      model.raiseRange = percentageString;
+      model.datas.clear();
+      _list.forEach((element) {
+        HeatMapDataModel _model = HeatMapDataModel(count: element);
+        model.datas.add(_model);
+      });
+      return ApiResponse(success: response.success, data: model);
+    }
+    return ApiResponse(success: false);
+  }
+
 }

@@ -38,7 +38,7 @@ class MyAccountDataModel {
   String birthday = ''; // 生日
   String country = ''; // 国家
   int integral = 0; // 积分
-  int memberId = 1; // 会员号
+  int memberId = 1; // 会员ID
   int memberLevel = 1; // 会员等级
   String nickName = ''; // 昵称
   dynamic trainCount = 0; // 训练次数
@@ -256,7 +256,7 @@ class Profile {
       "page": '1',
     };
     final response = await HttpUtil.get('/api/train/video/list', _data,
-        showLoading: false);
+        showLoading: true);
     VideoDataModel _model = VideoDataModel();
     if (response.success && response.data['data'] != null) {
       final _count = response.data['count'];

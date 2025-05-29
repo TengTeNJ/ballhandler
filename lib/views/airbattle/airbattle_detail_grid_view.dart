@@ -2,7 +2,8 @@ import 'package:code/utils/color.dart';
 import 'package:code/widgets/base/top_bottom_text_view.dart';
 import 'package:flutter/material.dart';
 
-class AirBattleGridView extends StatelessWidget {
+
+class AirBattleGridView extends StatefulWidget {
   String imagePath;
   String title;
   String detail;
@@ -10,6 +11,12 @@ class AirBattleGridView extends StatelessWidget {
   AirBattleGridView(
       {required this.imagePath, required this.title, required this.detail});
 
+  @override
+  State<AirBattleGridView> createState() => _AirBattleGridViewState();
+}
+
+class _AirBattleGridViewState extends State<AirBattleGridView> {
+  @override
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -24,7 +31,7 @@ class AirBattleGridView extends StatelessWidget {
               borderRadius: BorderRadius.circular(20)),
           child: Center(
             child: Image(
-              image: AssetImage(imagePath),
+              image: AssetImage(widget.imagePath),
               width: 18,
               height: 18,
             ),
@@ -35,8 +42,8 @@ class AirBattleGridView extends StatelessWidget {
         ),
         Expanded(
             child: SingleChildScrollView(child: TBTextView(
-              title: title,
-              detailTitle: detail,
+              title: widget.title,
+              detailTitle: widget.detail,
               titleFontSize: 14,
               detailFontSize: 14,
               detailFontWeight: FontWeight.w500,
@@ -47,3 +54,5 @@ class AirBattleGridView extends StatelessWidget {
     );
   }
 }
+
+

@@ -3,6 +3,7 @@ import 'package:code/models/airbattle/award_model.dart';
 import 'package:code/services/http/airbattle.dart';
 import 'package:code/services/http/profile.dart';
 import 'package:code/utils/dialog.dart';
+import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/toast.dart';
 import 'package:code/views/airbattle/award_list_view.dart';
 import 'package:code/widgets/navigation/CustomAppBar.dart';
@@ -77,6 +78,7 @@ class _AwardListControllerState extends State<AwardListController> {
                 TTDialog.awardDialog(context,() async{
                 final _response =   await AirBattle.readAwardMessage(model.rewardId);
                 if(_response.success){
+                  EventBus().sendEvent(kReadAwardMessage);
                  model.rewardStatus = 1;
                   setState(() {
 

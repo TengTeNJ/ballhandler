@@ -112,8 +112,9 @@ class _RecordSelectControllerState extends State<RecordSelectController> {
             child: GestureDetector(
               onTap: () async {
                 List<CameraDescription> cameras = await availableCameras();
-                if (_recordSelect) {
-                  // 视频check
+                GameUtil gameUtil = GetIt.instance<GameUtil>();
+                if (_recordSelect ||  gameUtil.isFromAirBattle) {
+                  // 视频check页面 勾选了选择视频或者是来自AirBattle(AirBattle默认是选择视频的)
                   NavigatorUtil.popAndThenPush(
                     Routes.videocheck,
                     arguments: cameras[cameras.length >1 ? 1 : 0],
