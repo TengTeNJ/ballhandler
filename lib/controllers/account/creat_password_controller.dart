@@ -148,7 +148,7 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                       return;
                     }
 
-                    if(widget.thirdLoginType == 4){
+                    if(widget.thirdLoginType != 1){
                       // shopify用户
                       // 设置密码
                       await  Account.setPwd(_inputText);
