@@ -67,7 +67,7 @@ class HttpUtil {
       }
     } catch (e) {
       if (showLoading) {
-        TTToast.showErrorInfo('Unknown error');
+        TTToast.showErrorInfo(e.toString() ?? 'Unknown error');
       }
       _handleError(e);
       rethrow;
