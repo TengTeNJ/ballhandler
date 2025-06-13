@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/yangqingjie/fvm/versions/3.29.2/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/yangqingjie/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/yangqingjie/Desktop/项目/tengte/ballhandler/android/app/.cxx/RelWithDebInfo/2m386g3h/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/yangqingjie/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/yangqingjie/Desktop/项目/tengte/ballhandler/android/app/.cxx/RelWithDebInfo/2m386g3h/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

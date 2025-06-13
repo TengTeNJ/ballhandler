@@ -1,0 +1,2 @@
+/Users/yangqingjie/Desktop/项目/tengte/ballhandler/android/app/.cxx/RelWithDebInfo/2m386g3h/x86_64/CMakeFiles/edit_cache.dir
+/Users/yangqingjie/Desktop/项目/tengte/ballhandler/android/app/.cxx/RelWithDebInfo/2m386g3h/x86_64/CMakeFiles/rebuild_cache.dir

@@ -362,8 +362,8 @@ const kBLEDataFramerFoot = 0xAA; // 蓝牙数据尾
 
 // const String kBaseUrl_Dev = 'http://13.49.0.47:91'; // 测试环境地址(ip)
 const String kBaseUrl_Dev = 'https://testhockey.fjcctv.com'; // 测试环境地址(域名)
-// 13.49.0.47:91  http://13.49.0.47:91 http://hockey.fjcctv.com:91
-const String kBaseUrl_Pro = 'http://hockey.fjcctv.com:91'; // 生产环境地址
+// http://3.236.189.174:91   http://hockey.fjcctv.com:91
+const String kBaseUrl_Pro = 'http://3.236.189.174:91'; // 生产环境地址
 const kTokenTimeOutCode = 401; // 登录失效错误码
 const kDataBaseTableName = 'game_data_table'; // 数据库的表名
 const kDataBaseTVideoableName = 'video_table'; // 视频路径数据库的表名
