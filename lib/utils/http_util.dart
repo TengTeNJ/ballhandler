@@ -54,14 +54,19 @@ class HttpUtil {
         TTToast.hideLoading();
       }
       final _code = response.data['code'];
-      if ( response.data!= null && _code != null && _code == '0' ) {
+      if ( response.data!= null && _code != null && _code == '0' && response.data is Map ) {
         return ApiResponse(
             success: true, data: response.data, errorMessage: 'success');
       } else {
         if (showLoading) {
           TTToast.showErrorInfo(response.data['msg']);
         }
-        _handleFailure(int.parse(_code));
+        if(_code != null){
+          _handleFailure(int.parse(_code));
+        }else{
+          TTToast.showErrorInfo('code is null');
+        }
+
         return ApiResponse(
             success: false, data: response.data, errorMessage: 'false');
       }
