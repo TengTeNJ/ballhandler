@@ -38,6 +38,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         label: 'Air Battle'),
     BottomNavigationBarItem(
         icon: Image(
+            image: AssetImage('images/bottom/stats.png'),
+            width: 40,
+            height: 17
+        ),
+        label: 'Stats'),
+    BottomNavigationBarItem(
+        icon: Image(
             image: AssetImage('images/bottom/ranking.png'),
             width: 20,
             height: 20
@@ -62,6 +69,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         image: AssetImage('images/bottom/airbattle_selected.png'),
         width: 40,
         height: 17
+    ),
+    Image(
+        image: AssetImage('images/bottom/stats_selected.png'),
+        width: 20,
+        height: 20
     ),
     Image(
         image: AssetImage('images/bottom/ranking_selected.png'),
@@ -108,6 +120,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               label: 'Air Battle'),
           BottomNavigationBarItem(
               icon: Image(
+                  image: AssetImage('images/bottom/stats.png'),
+                  width: 20,
+                  height: 20
+              ),
+              label: 'Stats'),
+          BottomNavigationBarItem(
+              icon: Image(
                   image: AssetImage('images/bottom/ranking.png'),
                   width: 20,
                   height: 20
@@ -132,6 +151,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               image: AssetImage('images/bottom/airbattle_selected.png'),
               width: 40,
               height: 17
+          ),
+          Image(
+              image: AssetImage('images/bottom/stats.png'),
+              width: 20,
+              height: 20
           ),
           Image(
               image: AssetImage('images/bottom/ranking_selected.png'),

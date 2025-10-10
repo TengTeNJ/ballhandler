@@ -7,17 +7,17 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 List<String> _months = [];
 
-class MyStatsLineAreaView extends StatefulWidget {
+class StatsLineAreaView extends StatefulWidget {
   List<MyStatsModel> datas = [];
   int selectType = 1;
 
-  MyStatsLineAreaView({required this.datas, required this.selectType});
+  StatsLineAreaView({required this.datas, required this.selectType});
 
   @override
-  State<MyStatsLineAreaView> createState() => _MyStatsLineAreaViewState();
+  State<StatsLineAreaView> createState() => _StatsLineAreaViewState();
 }
 
-class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
+class _StatsLineAreaViewState extends State<StatsLineAreaView> {
   TooltipBehavior _tooltipBehavior = TooltipBehavior(
     enable: true,
     builder: (dynamic data, dynamic point, dynamic series, int pointIndex,
@@ -37,9 +37,8 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
         SizedBox(
           height: widget.selectType > 10 ? 1 : 10,
         ),
-        SfCartesianChart(
+        AspectRatio(aspectRatio: 2,child: SfCartesianChart(
           margin: EdgeInsets.only(left: 0, right: 0, top: 10),
-          // legend: Legend(isVisible: true),
           selectionType: SelectionType.point,
           plotAreaBorderColor: Colors.transparent,
           // 控制和Y交叉方向的直线的样式
@@ -68,7 +67,7 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
               majorGridLines: MajorGridLines(
                   color: Color.fromRGBO(112, 112, 112, 1.0),
                   dashArray: [5, 5]) // 设置Y轴网格竖线为虚线,
-              ),
+          ),
           // backgroundColor: Color.fromRGBO(41, 41, 54, 1.0),
           onSelectionChanged: (SelectionArgs args) {
             //selectedIndexes.clear(); // 清空之前选中的索引
@@ -117,20 +116,20 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
               fontWeight: FontWeight.w400,
             ),
             axisLine:
-                AxisLine(width: 1, color: Color.fromRGBO(112, 112, 112, 1.0)),
+            AxisLine(width: 1, color: Color.fromRGBO(112, 112, 112, 1.0)),
             // 设置 X 轴轴线颜色和宽度
             labelPosition: ChartDataLabelPosition.outside,
             //interval: 2,
             majorGridLines:
-                MajorGridLines(color: Colors.transparent, dashArray: [5, 5]),
+            MajorGridLines(color: Colors.transparent, dashArray: [5, 5]),
             majorTickLines:
-                MajorTickLines(color: Colors.yellow, size: 0), // 超出坐标系部分的线条设置
+            MajorTickLines(color: Colors.yellow, size: 0), // 超出坐标系部分的线条设置
           ),
           tooltipBehavior: _tooltipBehavior,
           series: <CartesianSeries<MyStatsModel, String>>[
             AreaSeries(
-                // borderDrawMode: BorderDrawMode.top, // 设置阴影面积的绘制方式
-                // emptyPointSettings: EmptyPointSettings(mode: EmptyPointMode.average), // 设置空点模式,
+              // borderDrawMode: BorderDrawMode.top, // 设置阴影面积的绘制方式
+              // emptyPointSettings: EmptyPointSettings(mode: EmptyPointMode.average), // 设置空点模式,
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -168,9 +167,9 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
                 pointColorMapper: (MyStatsModel data, _) => Colors.yellow,
                 xValueMapper: (MyStatsModel data, _) => data.indexString,
                 yValueMapper: (MyStatsModel data, _) =>
-                    data.speed > 5 ? 5 : data.speed),
+                data.speed > 5 ? 5 : data.speed),
           ],
-        )
+        ),)
       ],
     );
   }
