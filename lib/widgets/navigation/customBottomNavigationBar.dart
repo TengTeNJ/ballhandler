@@ -153,7 +153,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               height: 17
           ),
           Image(
-              image: AssetImage('images/bottom/stats.png'),
+              image: AssetImage('images/bottom/stats_selected.png'),
               width: 20,
               height: 20
           ),
@@ -189,6 +189,15 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
              //Navigator.pushNamed(NavigatorUtil.utilContext, Routes.login);
             NavigatorUtil.present(LoginPageController(),routesName: Routes.login);
            }else{
+             if(index == 2){
+               // stats页面 需要订阅才能访问
+               if(UserProvider.of(context).subscribeModel.subscribeStatus != 1){
+                 // 未订阅 则限制进入
+                 NavigatorUtil.push(Routes.subscribe);
+                 // TTDialog.subscribeDialog(context);
+                 return;
+               }
+             }
              this.currentIndex = index;
              if(widget.onTap != null){
                widget.onTap!(index);
