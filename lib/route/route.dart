@@ -37,6 +37,7 @@ import 'package:code/controllers/profile/membership_detail_controller.dart';
 import 'package:code/controllers/profile/setting_controller.dart';
 import 'package:code/controllers/profile/sub_setting_controller.dart';
 import 'package:code/controllers/ranking/my_stats_controller.dart';
+import 'package:code/controllers/stats/career_detail_page_controller.dart';
 import 'package:code/controllers/stats/stats_detail_page_controller.dart';
 import 'package:code/controllers/subscribe/subscribe_controller.dart';
 import 'package:code/controllers/subscribe/ult_subscribe_home_controller.dart';
@@ -93,6 +94,7 @@ class Routes {
   static const String mypucks= 'airbattleMyPucks'; // AirBattle的My Pucks的页面
   static const String airbattleawards= 'airbattleAwards'; // AirBattle的奖品页面
   static const String statsdetail= 'statsDetail'; // 数据页面折线图等详情页面
+  static const String careerdetail= 'careerDetail'; // 数据页面里程碑数据详情页面
 
   //GameFinishController VideoPlayController
   static RouteFactory onGenerateRoute = (settings) {
@@ -213,6 +215,8 @@ class Routes {
      // IntegralController MyAccountDataModel
       case statsdetail:
         return MaterialPageRoute(builder: (_) => StatsDetailPageController());
+      case careerdetail:
+        return MaterialPageRoute(builder: (_) => CareerDetailPageController());
       default:
         return _errorRoute();
     }
