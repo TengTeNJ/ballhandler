@@ -94,6 +94,7 @@ dependencies:
   video_compress: ^3.1.4
   flutter_app_badge: ^2.0.2
   open_settings_plus: ^0.4.0
+  dropdown_button2: ^2.3.9
 dev_dependencies:
   flutter_test:
     sdk: flutter
