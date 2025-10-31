@@ -430,6 +430,7 @@ const kReadAwardMessage= 'read_message_award'; // 阅读奖励信息
 const kExchangePage = 'exchange_page'; // 交换页面的顺序
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
+    "8": "Cat Challenge" ,
     "7": "ZIGZAG Challenge",
     "1": "2 Challenge",
     "2": "L Challenge",
@@ -444,7 +445,6 @@ const Map<String, Map<String, String>> kGameSceneAndModelMap = {
     "3": " FREE Mode",
   },
   "3": {
-    "7": "ZIGZAG Challenge",
     "1": "2 Challenge",
     "2": "L Challenge",
     "3": "OMEGA Challenge",
