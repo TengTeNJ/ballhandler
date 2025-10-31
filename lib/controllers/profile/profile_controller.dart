@@ -308,21 +308,21 @@ int scoreLevel = -1;
                   SizedBox(
                     height: 40,
                   ),
-                  Constants.mediumWhiteTextWidget('My Career', 16),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  RewardiconsView(
-                    titles: avgMilestoneData,
-                    currentLevel: avgLevel,
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  RewardiconsView(
-                    titles: scoreMilestoneData,
-                    currentLevel: scoreLevel,
-                  )
+                  // Constants.mediumWhiteTextWidget('My Career', 16),
+                  // SizedBox(
+                  //   height: 12,
+                  // ),
+                  // RewardiconsView(
+                  //   titles: avgMilestoneData,
+                  //   currentLevel: avgLevel,
+                  // ),
+                  // SizedBox(
+                  //   height: 24,
+                  // ),
+                  // RewardiconsView(
+                  //   titles: scoreMilestoneData,
+                  //   currentLevel: scoreLevel,
+                  // )
                 ],
               );
             },
