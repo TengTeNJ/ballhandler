@@ -1,5 +1,6 @@
 import 'package:code/constants/constants.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/utils/color.dart';
 import 'package:code/utils/event_track.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
@@ -84,8 +85,8 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Color.fromRGBO(182, 246, 29, 1.0),
-                    Color.fromRGBO(219, 219, 20, 1.0)
+                  hexStringToColor('#C20C06'),
+                    hexStringToColor('#FB8D8D'),
                   ],
                 ),
               ),
@@ -93,7 +94,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 children: [
                   Align(
                     alignment: Alignment.center,
-                    child: Constants.boldBlackTextWidget('Play Now', 16),
+                    child: Constants.boldWhiteTextWidget('PLAY NOW', 16),
                   ),
                   Positioned(
                       top: 6,
