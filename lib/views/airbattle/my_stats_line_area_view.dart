@@ -4,7 +4,9 @@ import 'package:code/utils/color.dart';
 import 'package:code/views/airbattle/my_stats_tip_view.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
 List<String> _months = [];
+
 class MyStatsLineAreaView extends StatefulWidget {
   List<MyStatsModel> datas = [];
   int selectType = 1;
@@ -76,21 +78,37 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
               var _week = widget.datas[int.parse(args.text) - 1].simpleWeekDay;
               var _month = widget.datas[int.parse(args.text) - 1].simpleMonth;
               var _day = widget.datas[int.parse(args.text) - 1].simpleDay;
-              if(widget.selectType == 1){
-                return ChartAxisLabel(_week, TextStyle(fontSize: 14,));
-              }else{
-                if(_months.contains(_month)){
+              if (widget.selectType == 1) {
+                return ChartAxisLabel(
+                    _week,
+                    TextStyle(
+                      fontSize: 14,
+                    ));
+              } else {
+                if (_months.contains(_month)) {
                   // 使用where方法过滤数组，并计算出现次数
                   //int count = _months.where((element) => element == _month).length;
                   _months.add(_month);
-                  return ChartAxisLabel(_day, TextStyle(fontSize: 14,));
-                }else{
+                  return ChartAxisLabel(
+                      _day,
+                      TextStyle(
+                        fontSize: 14,
+                      ));
+                } else {
                   _months.add(_month);
-                  return ChartAxisLabel(_month + '.${_day}', TextStyle(fontSize: 14,));
+                  return ChartAxisLabel(
+                      _month + '.${_day}',
+                      TextStyle(
+                        fontSize: 14,
+                      ));
                 }
-                return ChartAxisLabel(_month, TextStyle(fontSize: 14,));
+                return ChartAxisLabel(
+                    _month,
+                    TextStyle(
+                      fontSize: 14,
+                    ));
               }
-             // return  ChartAxisLabel('123', TextStyle());
+              // return  ChartAxisLabel('123', TextStyle());
             },
             labelStyle: TextStyle(
               color: hexStringToColor('#B1B1B1'),
@@ -151,25 +169,6 @@ class _MyStatsLineAreaViewState extends State<MyStatsLineAreaView> {
                 xValueMapper: (MyStatsModel data, _) => data.indexString,
                 yValueMapper: (MyStatsModel data, _) =>
                     data.speed > 5 ? 5 : data.speed),
-            // AreaSeries(
-            //   color: Colors.red,
-            //     borderColor: Colors.blue, // 设置边界线颜色
-            //     borderWidth: 2, // 设置边界线宽度
-            //      markerSettings: MarkerSettings(
-            //       isVisible: true,
-            //       borderColor: Colors.white,
-            //       shape: DataMarkerType.circle,
-            //       // 设置数据点为圆形
-            //       color: Colors.white,
-            //       // 设置数据点颜色
-            //       height: 8,
-            //       // 设置数据点高度
-            //       width: 8, // 设置数据点宽度
-            //     ),
-            //     dataSource:series,
-            //     pointColorMapper: (SalesData sales, _) => sales.color,
-            //     xValueMapper: (SalesData sales, _) => sales.year,
-            //     yValueMapper: (SalesData sales, _) => sales.sales - 0.01 ),
           ],
         )
       ],

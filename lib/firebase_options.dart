@@ -50,21 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDyqPG_JbmS7TaEtDAmitgfsVImxzqNRaQ',
-    appId: '1:940248126378:android:b35d853f703f61b10291d3',
-    messagingSenderId: '940248126378',
-    projectId: 'potent-hockey',
-    storageBucket: 'potent-hockey.firebasestorage.app',
+    apiKey: 'AIzaSyCsVdT0KIZIbqeQP4B7ISZDK_cne2E7fnA',
+    appId: '1:217693202761:android:78ebbb05336c572501d298',
+    messagingSenderId: '217693202761',
+    projectId: 'potent-hockey-8bae8',
+    storageBucket: 'potent-hockey-8bae8.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD59tyeZi3ufBqFdMQ18BYadY24eSOSdD0',
-    appId: '1:940248126378:ios:69bd04177de840060291d3',
-    messagingSenderId: '940248126378',
-    projectId: 'potent-hockey',
-    storageBucket: 'potent-hockey.firebasestorage.app',
-    androidClientId: '940248126378-0qgcr7uodv3k55hg39o2br2tn3afn2hk.apps.googleusercontent.com',
-    iosClientId: '940248126378-21i2rjscftt3ph9qne0p2dvbhpt72ov6.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCBuOkHwTtDWgbQiue-65etsFdnrJJP4Dc',
+    appId: '1:217693202761:ios:7c528d885052ddcf01d298',
+    messagingSenderId: '217693202761',
+    projectId: 'potent-hockey-8bae8',
+    storageBucket: 'potent-hockey-8bae8.firebasestorage.app',
     iosBundleId: 'com.potent.dangleios',
   );
 

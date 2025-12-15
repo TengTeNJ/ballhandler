@@ -147,8 +147,7 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                           'The passwords entered twice are inconsistent, please check');
                       return;
                     }
-
-                    if(widget.thirdLoginType != 1){
+                    if(widget.thirdLoginType != 0){
                       // shopify用户
                       // 设置密码
                       await  Account.setPwd(_inputText);

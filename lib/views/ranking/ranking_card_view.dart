@@ -64,11 +64,11 @@ String _title = 'Digital Stickhandling Trainer';
                       _matchModel != null ? _matchModel.dictValue : _title, 14,
                       textAlign: TextAlign.left),
                 ),
-                Image(
-                  image: AssetImage('images/participants/next.png'),
-                  width: 20,
-                  height: 20,
-                ),
+                // Image(
+                //   image: AssetImage('images/participants/next.png'),
+                //   width: 20,
+                //   height: 20,
+                // ),
               ],
             ),
           ),

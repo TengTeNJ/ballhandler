@@ -20,6 +20,7 @@ enum LoginType {
 /*登录util*/
 class LoginUtil {
   static Future<ApiResponse<User>> thirdLogin(LoginType type) async {
+    print('谷歌登录');
     if (type == LoginType.google) {
       GoogleSignIn _googleSignIn = GoogleSignIn(
         scopes: [

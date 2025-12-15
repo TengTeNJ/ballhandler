@@ -8,8 +8,13 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [GeneratedPluginRegistrant registerWithRegistry:self];
   // Override point for customization after application launch.
+    // 初始化 Firebase
+     if ([FIRApp defaultApp] == nil) {
+         [FIRApp configure];
+     }
     [self configRemoteNotification];
-  return [super application:application didFinishLaunchingWithOptions:launchOptions];
+    [FIRMessaging messaging].delegate = self;
+    return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
 
