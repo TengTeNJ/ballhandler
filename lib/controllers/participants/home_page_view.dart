@@ -3,6 +3,7 @@ import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/set_email_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/services/http/utils.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/notification_bloc.dart';
@@ -97,6 +98,8 @@ class _HomePageViewState extends State<HomePageController> {
   @override
   void initState() {
     super.initState();
+    // 检查系统版本
+    checkVersion();
     GameUtil gameUtil = GetIt.instance<GameUtil>();
    // 初始化pageview试图数组
     gameUtil.sceneList.forEach((element) {
@@ -212,6 +215,11 @@ class _HomePageViewState extends State<HomePageController> {
 
     }
   }
+
+   checkVersion() async {
+   final _model =  await Utils.getLastVersion();
+   print('_model == ${_model.data!}');
+   }
 
   @override
   Widget build(BuildContext context) {

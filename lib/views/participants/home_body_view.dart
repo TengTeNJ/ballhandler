@@ -47,7 +47,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   height: 8,
                 ),
                 Constants.boldWhiteTextWidget(
-                  widget.model.dictValue,
+                   ISEmpty(widget.model.title) ?  widget.model.dictValue : widget.model.title,
                   26,
                   maxLines: 2,
                   textAlign: TextAlign.center,
@@ -85,8 +85,8 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                  hexStringToColor('#C20C06'),
-                    hexStringToColor('#FB8D8D'),
+                  hexStringToColor(widget.model.gradientStart),
+                    hexStringToColor(widget.model.gradientEnd),
                   ],
                 ),
               ),
@@ -94,7 +94,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 children: [
                   Align(
                     alignment: Alignment.center,
-                    child: Constants.boldWhiteTextWidget('PLAY NOW', 16),
+                    child:  widget.model.gradientStart == '#B6F61D'  ? Constants.boldBlackTextWidget(!ISEmpty(widget.model.buttonName) ? widget.model.buttonName : 'PLAY NOW', 16) : Constants.boldWhiteTextWidget(!ISEmpty(widget.model.buttonName) ? widget.model.buttonName : 'PLAY NOW', 16),
                   ),
                   Positioned(
                       top: 6,

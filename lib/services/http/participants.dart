@@ -46,6 +46,10 @@ class SceneModel {
   String dictRemark =
       'A groundbreaking training tool meticulously engineered to elevate your stickhandling, enhance your puck control, and secure your competitive advantage. This cutting-edge system sets a new standard in hockey training. With its innovative 270° design and smart technologies you\'re not just practicing with a static tool; you\'re immersing yourself in a holistic training environment.';
   String dictImage = '';
+  String title = '';// 标题
+  String buttonName = 'PLAY NOW';// 按钮标题
+  String gradientStart = '#B6F61D';// 渐变色值1
+  String gradientEnd = '#DBDB14';// 渐变色值2
 
   SceneModel(
       {this.dictKey = '2',
@@ -306,6 +310,14 @@ class Participants {
         model.dictValue = !ISEmpty(_map['dictValue']) ? _map['dictValue'] : '-';
         model.dictRemark =
             !ISEmpty(_map['dictRemark']) ? _map['dictRemark'] : '-';
+        model.title =
+        !ISEmpty(_map['dictRemark1']) ? _map['dictRemark1'] : '';
+        model.buttonName =
+        !ISEmpty(_map['dictRemark2']) ? _map['dictRemark2'] : 'PLAY NOW';
+        model.gradientStart =
+        !ISEmpty(_map['dictRemark3']) ? _map['dictRemark3'] : '#B6F61D';
+        model.gradientEnd =
+        !ISEmpty(_map['dictRemark4']) ? _map['dictRemark4'] : '#DBDB14';
         model.dictImage = !ISEmpty(_map['dictImage']) ? _map['dictImage'] : '';
         _list.add(model);
       });
