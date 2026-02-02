@@ -103,7 +103,8 @@ class _HomePageViewState extends State<HomePageController> {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
    // 初始化pageview试图数组
     gameUtil.sceneList.forEach((element) {
-      _pageViews.add(HomeBodyView(model: element));
+      var index = gameUtil.sceneList..indexOf(element);
+      _pageViews.add(HomeBodyView(model: element, isActive: index == _currentIndex));
     });
     // Future.delayed(Duration(milliseconds: 1000),(){
     //   TTDialog.boardOnlineStatuDialog(context);
@@ -192,7 +193,8 @@ class _HomePageViewState extends State<HomePageController> {
       gameUtil.sceneList.addAll(_response.data!);
       _pageViews.clear();
       gameUtil.sceneList.forEach((element) {
-        _pageViews.add(HomeBodyView(model: element));
+        var index = gameUtil.sceneList..indexOf(element);
+        _pageViews.add(HomeBodyView(model: element, isActive: index == _currentIndex));
       });
       int? value = await NSUserDefault.getValue<int>(kSceneSelectCache);
       print('value == ${value}');
@@ -266,11 +268,17 @@ class _HomePageViewState extends State<HomePageController> {
                   controller: _pageController,
                   itemCount: gameUtil.sceneList.length,
                   itemBuilder: (context, index) {
+                    final model = gameUtil.sceneList[index];
                     return Padding(
                       padding: EdgeInsets.only(left: 16, right: 16),
-                      child: _pageViews[index],
+                      child: HomeBodyView(
+                        model: model,
+                        isActive: index == _currentIndex,  // 👈 实时传
+                      ),
                     );
-                  }),
+                  }
+
+              ),
             ),
             Container(
               height: 34,

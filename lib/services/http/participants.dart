@@ -50,6 +50,7 @@ class SceneModel {
   String buttonName = 'PLAY NOW';// 按钮标题
   String gradientStart = '#B6F61D';// 渐变色值1
   String gradientEnd = '#DBDB14';// 渐变色值2
+  String videoUrl = 'assets/video/1.mp4'; // 视频
 
   SceneModel(
       {this.dictKey = '2',
@@ -319,6 +320,8 @@ class Participants {
         model.gradientEnd =
         !ISEmpty(_map['dictRemark4']) ? _map['dictRemark4'] : '#DBDB14';
         model.dictImage = !ISEmpty(_map['dictImage']) ? _map['dictImage'] : '';
+        model.videoUrl = !ISEmpty(_map['dictKey']) ? 'assets/video/${_map['dictKey']}.mp4': '1.mp4';
+
         _list.add(model);
       });
       return ApiResponse(success: response.success, data: _list);
