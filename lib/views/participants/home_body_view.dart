@@ -128,15 +128,15 @@ class _HomeBodyViewState extends State<HomeBodyView> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 49, left: 16, right: 16),
+        Expanded(child: Container(
+          margin: EdgeInsets.only(top: 49, left: 0, right: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image(
                 image: AssetImage(
                     'images/participants/product_${widget.model.dictKey}.png'),
-                  width: double.infinity,
+                width: double.infinity,
                 height: 63,
               ),
               SizedBox(height: 8),
@@ -149,14 +149,14 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 24),
-              Constants.regularWhiteTextWidget(
-                widget.model.dictRemark,
-                12,
-                height: 1.5,
-              ),
+             Container(child:  Constants.boldWhiteTextWidget(
+               widget.model.dictRemark,
+               12,
+               height: 1.5,
+             )),
             ],
           ),
-        ),
+        ),),
         GestureDetector(
           onTap: () async {
             final _hasLogin = UserProvider.of(context).hasLogin;
