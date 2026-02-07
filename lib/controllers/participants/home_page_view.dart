@@ -8,6 +8,7 @@ import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:code/utils/version_utils.dart';
 import 'package:code/views/participants/home_body_view.dart';
 import 'package:code/views/participants/overall_data_view.dart';
 import 'package:code/views/participants/user_info_view.dart';
@@ -99,7 +100,9 @@ class _HomePageViewState extends State<HomePageController> {
   void initState() {
     super.initState();
     // 检查系统版本
-    checkVersion();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      VersionUtils.checkAppVersion(context);
+    });
     GameUtil gameUtil = GetIt.instance<GameUtil>();
    // 初始化pageview试图数组
     gameUtil.sceneList.forEach((element) {
@@ -217,11 +220,6 @@ class _HomePageViewState extends State<HomePageController> {
 
     }
   }
-
-   checkVersion() async {
-   final _model =  await Utils.getLastVersion();
-   print('_model == ${_model.data!}');
-   }
 
   @override
   Widget build(BuildContext context) {

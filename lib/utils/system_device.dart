@@ -3,6 +3,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 class SystemUtil {
   /*锁定屏幕为竖屏*/
   static Future<void> lockScreenDirection() {
@@ -31,10 +32,16 @@ class SystemUtil {
     ]);
   }
 
-  /*获取系统版本*/
+  /*获取系统版本 包含build*/
   static Future<String> getApplicationVersion() async{
     final info = await PackageInfo.fromPlatform();
     return info.version + '#' + info.buildNumber;
+  }
+
+  /*获取系统版本 不包含build*/
+  static Future<String> getApplicationOnlyVersion() async{
+    final info = await PackageInfo.fromPlatform();
+    return info.version;
   }
 
   /*判断是否是iPad*/
@@ -67,5 +74,38 @@ class SystemUtil {
   static hiderStatuBar(bool hidden){
 
   }
+
+
+  static jumpToStore() async {
+    try {
+      if (Platform.isIOS) {
+        /// iOS App Store
+        final Uri iosUrl = Uri.parse(
+          'https://apps.apple.com/app/id6532593711',
+        );
+        if (await canLaunchUrl(iosUrl)) {
+          await launchUrl(iosUrl, mode: LaunchMode.externalApplication);
+        }
+      } else if (Platform.isAndroid) {
+        /// Android 优先 Google Play
+        final Uri gpUrl = Uri.parse(
+          'https://play.google.com/store/apps/details?id=com.potent.dangle',
+        );
+
+        if (await canLaunchUrl(gpUrl)) {
+          await launchUrl(gpUrl, mode: LaunchMode.externalApplication);
+        } else {
+          /// 兜底：官网 / 应用宝 / 内置下载页
+          final Uri backupUrl = Uri.parse(
+            'https://你的官网下载地址',
+          );
+          await launchUrl(backupUrl, mode: LaunchMode.externalApplication);
+        }
+      }
+    } catch (e) {
+      print('❌ 跳转商店失败: $e');
+    }
+  }
+
 
 }

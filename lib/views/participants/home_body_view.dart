@@ -133,11 +133,13 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image(
-                image: AssetImage(
-                    'images/participants/product_${widget.model.dictKey}.png'),
-                width: double.infinity,
-                height: 63,
+              Container(
+                child: Image(
+                  image: AssetImage(
+                      'images/participants/product_${widget.model.dictKey}.png'),
+                  width: double.infinity,
+                  height: 72,
+                ),
               ),
               SizedBox(height: 8),
               Constants.boldWhiteTextWidget(
