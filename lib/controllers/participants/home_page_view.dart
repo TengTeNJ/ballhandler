@@ -3,10 +3,12 @@ import 'package:code/constants/constants.dart';
 import 'package:code/controllers/account/set_email_controller.dart';
 import 'package:code/models/global/user_info.dart';
 import 'package:code/services/http/participants.dart';
+import 'package:code/services/http/utils.dart';
 import 'package:code/services/sqlite/data_base.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/notification_bloc.dart';
 import 'package:code/utils/nsuserdefault_util.dart';
+import 'package:code/utils/version_utils.dart';
 import 'package:code/views/participants/home_body_view.dart';
 import 'package:code/views/participants/overall_data_view.dart';
 import 'package:code/views/participants/user_info_view.dart';
@@ -118,10 +120,15 @@ _onPageChanged(int currentpage){
   @override
   void initState() {
     super.initState();
+    // 检查系统版本
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      VersionUtils.checkAppVersion(context);
+    });
     GameUtil gameUtil = GetIt.instance<GameUtil>();
    // 初始化pageview试图数组
     gameUtil.sceneList.forEach((element) {
-      _pageViews.add(HomeBodyView(model: element));
+      var index = gameUtil.sceneList..indexOf(element);
+      _pageViews.add(HomeBodyView(model: element, isActive: index == _currentIndex));
     });
     // Future.delayed(Duration(milliseconds: 1000),(){
     //   TTDialog.boardOnlineStatuDialog(context);
@@ -192,7 +199,8 @@ _onPageChanged(int currentpage){
       gameUtil.sceneList.addAll(_response.data!);
       _pageViews.clear();
       gameUtil.sceneList.forEach((element) {
-        _pageViews.add(HomeBodyView(model: element));
+        var index = gameUtil.sceneList..indexOf(element);
+        _pageViews.add(HomeBodyView(model: element, isActive: index == _currentIndex));
       });
       int? value = await NSUserDefault.getValue<int>(kSceneSelectCache);
       print('value == ${value}');
@@ -262,11 +270,17 @@ _onPageChanged(int currentpage){
                   itemCount: gameUtil.sceneList.length,
                   onPageChanged: _onPageChanged,
                   itemBuilder: (context, index) {
+                    final model = gameUtil.sceneList[index];
                     return Padding(
                       padding: EdgeInsets.only(left: 16, right: 16),
-                      child: _pageViews[index],
+                      child: HomeBodyView(
+                        model: model,
+                        isActive: index == _currentIndex,  // 👈 实时传
+                      ),
                     );
-                  }),
+                  }
+
+              ),
             ),
             Container(
               height: 34,

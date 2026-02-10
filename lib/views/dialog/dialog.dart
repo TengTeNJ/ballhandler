@@ -11,6 +11,7 @@ import 'package:code/utils/blue_tooth_manager.dart';
 import 'package:code/utils/color.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/utils/string_util.dart';
+import 'package:code/utils/system_device.dart';
 import 'package:code/utils/toast.dart';
 import 'package:code/views/base/no_data_view.dart';
 import 'package:code/views/base/sector_view.dart';
@@ -3063,3 +3064,124 @@ class _BoardOnLineStatuDialogState extends State<BoardOnLineStatuDialog> {
     );
   }
 }
+
+void showUpdateDialog(
+    BuildContext context, {
+      required String title,
+      required String content,
+      required bool force,
+      String? buttonName
+    }) {
+  showGeneralDialog(
+    context: context,
+    barrierLabel: "update",
+    barrierDismissible: !force,
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: const Duration(milliseconds: 200),
+    pageBuilder: (context, anim1, anim2) {
+      return Center(
+        child: Container(
+          width: 320,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              /// 顶部图标
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.system_update_alt,
+                  size: 32,
+                  color: Colors.blue,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              /// 标题
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              /// 版本说明（你后台的 versionRemark）
+              Text(
+                content,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black54,
+                  height: 1.4,
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              /// 按钮区域
+              Row(
+                children: [
+                  if (!force)
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text('More later'),
+                      ),
+                    ),
+                  if (!force) const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        SystemUtil.jumpToStore();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: Text( buttonName ?? 'Update Now'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+    transitionBuilder: (context, anim1, anim2, child) {
+      return ScaleTransition(
+        scale: Tween<double>(begin: 0.9, end: 1.0).animate(anim1),
+        child: Opacity(
+          opacity: anim1.value,
+          child: child,
+        ),
+      );
+    },
+  );
+}
+
+

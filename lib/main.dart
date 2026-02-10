@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
     // 初始化用户信息
     NSUserDefault.initUserInfo(context);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       onGenerateRoute: Routes.onGenerateRoute,
       home: RootPageController(),
