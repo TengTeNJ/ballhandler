@@ -1,3 +1,4 @@
+import 'package:code/controllers/participants/razor_game_process_controller.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/participants/razor/razor_p2_grid_list_view.dart';
 import 'package:code/views/participants/razor/recording_view.dart';
@@ -10,6 +11,7 @@ import '../../constants/constants.dart';
 import '../../models/airbattle/p3_item_model.dart';
 import '../../utils/color.dart';
 import '../../utils/global.dart';
+import 'p3_guide_controller.dart';
 
 class RazorP2SelectController extends StatefulWidget {
   const RazorP2SelectController({super.key});
@@ -132,12 +134,12 @@ class _RazorP2SelectControllerState extends State<RazorP2SelectController> {
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {
-                    // if (_selectModels.length > 0) {
-                    //   NavigatorUtil.pop();
-                    //   NavigatorUtil.present(P3GuideController(
-                    //     selectModels: _selectModels,
-                    //   ));
-                    // }
+                    if (_selectModels.length > 0) {
+                      NavigatorUtil.pop();
+                      NavigatorUtil.present(RazorGameProcessController(
+                        // selectModels: _selectModels,
+                      ));
+                    }
                   },
                   child: Container(
                       width: Constants.screenWidth(context) - 48,

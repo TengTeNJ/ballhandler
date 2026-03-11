@@ -11,30 +11,42 @@ class CommandManager {
 
   // 按顺序发送数组中的命令
   static Future<void> sendCommandsSequentially(List<List<int>> commands) async {
-    for (List<int> command in commands) {
-      print('112233');
-      // 创建一个 Completer 来等待回复
-      Completer<String> completer = Completer<String>();
-      // 监听回复流
-      late StreamSubscription<dynamic> subscription; // 声明 subscription
+    final gameUtil = GetIt.instance<GameUtil>();
+    final bluetoothManager = BluetoothManager();
+    final eventBus = EventBus(); // ⚠️确保你项目里 EventBus 是单例
 
-      subscription = EventBus().stream.listen((reply) {
-        if( reply == kReceiveControlResponse){
-          // 收到控制回复
+    for (final command in commands) {
+      print('112233');
+
+      final completer = Completer<String>();
+      StreamSubscription? subscription;
+
+      subscription = eventBus.stream.listen((reply) {
+        if (reply == kReceiveControlResponse && !completer.isCompleted) {
           print('收到控制回复');
-          subscription.cancel();
           completer.complete(reply);
         }
       });
-      // 发送指令
-      GameUtil gameUtil = GetIt.instance<GameUtil>();
-      BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, command);
-      // 等待 Completer 完成
-      String reply = await completer.future;
-      print("Processed reply: $reply");
+
+      bluetoothManager.writerDataToDevice(
+        gameUtil.selectedDeviceModel,
+        command,
+      );
+
+      try {
+        final reply = await completer.future
+            .timeout(const Duration(seconds: 5)); // ⏱ 超时保护
+        print("Processed reply: $reply");
+      } catch (e) {
+        print("等待设备响应超时或异常: $e");
+      } finally {
+        await subscription?.cancel(); // ✅ 确保释放监听
+      }
     }
+
     print("All commands sent and received replies.");
   }
+
 }
 
 void main() async {

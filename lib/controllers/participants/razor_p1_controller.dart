@@ -133,10 +133,12 @@ class RazorP1Controller extends StatelessWidget {
                         // List<CameraDescription> cameras = await availableCameras();
                         // NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                         // TTToast.hideLoading();
-                        GameUtil gameUtil = GetIt.instance<GameUtil>();
                         // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, lightsControlData([0,0,1]));
                         // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, ledControlData(13, 14));
-                        CommandManager.sendCommandsSequentially([motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.reversal],timers: [150,255]),motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.reversal],timers: [50,60])]);
+
+                        // GameUtil gameUtil = GetIt.instance<GameUtil>();
+                        // CommandManager.sendCommandsSequentially([motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.reversal],timers: [150,255]),motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.reversal],timers: [50,60])]);
+
                         //BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.forward],timers: [100,200]));
                       //  BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, powerOffControlData());
                         // NavigatorUtil.push(Routes.razorgameprocesspage);

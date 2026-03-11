@@ -259,8 +259,8 @@ class BluetoothManager {
               BluetoothDataParse.parseData(data, model);
             }else if (model.deviceName == kThreeBallHandler_Name){
               // 可变三节
-              // print(
-              //     "deviceName =${model.device!.name} 上报来的数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
+              print(
+                  "deviceName =${model.device!.name} 上报来的数据data = ${data.map((toElement) => toElement.toRadixString(16)).toList()}");
                BleRazorServiceData.parseData(data, model);
             }
           }

@@ -207,7 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
               List<int>times2 = [leftValue2,rightValue2];
               List<int>data2 = motorControlData(motorStatus: forwards2,timers: times2);
               print('++++++++++++${[data1]}');
-              CommandManager.sendCommandsSequentially([data1]);
+              CommandManager.sendCommandsSequentially([data1,data2]);
 
               print('第一行左值: $leftValue1, 右值: $rightValue1');
               print('第二行左值: $leftValue2, 右值: $rightValue2');

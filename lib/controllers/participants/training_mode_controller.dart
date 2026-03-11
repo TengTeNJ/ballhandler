@@ -163,8 +163,8 @@ class _TrainingModeControllerState extends State<TrainingModeController> {
             }else{
               // 三节
               const List<Widget> _controllers = [
-                TestRazorController(),
-                // RazorP1Controller(),
+               // TestRazorController(),
+                RazorP1Controller(),
                 RazorP2SelectController(),
               ];
               // 清空上次选择的组合
