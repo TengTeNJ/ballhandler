@@ -332,7 +332,7 @@ class Participants {
         model.gradientEnd =
         !ISEmpty(_map['dictRemark4']) ? _map['dictRemark4'] : '#DBDB14';
         model.dictImage = !ISEmpty(_map['dictImage']) ? _map['dictImage'] : '';
-        model.videoUrl = !ISEmpty(_map['dictKey']) ? 'assets/video/${_map['dictKey']}.mp4': '1.mp4';
+        model.videoUrl =    !ISEmpty(_map['dictVideo'])  ? _map['dictVideo'] : ( !ISEmpty(_map['dictKey']) ? 'assets/video/${_map['dictKey']}.mp4': '1.mp4');
 
         _list.add(model);
       });
