@@ -148,8 +148,9 @@ class _HomeBodyViewState extends State<HomeBodyView> {
     return Image(
       image: (widget.model.dictImage.length > 0)
           ? NetworkImage(widget.model.dictImage)
-          : AssetImage('images/participants/background${widget.model.dictKey}.png')
-      as ImageProvider,
+          : AssetImage(
+                  'images/participants/background${widget.model.dictKey}.png')
+              as ImageProvider,
       fit: BoxFit.cover,
     );
   }
@@ -158,37 +159,45 @@ class _HomeBodyViewState extends State<HomeBodyView> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(child: Container(
-          margin: EdgeInsets.only(top: 49, left: 0, right: 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                child: Image(
-                  image: AssetImage(
-                      'images/participants/product_${widget.model.dictKey}.png'),
-                  width: double.infinity,
-                  height: 72,
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.only(top: 49, left: 0, right: 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Image(
+                    image: AssetImage(
+                        'images/participants/product_${widget.model.dictKey}.png'),
+                    width: double.infinity,
+                    height: 72,
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
-              Constants.boldWhiteTextWidget(
-                ISEmpty(widget.model.title)
-                    ? widget.model.dictValue
-                    : widget.model.title,
-                26,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 24),
-             Container(child:  Constants.boldWhiteTextWidget(
-               widget.model.dictRemark,
-               12,
-               height: 1.5,
-             )),
-            ],
+                SizedBox(height: 8),
+                if (!ISEmpty(widget.model.subTitle))
+                  Constants.customTextWidget(
+                      widget.model.subTitle, 18, '#F8850B'),
+                if (!ISEmpty(widget.model.subTitle)) SizedBox(height: 6),
+                Constants.customNeueTextWidget(
+                  ISEmpty(widget.model.title)
+                      ? widget.model.dictValue
+                      : widget.model.title,
+                  32,
+                  '#FFFFFF',
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 24),
+                Container(
+                    child: Constants.boldWhiteTextWidget(
+                  widget.model.dictRemark,
+                  12,
+                  height: 1.5,
+                )),
+              ],
+            ),
           ),
-        ),),
+        ),
         GestureDetector(
           onTap: () async {
             final _hasLogin = UserProvider.of(context).hasLogin;
@@ -225,17 +234,17 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   child: Center(
                     child: widget.model.gradientStart == '#B6F61D'
                         ? Constants.boldBlackTextWidget(
-                      !ISEmpty(widget.model.buttonName)
-                          ? widget.model.buttonName
-                          : 'PLAY NOW',
-                      16,
-                    )
+                            !ISEmpty(widget.model.buttonName)
+                                ? widget.model.buttonName
+                                : 'PLAY NOW',
+                            16,
+                          )
                         : Constants.boldWhiteTextWidget(
-                      !ISEmpty(widget.model.buttonName)
-                          ? widget.model.buttonName
-                          : 'PLAY NOW',
-                      16,
-                    ),
+                            !ISEmpty(widget.model.buttonName)
+                                ? widget.model.buttonName
+                                : 'PLAY NOW',
+                            16,
+                          ),
                   ),
                 ),
 

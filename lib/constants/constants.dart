@@ -246,6 +246,28 @@ class Constants {
     );
   }
 
+  static Text customNeueTextWidget(String text, double fontSize, String color,
+      {int? maxLines,
+        TextAlign textAlign = TextAlign.center,
+        double height = 1.0,
+        FontWeight? fontWeight,
+        TextOverflow? overflow}) {
+    return Text(
+      textAlign: textAlign,
+      maxLines: maxLines ?? null,
+      textScaler: TextScaler.noScaling,
+      text,
+      style: TextStyle(
+          overflow: overflow,
+          height: height,
+          fontFamily: 'BebasNeue',
+          fontWeight: fontWeight,
+          color: hexStringToColor(color),
+          fontSize: fontSize),
+    );
+  }
+
+
   static Text customTextBaseColorWidget(String text, double fontSize, Color color,
       {int? maxLines,
         TextAlign textAlign = TextAlign.center,
@@ -373,7 +395,7 @@ const kGameDuration = 45; // 游戏时常
 
 const kChannelArray = [0,1,3, 19,21,23,25,27, 47,49,51,52, 71,73,75,77,79];
 
-const isTestEnvironment = false; // 是否使用测试环境 不使用则代表是生产环境 正式环境请改为false
+const isTestEnvironment = true; // 是否使用测试环境 不使用则代表是生产环境 正式环境请改为false
 double kFontSize(BuildContext context, double size) {
   // double font =Constants.screenWidth(context) / 375 * size;
   return size;

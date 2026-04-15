@@ -51,6 +51,7 @@ class SceneModel {
   String gradientStart = '#B6F61D';// 渐变色值1
   String gradientEnd = '#DBDB14';// 渐变色值2
   String videoUrl = 'assets/video/1.mp4'; // 视频
+  String subTitle = '';// 子标题
 
   SceneModel(
       {this.dictKey = '2',
@@ -311,8 +312,19 @@ class Participants {
         model.dictValue = !ISEmpty(_map['dictValue']) ? _map['dictValue'] : '-';
         model.dictRemark =
             !ISEmpty(_map['dictRemark']) ? _map['dictRemark'] : '-';
-        model.title =
-        !ISEmpty(_map['dictRemark1']) ? _map['dictRemark1'] : '';
+
+
+
+        String text = !ISEmpty(_map['dictRemark1']) ? _map['dictRemark1'] : '';
+        List<String> parts = text.split('-');
+
+        if(parts.length >1){
+          model.subTitle = parts[0];
+          model.title = parts[1];
+        }else{
+          model.title = text;
+        }
+
         model.buttonName =
         !ISEmpty(_map['dictRemark2']) ? _map['dictRemark2'] : 'PLAY NOW';
         model.gradientStart =
