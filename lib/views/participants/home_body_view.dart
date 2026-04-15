@@ -34,7 +34,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
 
   void _initVideo() async {
     if (!ISEmpty(widget.model.videoUrl)) {
-      _videoController = VideoPlayerController.asset(widget.model.videoUrl)
+      _videoController =   widget.model.videoUrl.contains('http')? VideoPlayerController.networkUrl(Uri.parse(widget.model.videoUrl)) : VideoPlayerController.asset(widget.model.videoUrl)
         ..initialize().then((_) {
           if (!mounted) return;
           setState(() {});
