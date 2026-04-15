@@ -86,8 +86,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('当前值: $leftValue1'),
                 ],
               ),
-              Container(color: Colors.red,height: 1,),
-              SizedBox(height: 16,),
+              Container(
+                color: Colors.red,
+                height: 1,
+              ),
+              SizedBox(
+                height: 16,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -105,8 +110,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('当前值: $rightValue1'),
                 ],
               ),
-              Container(color: Colors.red,height: 1,),
-              SizedBox(height: 16,),
+              Container(
+                color: Colors.red,
+                height: 1,
+              ),
+              SizedBox(
+                height: 16,
+              ),
             ],
           ),
           const SizedBox(height: 20),
@@ -154,8 +164,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('当前值: $leftValue2'),
                 ],
               ),
-              Container(color: Colors.red,height: 1,),
-              SizedBox(height: 16,),
+              Container(
+                color: Colors.red,
+                height: 1,
+              ),
+              SizedBox(
+                height: 16,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -173,8 +188,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('当前值: $rightValue2'),
                 ],
               ),
-              Container(color: Colors.red,height: 1,),
-              SizedBox(height: 16,),
+              Container(
+                color: Colors.red,
+                height: 1,
+              ),
+              SizedBox(
+                height: 16,
+              ),
             ],
           ),
           const SizedBox(height: 20),
@@ -183,32 +203,49 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             onPressed: () {
               // 点击确定按钮时的逻辑
-              List<BleRazorMotorStatu>  forwards = [BleRazorMotorStatu.forward,BleRazorMotorStatu.forward];
-              if(!first_forward1){
+              List<BleRazorMotorStatu> forwards = [
+                BleRazorMotorStatu.forward,
+                BleRazorMotorStatu.forward
+              ];
+              if (!first_forward1) {
                 forwards.removeAt(0);
                 forwards.insert(0, BleRazorMotorStatu.reversal);
               }
-              if(!first_forward2){
+              if (!first_forward2) {
                 forwards.removeAt(1);
                 forwards.insert(1, BleRazorMotorStatu.reversal);
               }
-              List<int>times = [leftValue1,rightValue1];
-              List<int>data1 = motorControlData(motorStatus: forwards,timers: times);
+              List<int> times = [leftValue1, rightValue1];
+              List<int> data1 =
+                  motorControlData(motorStatus: forwards, timers: times);
 
-              List<BleRazorMotorStatu>  forwards2 = [BleRazorMotorStatu.forward,BleRazorMotorStatu.forward];
-              if(!second_forward1){
+              List<BleRazorMotorStatu> forwards2 = [
+                BleRazorMotorStatu.forward,
+                BleRazorMotorStatu.forward
+              ];
+              if (!second_forward1) {
                 forwards2.removeAt(0);
                 forwards2.insert(0, BleRazorMotorStatu.reversal);
               }
-              if(!second_forward2){
+              if (!second_forward2) {
                 forwards2.removeAt(1);
                 forwards2.insert(1, BleRazorMotorStatu.reversal);
               }
-              List<int>times2 = [leftValue2,rightValue2];
-              List<int>data2 = motorControlData(motorStatus: forwards2,timers: times2);
+              List<int> times2 = [leftValue2, rightValue2];
+              List<int> data2 =
+                  motorControlData(motorStatus: forwards2, timers: times2);
               print('++++++++++++${[data1]}');
-              CommandManager.sendCommandsSequentially([data1,data2]);
-
+              // 判断是否全部都是 0
+              bool allIsZero = times.every((element) => element == 0);
+              bool allIsZero2 = times2.every((element) => element == 0);
+              List<List<int>> datas = [];
+              if (!allIsZero) {
+                datas.add(data1);
+              }
+              if (!allIsZero2) {
+                datas.add(data2);
+              }
+              CommandManager.sendCommandsSequentially(datas);
               print('第一行左值: $leftValue1, 右值: $rightValue1');
               print('第二行左值: $leftValue2, 右值: $rightValue2');
             },
