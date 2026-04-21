@@ -6,6 +6,7 @@ import 'package:code/utils/razor_control_util.dart';
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
 import 'ble_util.dart';
+import 'game_data_bus.dart';
 import 'navigator_util.dart';
 import 'notification_bloc.dart';
 /*数码管显示*/
@@ -28,10 +29,87 @@ const int hitResponse = 0x08;
 const int gearResponse = 0x09;
 /*点击控制完成上报*/
 const int motorFinishResponse = 0x0a;
+/*数码管数据上报（得分 + 倒计时）*/
+const int scoreAndTimeResponse = 0x0b;
 /*电机状态
 * 正转 反转 停转
 * */
 enum BleRazorMotorStatu {stop,forward,reversal}
+
+/// 档位上报对应的默认方向状态
+/// value == 1: 默认反转（需要反转才能转到180初始形状）
+/// value != 1: 默认正常（正转即可转到180初始形状）
+class RazorGearState {
+  static int rawValue = 0;
+  static bool isDefaultReversed = false;
+
+  static void update(int value) {
+    rawValue = value;
+    isDefaultReversed = value == 1;
+  }
+}
+
+class RazorBleLogEntry {
+  RazorBleLogEntry({
+    required this.id,
+    required this.time,
+    required this.rawPacket,
+    required this.rawHex,
+    List<String>? parsedLogs,
+  }) : parsedLogs = parsedLogs ?? <String>[];
+
+  final int id;
+  final DateTime time;
+  final List<int> rawPacket;
+  final String rawHex;
+  final List<String> parsedLogs;
+}
+
+class RazorBleLogStore {
+  RazorBleLogStore._();
+
+  static const int _maxLogs = 300;
+  static final List<RazorBleLogEntry> _logs = <RazorBleLogEntry>[];
+  static int _idSeed = 1;
+  static final StreamController<void> _changeController =
+      StreamController<void>.broadcast();
+
+  static List<RazorBleLogEntry> get logs => List<RazorBleLogEntry>.unmodifiable(_logs);
+  static Stream<void> get changeStream => _changeController.stream;
+
+  static int addRawPacket(List<int> packet) {
+    final int id = _idSeed++;
+    final entry = RazorBleLogEntry(
+      id: id,
+      time: DateTime.now(),
+      rawPacket: List<int>.from(packet),
+      rawHex: packet.map((e) => e.toRadixString(16).padLeft(2, '0')).join(' '),
+    );
+    _logs.add(entry);
+    if (_logs.length > _maxLogs) {
+      _logs.removeAt(0);
+    }
+    _changeController.add(null);
+    return id;
+  }
+
+  static void addParsedLog(int? id, String log) {
+    if (id == null) {
+      return;
+    }
+    final index = _logs.indexWhere((e) => e.id == id);
+    if (index < 0) {
+      return;
+    }
+    _logs[index].parsedLogs.add(log);
+    _changeController.add(null);
+  }
+
+  static void clear() {
+    _logs.clear();
+    _changeController.add(null);
+  }
+}
 
 List<int> bleNotAllData = []; // 不完整数据 被分包发送的蓝牙数据
 bool isNew = true;
@@ -50,7 +128,8 @@ class BleRazorServiceData {
       // 通过 帧头 帧尾 length数据位的值和实际的数据包length进行匹配
       if (data.length >= length && data[length - 1] == kBLEDataFramerFoot) {
         List<int> rightData = data.sublist(0, length);
-        handleData(rightData, model); // 完整的一帧数据
+        final logId = RazorBleLogStore.addRawPacket(rightData);
+        handleData(rightData, model, logId: logId); // 完整的一帧数据
         List<int> othersData = data.sublist(length, data.length);
         isNew = true;
         bleNotAllData.clear();
@@ -90,7 +169,8 @@ class BleRazorServiceData {
         if (bleNotAllData.length >= length &&
             bleNotAllData[length - 1] == kBLEDataFramerFoot) {
           List<int> rightData = bleNotAllData.sublist(0, length);
-          handleData(rightData, model); // 完整的一帧数据
+          final logId = RazorBleLogStore.addRawPacket(rightData);
+          handleData(rightData, model, logId: logId); // 完整的一帧数据
           List<int> othersData =
           bleNotAllData.sublist(length, bleNotAllData.length);
           isNew = true;
@@ -106,7 +186,7 @@ class BleRazorServiceData {
     }
   }
 
-  static handleData(List<int> element, BLEModel mode) {
+  static handleData(List<int> element, BLEModel mode, {int? logId}) {
     if (element.length < 4) {
       // print('解析数据出错');
       return;
@@ -115,27 +195,32 @@ class BleRazorServiceData {
     element = element.sublist(1, element.length);
     // 数据源地址
     int cmd = element[1];
+    RazorBleLogStore.addParsedLog(logId, 'cmd=0x${cmd.toRadixString(16).padLeft(2, '0')}');
     // int id = element[2]; 暂且不需要重传机制 不需要id
     switch (cmd){
       case ledControl:
         // 数码管APP控制回复
         // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
         print('数码管APP控制回复');
+        RazorBleLogStore.addParsedLog(logId, '数码管APP控制回复');
         break;
       case lightControl:
       // 数码管APP控制回复
       // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
         print('灯光APP控制回复');
+        RazorBleLogStore.addParsedLog(logId, '灯光APP控制回复');
         break;
       case motorControl:
       // 数码管APP控制回复
       // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
         print('电机APP控制回复');
+        RazorBleLogStore.addParsedLog(logId, '电机APP控制回复');
         break;
       case powerOff:
       // 数码管APP控制回复
       // CommandSender().controller.sink.add(id);  // 通知控制类消息有相应
         print('关机APP控制回复');
+        RazorBleLogStore.addParsedLog(logId, '关机APP控制回复');
         break;
       case appOnline:
       // 数码管APP控制回复
@@ -145,7 +230,8 @@ class BleRazorServiceData {
       case batteryLevelResponse:
       // 电量
         int value = element[2];
-       // print('电量=${value}');
+        print('电量=${value}');
+        RazorBleLogStore.addParsedLog(logId, '电量上报=$value');
         BluetoothManager().gameData.powerValue = value;
         BleUtil.listenPowerValue(NavigatorUtil.utilContext, value);
         EventBus().sendEvent(kCurrentDeviceInfoChange);
@@ -153,7 +239,8 @@ class BleRazorServiceData {
       case heartBeatResponse:
       // 心跳上报
         int value = element[2];
-        //print('心跳上报=${value}');
+        print('心跳上报=${value}');
+        RazorBleLogStore.addParsedLog(logId, '心跳上报=$value');
         break;
       case hitResponse:
       // 击打上报 0b0000 0001（如bit1:1号，0无 1击打）
@@ -162,17 +249,56 @@ class BleRazorServiceData {
         String binaryString = value.toRadixString(2).padLeft(8, '0');
         print('击打上报=${binaryString}');
         print('击中了${datas.indexOf(value) + 1}号灯板');
+        RazorBleLogStore.addParsedLog(
+            logId, '击打上报=$binaryString, 击中灯板=${datas.indexOf(value) + 1}');
         break;
       case gearResponse:
       // 档位按下上报
         int value = element[2];
-        print('档位按下上报=${value}');
+        RazorGearState.update(value);
+        print('档位按下上报=${value}, 默认状态=${RazorGearState.isDefaultReversed ? '反转' : '正常'}');
+        RazorBleLogStore.addParsedLog(
+            logId, '档位上报=$value, 默认状态=${RazorGearState.isDefaultReversed ? '反转' : '正常'}');
         break;
       case motorFinishResponse:
       // 电机控制完成上报
         int value = element[2];
         print('电机控制完成上报=${value}');
+        RazorBleLogStore.addParsedLog(logId, '电机控制完成上报=$value');
         EventBus().sendEvent(kReceiveControlResponse);
+        break;
+      case scoreAndTimeResponse:
+      // 数码管数据上报（得分 + 倒计时）
+        if (element.length > 3) {
+          int score = element[2];
+          int countdown = element[3];
+
+          print('数码管上报 -> 得分=$score 倒计时=$countdown');
+          RazorBleLogStore.addParsedLog(
+              logId, '数码管上报: 得分=$score 倒计时=$countdown');
+
+          // 👉 推送到你的数据层（这里建议你接入之前我给你的 GameDataBus）
+          // 临时写法（你可以先这样用）
+          BluetoothManager().gameData.score = score;
+          BluetoothManager().gameData.countdown = countdown;
+
+          // 👉 如果你有UI监听事件（建议加）
+          // ✅ 用这个替换你之前的写法
+          GameDataBus.instance.updateScoreAndTime(score, countdown);
+          /*
+          * UI层的用法
+          * ValueListenableBuilder<int>(
+  valueListenable: GameDataBus.instance.score,
+  builder: (_, score, __) {
+    return Text('得分: $score');
+  },
+)
+          * */
+          //EventBus().sendEvent('score_time_update');
+        }
+        break;
+      default:
+        RazorBleLogStore.addParsedLog(logId, '未知cmd=$cmd');
         break;
     }
 

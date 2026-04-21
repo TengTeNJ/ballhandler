@@ -19,6 +19,83 @@ class _TestRazorControllerState extends State<TestRazorController> {
         title: const Text('Razor变形控制模拟器'),
       ),
       body: const MyHomePage(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => const RazorBleLogPage(),
+            ),
+          );
+        },
+        child: const Icon(Icons.article_outlined),
+      ),
+    );
+  }
+}
+
+class RazorBleLogPage extends StatefulWidget {
+  const RazorBleLogPage({super.key});
+
+  @override
+  State<RazorBleLogPage> createState() => _RazorBleLogPageState();
+}
+
+class _RazorBleLogPageState extends State<RazorBleLogPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('蓝牙日志'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              RazorBleLogStore.clear();
+            },
+            child: const Text('清空'),
+          ),
+        ],
+      ),
+      body: StreamBuilder<void>(
+        stream: RazorBleLogStore.changeStream,
+        builder: (context, snapshot) {
+          final logs = RazorBleLogStore.logs.reversed.toList();
+          if (logs.isEmpty) {
+            return const Center(child: Text('暂无日志'));
+          }
+          return ListView.builder(
+            itemCount: logs.length,
+            itemBuilder: (context, index) {
+              final item = logs[index];
+              final timeText =
+                  '${item.time.hour.toString().padLeft(2, '0')}:'
+                  '${item.time.minute.toString().padLeft(2, '0')}:'
+                  '${item.time.second.toString().padLeft(2, '0')}.'
+                  '${item.time.millisecond.toString().padLeft(3, '0')}';
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('#${item.id}  $timeText',
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 6),
+                      Text('Raw: ${item.rawHex}'),
+                      const SizedBox(height: 8),
+                      const Text('Parsed:'),
+                      if (item.parsedLogs.isEmpty)
+                        const Text('- (暂无解析)')
+                      else
+                        ...item.parsedLogs.map((e) => Text('- $e')),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -245,7 +322,9 @@ class _MyHomePageState extends State<MyHomePage> {
               if (!allIsZero2) {
                 datas.add(data2);
               }
-              CommandManager.sendCommandsSequentially(datas);
+              // CommandManager.sendCommandsSequentially([ledControlData(1,10)]);
+              CommandManager.sendCommandsSequentially([lightsControlData([0,0,1])]);
+             // CommandManager.sendCommandsSequentially(datas);
               print('第一行左值: $leftValue1, 右值: $rightValue1');
               print('第二行左值: $leftValue2, 右值: $rightValue2');
             },

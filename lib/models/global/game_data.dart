@@ -17,6 +17,7 @@ class GameData extends ChangeNotifier {
   int _powerValue = 100; // 电量值
   int _remainTime = 60; // 剩余时长
   int _millSecond = 0; // 剩余时长
+  int _countdown = 45; // 倒计时
   String _showRemainTime = '00:45'; // 需要在UI上显示的剩余时长的格式
   HitTargetModel? hitTargetModel; // 击中的面板的灯的数据模型
   int singleLedIndex = 0; // 刷新某面板上单个led时的led的索引
@@ -27,6 +28,9 @@ class GameData extends ChangeNotifier {
   int get currentTarget => _currentTarget;
 
   int get score => _score;
+
+  int get countdown => _countdown;
+
 
   int get powerValue => _powerValue;
 
