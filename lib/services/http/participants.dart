@@ -50,7 +50,7 @@ class SceneModel {
   String buttonName = 'PLAY NOW';// 按钮标题
   String gradientStart = '#B6F61D';// 渐变色值1
   String gradientEnd = '#DBDB14';// 渐变色值2
-  String videoUrl = 'assets/video/1.mp4'; // 视频
+  String videoUrl = ''; // 视频 // 移除默认的 解决首次加载时两个场景的视频同样的问题
   String subTitle = '';// 子标题
 
   SceneModel(
@@ -58,7 +58,8 @@ class SceneModel {
       this.dictValue = 'Ultimater Dangler',
       this.dictRemark =
           'A groundbreaking training tool meticulously engineered to elevate your stickhandling, enhance your puck control, and secure your competitive advantage. This cutting-edge system sets a new standard in hockey training. With its innovative 270° design and smart technologies you\'re not just practicing with a static tool; you\'re immersing yourself in a holistic training environment.',
-       this.dictImage = ''
+       this.dictImage = '',
+        this.videoUrl = 'assets/video/2.mp4'
       });
 }
 

@@ -48,12 +48,14 @@ class GameUtil {
         dictKey: '1',
         dictValue: 'Digital Stickhandling Trainer',
         dictRemark:
-            'Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials, and push your limits.'),
-    SceneModel(
-      dictKey: '3',
-      dictValue: 'Razor Dangler 2.0',
-      dictRemark: 'Welcome to the Potent Razor Dangler. A cutting-edge Robot trainer designed to elevateyour hockey puck control.This innovative trainingcompanion dynamically challenges players in twotailored modes, enhancing essential puck contro! skills and advanced moves.',
-    ),
+            'Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials, and push your limits.',
+    videoUrl: 'assets/video/1.mp4'),
+   SceneModel(
+  dictKey: '3',
+  dictValue: 'Razor Dangler 2.0',
+  dictRemark: 'Welcome to the Potent Razor Dangler. A cutting-edge Robot trainer designed to elevateyour hockey puck control.This innovative trainingcompanion dynamically challenges players in twotailored modes, enhancing essential puck contro! skills and advanced moves.', videoUrl: 'assets/video/3.mp4'
+  ),
+
   ]; // 场景列表
   List<int> selectdP3Indexs = []; // 270P3模式选择的组合的索引
   List<P3ItemModel> selectdP3Items = []; // 270P3模式选择的组合的索引
