@@ -48,7 +48,9 @@ class GameUtil {
         dictKey: '1',
         dictValue: 'Digital Stickhandling Trainer',
         dictRemark:
-            'Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials, and push your limits.')
+            'Sharpen your stickhandling and reaction time with interactive challenges that also encourage you to glance up and maintain awareness. Watch yourself in action and perfect your technique in real-time.Select your challenge mode by shape, dive into quick tutorials, and push your limits.',
+    videoUrl: 'assets/video/1.mp4')
+
   ]; // 场景列表
   List<int> selectdP3Indexs = []; // 270P3模式选择的组合的索引
   List<P3ItemModel> selectdP3Items = []; // 270P3模式选择的组合的索引

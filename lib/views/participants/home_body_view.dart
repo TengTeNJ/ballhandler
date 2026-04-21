@@ -52,7 +52,11 @@ class _HomeBodyViewState extends State<HomeBodyView> {
   @override
   void didUpdateWidget(covariant HomeBodyView oldWidget) {
     super.didUpdateWidget(oldWidget);
-
+    if (oldWidget.model.videoUrl != widget.model.videoUrl) {
+     Future.delayed(Duration(milliseconds: 1000),(){
+       _initVideo(); // 🔥 重新加载视频, 防止本地默认视频没加载完 就立刻加载远程视频，导致无视频占位的效果
+     });
+    }
     /// 🔥 非当前页自动暂停 / 当前页自动播放
     if (_videoController != null && _videoController!.value.isInitialized) {
       if (widget.isActive) {
