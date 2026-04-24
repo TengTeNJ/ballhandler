@@ -93,6 +93,10 @@ class GameData extends ChangeNotifier {
     _gameStart = gameStart;
   }
 
+  set countdown(int countdown){
+    _countdown = countdown;
+  }
+
   set remainTime(int remainTime) {
     _remainTime = remainTime;
     notifyListeners();

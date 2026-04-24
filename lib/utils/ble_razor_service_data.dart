@@ -31,6 +31,14 @@ const int gearResponse = 0x09;
 const int motorFinishResponse = 0x0a;
 /*数码管数据上报（得分 + 倒计时）*/
 const int scoreAndTimeResponse = 0x0b;
+/*灯亮的标识位
+* 0x00三路灯全灭
+0x01亮，A路目标 00000001
+0x02亮，B路目标 00000010
+0x04亮，C路目标 00000100
+0x05三路灯全亮   00000101
+* */
+const int lightFlagResponse = 0x0c;
 /*电机状态
 * 正转 反转 停转
 * */
@@ -270,8 +278,8 @@ class BleRazorServiceData {
       case scoreAndTimeResponse:
       // 数码管数据上报（得分 + 倒计时）
         if (element.length > 3) {
-          int score = element[2];
-          int countdown = element[3];
+          int score = element[3];
+          int countdown = element[2];
 
           print('数码管上报 -> 得分=$score 倒计时=$countdown');
           RazorBleLogStore.addParsedLog(
@@ -279,9 +287,6 @@ class BleRazorServiceData {
 
           // 👉 推送到你的数据层（这里建议你接入之前我给你的 GameDataBus）
           // 临时写法（你可以先这样用）
-          BluetoothManager().gameData.score = score;
-          BluetoothManager().gameData.countdown = countdown;
-
           // 👉 如果你有UI监听事件（建议加）
           // ✅ 用这个替换你之前的写法
           GameDataBus.instance.updateScoreAndTime(score, countdown);
@@ -296,6 +301,13 @@ class BleRazorServiceData {
           * */
           //EventBus().sendEvent('score_time_update');
         }
+        break;
+      case lightFlagResponse:
+             // 亮灯标识
+        int flag = element[2];
+        int _lights = getLightStatus(flag);
+        GameDataBus.instance.updateLights(_lights);
+        print('亮灯=${_lights}');
         break;
       default:
         RazorBleLogStore.addParsedLog(logId, '未知cmd=$cmd');
@@ -322,4 +334,26 @@ List<List<int>> splitData(List<int> _data) {
     result.add(subList);
   }
   return result;
+}
+
+int getLightStatus(int value) {
+  if (value == 0) return 0;     // 全灭
+  if (value == 5) return 4;     // 101 -> 全亮（1+2+3）
+
+  // 判断是否只有一个bit是1
+  // value & (value - 1) 的作用：把最低位的1“抹掉”
+  // 如果抹掉后变成0 → 说明原来只有一个1
+  // 否则 → 有多个1
+  // 👉 value - 1 会把“最右边的1”变成0，并把后面的位全部变成1
+  // 比如 110  -> 101
+  if ((value & (value - 1)) == 0) {
+    int index = 1;
+    while (value > 1) {
+      value = value >> 1;
+      index++;
+    }
+    return index; // 返回 1 / 2 / 3
+  }
+
+  return -1; // 非法或多个灯亮（但不是全亮）
 }

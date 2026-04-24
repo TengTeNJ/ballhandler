@@ -323,8 +323,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 datas.add(data2);
               }
               // CommandManager.sendCommandsSequentially([ledControlData(1,10)]);
-              CommandManager.sendCommandsSequentially([lightsControlData([0,0,1])]);
-             // CommandManager.sendCommandsSequentially(datas);
+             // CommandManager.sendCommandsSequentially([lightsControlData([0,0,1])]);
+              CommandManager.sendCommandsSequentially(datas);
               print('第一行左值: $leftValue1, 右值: $rightValue1');
               print('第二行左值: $leftValue2, 右值: $rightValue2');
             },

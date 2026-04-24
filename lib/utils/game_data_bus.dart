@@ -13,7 +13,7 @@ class GameDataBus {
   /// 单独字段（给高频UI用）
   final ValueNotifier<int> score = ValueNotifier(0);
   final ValueNotifier<int> countdown = ValueNotifier(0);
-
+  final ValueNotifier<int> lights = ValueNotifier(0);
   /// 更新（核心方法）
   void updateScoreAndTime(int newScore, int newCountdown) {
     final old = gameData.value;
@@ -40,11 +40,33 @@ class GameDataBus {
       countdown.value = newCountdown;
     }
   }
+  void updateLights(int newLights) {
+    final old = gameData.value;
+
+    // 👉 去重（防止UI疯狂刷新）
+    if (old.lights  == newLights) {
+      return;
+    }
+
+    // 👉 更新整体数据
+    final newData = old.copyWith(
+    lights: newLights
+    );
+
+    gameData.value = newData;
+
+    // 👉 更新局部字段（给UI用）
+    if (lights.value != newLights) {
+      lights.value = newLights;
+    }
+
+  }
 
   /// 重置（开始新一局时用）
   void reset() {
     gameData.value = GameData();
     score.value = 0;
     countdown.value = 0;
+    lights.value = 0;
   }
 }
