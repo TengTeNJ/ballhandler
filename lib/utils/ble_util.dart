@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:code/utils/audio_player_util.dart';
 import 'package:code/utils/ble_ultimate_data.dart';
 import 'package:code/utils/dialog.dart';
 import 'package:code/utils/toast.dart';
@@ -196,17 +197,19 @@ class BleUtil {
       // 270
       int index =
           BluetoothManager().gameData.p3DeviceBatteryValues.indexOf(powerValue);
-      if (powerValue == 25) {
+      if (powerValue == 20) {
         if(gameUtil.uliLowPower1){
           return;
         }
         if (!gameUtil.nowISGamePage && !gameUtil.uliLowPower1) {
           gameUtil.uliLowPower1 = true;
+          playLocalAudio('270.wav'); // 语音提示
           TTDialog.lowPowerTipDialog(context,
               boardIndex: index, powerValue: powerValue,isErQiLing:true);
         }
-      } else if (powerValue == 5) {
+      } else if (powerValue == 10) {
         gameUtil.uliLowPower2 = true;
+        playLocalAudio('270.wav'); // 语音提示
         TTDialog.lowPowerTipDialog(context,
             boardIndex: index, powerValue: powerValue,isErQiLing:true);
       }
