@@ -18,6 +18,11 @@ class _RazorProductImageViewState extends State<RazorProductImageView> with Tick
     super.initState();
     _controller = GifController(vsync: this);
   }
+
+  initData(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,24 +36,30 @@ class _RazorProductImageViewState extends State<RazorProductImageView> with Tick
       height: 659/719 * Constants.screenWidth(context), // 659/719 图片的高宽比
       child: Center(
         child: Container(
+          // 关键1：让子View充满父容器
+          width: double.infinity,
+          height: double.infinity,
           // color: Colors.red,
           child: Center(
-            child: Gif(
-             // width: 500,
-              //fit: BoxFit.contain,
-              useCache:false,
-              image: AssetImage(widget.imageName),
-              controller: _controller, // if duration and fps is null, original gif fps will be used.
-              // fps: 24,
-              duration: const Duration(milliseconds: 1500),
-              autostart: Autostart.no,
-              placeholder: (context) => const Text('Loading...'),
-              onFetchCompleted: () {
-                print('++++++');
-                _controller.reset();
-                _controller.forward();
-              },
+            child: Image.asset(widget.imageName,fit: BoxFit.fitWidth, // 👈 这个必须加！
+                width: Constants.screenWidth(context) - 256,    filterQuality: FilterQuality.high, // 加高清渲染
             ),
+            // child: Gif(
+            //  // width: 500,
+            //   //fit: BoxFit.contain,
+            //   useCache:false,
+            //   image: AssetImage(widget.imageName),
+            //   controller: _controller, // if duration and fps is null, original gif fps will be used.
+            //   // fps: 24,
+            //   duration: const Duration(milliseconds: 1500),
+            //   autostart: Autostart.no,
+            //   placeholder: (context) => const Text('Loading...'),
+            //   onFetchCompleted: () {
+            //     print('++++++');
+            //     _controller.reset();
+            //     _controller.forward();
+            //   },
+            // ),
           ),
          // child: Image .asset(widget.imageName,fit: BoxFit.fill,repeat: ImageRepeat.noRepeat,),
         ),

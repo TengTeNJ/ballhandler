@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:code/controllers/participants/razor_game_process_controller.dart';
 import 'package:code/utils/navigator_util.dart';
 import 'package:code/views/participants/razor/razor_p2_grid_list_view.dart';
@@ -136,7 +137,9 @@ class _RazorP2SelectControllerState extends State<RazorP2SelectController> {
                   onTap: () async {
                     if (_selectModels.length > 0) {
                       NavigatorUtil.pop();
+                      List<CameraDescription> cameras = await availableCameras();
                       NavigatorUtil.present(RazorGameProcessController(
+                        camera: cameras[cameras.length >1 ? 1 : 0],
                         // selectModels: _selectModels,
                       ));
                     }

@@ -238,7 +238,11 @@ class BluetoothManager {
             writerDataToDevice(model, questDeviceInfoData());
           }else if(model.deviceName == kThreeBallHandler_Name){
             // appOnLineControlData APP上线控制
-          //  writerDataToDevice(model, appOnLineControlData());
+            Future.delayed(Duration(milliseconds: 1000),(){
+              // 查询主机状态
+              BluetoothManager()
+                  .writerDataToDevice(model, requestStatusData());
+            });
           }
         }
         // 连接成功弹窗

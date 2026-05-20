@@ -27,13 +27,13 @@ class _BLEViewState extends State<BLEView> {
       if (event == kDeviceConnected) {
         if (!BluetoothManager().hasConnectedDeviceList.isEmpty) {
           BLEModel model = BluetoothManager().hasConnectedDeviceList.first;
-          if (model.deviceName.contains(kFiveBallHandler_Name)) {
+          if (model.deviceName.contains(kFiveBallHandler_Name) || model.deviceName.contains(kThreeBallHandler_Name)) {
             connected = true;
           }
         }
 
       } else if (event == kInitiativeDisconnectFive ||
-          event == kCurrentDeviceDisconnectedFive) {
+          event == kCurrentDeviceDisconnectedFive || event == kCurrentDeviceDisconnectedThree) {
         connected = false;
       }
       if (mounted) {

@@ -59,17 +59,12 @@ List<int> powerOffControlData({int value = 0x01}){
 *上线（0x01）下线（0x00）
 * */
 List<int> appOnLineControlData({int value = 0x01}){
-  print('APP上下线---value');
   int start = kBLEDataFrameRazorHeader;
-  int id = 100; // 每条消息的控制id 先默认100
+  //int id = 100; // 每条消息的控制id 先默认100
   int end = kBLEDataFramerFoot;
-  int cs = start + 0x06 + appOnline + value  + end;
-  String binaryString = StringUtil.decimalToBinary(cs);
-  if (binaryString.length > 8) {
-    binaryString = binaryString.substring(binaryString.length - 8, binaryString.length);
-  }
-  cs = StringUtil.binaryStringToDecimal(binaryString);
+  int cs = (start + 0x06 + appOnline + value  + end) & 0xff;
   List<int> values = [start,0x06,appOnline,value,cs,end];
+  print('APP上下线---${values}');
   return values;
 }
 
@@ -88,5 +83,17 @@ List<int> motorControlData({List<BleRazorMotorStatu> motorStatus = const [BleRaz
   List<int> values = [start,0x09,motorControl,motorStatus[0].index,timers[0],motorStatus[1].index,timers[1],cs,end];
   print('values == ${values}');
   return values;
+}
+
+/*请求设备状态*/
+List<int> requestStatusData(){
+  int start = kBLEDataFrameRazorHeader;
+  //int id = 100; // 每条消息的控制id 先默认100
+  int end = kBLEDataFramerFoot;
+  // int cs = (start + 0x04 + status + value  + end) & 0xff;
+  // List<int> values = [start,0x06,appOnline,value,cs,end];
+  //print('APP上下线---${values}');
+  print('状态 =${[kBLEDataFrameRazorHeader,0x04,status,end]}');
+  return [kBLEDataFrameRazorHeader,0x04,status,end];
 }
 

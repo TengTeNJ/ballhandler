@@ -5,6 +5,7 @@ import 'package:code/utils/razor_control_util.dart';
 
 import '../constants/constants.dart';
 import '../models/ble/ble_model.dart';
+import 'ble_data_service.dart';
 import 'ble_util.dart';
 import 'game_data_bus.dart';
 import 'navigator_util.dart';
@@ -39,6 +40,12 @@ const int scoreAndTimeResponse = 0x0b;
 0x05三路灯全亮   00000101
 * */
 const int lightFlagResponse = 0x0c;
+/*状态*/
+const int status = 0x0e;
+/*形状变换状态上报*/
+const int  shapeStatu= 0x0f;
+/*游戏状态状态上报 0开始 1结束*/
+const int  gameStatu= 0x10;
 /*电机状态
 * 正转 反转 停转
 * */
@@ -284,6 +291,7 @@ class BleRazorServiceData {
           print('数码管上报 -> 得分=$score 倒计时=$countdown');
           RazorBleLogStore.addParsedLog(
               logId, '数码管上报: 得分=$score 倒计时=$countdown');
+          BluetoothManager().gameData.score = score;
 
           // 👉 推送到你的数据层（这里建议你接入之前我给你的 GameDataBus）
           // 临时写法（你可以先这样用）
@@ -308,6 +316,22 @@ class BleRazorServiceData {
         int _lights = getLightStatus(flag);
         GameDataBus.instance.updateLights(_lights);
         print('亮灯=${_lights}');
+        EventBus().sendEvent(kRazorLightRefresh);
+        break;
+      case shapeStatu:
+      // 形状变换上报
+        int value = element[2];
+        print('形状变换上报=${value}');
+        RazorBleLogStore.addParsedLog(logId, '形状变换上报=$value');
+        EventBus().sendEvent(kRazorShapeRefresh);
+        break;
+      case gameStatu:
+      // 形状变换上报
+        int value = element[2];
+        print('游戏状态上报=${value}');
+        RazorBleLogStore.addParsedLog(logId, '游戏状态上报$value');
+        BluetoothManager().gameData.gameStart = (value == 0x00);
+        BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
         break;
       default:
         RazorBleLogStore.addParsedLog(logId, '未知cmd=$cmd');

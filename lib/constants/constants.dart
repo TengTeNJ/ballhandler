@@ -453,6 +453,8 @@ const kAirBattleChangeActivity = 'airbattle_change_activity'; // AirBattle首页
 const kBrithInfoChange= 'change_brith_day_info'; // 修改生日信息
 const kReadAwardMessage= 'read_message_award'; // 阅读奖励信息
 const kExchangePage = 'exchange_page'; // 交换页面的顺序
+const kRazorShapeRefresh = 'razor_shape_refresh'; // 可变三节的形状变换
+const kRazorLightRefresh = 'razor_light_refresh'; // 可变三节的灯光切换变换
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
     "8": "Cat Challenge" ,
@@ -611,3 +613,7 @@ const Map<int, int> kP3DataAndProductIndexMap = {
   4:5,
   5:6
 }; // 270灯板的蓝牙数据索引和产品标签上的实际索引的映射表
+
+const kRazorPrimaryPaths = [1,3,5,3,8,3,1,5,1,2,6];
+const kRazorAdvancedPaths = [1,3,5,3,8,3,1,5,1,2,6];
+

@@ -36,7 +36,7 @@ class _BatteryViewState extends State<BatteryView> {
       if (event == kCurrentDeviceInfoChange) {
         getBatteryAndBlestatuValues();
       }else if (event == kInitiativeDisconnectFive ||
-          event == kCurrentDeviceDisconnectedFive) {
+          event == kCurrentDeviceDisconnectedFive || event == kCurrentDeviceDisconnectedThree) {
         setState(() {
           batteryImageName = 'gray';
         });
@@ -59,7 +59,7 @@ class _BatteryViewState extends State<BatteryView> {
   getBatteryAndBlestatuValues() {
     if (!BluetoothManager().hasConnectedDeviceList.isEmpty) {
       BLEModel model = BluetoothManager().hasConnectedDeviceList.first;
-      if (model.deviceName.contains(kFiveBallHandler_Name)) {
+      if (model.deviceName.contains(kFiveBallHandler_Name) || model.deviceName.contains(kThreeBallHandler_Name)) {
         connected = true;
         int nameIndex = 0;
         int value = BluetoothManager().gameData.powerValue;

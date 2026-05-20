@@ -207,7 +207,8 @@ class Routes {
       case subscribeintroduce:
         return MaterialPageRoute(builder: (_) => UltSubscribeHomeController());
       case razorgameprocesspage:
-        return MaterialPageRoute(builder: (_) => RazorGameProcessController());
+        final  CameraDescription camera = settings.arguments as CameraDescription;
+        return MaterialPageRoute(builder: (_) => RazorGameProcessController(camera: camera,));
       case mypucks:
         final  Map _map = settings.arguments as Map;
         MyAirBattlePucksModel _model = _map['model'];

@@ -47,6 +47,16 @@ class CommandManager {
     print("All commands sent and received replies.");
   }
 
+  static Future<void> sendCommands(List<int> command) async {
+    final gameUtil = GetIt.instance<GameUtil>();
+    final bluetoothManager = BluetoothManager();
+      bluetoothManager.writerDataToDevice(
+        gameUtil.selectedDeviceModel,
+        command,
+      );
+    print("commands sent");
+  }
+
 }
 
 void main() async {
