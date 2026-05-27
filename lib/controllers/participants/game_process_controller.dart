@@ -48,6 +48,7 @@ class _GameProcessControllerState extends State<GameProcessController>
     SystemUtil.resetScreenDirection(); // 锁定屏幕方向
     SystemUtil.wakeUpDevice(); // 保持屏幕活跃
     GameUtil gameUtil = GetIt.instance<GameUtil>();
+    BluetoothManager().gameData.remainTime = 45;
 
     _imagePath =
         'images/product/scene${gameUtil.gameScene.index + 1}/model${gameUtil.modelId}/3.png';

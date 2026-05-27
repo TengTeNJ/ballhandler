@@ -120,9 +120,9 @@ class _P3GuideControllerState extends State<P3GuideController> {
                     }
                     List<CameraDescription> cameras = await availableCameras();
                     // 重置模式 防止用户已经进入游戏
-                    GameUtil gameUtil = GetIt.instance<GameUtil>();
-                    BluetoothManager()
-                        .writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(2));
+                    // GameUtil gameUtil = GetIt.instance<GameUtil>();
+                    // BluetoothManager()
+                    //     .writerDataToDevice(gameUtil.selectedDeviceModel, selectMode(2));
                     NavigatorUtil.push(Routes.p3check,
                         arguments: cameras[cameras.length > 1 ? 1 : 0]);
                     TTToast.hideLoading();

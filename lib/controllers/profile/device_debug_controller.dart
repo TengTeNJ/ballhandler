@@ -22,7 +22,8 @@ import 'package:drop_down_list/drop_down_list.dart';
 class TTSelectModel {
   String data = '';
   String value = '';
-
+  @override
+  String toString() => data;
   TTSelectModel({this.data = '', this.value = ''});
 }
 
@@ -263,7 +264,7 @@ class _DeviceDebugControllerState extends State<DeviceDebugController> {
                       DropDownState(
                        // heightOfBottomSheet: 500,
                         dropDown: DropDown<TTSelectModel>(
-                          // isSearchVisible: false,
+                          isSearchVisible: false,
                           bottomSheetTitle:
                           Constants.boldBlackTextWidget('长按检测功能', 20),
                           searchHintText: '搜索',
