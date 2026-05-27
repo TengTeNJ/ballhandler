@@ -42,7 +42,7 @@ class _RazorProductImageViewState extends State<RazorProductImageView> with Tick
           // color: Colors.red,
           child: Center(
             child: Image.asset(widget.imageName,fit: BoxFit.fitWidth, // 👈 这个必须加！
-                width: Constants.screenWidth(context) - 256,    filterQuality: FilterQuality.high, // 加高清渲染
+                width: Constants.screenWidth(context) - 128,    filterQuality: FilterQuality.high, // 加高清渲染
             ),
             // child: Gif(
             //  // width: 500,

@@ -43,31 +43,41 @@ class _RazorGameProcessControllerState
   late CameraController _controller;
   bool _onStart = false;
   int _currentindex = 0;
-  String _imageName = 'images/razor/mode/1.png';
+  String _imageName = 'images/razor/shape/1.png';
   DemoUtil? demo;
   int _count = 0;
   int _mode = 0; // 0是默认的，区分不出来 1是简单模式 2是高级模式
   int _lightRefreshCount = 0;
   int _shapeRefreshCount = 0;
+  bool ready = false;
 
   @override
 
   initData(){
-    _imageName = 'images/razor/mode/1.png';
-    _mode = 0;
-    _lightRefreshCount = 0;
-    _shapeRefreshCount = 0;
-    _onStart = false;
+    setState(() {
+      _imageName = 'images/razor/shape/1.png';
+      _mode = 0;
+      _lightRefreshCount = 0;
+      _shapeRefreshCount = 0;
+      _onStart = false;
+    });
   }
 
   void initState() {
     // TODO: implement initState
     super.initState();
+    _init();
+  }
+
+  Future<void> _init() async {
     // 隐藏状态栏
     //StatusBarControl.setHidden(true, animation: StatusBarAnimation.SLIDE);
-    SystemUtil.resetScreenDirection(); // 锁定屏幕方向
-    SystemUtil.wakeUpDevice(); // 保持屏幕活跃
-    // test();
+      SystemUtil.resetScreenDirection(); // 锁定屏幕方向
+      await Future.delayed(const Duration(milliseconds: 1000));
+      setState(() {
+        ready = true;
+      });
+      SystemUtil.wakeUpDevice(); // 保持屏幕活跃
     //  初始化摄像头
     _controller = CameraController(
       widget.camera, // 选择第一个摄像头
@@ -77,9 +87,14 @@ class _RazorGameProcessControllerState
       if (event == kRazorShapeRefresh) {
         if (_onStart && _mode != 0) {
           _shapeRefreshCount++;
+          var _count = _shapeRefreshCount;
+          if(_count  > (kRazorPrimaryPaths.length - 1) ){
+            // 防止越界
+            _count = kRazorPrimaryPaths.length - 1;
+          }
           setState(() {
             String imageName =
-                'images/razor/mode/${kRazorPrimaryPaths[_shapeRefreshCount]}.png';
+                'images/razor/shape/${kRazorPrimaryPaths[_count]}.png';
             _imageName = imageName;
           });
         }
@@ -145,6 +160,12 @@ class _RazorGameProcessControllerState
         } else {
           // 识别到游戏开始的标识
           _onStart = true;
+          GameUtil gameUtil = GetIt.instance<GameUtil>();
+          if (gameUtil.selectRecord || gameUtil.isFromAirBattle) {
+            await _controller.initialize(); // 初始化摄像头控制器
+            // 开始录制视频
+            await _controller.startVideoRecording();
+          }
         }
       }
     };
@@ -262,6 +283,14 @@ class _RazorGameProcessControllerState
   @override
   Widget build(BuildContext context) {
     GameUtil gameUtil = GetIt.instance<GameUtil>();
+    if (!ready) {
+      return const Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: Constants.baseControllerColor,
       body: Container(
@@ -312,7 +341,7 @@ class _RazorGameProcessControllerState
                       SizedBox(
                         height: 35,
                       ),
-                      Constants.boldBlackTextWidget('Free Mode Training', 24),
+                      Constants.boldBlackTextWidget('P1 Mode Training', 24),
                       SizedBox(
                         height: 24,
                       ),
@@ -423,11 +452,11 @@ class _RazorGameProcessControllerState
                         child: Container(),
                         flex: 1,
                       ),
-                      RazorProgressView(
-                        count: 10,
-                        currentIndex: _currentindex,
-                        onGoing: _onStart,
-                      ),
+                      // RazorProgressView(
+                      //   count: 10,
+                      //   currentIndex: _currentindex,
+                      //   onGoing: _onStart,
+                      // ),
                     ],
                   )),
                   /*返回按钮 投屏按钮 */
@@ -450,6 +479,7 @@ class _RazorGameProcessControllerState
                             // }else{
                             //   NavigatorUtil.pop();
                             // }
+                              NavigatorUtil.pop();
                           },
                           child: Container(
                             child: Center(

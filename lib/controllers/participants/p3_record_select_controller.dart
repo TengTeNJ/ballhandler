@@ -379,12 +379,20 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
                               2.0,
                           child: GestureDetector(
                             onTap: () async {
+                              GameUtil gameUtil = GetIt.instance<GameUtil>();
+                              if (gameUtil.gameScene == GameScene.threee) {
+                                // 可变三节
+                                NavigatorUtil.popAndThenPush(
+                                  Routes.razorgameprocesspage,
+                                  arguments:widget.camera,
+                                );
+                                return;
+                              }
                               // 确认网络构建完成 才可以进行游戏
                               if (BluetoothManager().gameData.masterStatu !=
                                   2) {
                                 TTToast.showErrorInfo(
                                     'The device is not ready yet, please check the device');
-                                GameUtil gameUtil = GetIt.instance<GameUtil>();
                                 // 查询主机状态
                                 BluetoothManager().writerDataToDevice(
                                     gameUtil.selectedDeviceModel,
@@ -623,10 +631,14 @@ class _P3RecordSelectControllerState extends State<P3RecordSelectController> {
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     _controller.dispose();
     subscription.cancel();
     timer?.cancel();
+    GameUtil gameUtil = GetIt.instance<GameUtil>();
+if(gameUtil.gameScene == GameScene.threee){
+  SystemUtil.lockScreenDirection(); // 锁定屏幕方向
+}
+    super.dispose();
   }
 }
 

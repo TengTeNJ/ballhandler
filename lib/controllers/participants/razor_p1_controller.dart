@@ -129,11 +129,11 @@ class RazorP1Controller extends StatelessWidget {
                         //   await SystemUtil.lockScreenHorizontalDirection();
                         //   // return;
                         // }
-                        // GameUtil gameUtil = GetIt.instance<GameUtil>();
-                        // gameUtil.selectRecord = false;
+                        GameUtil gameUtil = GetIt.instance<GameUtil>();
+                        gameUtil.selectRecord = false;
                         // await SystemUtil.resetScreenDirection();
                         List<CameraDescription> cameras = await availableCameras();
-                        // NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
+                        NavigatorUtil.push(Routes.p3check, arguments: cameras[cameras.length >1 ? 1 : 0]);
                         // TTToast.hideLoading();
                         // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, lightsControlData([0,0,1]));
                         // BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, ledControlData(13, 14));
@@ -143,7 +143,7 @@ class RazorP1Controller extends StatelessWidget {
 
                         //BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, motorControlData(motorStatus: [BleRazorMotorStatu.reversal,BleRazorMotorStatu.forward],timers: [100,200]));
                       //  BluetoothManager().writerDataToDevice(gameUtil.selectedDeviceModel, powerOffControlData());
-                        NavigatorUtil.push(Routes.razorgameprocesspage,arguments: cameras[cameras.length >1 ? 1 : 0]);
+                       // NavigatorUtil.push(Routes.razorgameprocesspage,arguments: cameras[cameras.length >1 ? 1 : 0]);
                       },
                       child: Container(
                           width: Constants.screenWidth(context) - 48,

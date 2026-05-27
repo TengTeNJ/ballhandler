@@ -614,6 +614,6 @@ const Map<int, int> kP3DataAndProductIndexMap = {
   5:6
 }; // 270灯板的蓝牙数据索引和产品标签上的实际索引的映射表
 
-const kRazorPrimaryPaths = [1,3,5,3,8,3,1,5,1,2,6];
-const kRazorAdvancedPaths = [1,3,5,3,8,3,1,5,1,2,6];
+const kRazorPrimaryPaths = [1,16,18,16,8,17,16,1,9,1,16,1,1,1];
+const kRazorAdvancedPaths = [1,16,18,16,10,3,4,13,7,6,5,2,2,1,3,13,1,1,1];
 
