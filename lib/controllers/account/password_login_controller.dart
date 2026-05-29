@@ -1,6 +1,8 @@
 import 'package:code/controllers/account/send_email_controller.dart';
 import 'package:code/services/http/account.dart';
 import 'package:code/utils/notification_bloc.dart';
+import 'package:code/utils/string_util.dart';
+import 'package:code/utils/toast.dart';
 import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
 import '../../utils/navigator_util.dart';
@@ -102,6 +104,11 @@ class _PassWordLoginControllerState extends State<PassWordLoginController> {
                   ),
                   GestureDetector(
                     onTap: () async{
+                     String? pwdError = StringUtil.validatePassword(_inputText);
+                     if (pwdError != null) {
+                       TTToast.showErrorInfo(pwdError, duration: 5000);
+                       return;
+                     }
                      final _response = await Account.emailLogin(_inputText);
                      // 登录成功
                      if(_response.success == true){

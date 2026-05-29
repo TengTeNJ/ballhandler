@@ -8,6 +8,7 @@ import '../../constants/constants.dart';
 import '../../utils/navigator_util.dart';
 import '../../utils/notification_bloc.dart';
 import '../../widgets/account/cancel_button.dart';
+import '../../widgets/account/register_progress_bar.dart';
 import 'package:country_picker/country_picker.dart';
 
 class PasswordPageController extends StatefulWidget {
@@ -64,7 +65,7 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 36,
+                    height: 52,
                     margin: EdgeInsets.only(right: 16, top: 16),
                     child: Stack(
                       children: [
@@ -92,17 +93,9 @@ class _PasswordPageControllerState extends State<PasswordPageController> {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 30),
-                    height: 68,
-                    width: 117,
-                    child: Image(
-                      image: AssetImage('images/account/potent.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  RegisterProgressBar(currentStep: 3),
                   SizedBox(
-                    height: 10,
+                    height: 48,
                   ),
                   Constants.regularWhiteTextWidget("Choose your Profile", 22),
                   SizedBox(

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../../widgets/account/cancel_button.dart';
+import '../../widgets/account/register_progress_bar.dart';
 
 class EmailPageController extends StatefulWidget {
   const EmailPageController({super.key});
@@ -59,7 +60,7 @@ class _EmailPageControllerState extends State<EmailPageController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 36,
+                    height: 52,
                     margin: EdgeInsets.only(right: 16, top: 16),
                     child: Stack(
                       children: [
@@ -70,19 +71,11 @@ class _EmailPageControllerState extends State<EmailPageController> {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 30),
-                    height: 68,
-                    width: 117,
-                    child: Image(
-                      image: AssetImage('images/account/potent.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  RegisterProgressBar(currentStep: 1),
                   SizedBox(
-                    height: 10,
+                    height: 48,
                   ),
-                  Constants.regularWhiteTextWidget("Let's start with email", 22),
+                  Constants.boldWhiteTextWidget("Let's start with email", 22),
                   Container(
                     width: Constants.screenWidth(context),
                     margin: EdgeInsets.only(left: 16, right: 16, top: 55),

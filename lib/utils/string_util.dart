@@ -15,14 +15,41 @@ class StringUtil {
     return regExp.hasMatch(email);
   }
 
-/*密码校验*/
-  static bool isValidPassword(String password) {
-    // 正则表达式模式，用于匹配密码格式
-    // 密码至少8位，包含字母、数字和特殊符号中的至少两种
-    String pattern =
-        r'^(?=.*[A-Za-z])(?=.*\d|.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$';
-    RegExp regExp = RegExp(pattern);
-    return regExp.hasMatch(password);
+/*密码校验，返回错误信息，null表示校验通过*/
+  static String? validatePassword(String password) {
+    if (password.isEmpty) {
+      return 'Please enter a password';
+    }
+    if (password.length < 8) {
+      return 'Password should be at least 8 characters';
+    }
+    if (password.length > 32) {
+      return 'Password should be at most 32 characters';
+    }
+
+    bool hasLetter = RegExp(r'[A-Za-z]').hasMatch(password);
+    bool hasDigit = RegExp(r'\d').hasMatch(password);
+    bool hasSpecial = RegExp(r'[!@#$%^&*]').hasMatch(password);
+
+    // 至少包含字母、数字和特殊符号中的两种
+    int typeCount = 0;
+    if (hasLetter) typeCount++;
+    if (hasDigit) typeCount++;
+    if (hasSpecial) typeCount++;
+
+    if (typeCount < 2) {
+      if (hasLetter && !hasDigit && !hasSpecial) {
+        return 'Password should contain at least one of the following: numbers or special characters (!@#\$%^&*)';
+      } else if (!hasLetter && hasDigit && !hasSpecial) {
+        return 'Password should contain at least one of the following: letters or special characters (!@#\$%^&*)';
+      } else if (!hasLetter && !hasDigit && hasSpecial) {
+        return 'Password should contain at least one of the following: letters or numbers';
+      } else {
+        return 'Password should contain at least 2 of the following: letters, numbers, special characters (!@#\$%^&*)';
+      }
+    }
+
+    return null; // 校验通过
   }
 
   /*昵称校验*/

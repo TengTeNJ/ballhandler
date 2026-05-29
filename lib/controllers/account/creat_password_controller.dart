@@ -9,6 +9,7 @@ import '../../utils/string_util.dart';
 import '../../utils/toast.dart';
 import '../../widgets/account/cancel_button.dart';
 import '../../widgets/account/custom_textfield.dart';
+import '../../widgets/account/register_progress_bar.dart';
 
 class CreatPassWordController extends StatefulWidget {
   int thirdLoginType = 0;
@@ -49,7 +50,7 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: 36,
+                  height: 52,
                   margin: EdgeInsets.only(right: 16, top: 16),
                   child: Stack(
                     children: [
@@ -60,19 +61,11 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 30),
-                  height: 68,
-                  width: 117,
-                  child: Image(
-                    image: AssetImage('images/account/potent.png'),
-                    fit: BoxFit.fill,
-                  ),
-                ),
+                RegisterProgressBar(currentStep: 2),
                 SizedBox(
-                  height: 10,
+                  height: 48,
                 ),
-                Constants.regularWhiteTextWidget("Creat a  password", 22),
+                Constants.boldWhiteTextWidget("Creat a  password", 22),
                 Container(
                   width: Constants.screenWidth(context),
                   margin: EdgeInsets.only(left: 16, right: 16, top: 55),
@@ -136,10 +129,10 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                 GestureDetector(
                   onTap: () async {
                     FocusScope.of(context).unfocus();
-                    bool isvalidPwd = StringUtil.isValidPassword(_inputText);
+                    String? pwdError = StringUtil.validatePassword(_inputText);
                     bool pwdEqualToRepeatPwd = (_inputText == _repeatInputText);
-                    if (!isvalidPwd) {
-                      TTToast.showErrorInfo('Please enter a valid password,8 to 32 characters, including letters and numbers',duration: 5000);
+                    if (pwdError != null) {
+                      TTToast.showErrorInfo(pwdError, duration: 5000);
                       return;
                     }
                     if (!pwdEqualToRepeatPwd) {
