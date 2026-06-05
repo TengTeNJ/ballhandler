@@ -50,6 +50,7 @@ class _RazorGameProcessControllerState
   int _lightRefreshCount = 0;
   int _shapeRefreshCount = 0;
   bool ready = false;
+  List<int> _array = [];
 
   @override
 
@@ -88,29 +89,44 @@ class _RazorGameProcessControllerState
         if (_onStart && _mode != 0) {
           _shapeRefreshCount++;
           var _count = _shapeRefreshCount;
-          if(_count  > (kRazorPrimaryPaths.length - 1) ){
+          if(_count  > (_array.length - 1) ){
             // 防止越界
-            _count = kRazorPrimaryPaths.length - 1;
+            _count = _array.length - 1;
           }
           setState(() {
             String imageName =
-                'images/razor/shape/${kRazorPrimaryPaths[_count]}.png';
+                'images/razor/shape/${_array[_count]}.png';
             _imageName = imageName;
           });
         }
       } else if (event == kRazorLightRefresh) {
         // 应该是第四个灯亮的时候判断得了多少分 不能是第三个灯亮的时候 ，因为用户还没来得及击打
-        print('_onStart=${_onStart}_mode=${_mode}_lightRefreshCount=${_lightRefreshCount}BluetoothManager().gameData.score=${BluetoothManager().gameData.score}');
+        // 因为下位机的亮灯反馈比得分反馈更加的快，无法准确根据得分判断，已经和蒋工说明，下位机增加一个模式上报
+        // print('_onStart=${_onStart}_mode=${_mode}_lightRefreshCount=${_lightRefreshCount}BluetoothManager().gameData.score=${BluetoothManager().gameData.score}');
+        // if (_onStart && _mode == 0) {
+        //   _lightRefreshCount++;
+        //   if (_lightRefreshCount == 4) {
+        //     if (BluetoothManager().gameData.score >= 3) {
+        //       print('进入到高级模式');
+        //       _mode = 2;
+        //     } else {
+        //       print('进入到初级模式');
+        //       _mode = 1;
+        //     }
+        //   }
+        // }
+      } else if (event is Map && event['event'] == kRazorModeResponse) {
+        // 下位机上报初高级模式，仅用于模式判断
         if (_onStart && _mode == 0) {
-          _lightRefreshCount++;
-          if (_lightRefreshCount == 4) {
-            if (BluetoothManager().gameData.score >= 3) {
-              print('进入到高级模式');
-              _mode = 2;
-            } else {
-              print('进入到初级模式');
-              _mode = 1;
-            }
+          int modeValue = event['value'] ?? 0;
+          if (modeValue == 1) {
+            print('下位机上报 -> 高级模式');
+            _mode = 2;
+            _array = kRazorAdvancedPaths;
+          } else {
+            print('下位机上报 -> 初级模式');
+            _mode = 1;
+            _array = kRazorPrimaryPaths;
           }
         }
       }

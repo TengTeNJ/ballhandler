@@ -46,6 +46,8 @@ const int status = 0x0e;
 const int  shapeStatu= 0x0f;
 /*游戏状态状态上报 0开始 1结束*/
 const int  gameStatu= 0x10;
+/*初高级模式上报 0初级模式 1高级模式*/
+const int  modeResponse = 0x11;
 /*电机状态
 * 正转 反转 停转
 * */
@@ -332,6 +334,13 @@ class BleRazorServiceData {
         RazorBleLogStore.addParsedLog(logId, '游戏状态上报$value');
         BluetoothManager().gameData.gameStart = (value == 0x00);
         BluetoothManager().triggerCallback(type: BLEDataType.gameStatu);
+        break;
+      case modeResponse:
+      // 初高级模式上报 0初级 1高级
+        int value = element[2];
+        print('初高级模式上报=${value}');
+        RazorBleLogStore.addParsedLog(logId, '初高级模式上报=$value');
+        EventBus().sendEvent({'event': kRazorModeResponse, 'value': value});
         break;
       default:
         RazorBleLogStore.addParsedLog(logId, '未知cmd=$cmd');

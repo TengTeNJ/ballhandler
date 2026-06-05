@@ -65,7 +65,7 @@ class _CreatPassWordControllerState extends State<CreatPassWordController> {
                 SizedBox(
                   height: 48,
                 ),
-                Constants.boldWhiteTextWidget("Creat a  password", 22),
+                Constants.boldWhiteTextWidget("Create a  password", 22),
                 Container(
                   width: Constants.screenWidth(context),
                   margin: EdgeInsets.only(left: 16, right: 16, top: 55),

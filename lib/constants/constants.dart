@@ -455,6 +455,7 @@ const kReadAwardMessage= 'read_message_award'; // 阅读奖励信息
 const kExchangePage = 'exchange_page'; // 交换页面的顺序
 const kRazorShapeRefresh = 'razor_shape_refresh'; // 可变三节的形状变换
 const kRazorLightRefresh = 'razor_light_refresh'; // 可变三节的灯光切换变换
+const kRazorModeResponse = 'razor_mode_response'; // 可变三节初高级模式上报
 const Map<String, Map<String, String>> kGameSceneAndModelMap = {
   "1": {
     "8": "Cat Challenge" ,
@@ -614,6 +615,6 @@ const Map<int, int> kP3DataAndProductIndexMap = {
   5:6
 }; // 270灯板的蓝牙数据索引和产品标签上的实际索引的映射表
 
-const kRazorPrimaryPaths = [1,16,18,16,17,8,1,6,13,8,14,1,1,1];
-const kRazorAdvancedPaths = [1,8,18,8,10,3,14,13,7,6,5,17,1,17,7,13,6,1,10,1,1];
+const kRazorPrimaryPaths = [1,16,18,16,17,8,1,6,13,7,14,1,1,1];
+const kRazorAdvancedPaths = [1,8,18,8,10,11,14,13,15,13,5,2,17,7,17,3,6,13,19,10,1,1];
 
